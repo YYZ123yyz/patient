@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffe6e6e6">
+
+    <RelativeLayout
+        android:id="@+id/rl_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/groabColor">
+
+        <LinearLayout
+            android:id="@+id/ll_back"
+            android:layout_width="60dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/arrow_left" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="输入添加药物"
+            android:textColor="@color/writeColor"
+            android:textSize="10pt" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/writeColor"
+        android:orientation="vertical">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:background="@null"
+            android:paddingLeft="10dp"
+            android:textSize="14sp"
+            android:textColor="#A1A1A1"
+            android:id="@+id/medic_name"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:hint="请输入药物名称（最多不超过20字）"
+            />
+
+        <TextView
+            android:layout_width="233dp"
+            android:layout_height="33dp"
+            android:gravity="center"
+            android:layout_marginTop="70dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/commit"
+            android:text="确定"
+            android:background="@drawable/bg_choicemedication_commit"
+            android:textColor="#ffffffff"
+            android:textSize="15sp"
+            />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorRed">#F25555</color>
+    <color name="pBackColor">#F5F5F5</color>
+    <color name="hintTextColor">#b3b3b3</color>
+    <color name="tjzj_jgdefault">#ff666666</color>
+    <color name="wdys_jzxq_jzzt">#ff999999</color>
+    <color name="writeColor">#FFFFFF</color>
+    <color name="groabColor">#7A9EFF</color>
+    <color name="blackColor">#000000</color>
+    <color name="tabColor_nomal">#333333</color>
+    <color name="tabColor_press">#7a9eff</color>
+
+    <color name="editHintColor">#B3B3B3</color>
+    <color name="textColor_vo">#666666</color>
+    <color name="textColor_vt">#999999</color>
+    <color name="textColor_mainPageJF">#4c92d9</color>
+
+    <color name="textColor_hztltabyj">#fa4a4a</color>
+    <color name="textColor_hzgltabtx">#fab834</color>
+    <color name="textColor_hzgltabzc">#3ed045</color>
+    <color name="textColor_black">#333333</color>
+
+
+    <color name="color">#ff00ff</color>
+    <!--zxing-->
+    <color name="contents_text">#000000</color>
+    <color name="encode_view">#ffffff</color>
+    <color name="possible_result_points">#ffbd21</color>
+    <color name="result_minor_text">#c0c0c0</color>
+    <color name="result_points">#99cc00</color>
+    <color name="result_text">#ffffff</color>
+    <color name="result_view">#000000</color>
+    <color name="status_text">#ffffff</color>
+    <color name="viewfinder_mask">#50000000</color>
+    <color name="react">#5FB3F1</color>
+    <color name="scanLineColor">#5FB3F1</color>
+    <color name="defaultColor">#ffffff</color>
+
+    <color name="province_line_border">#C7C7C7</color>
+
+    <color name="color_3688A1">#3688A1</color>
+    <color name="color_52B394">#52B394</color>
+    <color name="color_E24A47">#E24A47</color>
+    <color name="color_EA883B">#EA883B</color>
+
+</resources>

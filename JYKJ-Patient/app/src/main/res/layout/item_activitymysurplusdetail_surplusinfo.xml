@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/writeColor"
+    android:layout_marginTop="1dp"
+    android:orientation="horizontal"
+    >
+    <ImageView
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@mipmap/ye_zc"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="15dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="图文就诊 李医生"
+            android:id="@+id/item_surplusDetail_suType"
+            android:layout_gravity="center_vertical"
+            android:textSize="15sp"
+            android:textColor="#ff333333"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="医疗就诊"
+            android:textColor="#ff999999"
+            android:layout_marginTop="5dp"
+            android:textSize="13sp"
+            android:id="@+id/item_surplusDetail_price"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2020-05-20    8:00"
+            android:textColor="#ff999999"
+            android:textSize="13sp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/item_surplusDetail_date"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-20"
+            android:textColor="#ff010101"
+            android:textSize="15sp"
+            android:id="@+id/item_surplusDetail_data"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/pBackColor"
+    tools:context=".activity.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/writeColor"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:id="@+id/shouye_layout1"
+            android:orientation="vertical">
+            <www.patient.jykj_zxyl.util.CircleImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:id="@+id/shouye_heard1"
+                android:src="@mipmap/ntx" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="胡大一"
+                android:layout_gravity="center"
+                android:id="@+id/shouye_name1"
+                android:textColor="@color/tabColor_nomal"
+                android:textSize="8pt" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="绑定"
+                android:id="@+id/shouye_bind1"
+                android:layout_gravity="center"
+                android:textColor="@color/textColor_vo"
+                android:textSize="6pt" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="北大人民医院"
+                android:layout_gravity="center"
+                android:id="@+id/shouye_hospatal1"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/textColor_vo"
+                android:textSize="6pt" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:id="@+id/shouye_layout2"
+            android:orientation="vertical">
+            <www.patient.jykj_zxyl.util.CircleImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/shouye_heard2"
+                android:layout_gravity="center"
+                android:src="@mipmap/ntx" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="张医生"
+                android:id="@+id/shouye_name2"
+                android:layout_gravity="center"
+                android:textColor="@color/tabColor_nomal"
+                android:textSize="8pt" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="就诊"
+                android:id="@+id/shouye_bind2"
+                android:layout_gravity="center"
+                android:textColor="@color/textColor_vo"
+                android:textSize="6pt" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="协和医院"
+                android:id="@+id/shouye_hospatal2"
+                android:layout_gravity="center"
+                android:textColor="@color/textColor_vo"
+                android:layout_marginBottom="10dp"
+                android:textSize="6pt" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/shouye_layout3"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+            <www.patient.jykj_zxyl.util.CircleImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:id="@+id/shouye_heard3"
+                android:src="@mipmap/ntx" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="李大夫"
+                android:id="@+id/shouye_name3"
+                android:layout_gravity="center"
+                android:textColor="@color/tabColor_nomal"
+                android:textSize="8pt" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关注"
+                android:id="@+id/shouye_bind3"
+                android:layout_gravity="center"
+                android:textColor="@color/textColor_vo"
+                android:textSize="6pt" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="首都医科大学"
+                android:id="@+id/shouye_hospatal3"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"
+                android:textColor="@color/textColor_vo"
+                android:textSize="6pt" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:id="@+id/shouye_layout4"
+            android:orientation="vertical">
+            <www.patient.jykj_zxyl.util.CircleImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/shouye_heard4"
+                android:layout_gravity="center"
+                android:src="@mipmap/ntx" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="陈主任"
+                android:layout_gravity="center"
+                android:id="@+id/shouye_name4"
+                android:textColor="@color/tabColor_nomal"
+                android:textSize="8pt" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="就诊"
+                android:layout_gravity="center"
+                android:id="@+id/shouye_bind4"
+                android:textColor="@color/textColor_vo"
+                android:textSize="6pt" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="中日友好医院"
+                android:id="@+id/shouye_hospatal4"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"
+                android:textColor="@color/textColor_vo"
+                android:textSize="6pt" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:id="@+id/more"
+        android:text="查看更多"
+        android:layout_marginBottom="60dp"
+        android:textColor="#ff666666"
+        android:background="@drawable/shouye_more"
+        android:gravity="center"
+        android:textSize="15sp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/noHint">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="您还没有关注到任何医生数据"
+        android:textColor="#ff666666"
+        android:gravity="center"
+        android:textSize="15sp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="快去看看吧"
+        android:layout_marginBottom="60dp"
+        android:textColor="#ff666666"
+        android:gravity="center"
+        android:textSize="15sp"
+        />
+    </LinearLayout>
+</LinearLayout>

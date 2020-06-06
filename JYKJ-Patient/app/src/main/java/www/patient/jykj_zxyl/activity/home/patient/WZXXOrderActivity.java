@@ -1,0 +1,670 @@
+package www.patient.jykj_zxyl.activity.home.patient;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import entity.ProvideDoctorSetSchedulingInfoGroupDate;
+import entity.ProvideInteractOrderInfo;
+import entity.ProvideWechatPayModel;
+import entity.XYEntiy;
+import entity.patientapp.ProvideMarketingAvailableCoupons;
+import entity.patientapp.ProvideMarketingAvailableIntegral;
+import entity.shouye.ProvideViewDoctorExpertRecommend;
+import entity.wdzs.ProvideInteractPatientInterrogation;
+import netService.HttpNetService;
+import netService.entity.NetRetEntity;
+import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeTJZJAdapter;
+import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeTJZJAdapter;
+import www.patient.jykj_zxyl.application.Constant;
+import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.util.Util;
+
+
+/**
+ * 专家详情==》订单信息
+ */
+public class WZXXOrderActivity extends AppCompatActivity {
+    private RecyclerView mRecyclerView;
+    private FragmentHomeTJZJAdapter mAdapter;
+    private LinearLayout llBack;
+
+    public          ProgressDialog              mDialogProgress =null;
+
+    private         Context                     mContext;                                       //
+    private WZXXOrderActivity mActivity;
+    private         JYKJApplication             mApp;
+
+    private         String                      mNetRetStr;                 //返回字符串
+    private         Handler                     mHandler;
+
+    private         TextView                    mJZLX;                      //订单类型
+    private         TextView                    mZXYS;                      //咨询医生
+    private         TextView                    mGXZF;                      //共需支付
+    private         TextView                    mKYYHQ;                     //可用优惠券
+    private         TextView                    mXZYHQ;                     //选择优惠券
+    private         TextView                    mKYJF;                      //可用积分
+    private         ImageView                   mSYJF;                      //使用积分
+    private         ImageView                   mWXZF;                      //微信支付
+    private         ImageView                   mZFBZF;                     //支付宝支付
+
+    private         TextView                    mCommit;                    //提交
+
+    private         ProvideInteractPatientInterrogation mProvideInteractPatientInterrogation = new ProvideInteractPatientInterrogation();               //提交的问诊资料
+    private         String                      mOrderNum;                  //订单号
+    private         String                      mOrderType;                 //订单类型
+
+    private         ProvideMarketingAvailableCoupons mProvideMarketingAvailableCoupons;             //获取到的优惠券
+
+    private         LinearLayout                zf_weixin;                  //支付（微信支付）
+    private         LinearLayout                zf_zhifubao;                     //支付（支付宝）
+    private         int                         payModel = 1;                   //支付模式 1=微信支付  2=支付宝支付
+    private ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend;                          //专家信息
+    private ProvideDoctorSetSchedulingInfoGroupDate provideDoctorSetSchedulingInfoGroupDate;
+
+    private         XYEntiy                 mXYEntity;
+    public          IWXAPI                  msgApi;
+
+    private         TextView                fwjzsj;                         //服务截止时间
+    private         EditText                qysc;
+
+    private         LinearLayout            li_qysc;                    //签约时长
+    private         LinearLayout            li_fwjzsj;                  //服务截止时间
+
+
+    private void initView() {
+        zf_weixin = (LinearLayout)this.findViewById(R.id.zf_weixin);
+        qysc = (EditText)this.findViewById(R.id.qysc);
+        li_qysc = (LinearLayout)this.findViewById(R.id.li_qysc);
+        li_fwjzsj = (LinearLayout)this.findViewById(R.id.li_fwjzsj);
+        zf_zhifubao = (LinearLayout)this.findViewById(R.id.zf_zhifubao);
+        zf_weixin.setOnClickListener(new ButtonClick());
+        zf_zhifubao.setOnClickListener(new ButtonClick());
+        mGXZF = (TextView)this.findViewById(R.id.gxzf);
+        mJZLX = (TextView)this.findViewById(R.id.jzlx);
+        fwjzsj = (TextView)this.findViewById(R.id.fwjzsj);
+        qysc.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence == null || "".equals(String.valueOf(charSequence)))
+                    return;
+                //获取n个月后的时间
+                String str = getAfterMonth(Util.getCurrentFormart(),Integer.valueOf(charSequence+""));
+                //判断是否超过服务截止时间
+                try {
+                    boolean is = compare(str,Util.dateToStr(mXYEntity.getLimitSigningExpireDate()));
+                    Toast.makeText(mContext,str,Toast.LENGTH_SHORT).show();
+
+                    if (!is)
+                    {
+                        Toast.makeText(mContext,"超过医生服务截止时间",Toast.LENGTH_SHORT).show();
+                        qysc.setText("");
+                    }
+                    else
+                    {
+                        Float price = Float.valueOf(charSequence+"")*Float.valueOf(mXYEntity.getPriceBasics());
+                        mGXZF.setText("￥"+price);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        switch (Integer.valueOf(mOrderType))
+        {
+            case 1:
+                mJZLX.setText("图文就诊");
+                if (provideViewDoctorExpertRecommend.getImgTextPrice() == null)
+                    mGXZF.setText("未设置");
+                else
+                    mGXZF.setText("￥"+provideViewDoctorExpertRecommend.getImgTextPrice());
+                li_qysc.setVisibility(View.GONE);
+                li_fwjzsj.setVisibility(View.GONE);
+                break;
+            case 5:
+                mJZLX.setText("电话就诊");
+                if (provideViewDoctorExpertRecommend.getPhonePrice() == null)
+                    mGXZF.setText("未设置");
+                else
+                    mGXZF.setText("￥"+provideViewDoctorExpertRecommend.getPhonePrice());
+                li_fwjzsj.setVisibility(View.GONE);
+                li_qysc.setVisibility(View.GONE);
+                break;
+            case 2:
+                mJZLX.setText("音频就诊");
+                if (provideViewDoctorExpertRecommend.getAudioPrice() == null)
+                    mGXZF.setText("未设置");
+                else
+                    mGXZF.setText("￥"+provideViewDoctorExpertRecommend.getAudioPrice());
+                li_fwjzsj.setVisibility(View.GONE);
+                li_qysc.setVisibility(View.GONE);
+                break;
+            case 3:
+                mJZLX.setText("视频就诊");
+                if (provideViewDoctorExpertRecommend.getVideoPrice() == null)
+                    mGXZF.setText("未设置");
+                else
+                    mGXZF.setText("￥"+provideViewDoctorExpertRecommend.getVideoPrice());
+                li_fwjzsj.setVisibility(View.GONE);
+                li_qysc.setVisibility(View.GONE);
+                break;
+            case 4:
+                mJZLX.setText("签约就诊");
+                if (provideViewDoctorExpertRecommend.getSigningPrice() == null)
+                    mGXZF.setText("未设置");
+                else
+                    mGXZF.setText("￥"+provideViewDoctorExpertRecommend.getSigningPrice());
+                li_fwjzsj.setVisibility(View.GONE);
+                li_qysc.setVisibility(View.GONE);
+                break;
+            case 6:
+                mJZLX.setText("签约就诊");
+                li_fwjzsj.setVisibility(View.VISIBLE);
+                li_qysc.setVisibility(View.VISIBLE);
+                fwjzsj.setText(Util.dateToStr(mXYEntity.getLimitSigningExpireDate()));
+//                if (provideViewDoctorExpertRecommend.getSigningPrice() == null)
+//                    mGXZF.setText("未设置");
+//                else
+//                    mGXZF.setText("￥"+provideViewDoctorExpertRecommend.getSigningPrice());
+                break;
+        }
+        mZXYS = (TextView)this.findViewById(R.id.zxys);
+        mZXYS.setText(mProvideInteractPatientInterrogation.getDoctorName());
+
+
+//        mKYYHQ = (TextView)this.findViewById(R.id.wkyyhq);
+//        mXZYHQ = (TextView)this.findViewById(R.id.xzyhq);
+        mKYJF = (TextView)this.findViewById(R.id.kyjf);
+        mSYJF = (ImageView)this.findViewById(R.id.xzjf);
+        mWXZF = (ImageView)this.findViewById(R.id.wxzf);
+        mZFBZF = (ImageView)this.findViewById(R.id.zfbzf);
+        mCommit = (TextView)this.findViewById(R.id.commit);
+        mCommit.setOnClickListener(new ButtonClick());
+        setZFModel();
+    }
+
+    /**
+     * 设置支付模式
+     */
+    public void setZFModel(){
+        if (payModel == 1)
+        {
+            mWXZF.setBackgroundResource(R.mipmap.zf_choice);
+            mZFBZF.setBackgroundResource(R.mipmap.no_gx111);
+        }
+        if (payModel == 2)
+        {
+            mWXZF.setBackgroundResource(R.mipmap.no_gx111);
+            mZFBZF.setBackgroundResource(R.mipmap.zf_choice);
+
+        }
+    }
+
+    class   ButtonClick implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.ll_back:
+                    finish();
+                    break;
+
+                case R.id.zf_weixin:
+                    payModel = 1;
+                    setZFModel();
+                    break;
+
+                case R.id.zf_zhifubao:
+                    payModel = 2;
+                    setZFModel();
+                    break;
+
+                case R.id.commit:
+//                    weichatPay(null);
+//                    //生成订单
+                    if ("6".equals(mOrderType))
+                        commitXY();
+                    else
+                        commit();
+                    break;
+
+            }
+        }
+    }
+
+
+    /**
+     * 获取n个月后的时间
+     * @param inputDate
+     * @param number
+     * @return
+     */
+    public static String  getAfterMonth(String inputDate,int number) {
+        Calendar c = Calendar.getInstance();//获得一个日历的实例
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try{
+            date = sdf.parse(inputDate);//初始日期
+        }catch(Exception e){
+
+        }
+        c.setTime(date);//设置日历时间
+        c.add(Calendar.MONTH,number);//在日历的月份上增加6个月
+        String strDate = sdf.format(c.getTime());//的到你想要得6个月后的日期
+        return strDate;
+    }
+
+    /**
+     * 比较两个时间大小
+     * @param time1
+     * @param time2
+     * @return
+     * @throws ParseException
+     */
+    public boolean compare(String time1,String time2) throws ParseException
+    {
+        //如果想比较日期则写成"yyyy-MM-dd"就可以了
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        //将字符串形式的时间转化为Date类型的时间
+        Date a=sdf.parse(time1);
+        Date b=sdf.parse(time2);
+        //Date类的一个方法，如果a早于b返回true，否则返回false
+        if(a.before(b))
+            return true;
+        else
+            return false;
+		/*
+		 * 如果你不喜欢用上面这个太流氓的方法，也可以根据将Date转换成毫秒
+		if(a.getTime()-b.getTime()<0)
+			return true;
+		else
+			return false;
+		*/
+    }
+
+    /**
+     * 续约
+     */
+    private void commitXY() {
+        ProvideInteractOrderInfo provideInteractOrderInfo = new ProvideInteractOrderInfo();
+        provideInteractOrderInfo.setLoginPatientPosition(mApp.loginDoctorPosition);
+        provideInteractOrderInfo.setRequestClientType("1");
+        provideInteractOrderInfo.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        provideInteractOrderInfo.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        provideInteractOrderInfo.setSigningDoctorCode(mProvideInteractPatientInterrogation.getDoctorCode());
+        provideInteractOrderInfo.setTreatmentSigningId(mXYEntity.getTreatmentSigningId());
+        if (qysc.getText().toString() == null || "".equals(qysc.getText().toString()))
+        {
+            Toast.makeText(mContext,"续约时长不能为空",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        provideInteractOrderInfo.setSigningMonth(qysc.getText().toString());
+        provideInteractOrderInfo.setSigningExpireDate(Util.dateToStr(mXYEntity.getLimitSigningExpireDate()));
+        Float price = Float.valueOf(qysc.getText().toString())*Float.valueOf(mXYEntity.getPriceBasics());
+        provideInteractOrderInfo.setServiceTotal(price);
+        provideInteractOrderInfo.setOrderTotal(price);
+        provideInteractOrderInfo.setActualPayment(price);
+        provideInteractOrderInfo.setPriceDiscountCoupon(Float.valueOf("0.00"));
+        provideInteractOrderInfo.setPriceDiscountIntegral(Float.valueOf("0.00"));
+        provideInteractOrderInfo.setCouponsHaveCode("0");
+        provideInteractOrderInfo.setIntegralHaveCode("0");
+        provideInteractOrderInfo.setIntegralDeductionMoney("0");
+        provideInteractOrderInfo.setFlagPayType("1");
+        getProgressBar("请稍候。。。。","正在获取数据");
+        new Thread(){
+            public void run(){
+                try {
+                    String string = new Gson().toJson(provideInteractOrderInfo);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideInteractOrderInfo),Constant.SERVICEURL+"PatientMyDoctorControlle/operIndexMyDoctorSigningRenewal");
+                    NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
+                } catch (Exception e) {
+                    NetRetEntity retEntity = new NetRetEntity();
+                    retEntity.setResCode(0);
+                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    mNetRetStr = new Gson().toJson(retEntity);
+                    e.printStackTrace();
+                }
+                mHandler.sendEmptyMessage(1);
+            }
+        }.start();
+    }
+
+    /**
+     * 生成支付订单
+     */
+    private void commit() {
+        ProvideInteractOrderInfo provideInteractOrderInfo = new ProvideInteractOrderInfo();
+        provideInteractOrderInfo.setLoginPatientPosition(mApp.loginDoctorPosition);
+        provideInteractOrderInfo.setRequestClientType("1");
+        provideInteractOrderInfo.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        provideInteractOrderInfo.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        provideInteractOrderInfo.setOrderCode(mOrderNum);
+        provideInteractOrderInfo.setTreatmentType(Integer.valueOf(mOrderType));
+        provideInteractOrderInfo.setDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
+        provideInteractOrderInfo.setDoctorName(provideViewDoctorExpertRecommend.getUserName());
+        provideInteractOrderInfo.setPatientCode(provideViewDoctorExpertRecommend.getPatientCode());
+        provideInteractOrderInfo.setPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        switch (Integer.valueOf(mOrderType))
+        {
+            case 1:
+                provideInteractOrderInfo.setServiceTotal(provideViewDoctorExpertRecommend.getImgTextPrice());
+                provideInteractOrderInfo.setOrderTotal(provideViewDoctorExpertRecommend.getImgTextPrice());
+                provideInteractOrderInfo.setActualPayment(provideViewDoctorExpertRecommend.getImgTextPrice());
+                break;
+            case 2:
+                provideInteractOrderInfo.setServiceTotal(provideViewDoctorExpertRecommend.getPhonePrice());
+                provideInteractOrderInfo.setOrderTotal(provideViewDoctorExpertRecommend.getPhonePrice());
+                provideInteractOrderInfo.setActualPayment(provideViewDoctorExpertRecommend.getPhonePrice());
+                break;
+            case 3:
+                provideInteractOrderInfo.setServiceTotal(provideViewDoctorExpertRecommend.getAudioPrice());
+                provideInteractOrderInfo.setOrderTotal(provideViewDoctorExpertRecommend.getAudioPrice());
+                provideInteractOrderInfo.setActualPayment(provideViewDoctorExpertRecommend.getAudioPrice());
+                break;
+            case 4:
+                provideInteractOrderInfo.setServiceTotal(provideViewDoctorExpertRecommend.getVideoPrice());
+                provideInteractOrderInfo.setOrderTotal(provideViewDoctorExpertRecommend.getVideoPrice());
+                provideInteractOrderInfo.setActualPayment(provideViewDoctorExpertRecommend.getVideoPrice());
+                break;
+            case 5:
+                provideInteractOrderInfo.setServiceTotal(provideViewDoctorExpertRecommend.getSigningPrice());
+                provideInteractOrderInfo.setOrderTotal(provideViewDoctorExpertRecommend.getSigningPrice());
+                provideInteractOrderInfo.setActualPayment(provideViewDoctorExpertRecommend.getSigningPrice());
+                break;
+        }
+        provideInteractOrderInfo.setPriceDiscountCoupon(Float.valueOf("0.00"));
+        provideInteractOrderInfo.setPriceDiscountIntegral(Float.valueOf("0.00"));
+
+        switch (Integer.valueOf(mOrderType))
+        {
+            case 2:
+                provideInteractOrderInfo.setTreatmentDate(provideDoctorSetSchedulingInfoGroupDate.getWorkDate());
+                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++)
+                {
+                    if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
+                        provideInteractOrderInfo.setTreatmentTimeSlot(provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).getDayTimeSlot());
+                }
+                break;
+            case 3:
+                provideInteractOrderInfo.setTreatmentDate(provideDoctorSetSchedulingInfoGroupDate.getWorkDate());
+                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++)
+                {
+                    if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
+                        provideInteractOrderInfo.setTreatmentTimeSlot(provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).getDayTimeSlot());
+                }
+                break;
+            case 5:
+                provideInteractOrderInfo.setTreatmentDate(provideDoctorSetSchedulingInfoGroupDate.getWorkDate());
+                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++)
+                {
+                    if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
+                        provideInteractOrderInfo.setTreatmentTimeSlot(provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).getDayTimeSlot());
+                }
+                break;
+        }
+
+
+        provideInteractOrderInfo.setTreatmentLinkPhone(provideViewDoctorExpertRecommend.getLinkPhone());
+        provideInteractOrderInfo.setCouponsHaveCode("0");
+        provideInteractOrderInfo.setIntegralHaveCode("0");
+        provideInteractOrderInfo.setIntegralDeductionMoney("0");
+        provideInteractOrderInfo.setFlagPayType("1");
+        getProgressBar("请稍候。。。。","正在获取数据");
+        new Thread(){
+            public void run(){
+                try {
+                    String string = new Gson().toJson(provideInteractOrderInfo);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideInteractOrderInfo),Constant.SERVICEURL+"patientInteractDataControlle/operInteractOrderInfoGenerate");
+//                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideInteractOrderInfo),"http://192.168.3.15:8081/jyJXTWeiChat/weiChatPayDemo");
+                    NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
+
+                } catch (Exception e) {
+                    NetRetEntity retEntity = new NetRetEntity();
+                    retEntity.setResCode(0);
+                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    mNetRetStr = new Gson().toJson(retEntity);
+                    e.printStackTrace();
+                }
+                mHandler.sendEmptyMessage(1);
+            }
+        }.start();
+
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_homepage_jzdd);
+        mContext = this;
+        mActivity = this;
+        mApp = (JYKJApplication) getApplication();
+        mProvideInteractPatientInterrogation = (ProvideInteractPatientInterrogation) getIntent().getSerializableExtra("provideInteractPatientInterrogation");
+        provideViewDoctorExpertRecommend = (ProvideViewDoctorExpertRecommend) getIntent().getSerializableExtra("provideViewDoctorExpertRecommend");
+        provideDoctorSetSchedulingInfoGroupDate= (ProvideDoctorSetSchedulingInfoGroupDate) getIntent().getSerializableExtra("provideDoctorSetSchedulingInfoGroupDate");
+        mOrderNum = getIntent().getStringExtra("orderID");
+        mOrderType = getIntent().getStringExtra("orderType");
+        if ("6".equals(mOrderType))
+        {
+            mXYEntity = (XYEntiy) getIntent().getSerializableExtra("xyEntiy");
+        }
+        initView();
+        initHandler();
+        getYHQDate();
+    }
+
+    /**
+     * 获取优惠券
+     */
+    private void getYHQDate() {
+        ProvideMarketingAvailableCoupons provideMarketingAvailableCoupons = new ProvideMarketingAvailableCoupons();
+        provideMarketingAvailableCoupons.setLoginPatientPosition(mApp.loginDoctorPosition);
+        provideMarketingAvailableCoupons.setRequestClientType("1");
+        provideMarketingAvailableCoupons.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        provideMarketingAvailableCoupons.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        provideMarketingAvailableCoupons.setOrderCode(mOrderNum);
+        provideMarketingAvailableCoupons.setTreatmentType(mOrderType);
+        if ("6".equals(mOrderType))
+        {
+            provideMarketingAvailableCoupons.setDoctorCode(mProvideInteractPatientInterrogation.getDoctorCode());
+            provideMarketingAvailableCoupons.setDoctorName(mProvideInteractPatientInterrogation.getDoctorName());
+        }
+        else
+        {
+            provideMarketingAvailableCoupons.setDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
+            provideMarketingAvailableCoupons.setDoctorName(provideViewDoctorExpertRecommend.getUserName());
+        }
+
+
+        getProgressBar("请稍候。。。。","正在获取数据");
+        new Thread(){
+            public void run(){
+                try {
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideMarketingAvailableCoupons),Constant.SERVICEURL+"patientInteractDataControlle/getInteractPatientInterrogationResPatientCoupon");
+                    NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
+
+                    if (netRetEntity.getResCode() == 1) {
+                        mProvideMarketingAvailableCoupons = JSON.parseObject(netRetEntity.getResJsonData(),ProvideMarketingAvailableCoupons.class);
+                    }
+                    //获取积分信息
+                    ProvideMarketingAvailableIntegral provideMarketingAvailableIntegral = new ProvideMarketingAvailableIntegral();
+                    provideMarketingAvailableIntegral.setLoginPatientPosition(mApp.loginDoctorPosition);
+                    provideMarketingAvailableIntegral.setRequestClientType("1");
+                    provideMarketingAvailableIntegral.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                    provideMarketingAvailableIntegral.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                    provideMarketingAvailableIntegral.setOrderCode(mOrderNum);
+                    provideMarketingAvailableIntegral.setTreatmentType(mOrderType);
+                    provideMarketingAvailableIntegral.setDoctorCode(provideViewDoctorExpertRecommend.getPatientCode());
+                    provideMarketingAvailableIntegral.setDoctorName(provideViewDoctorExpertRecommend.getUserName());
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideMarketingAvailableCoupons),Constant.SERVICEURL+"patientInteractDataControlle/getInteractPatientInterrogationResPatientIntegral");
+                    netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
+                    mHandler.sendEmptyMessage(0);
+                } catch (Exception e) {
+                    NetRetEntity retEntity = new NetRetEntity();
+                    retEntity.setResCode(0);
+                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    mNetRetStr = new Gson().toJson(retEntity);
+                    e.printStackTrace();
+                }
+                mHandler.sendEmptyMessage(0);
+            }
+        }.start();
+    }
+
+    private void initHandler() {
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case 0:
+                        cacerProgress();
+                        break;
+                    case 1:
+                        cacerProgress();
+//                        ProvideWechatPayModel provideWechatPayModel = JSON.parseObject(mNetRetStr,ProvideWechatPayModel.class);
+//                        //开始调起微信支付
+//                        weichatPay(provideWechatPayModel);
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
+                        Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        if(netRetEntity.getResCode() == 1)
+                        {
+                            ProvideWechatPayModel provideWechatPayModel = JSON.parseObject(netRetEntity.getResJsonData(),ProvideWechatPayModel.class);
+                            //开始调起微信支付
+                            weichatPay(provideWechatPayModel);
+                        }
+
+                        break;
+                }
+            }
+        };
+    }
+
+    /**
+     * 开始调起微信支付
+     */
+    private void weichatPay( ProvideWechatPayModel provideWechatPayModel) {
+        //将appid注册到微信
+        msgApi = WXAPIFactory.createWXAPI(mContext, null);
+        boolean a = msgApi.registerApp(provideWechatPayModel.getAppId());
+        //调起微信支付
+        PayReq request = new PayReq();
+        request.appId = provideWechatPayModel.getAppId();
+        request.partnerId = provideWechatPayModel.getPartnerid();
+        String prepare_id = provideWechatPayModel.getPackagePrepayId();
+        request.prepayId= prepare_id;
+        request.packageValue = "Sign=WXPay";
+        request.nonceStr=provideWechatPayModel.getNonceStr();
+        request.timeStamp= provideWechatPayModel.getTimeStamp();
+        request.sign= provideWechatPayModel.getSign();
+        request.signType = "MD5";
+        boolean result = msgApi.sendReq(request);
+        mHandler.sendEmptyMessage(1);
+    }
+
+
+    /**
+     *   获取进度条
+     */
+
+    public void getProgressBar(String title,String progressPrompt){
+        if (mDialogProgress == null) {
+            mDialogProgress = new ProgressDialog(this);
+        }
+        mDialogProgress.setTitle(title);
+        mDialogProgress.setMessage(progressPrompt);
+        mDialogProgress.setCancelable(false);
+        mDialogProgress.show();
+    }
+
+    /**
+     * 取消进度条
+     */
+    public void cacerProgress(){
+        if (mDialogProgress != null) {
+            mDialogProgress.dismiss();
+        }
+    }
+
+
+
+
+
+
+    /**
+     * 显示医院
+     */
+    private void showChoiceHospitalText(int index) {
+//        mChoiceHospitalText.setText(mProvideHospitalInfos.get(index).getHospitalName());
+//        provideViewDoctorExpertRecommend.setSearchHospitalInfoCode(mProvideHospitalInfos.get(index).getHospitalInfoCode());
+//        provideViewDoctorExpertRecommend.setSearchDepartmentId("");
+//        provideViewDoctorExpertRecommend.setSearchDepartmentSecondId("");
+//        mChoiceDepartmentSText.setText("请选择二级科室");
+//        mChoiceDepartmentFText.setText("请选择一级科室");
+        //获取一级科室
+//        getProgressBar("请稍候。。。。","正在获取数据");
+//        new Thread(){
+//            public void run(){
+//                try {
+                    //获取一级科室
+//                    ProvideHospitalDepartment provideHospitalDepartment = new ProvideHospitalDepartment();
+//                    provideHospitalDepartment.setHospitalInfoCode(mProvideHospitalInfos.get(index).getHospitalInfoCode());
+//                    provideHospitalDepartment.setHospitalDepartmentId(0);
+//                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideHospitalDepartment),Constant.SERVICEURL+"hospitalDataController/getHospitalDepartment");
+//                    NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
+//                    if (netRetEntity.getResCode() == 0) {
+//                        NetRetEntity retEntity = new NetRetEntity();
+//                        retEntity.setResCode(0);
+//                        retEntity.setResMsg("获取一级科室信息失败："+netRetEntity.getResMsg());
+//                        mNetRetStr = new Gson().toJson(retEntity);
+//                        mHandler.sendEmptyMessage(0);
+//                        return;
+//                    }
+//                    //一级科室信息获取成功
+//                    mProvideHospitalDepartmentFInfos = new Gson().fromJson(netRetEntity.getResJsonData(), new TypeToken<List<ProvideHospitalDepartment>>(){}.getType());
+//                } catch (Exception e) {
+//                    NetRetEntity retEntity = new NetRetEntity();
+//                    retEntity.setResCode(0);
+//                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+//                    mNetRetStr = new Gson().toJson(retEntity);
+//                    e.printStackTrace();
+//                }
+//                mHandler.sendEmptyMessage(0);
+//            }
+//        }.start();
+    }
+
+
+}

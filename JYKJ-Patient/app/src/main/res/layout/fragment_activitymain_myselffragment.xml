@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/writeColor"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/groabColor"
+        >
+
+        <TextView
+            android:text="个人中心"
+            android:textSize="10pt"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:textColor="@color/writeColor"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/groabColor">
+
+                <www.patient.jykj_zxyl.util.CircleImageView
+                    android:id="@+id/iv_fragmentMyself_userHeadImage"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/doctor_head" />
+
+                <TextView
+                    android:id="@+id/tv_fragmentMySelf_nameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/iv_fragmentMyself_userHeadImage"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="未设置"
+                    android:textColor="@color/writeColor"
+                    android:textSize="10pt" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/shape_box_gray2"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/tv_wdye"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:src="@mipmap/grzx_qb" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:text="钱包" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="￥0.00"
+                        android:layout_marginBottom="8dp"
+                        android:textColor="#ff333333"
+                        android:textSize="14sp"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:src="@mipmap/grzx_yhq" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:text="优惠券" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="无"
+                        android:layout_marginBottom="8dp"
+                        android:textColor="#ff333333"
+                        android:textSize="14sp"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:src="@mipmap/grzx_jf" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:text="积分" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="0"
+                        android:layout_marginBottom="8dp"
+                        android:textColor="#ff333333"
+                        android:textSize="14sp"
+                        />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <www.patient.jykj_zxyl.custom.MyselfItemView
+                android:id="@+id/myself_bind_friend"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:have_img="true"
+                app:img_src="@mipmap/grzx_bdqy"
+                app:text_title="绑定亲友" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/result_minor_text" />
+
+            <www.patient.jykj_zxyl.custom.MyselfItemView
+                android:id="@+id/myself_order"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:have_img="true"
+                app:img_src="@mipmap/grzx_dd"
+                app:text_title="我的订单" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/result_minor_text" />
+
+            <www.patient.jykj_zxyl.custom.MyselfItemView
+                android:id="@+id/myself_doctor"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:have_img="true"
+                app:img_src="@mipmap/grzx_wdys"
+                app:text_title="我的医生" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/result_minor_text" />
+
+            <www.patient.jykj_zxyl.custom.MyselfItemView
+                android:id="@+id/myself_file"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:have_img="true"
+                app:img_src="@mipmap/grzx_jdda"
+                app:text_title="建档档案" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/result_minor_text" />
+
+            <www.patient.jykj_zxyl.custom.MyselfItemView
+                android:id="@+id/myself_blood"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:have_img="true"
+                app:img_src="@mipmap/grzx_xyjl"
+                app:text_title="血压记录" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/result_minor_text" />
+
+            <www.patient.jykj_zxyl.custom.MyselfItemView
+                android:id="@+id/myself_medication"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:have_img="true"
+                app:img_src="@mipmap/grzx_yytx"
+                app:text_title="用药提醒" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/result_minor_text" />
+
+            <www.patient.jykj_zxyl.custom.MyselfItemView
+                android:id="@+id/myself_recommend"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:have_img="true"
+                app:img_src="@mipmap/grzx_tj"
+                app:text_title="推荐" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/result_minor_text" />
+
+            <www.patient.jykj_zxyl.custom.MyselfItemView
+                android:id="@+id/myself_setting"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:have_img="true"
+                app:img_src="@mipmap/grzx_sz"
+                app:text_title="设置" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/result_minor_text" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

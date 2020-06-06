@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/pBackColor"
+    tools:context=".activity.myself.MyAccountActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/groabColor"
+        >
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/arrow_left"/>
+        <TextView
+            android:text="我的余额"
+            android:textSize="10pt"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:textColor="@color/writeColor"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="零钱明细"
+            android:textSize="8pt"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_width="wrap_content"
+            android:id="@+id/activity_mySurPlus_detail"
+            android:textColor="@color/writeColor"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="60dp"
+        android:src="@mipmap/grzx_qb"/>
+
+
+    <TextView
+        android:text="我的余额"
+        android:textSize="9pt"
+        android:layout_width="wrap_content"
+        android:textColor="@color/blackColor"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:text="￥ 0.00"
+        android:textSize="14pt"
+        android:layout_width="wrap_content"
+        android:textColor="@color/blackColor"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:text="充值"
+        android:textSize="9pt"
+        android:background="@drawable/bd_grzx_cz"
+        android:layout_width="150dp"
+        android:textColor="@color/writeColor"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="120dp"
+        android:layout_height="30dp"/>
+
+    <TextView
+        android:text="提现"
+        android:textSize="9pt"
+        android:background="@drawable/bd_grzx_tx"
+        android:layout_width="150dp"
+        android:textColor="#799DFE"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="11dp"
+        android:layout_height="30dp"/>
+
+
+</LinearLayout>

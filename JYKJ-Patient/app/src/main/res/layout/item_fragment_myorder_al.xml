@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@color/writeColor"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_fragmentYLZX_rmjxLayout"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/writeColor"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:text="图文就诊"
+            android:textColor="#ff000000"
+            android:textSize="15sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:text="[已取消]"
+            android:layout_marginLeft="5dp"
+            android:textColor="#ff666666"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="2020/05/10  8:00"
+            android:textColor="#ff999999"
+            android:gravity="center_vertical"
+            android:textSize="15sp"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="您已成功提交就诊内容，请于30分钟内完成支付，"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="#ff666666"
+        android:textSize="15sp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/writeColor"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:text="诊后留言"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_myorder_button"
+            android:layout_marginTop="20dp"
+            android:visibility="visible"
+            android:textSize="15sp"
+            />
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_centerInParent="true"
+            android:text="处方签"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_myorder_button"
+            android:layout_marginTop="20dp"
+            android:visibility="visible"
+            android:textSize="15sp"
+            />
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:text="评价"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_myorder_button"
+            android:layout_marginTop="20dp"
+            android:visibility="visible"
+            android:textSize="15sp"
+            />
+    </RelativeLayout>
+
+</LinearLayout>
