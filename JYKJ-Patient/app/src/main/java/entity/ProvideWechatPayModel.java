@@ -19,7 +19,16 @@ public class ProvideWechatPayModel implements java.io.Serializable {
     private String signType;//签名类型
     private String timeStamp;//时间戳
     private String tradeNo;//
+    private String prepayid;
 
+
+    public String getPrepayid() {
+        return prepayid;
+    }
+
+    public void setPrepayid(String prepayid) {
+        this.prepayid = prepayid;
+    }
 
     public String getPartnerid() {
         return partnerid;

@@ -583,7 +583,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
         PayReq request = new PayReq();
         request.appId = provideWechatPayModel.getAppId();
         request.partnerId = provideWechatPayModel.getPartnerid();
-        String prepare_id = provideWechatPayModel.getPackagePrepayId();
+        String prepare_id = provideWechatPayModel.getPrepayid();
         request.prepayId= prepare_id;
         request.packageValue = "Sign=WXPay";
         request.nonceStr=provideWechatPayModel.getNonceStr();
@@ -591,7 +591,20 @@ public class WZXXOrderActivity extends AppCompatActivity {
         request.sign= provideWechatPayModel.getSign();
         request.signType = "MD5";
         boolean result = msgApi.sendReq(request);
-        mHandler.sendEmptyMessage(1);
+        System.out.println();
+//        mHandler.sendEmptyMessage(1);
+
+//        PayReq request = new PayReq();
+//        request.appId = "wxaf6f64f6a5878261";
+//        request.partnerId = "1579159781";
+//        String prepare_id = provideWechatPayModel.getPackagePrepayId();
+//        request.prepayId= "wx0621151327932593af383eac1045584700";
+//        request.packageValue = "Sign=WXPay";
+//        request.nonceStr="20200606211504AENSGI6S8ZWDV99CX2";
+//        request.timeStamp="1591449304";
+//        request.sign= "EB8344528804DF94E47AEFC1411507ED";
+//        request.signType = "MD5";
+//        boolean result = msgApi.sendReq(request);
     }
 
 

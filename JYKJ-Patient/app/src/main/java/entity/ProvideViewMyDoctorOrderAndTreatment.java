@@ -68,6 +68,35 @@ public class ProvideViewMyDoctorOrderAndTreatment implements java.io.Serializabl
 	private	String searchPatientCode;
 	private	String searchPatientName;
 
+	private	String operPatientCode;
+	private	String operPatientName;
+	private	String flagPayType;
+
+
+	public String getFlagPayType() {
+		return flagPayType;
+	}
+
+	public void setFlagPayType(String flagPayType) {
+		this.flagPayType = flagPayType;
+	}
+
+	public String getOperPatientCode() {
+		return operPatientCode;
+	}
+
+	public void setOperPatientCode(String operPatientCode) {
+		this.operPatientCode = operPatientCode;
+	}
+
+	public String getOperPatientName() {
+		return operPatientName;
+	}
+
+	public void setOperPatientName(String operPatientName) {
+		this.operPatientName = operPatientName;
+	}
+
 	public Integer getOrderId() {
 		return orderId;
 	}

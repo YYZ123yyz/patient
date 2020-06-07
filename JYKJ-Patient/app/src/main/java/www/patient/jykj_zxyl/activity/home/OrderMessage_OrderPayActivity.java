@@ -29,11 +29,11 @@ import entity.ProvideViewMyDoctorOrderAndTreatment;
 import entity.ProvideWechatPayModel;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
-import util.com.example.lenovo.drawerlibrary.DrawerLayout;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeTJZJAdapter;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.Util;
+import www.patient.jykj_zxyl.util.widget.AuthorityDialog;
 
 
 /**
@@ -75,11 +75,12 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
     private         TextView                    tv_serviceName;             //名称
     private         LinearLayout                tv_jzsj;                      //截止时间
 
-    private util.com.example.lenovo.drawerlibrary.ButtomDrawerLayout mDrawerLayout = null;
 
     public          IWXAPI                  msgApi;
 
+    private         ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatment;
 
+    private         AuthorityDialog         mAuthorityDialog;
     /**
      * 展示数据
      * @param provideViewMyDoctorOrderAndTreatment
@@ -99,7 +100,7 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
         else
             tv_fwzj.setText(provideViewMyDoctorOrderAndTreatment.getOrderTotal()+"元");
         tv_ddms1.setText(provideViewMyDoctorOrderAndTreatment.getOrderDesc());
-        if (provideViewMyDoctorOrderAndTreatment.getOrderTotal() == null)
+        if (provideViewMyDoctorOrderAndTreatment.getActualPayment() == null)
             tv_sfk.setText("0.0元");
         else
             tv_sfk.setText(provideViewMyDoctorOrderAndTreatment.getActualPayment()+"元");
@@ -160,6 +161,37 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 支付
+     */
+    public void zf(int payModel) {
+        mAuthorityDialog.cancel();
+        getProgressBar("请稍候","正在获取数据。。。");
+        ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatmentParment = new ProvideViewMyDoctorOrderAndTreatment();
+        provideViewMyDoctorOrderAndTreatmentParment.setLoginPatientPosition(mApp.loginDoctorPosition);
+        provideViewMyDoctorOrderAndTreatmentParment.setRequestClientType("1");
+        provideViewMyDoctorOrderAndTreatmentParment.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        provideViewMyDoctorOrderAndTreatmentParment.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        provideViewMyDoctorOrderAndTreatmentParment.setOrderCode(provideInteractOrderInfo.getOrderCode());
+        provideViewMyDoctorOrderAndTreatmentParment.setFlagPayType(payModel+"");
+        new Thread(){
+            public void run(){
+                try {
+                    String string = new Gson().toJson(provideViewMyDoctorOrderAndTreatmentParment);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, www.patient.jykj_zxyl.application.Constant.SERVICEURL+"msgDataControlle/operPatientOrderPay");
+                } catch (Exception e) {
+                    NetRetEntity retEntity = new NetRetEntity();
+                    retEntity.setResCode(0);
+                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    mNetRetStr = new Gson().toJson(retEntity);
+                    e.printStackTrace();
+                }
+                mHandler.sendEmptyMessage(1);
+            }
+        }.start();
+    }
+
+
 
 
     class   ButtonClick implements View.OnClickListener {
@@ -179,7 +211,13 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
                     break;
 
                 case R.id.commit:
-//                    mDrawerLayout.openDrawer(Gravity.BOTTOM);
+                    if (provideViewMyDoctorOrderAndTreatment == null)
+                    {
+                        Toast.makeText(mContext,"未获取到订单",Toast.LENGTH_SHORT).show();
+                    }
+                    mAuthorityDialog = new AuthorityDialog(mContext,mActivity);
+                    mAuthorityDialog.setmProvideViewMyDoctorOrderAndTreatment(provideViewMyDoctorOrderAndTreatment);
+                    mAuthorityDialog.show();
                     break;
 
             }
@@ -266,16 +304,16 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
      */
     private void getDate() {
         getProgressBar("请稍候","正在获取数据。。。");
-        ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatment = new ProvideViewMyDoctorOrderAndTreatment();
-        provideViewMyDoctorOrderAndTreatment.setLoginPatientPosition(mApp.loginDoctorPosition);
-        provideViewMyDoctorOrderAndTreatment.setRequestClientType("1");
-        provideViewMyDoctorOrderAndTreatment.setSearchPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        provideViewMyDoctorOrderAndTreatment.setSearchPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        provideViewMyDoctorOrderAndTreatment.setOrderCode(provideInteractOrderInfo.getOrderCode());
+        ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreat= new ProvideViewMyDoctorOrderAndTreatment();
+        provideViewMyDoctorOrderAndTreat.setLoginPatientPosition(mApp.loginDoctorPosition);
+        provideViewMyDoctorOrderAndTreat.setRequestClientType("1");
+        provideViewMyDoctorOrderAndTreat.setSearchPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        provideViewMyDoctorOrderAndTreat.setSearchPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        provideViewMyDoctorOrderAndTreat.setOrderCode(provideInteractOrderInfo.getOrderCode());
         new Thread(){
             public void run(){
                 try {
-                    String string = new Gson().toJson(provideViewMyDoctorOrderAndTreatment);
+                    String string = new Gson().toJson(provideViewMyDoctorOrderAndTreat);
                     mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, www.patient.jykj_zxyl.application.Constant.SERVICEURL+"msgDataControlle/searchPatientMsgInteractOrderInfoDetail");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
@@ -302,23 +340,25 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
                             Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
                         else if(netRetEntity.getResCode() == 1)
                         {
-                            ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatment = JSON.parseObject(netRetEntity.getResJsonData(),ProvideViewMyDoctorOrderAndTreatment.class);
+                           provideViewMyDoctorOrderAndTreatment = JSON.parseObject(netRetEntity.getResJsonData(),ProvideViewMyDoctorOrderAndTreatment.class);
                             showDate(provideViewMyDoctorOrderAndTreatment);
                         }
                         break;
                     case 1:
                         cacerProgress();
-                        ProvideWechatPayModel provideWechatPayModel = JSON.parseObject(mNetRetStr,ProvideWechatPayModel.class);
-                        //开始调起微信支付
-                        weichatPay(provideWechatPayModel);
-//                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-////                        Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
-////                        if(netRetEntity.getResCode() == 1)
-////                        {
-////                            ProvideWechatPayModel provideWechatPayModel = JSON.parseObject(netRetEntity.getResJsonData(),ProvideWechatPayModel.class);
-////                            //开始调起微信支付
-////                            weichatPay(provideWechatPayModel);
-////                        }
+
+                        netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
+
+                        if(netRetEntity.getResCode() == 1)
+                        {
+                            ProvideWechatPayModel provideWechatPayModel = JSON.parseObject(netRetEntity.getResJsonData(),ProvideWechatPayModel.class);
+                            //开始调起微信支付
+                            weichatPay(provideWechatPayModel);
+                        }
+                        else
+                        {
+                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        }
 
                         break;
                 }
@@ -339,15 +379,15 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
         PayReq request = new PayReq();
         request.appId = provideWechatPayModel.getAppId();
         request.partnerId = provideWechatPayModel.getPartnerid();
-        String prepare_id = provideWechatPayModel.getPackagePrepayId();
-        request.prepayId= prepare_id;
+        String prepare_id = provideWechatPayModel.getPrepayid();
+        request.prepayId = prepare_id;
         request.packageValue = "Sign=WXPay";
-        request.nonceStr=provideWechatPayModel.getNonceStr();
-        request.timeStamp= provideWechatPayModel.getTimeStamp();
-        request.sign= provideWechatPayModel.getSign();
+        request.nonceStr = provideWechatPayModel.getNonceStr();
+        request.timeStamp = provideWechatPayModel.getTimeStamp();
+        request.sign = provideWechatPayModel.getSign();
         request.signType = "MD5";
         boolean result = msgApi.sendReq(request);
-//        mHandler.sendEmptyMessage(1);
+        System.out.println();
     }
 
 
