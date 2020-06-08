@@ -2,6 +2,7 @@ package www.patient.jykj_zxyl.activity.home.patient;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -47,6 +49,7 @@ import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.pay.PayResult;
 import www.patient.jykj_zxyl.util.Util;
+import www.patient.jykj_zxyl.wxapi.WXPayEntryActivity;
 
 
 /**
@@ -99,6 +102,8 @@ public class WZXXOrderActivity extends AppCompatActivity {
     private         LinearLayout            li_qysc;                    //签约时长
     private         LinearLayout            li_fwjzsj;                  //服务截止时间
     private static final int SDK_PAY_FLAG = 3;
+    private String pay_appid;
+    private String pay_productid;
 
     private void initView() {
         zf_weixin = (LinearLayout)this.findViewById(R.id.zf_weixin);
@@ -552,19 +557,22 @@ public class WZXXOrderActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                    case 0:
+                    case 0: {
                         cacerProgress();
                         break;
-                    case 1:
+                    }
+                    case 1: {
                         cacerProgress();
 //                        ProvideWechatPayModel provideWechatPayModel = JSON.parseObject(mNetRetStr,ProvideWechatPayModel.class);
 //                        //开始调起微信支付
 //                        weichatPay(provideWechatPayModel);
-                        if(mNetRetStr.contains("&sign_type=")){
+                        if (mNetRetStr.contains("&sign_type=")) {
                             //mNetRetStr = mNetRetStr.substring(mNetRetStr.indexOf("&sign=")+"&sign=".length(),mNetRetStr.indexOf("&sign_type="));
+                            pay_appid = mNetRetStr.substring(mNetRetStr.indexOf("&app_id=") + "&app_id=".length(), mNetRetStr.indexOf("&biz_content="));
+                            pay_productid = mNetRetStr.substring(mNetRetStr.indexOf("&app_id=") + "&app_id=".length(), mNetRetStr.indexOf("&biz_content="));
                             NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
                             sendAliPay(netRetEntity.getResJsonData());
-                        }else {
+                        } else {
                             NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
                             if (null != netRetEntity.getResMsg() && netRetEntity.getResMsg().length() > 0) {
                                 Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
@@ -572,14 +580,42 @@ public class WZXXOrderActivity extends AppCompatActivity {
                             if (netRetEntity.getResCode() == 1) {
                                 ProvideWechatPayModel provideWechatPayModel = JSON.parseObject(netRetEntity.getResJsonData(), ProvideWechatPayModel.class);
                                 //开始调起微信支付
+                                pay_appid = provideWechatPayModel.getAppId();
+                                pay_productid = pay_appid;
                                 weichatPay(provideWechatPayModel);
                             }
                         }
 
                         break;
-                    case SDK_PAY_FLAG:
-                        cacerProgress();
+                    }
+                    case SDK_PAY_FLAG: {
+                        PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                        /**
+                         * 对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                         */
+                        String resultInfo = payResult.getResult();
+                        String resultStatus = payResult.getResultStatus();
+                        Intent intent = new Intent(WZXXOrderActivity.this, WXPayEntryActivity.class);
+                        intent.putExtra(WXPayEntryActivity.PAY_MESSAGE, resultInfo);
+                        intent.putExtra("pay_appid", pay_appid);
+                        intent.putExtra("pay_productid", pay_productid);
+                        if (TextUtils.equals(resultStatus, "9000")) {
+                            // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+//                        showAlert(WXEntryActivity.this, getString(R.string.pay_success) + payResult);
+                            intent.putExtra(WXPayEntryActivity.PAY_STATE, WXPayEntryActivity.SUCCESS);
+                        } else if (TextUtils.equals(resultStatus, "6001")) {
+//                         用户取消
+                            intent.putExtra(WXPayEntryActivity.PAY_STATE, WXPayEntryActivity.CANCEL);
+                        } else {
+                            // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+//                        showAlert(WXEntryActivity.this, getString(R.string.pay_failed) + payResult);
+                            intent.putExtra(WXPayEntryActivity.PAY_STATE, WXPayEntryActivity.FAILURE);
+                        }
+                        startActivity(intent);
                         //PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                    }
+                    default:
+                        break;
                 }
             }
         };
@@ -608,9 +644,12 @@ public class WZXXOrderActivity extends AppCompatActivity {
      */
     private void weichatPay(ProvideWechatPayModel provideWechatPayModel) {
         //将appid注册到微信
-        msgApi = WXAPIFactory.createWXAPI(mContext, null);
-        boolean a = msgApi.registerApp(provideWechatPayModel.getAppId());
+        //boolean a = msgApi.registerApp(provideWechatPayModel.getAppId());
         //调起微信支付
+        if(null!=msgApi) {
+            msgApi = WXAPIFactory.createWXAPI(this, "wx4ccb2ac1c5491336");
+            msgApi.registerApp("wx4ccb2ac1c5491336");
+        }
         PayReq request = new PayReq();
         request.appId = provideWechatPayModel.getAppId();
         request.partnerId = provideWechatPayModel.getPartnerid();
@@ -622,7 +661,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
         request.sign= provideWechatPayModel.getSign();
         request.signType = "MD5";
         boolean result = msgApi.sendReq(request);
-        System.out.println();
+        //System.out.println();
 //        mHandler.sendEmptyMessage(1);
 
 //        PayReq request = new PayReq();

@@ -431,6 +431,18 @@
             android:name="orcameralib.CameraActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+                android:name=".wxapi.WXPayEntryActivity"
+                android:exported="true"
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="wx4ccb2ac1c5491336" />
+            </intent-filter>
+        </activity>
+
         <!-- 设置环信应用的AppKey -->
         <!--<meta-data android:name="EASEMOB_APPKEY"  android:value="Your AppKey" />-->
         <meta-data android:name="EASEMOB_APPKEY"  android:value="1114191231107514#jiuyiteck-htn" />
@@ -455,7 +467,11 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
-
+        <receiver android:name="www.patient.jykj_zxyl.AppRegister">
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
 
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
