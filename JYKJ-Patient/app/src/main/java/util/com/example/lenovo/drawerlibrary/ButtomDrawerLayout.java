@@ -270,8 +270,8 @@ public class ButtomDrawerLayout extends ViewGroup {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mBottomView = findViewById(R.id.drawer2);
-        mDrawerView = findViewById(R.id.drawerContent);
+        //mBottomView = findViewById(R.id.drawer2);
+//        mDrawerView = findViewById(R.id.drawerContent);
 
 //        mRotateView = findViewById(R.id.img_spread_out);
 
