@@ -458,6 +458,17 @@ public class DateUtils {
     }
 
     /**
+     * 自定义格式化日期
+     * @param paramDate
+     * @param format
+     * @return
+     */
+    public String fomrDateSeflFormat(Date paramDate,String format){
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(paramDate);
+    }
+
+    /**
      * 日期选择器监听
      */
     public interface OnDatePickerListener {
