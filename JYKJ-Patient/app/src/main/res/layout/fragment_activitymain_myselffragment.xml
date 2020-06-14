@@ -161,12 +161,12 @@
             </LinearLayout>
 
             <www.patient.jykj_zxyl.custom.MyselfItemView
-                android:id="@+id/myself_bind_friend"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                app:have_img="true"
-                app:img_src="@mipmap/grzx_bdqy"
-                app:text_title="绑定亲友" />
+                    android:id="@+id/myself_bind_friend"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    app:have_img="true"
+                    app:img_src="@mipmap/grzx_bdqy"
+                    app:text_title="绑定亲友"/>
 
             <View
                 android:layout_width="match_parent"

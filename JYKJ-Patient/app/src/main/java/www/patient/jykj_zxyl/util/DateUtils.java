@@ -463,7 +463,7 @@ public class DateUtils {
      * @param format
      * @return
      */
-    public String fomrDateSeflFormat(Date paramDate,String format){
+    public static String fomrDateSeflFormat(Date paramDate,String format){
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(paramDate);
     }

@@ -3,6 +3,7 @@ package www.patient.jykj_zxyl.activity.home.myself;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -36,6 +37,9 @@ import java.util.Map;
 import entity.HZIfno;
 import entity.basicDate.ProvideBasicsRegion;
 import entity.grzx.ProvidePatientConditionHealthy;
+import entity.mySelf.ProvideViewPatientHealthyAndBasics;
+import entity.mySelf.SubPatientBasicBean;
+import entity.mySelf.conditions.QueryContactCond;
 import entity.patientInfo.ProvideViewSysUserPatientInfoAndRegion;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
@@ -46,8 +50,7 @@ import www.patient.jykj_zxyl.adapter.ChoiceMedicationDateAdapter;
 import www.patient.jykj_zxyl.adapter.JYZL_GRZLRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.util.ProvincePicker;
-import www.patient.jykj_zxyl.util.Util;
+import www.patient.jykj_zxyl.util.*;
 
 /**
  * 就诊总览==》个人总览==>个人状况==>基本健康状况
@@ -92,6 +95,7 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
     private         TextView                    tv_qznf;                          //确诊年份
     private         TextView                    tv_zxybs;                          //高血压病史
     private         TextView                    tv_sfyjzs;                          //是否有家族史
+    private         EditText                    et_gxybsms;                         //高血压病史描述
 
     private         LinearLayout                li_xglx;                        //性格类型
     private         LinearLayout                li_mz;                          //民族
@@ -123,7 +127,12 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
     private List<String> mData = new ArrayList<>();
     private ChoiceMedicationDateAdapter mAdapter;
 
+    private TextView subinfo_btn;
 
+    private LoadDataTask loadDataTask = null;
+    private SubDataTask subDataTask = null;
+    private boolean isupdateope = false;
+    private int uphealthyid = 0;
     /**
      * 初始化布局
      */
@@ -147,6 +156,7 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
         tv_qznf = (TextView) this.findViewById(R.id.tv_qznf);
         tv_zxybs = (TextView) this.findViewById(R.id.tv_zxybs);
         tv_sfyjzs = (TextView) this.findViewById(R.id.tv_sfyjzs);
+        subinfo_btn = (TextView)findViewById(R.id.subinfo_btn);
 
         li_xglx = (LinearLayout) this.findViewById(R.id.li_xglx);
         li_xglx.setOnClickListener(new ButtonClick());
@@ -177,6 +187,12 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
 
         li_sfyjzs = (LinearLayout) this.findViewById(R.id.li_sfyjzs);
         li_sfyjzs.setOnClickListener(new ButtonClick());
+        subinfo_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveData();
+            }
+        });
     }
 
 
@@ -344,6 +360,8 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
         getDate();
     }
 
+
+
     private void initHandler() {
         mHandler = new Handler(){
             @Override
@@ -388,7 +406,7 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
     private void getDate() {
         //连接网络，登录
         getProgressBar("请稍候。。。。", "正在加载数据");
-        new Thread() {
+       /* new Thread() {
             public void run() {
                 try {
                     ProvidePatientConditionHealthy providePatientConditionHealthy = new ProvidePatientConditionHealthy();
@@ -415,7 +433,76 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
                 }
                 mHandler.sendEmptyMessage(1);
             }
-        }.start();
+        }.start();*/
+       if(null==loadDataTask){
+           QueryContactCond queryCond = new QueryContactCond();
+           queryCond.setLoginPatientPosition(mApp.loginDoctorPosition);
+           queryCond.setRequestClientType("1");
+           queryCond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+           queryCond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+           loadDataTask = new LoadDataTask(queryCond);
+           loadDataTask.execute();
+       }else{
+           loadDataTask.execute();
+       }
+    }
+
+    void saveData(){
+        //if(null==subDataTask){
+            SubPatientBasicBean subbean = new SubPatientBasicBean();
+            subbean.setLoginPatientPosition(mApp.loginDoctorPosition);
+            subbean.setRequestClientType("1");
+            subbean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
+            subbean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+            if(isupdateope){
+                subbean.setHealthyId(String.valueOf(uphealthyid));
+            }else{
+                subbean.setHealthyId("0");
+            }
+            subbean.setIdNumber(StrUtils.defaultStr(et_sfzh.getText()));
+            subbean.setNation(StrUtils.defaultStr(tv_mz.getText()));
+            subbean.setNativePlace(StrUtils.defaultStr(tv_jg.getText()));
+            if(StrUtils.defaultStr(tv_xglx.getText()).equals("内向")){
+                subbean.setCharacterType("1");
+            }else if(StrUtils.defaultStr(tv_xglx.getText()).equals("外向")){
+                subbean.setCharacterType("2");
+            }else if(StrUtils.defaultStr(tv_xglx.getText()).equals("未知")){
+                subbean.setCharacterType("0");
+            }
+            subbean.setHeight(StrUtils.defaultStr(et_sg.getText()));
+            subbean.setWaistline(StrUtils.defaultStr(et_yw.getText()));
+            subbean.setWeight(StrUtils.defaultStr(et_tz.getText()));
+            if("是".equals(StrUtils.defaultStr(tv_sfxy.getText()))){
+                subbean.setFlagSmoking("1");
+            }else if("否".equals(StrUtils.defaultStr(tv_sfxy.getText()))){
+                subbean.setFlagSmoking("0");
+            }
+            if("是".equals(StrUtils.defaultStr(tv_sfxj.getText()))){
+                subbean.setFlagAlcoholism("1");
+            }else if("否".equals(StrUtils.defaultStr(tv_sfxj.getText()))){
+                subbean.setFlagAlcoholism("0");
+            }
+            if("是".equals(StrUtils.defaultStr(tv_sfay.getText()))){
+                subbean.setFlagStayUpLate("1");
+            }else if("否".equals(StrUtils.defaultStr(tv_sfay.getText()))){
+                subbean.setFlagStayUpLate("0");
+            }
+            subbean.setBloodPressureAbnormalDate(StrUtils.defaultStr(tv_zzfxycsj.getText()));
+            subbean.setConfirmedYear(StrUtils.defaultStr(tv_qznf.getText()));
+            if("是".equals(StrUtils.defaultStr(tv_sfyjzs.getText()))){
+                subbean.setFlagFamilyHtn("1");
+            }else if("否".equals(StrUtils.defaultStr(tv_sfyjzs.getText()))){
+                subbean.setFlagFamilyHtn("0");
+            }
+            if("是".equals(StrUtils.defaultStr(tv_zxybs.getText()))){
+                subbean.setFlagHtnHistory("1");
+            }else if("否".equals(StrUtils.defaultStr(tv_zxybs.getText()))){
+                subbean.setFlagHtnHistory("0");
+            }
+            subbean.setHtnHistory(StrUtils.defaultStr(et_gxybsms.getText()));
+            subDataTask = new SubDataTask(subbean);
+            subDataTask.execute();
+        //}
     }
 
 
@@ -505,5 +592,111 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
 
     }
 
+    class LoadDataTask extends AsyncTask<Void,Void, ProvideViewPatientHealthyAndBasics>{
+        private QueryContactCond queryContactCond;
 
+        public LoadDataTask(QueryContactCond queryContactCond) {
+            this.queryContactCond = queryContactCond;
+        }
+
+        @Override
+        protected ProvideViewPatientHealthyAndBasics doInBackground(Void... voids) {
+            ProvideViewPatientHealthyAndBasics retbean = null;
+            try {
+                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryContactCond),Constant.SERVICEURL+ INetAddress.QUERY_HEALTHY_BASIC_URL);
+                NetRetEntity retnetbean = JSON.parseObject(retnetstr,NetRetEntity.class);
+                if(1==retnetbean.getResCode()){
+                    if(null!=retnetbean.getResJsonData() && retnetbean.getResJsonData().length()>3){
+                        retbean = JSON.parseObject(retnetbean.getResJsonData(),ProvideViewPatientHealthyAndBasics.class);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return retbean;
+        }
+
+        @Override
+        protected void onPostExecute(ProvideViewPatientHealthyAndBasics provideViewPatientHealthyAndBasics) {
+            if(null!=provideViewPatientHealthyAndBasics){
+                et_sfzh.setText(provideViewPatientHealthyAndBasics.getIdNumber());
+                et_dh.setText("");
+                tv_xglx.setText("未知");
+                if(null!=provideViewPatientHealthyAndBasics.getCharacterType()) {
+                    if (1 == provideViewPatientHealthyAndBasics.getCharacterType().intValue())
+                        tv_xglx.setText("内向");
+                    else if (2 == provideViewPatientHealthyAndBasics.getCharacterType().intValue())
+                        tv_xglx.setText("外向");
+                }
+                tv_mz.setText(provideViewPatientHealthyAndBasics.getNation());
+                tv_jg.setText(provideViewPatientHealthyAndBasics.getNativePlace());
+                et_sg.setText(provideViewPatientHealthyAndBasics.getHeight());
+                et_yw.setText(provideViewPatientHealthyAndBasics.getWaistline());
+                et_tz.setText(provideViewPatientHealthyAndBasics.getWeight());
+                if(1==provideViewPatientHealthyAndBasics.getFlagSmoking().intValue())
+                    tv_sfxy.setText("是");
+                else
+                    tv_sfxy.setText("否");
+                if(1==provideViewPatientHealthyAndBasics.getFlagAlcoholism().intValue())
+                    tv_sfxj.setText("是");
+                else
+                    tv_sfxj.setText("否");
+                if(1==provideViewPatientHealthyAndBasics.getFlagStayUpLate().intValue())
+                    tv_sfay.setText("是");
+                else
+                    tv_sfay.setText("否");
+                if(null!=provideViewPatientHealthyAndBasics.getBloodPressureAbnormalDate())
+                    tv_zzfxycsj.setText(DateUtils.getStringTimeOfYMD(provideViewPatientHealthyAndBasics.getBloodPressureAbnormalDate().getTime()));
+                if(null!=provideViewPatientHealthyAndBasics.getConfirmedYear())
+                    tv_qznf.setText(DateUtils.fomrDateSeflFormat(provideViewPatientHealthyAndBasics.getConfirmedYear(),"yyyy"));
+                if(1==provideViewPatientHealthyAndBasics.getFlagHtnHistory().intValue())
+                    tv_zxybs.setText("是");
+                else
+                    tv_zxybs.setText("否");
+                if(1==provideViewPatientHealthyAndBasics.getFlagFamilyHtn())
+                    tv_sfyjzs.setText("是");
+                else
+                    tv_sfyjzs.setText("否");
+                et_gxybsms.setText(provideViewPatientHealthyAndBasics.getHtnHistory());
+                uphealthyid = provideViewPatientHealthyAndBasics.getHealthyId().intValue();
+                isupdateope = true;
+            }
+            cacerProgress();
+        }
+
+    }
+
+    class SubDataTask extends AsyncTask<Void,Void,Boolean>{
+        SubPatientBasicBean subean;
+        String submsg = "";
+        SubDataTask(SubPatientBasicBean subean){
+            this.subean = subean;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try {
+                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(subean),Constant.SERVICEURL+INetAddress.MAINTAIN_HEALTHY_BASIC_URL);
+                NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
+                if(1==retEntity.getResCode()){
+                    submsg = "保存成功";
+                    return true;
+                }else{
+                    submsg = retEntity.getResMsg();
+                    return false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            Toast.makeText(mContext,submsg,Toast.LENGTH_SHORT);
+            if(aBoolean){
+                finish();
+            }
+        }
+    }
 }
