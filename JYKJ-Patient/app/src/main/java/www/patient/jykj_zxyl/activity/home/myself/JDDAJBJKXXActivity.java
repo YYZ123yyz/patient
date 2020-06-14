@@ -157,7 +157,7 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
         tv_zxybs = (TextView) this.findViewById(R.id.tv_zxybs);
         tv_sfyjzs = (TextView) this.findViewById(R.id.tv_sfyjzs);
         subinfo_btn = (TextView)findViewById(R.id.subinfo_btn);
-
+        et_gxybsms = findViewById(R.id.et_gxybsms);
         li_xglx = (LinearLayout) this.findViewById(R.id.li_xglx);
         li_xglx.setOnClickListener(new ButtonClick());
 
@@ -619,8 +619,8 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ProvideViewPatientHealthyAndBasics provideViewPatientHealthyAndBasics) {
             if(null!=provideViewPatientHealthyAndBasics){
-                et_sfzh.setText(provideViewPatientHealthyAndBasics.getIdNumber());
-                et_dh.setText("");
+                et_sfzh.setText(StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getIdNumber()));
+                et_dh.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
                 tv_xglx.setText("未知");
                 if(null!=provideViewPatientHealthyAndBasics.getCharacterType()) {
                     if (1 == provideViewPatientHealthyAndBasics.getCharacterType().intValue())
@@ -628,11 +628,11 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
                     else if (2 == provideViewPatientHealthyAndBasics.getCharacterType().intValue())
                         tv_xglx.setText("外向");
                 }
-                tv_mz.setText(provideViewPatientHealthyAndBasics.getNation());
-                tv_jg.setText(provideViewPatientHealthyAndBasics.getNativePlace());
-                et_sg.setText(provideViewPatientHealthyAndBasics.getHeight());
-                et_yw.setText(provideViewPatientHealthyAndBasics.getWaistline());
-                et_tz.setText(provideViewPatientHealthyAndBasics.getWeight());
+                tv_mz.setText(StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getNation()));
+                tv_jg.setText(StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getNativePlace()));
+                et_sg.setText(StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getHeight()));
+                et_yw.setText(StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getWaistline()));
+                et_tz.setText(StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getWeight()));
                 if(1==provideViewPatientHealthyAndBasics.getFlagSmoking().intValue())
                     tv_sfxy.setText("是");
                 else
@@ -657,7 +657,7 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
                     tv_sfyjzs.setText("是");
                 else
                     tv_sfyjzs.setText("否");
-                et_gxybsms.setText(provideViewPatientHealthyAndBasics.getHtnHistory());
+                et_gxybsms.setText(StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getHtnHistory()));
                 uphealthyid = provideViewPatientHealthyAndBasics.getHealthyId().intValue();
                 isupdateope = true;
             }
@@ -676,7 +676,8 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(subean),Constant.SERVICEURL+INetAddress.MAINTAIN_HEALTHY_BASIC_URL);
+                String substr = new Gson().toJson(subean);
+                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+substr,Constant.SERVICEURL+INetAddress.MAINTAIN_HEALTHY_BASIC_URL);
                 NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
                 if(1==retEntity.getResCode()){
                     submsg = "保存成功";

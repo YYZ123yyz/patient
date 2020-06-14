@@ -282,8 +282,8 @@ public class ZZXXActivity extends AppCompatActivity {
             ProvideBasicsDomain parbean = mQBZZList.get(i);
             if(codesb.toString().length()>0){
                 codesb.append("^");
-                codesb.append(parbean.getAttrCode());
             }
+            codesb.append(parbean.getAttrCode());
         }
         if(codesb.toString().length()>0){
             subinfo.setOnsetSymptoms(codesb.toString());
@@ -295,8 +295,8 @@ public class ZZXXActivity extends AppCompatActivity {
             ProvideBasicsDomain parbean = mMQZZList.get(i);
             if(codesb.toString().length()>0){
                 codesb.append("^");
-                codesb.append(parbean.getAttrCode());
             }
+            codesb.append(parbean.getAttrCode());
         }
         if(codesb.toString().length()>0){
             subinfo.setCurrentSymptoms(codesb.toString());
@@ -308,8 +308,8 @@ public class ZZXXActivity extends AppCompatActivity {
             ProvideBasicsDomain parbean = mBFZList.get(i);
             if(codesb.toString().length()>0){
                 codesb.append("^");
-                codesb.append(parbean.getAttrCode());
             }
+            codesb.append(parbean.getAttrCode());
         }
         if(codesb.toString().length()>0){
             subinfo.setComplication(codesb.toString());
@@ -321,8 +321,8 @@ public class ZZXXActivity extends AppCompatActivity {
             ProvideBasicsDomain parbean = mHBJBList.get(i);
             if(codesb.toString().length()>0){
                 codesb.append("^");
-                codesb.append(parbean.getAttrCode());
             }
+            codesb.append(parbean.getAttrCode());
         }
         if(codesb.toString().length()>0){
             subinfo.setCombinedDisease(codesb.toString());
@@ -334,8 +334,8 @@ public class ZZXXActivity extends AppCompatActivity {
             ProvideBasicsDomain parbean = mMQZLFAList.get(i);
             if(codesb.toString().length()>0){
                 codesb.append("^");
-                codesb.append(parbean.getAttrCode());
             }
+            codesb.append(parbean.getAttrCode());
         }
         if(codesb.toString().length()>0){
             subinfo.setCurrentTreatmentPlan(codesb.toString());
@@ -483,7 +483,8 @@ public class ZZXXActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(subean),Constant.SERVICEURL+INetAddress.QUERY_HEALTHY_SYMPTOM_URL);
+                String substr = new Gson().toJson(subean);
+                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+substr,Constant.SERVICEURL+INetAddress.QUERY_HEALTHY_SYMPTOM_URL);
                 NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
                 if(1==retEntity.getResCode()){
                     savemsg = "保存成功";
