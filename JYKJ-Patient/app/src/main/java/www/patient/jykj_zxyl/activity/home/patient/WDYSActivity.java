@@ -481,13 +481,13 @@ public class WDYSActivity extends AppCompatActivity {
                     for (int i = 0; i < mProvideBasicsDominJGBJ.size(); i++)
                     {
                         if (mProvideBasicsDominJGBJ.get(i).isChoice())
-                           mSearchJGBJ = mProvideBasicsDominJGBJ.get(i).getBaseCode()+"";
+                           mSearchJGBJ = mProvideBasicsDominJGBJ.get(i).getAttrCode()+"";
                     }
 
                     for (int i = 0; i < mProvideBasicsDominYSZC.size(); i++)
                     {
                         if (mProvideBasicsDominYSZC.get(i).isChoice())
-                            mSearchYSZC = mProvideBasicsDominYSZC.get(i).getBaseCode()+"";
+                            mSearchYSZC = mProvideBasicsDominYSZC.get(i).getAttrCode()+"";
                     }
                     switch (mCurrentPage)
                     {

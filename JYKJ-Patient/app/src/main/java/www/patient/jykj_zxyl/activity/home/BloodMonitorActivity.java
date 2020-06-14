@@ -29,6 +29,7 @@ import entity.patientInfo.BloodRecodeListData;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.activity.home.patient.BloodEntryActivity;
+import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
 import www.patient.jykj_zxyl.adapter.BloodRecordAdapter;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.patient.BloodEntryActivity;
@@ -60,6 +61,8 @@ public class BloodMonitorActivity extends AppCompatActivity implements View.OnCl
     private List<BloodRecodeListData> mData = new ArrayList<>();
     private ImageView ivBloodType;
     private JYKJApplication mApp;
+
+    private TextView    tv_advisory_doctor;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +89,13 @@ public class BloodMonitorActivity extends AppCompatActivity implements View.OnCl
 
     private void initView(){
         ActivityUtil.setStatusBar(this);
+        tv_advisory_doctor = (TextView)this.findViewById(R.id.tv_advisory_doctor);
+        tv_advisory_doctor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(BloodMonitorActivity.this,WDYSActivity.class));
+            }
+        });
         mRecycleView = (RecyclerView) this.findViewById(R.id.recycler_view);
         llBack = findViewById(R.id.ll_back);
         llLuru = findViewById(R.id.ll_luru);

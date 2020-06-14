@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
     private String WX_APP_ID = "wx4ccb2ac1c5491336";
     private String WX_APPSecret = "3a56a462937397a324b57b807583108a";
     private RelativeLayout login_forget;
-    private ReceiveBroadCast receiveBroadCast;
+//    private ReceiveBroadCast receiveBroadCast;
 
     private String mOpenID;                 //用户微信ID
 
@@ -171,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
                                 //登录IM
                                 mApp.loginIM();
                                 cacerProgress();
-                                startActivity(new Intent(mContext, MainActivity.class));
+                                startActivity(new Intent(mContext, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));//它可以关掉所要到的界面中间的activity);
                                 for (int i = 0; i < mApp.gActivityList.size(); i++) {
                                     mApp.gActivityList.get(i).finish();
                                 }
@@ -455,10 +455,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        receiveBroadCast = new LoginActivity.ReceiveBroadCast();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("authlogin");
-        getBaseContext().registerReceiver(receiveBroadCast, filter);
+//        receiveBroadCast = new LoginActivity.ReceiveBroadCast();
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction("authlogin");
+//        getBaseContext().registerReceiver(receiveBroadCast, filter);
     }
 
 
@@ -604,17 +604,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    class ReceiveBroadCast extends BroadcastReceiver {
-
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            getAccessToken();
-//            Intent intent1 = new Intent(LoginActivity.this, MainActivity.class);
-//            mApp.saveUserInfo();
-//            startActivity(intent1);
-        }
-    }
+//    class ReceiveBroadCast extends BroadcastReceiver {
+//
+//
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            getAccessToken();
+////            Intent intent1 = new Intent(LoginActivity.this, MainActivity.class);
+////            mApp.saveUserInfo();
+////            startActivity(intent1);
+//        }
+//    }
 
     /**
      * 判断 用户是否安装微信客户端

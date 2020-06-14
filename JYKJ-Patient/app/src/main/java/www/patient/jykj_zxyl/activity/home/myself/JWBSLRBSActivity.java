@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.*;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -17,9 +20,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
@@ -34,17 +41,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.gson.Gson;
 import entity.HZIfno;
-import entity.mySelf.PatientRecordImg;
-import entity.mySelf.SubPatientHistInfo;
-import entity.mySelf.SubPatientImg;
-import entity.mySelf.conditions.QueryPatientHist;
-import entity.mySelf.conditions.QueryRecordImgCond;
 import entity.patientInfo.ProvidePatientConditionDiseaseRecord;
 import entity.patientapp.Photo_Info;
-import netService.HttpNetService;
-import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.twjz.TWJZ_CFQActivity;
 import www.patient.jykj_zxyl.activity.myself.FYSZActivity;
@@ -54,7 +53,9 @@ import www.patient.jykj_zxyl.adapter.WZZXImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.ImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.util.*;
+import www.patient.jykj_zxyl.util.BitmapUtil;
+import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
+import www.patient.jykj_zxyl.util.Util;
 
 /**
  * 既往病史 ==》 录入病史
@@ -107,18 +108,9 @@ public class JWBSLRBSActivity extends AppCompatActivity {
 
     private TimePickerView startTime;
     private String choiceDate;
-    private String mRecordId;
-    private String mImgcode;
 
 
 
-    private EditText tv_activityHZZL_userSG;
-    private EditText tv_activityHZZL_region;
-    private LoadDataTask loadDataTask = null;
-    private LoadImgsTask loadImgsTask = null;
-    private SubDataTask subDataTask = null;
-    private SubImgTask subImgTask = null;
-    private TextView tv_szbs;
 
     /**
      * 创建临时文件夹 _tempphoto
@@ -203,32 +195,7 @@ public class JWBSLRBSActivity extends AppCompatActivity {
         mApp = (JYKJApplication) getApplication();
         initDir();
         initLayout();
-        initData();
-    }
 
-    void initData(){
-        Intent parintent = getIntent();
-        mRecordId =  StrUtils.defaultStr(parintent.getStringExtra("recordId"));
-        mImgcode = StrUtils.defaultStr(parintent.getStringExtra("imgCode"));
-        if(mImgcode.length()==0){
-            mImgcode = MyId.createUUID();
-        }
-        QueryPatientHist quehistcon = new QueryPatientHist();
-        quehistcon.setLoginPatientPosition(mApp.loginDoctorPosition);
-        quehistcon.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        quehistcon.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        quehistcon.setRecordId(mRecordId);
-        quehistcon.setRequestClientType("1");
-        QueryRecordImgCond queimgcond = new QueryRecordImgCond();
-        queimgcond.setImgCode(mImgcode);
-        queimgcond.setLoginPatientPosition(mApp.loginDoctorPosition);
-        queimgcond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        queimgcond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        queimgcond.setRequestClientType("1");
-        loadDataTask = new LoadDataTask(quehistcon);
-        loadDataTask.execute();
-        loadImgsTask = new LoadImgsTask(queimgcond);
-        loadImgsTask.execute();
     }
 
     private void initLayout()  {
@@ -245,9 +212,6 @@ public class JWBSLRBSActivity extends AppCompatActivity {
         mImageRecycleView.setLayoutManager(mGridLayoutManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mImageRecycleView.setHasFixedSize(true);
-        tv_activityHZZL_userSG = findViewById(R.id.tv_activityHZZL_userSG);
-        tv_activityHZZL_region = findViewById(R.id.tv_activityHZZL_region);
-        tv_szbs = findViewById(R.id.tv_szbs);
         //创建并设置Adapter
         final Photo_Info photo_info = new Photo_Info();
         photo_info.setPhotoID("ADDPHOTO");
@@ -341,45 +305,6 @@ public class JWBSLRBSActivity extends AppCompatActivity {
                     }).build();
                     startTime.show();
                     break;
-                case R.id.tv_szbs:
-                    savedata();
-                    break;
-            }
-        }
-    }
-
-    void savedata(){
-        SubPatientHistInfo subinfo = new SubPatientHistInfo();
-        subinfo.setLoginPatientPosition(mApp.loginDoctorPosition);
-        subinfo.setRequestClientType("1");
-        subinfo.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        subinfo.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        if(null!=mRecordId && mRecordId.length()>0){
-            subinfo.setRecordId(mRecordId);
-        }else{
-            subinfo.setRecordId("0");
-        }
-        if(mPhotoInfos.size()>0){
-            subinfo.setImgCode(mImgcode);
-        }else{
-            subinfo.setImgCode("");
-        }
-        subinfo.setRecordName(StrUtils.defaultStr(tv_activityHZZL_userSG.getText()));
-        subinfo.setTreatmentDate(StrUtils.defaultStr(tv_activityHZZL_userYW.getText()));
-        subinfo.setRecordContent(StrUtils.defaultStr(tv_activityHZZL_region.getText()));
-        subDataTask = new SubDataTask(subinfo);
-        subDataTask.execute();
-        for(int j=0;j<mPhotoInfos.size();j++){
-            Photo_Info parphoto = mPhotoInfos.get(j);
-            if(null!=parphoto.getPhoto()){
-                SubPatientImg subimg = new SubPatientImg();
-                subimg.setImgBase64Data(parphoto.getPhoto());
-                subimg.setRequestClientType("1");
-                subimg.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-                subimg.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-                subimg.setImgCode(mImgcode);
-                subImgTask = new SubImgTask(subimg);
-                subImgTask.execute();
             }
         }
     }
@@ -411,144 +336,6 @@ public class JWBSLRBSActivity extends AppCompatActivity {
     public void cacerProgress(){
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
-        }
-    }
-
-    class SubImgTask extends AsyncTask<Void,Void,Boolean>{
-        SubPatientImg subimg;
-        String repmsg = "";
-        SubImgTask(SubPatientImg subimg){
-            this.subimg = subimg;
-        }
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            try {
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(subimg),Constant.SERVICEURL+INetAddress.SUB_PATIENTHISTIMG_URL);
-                NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
-                if(1==retEntity.getResCode()){
-                    repmsg = "上传成功";
-                    return true;
-                }else{
-                    repmsg = retEntity.getResMsg();
-                    return false;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                repmsg = "上传失败";
-            }
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            if(aBoolean){
-
-            }else{
-                Toast.makeText(mContext,repmsg,Toast.LENGTH_SHORT);
-            }
-        }
-    }
-
-    class LoadDataTask extends AsyncTask<Void,Void,ProvidePatientConditionDiseaseRecord>{
-        QueryPatientHist queryCond;
-        LoadDataTask(QueryPatientHist queryCond){
-            this.queryCond = queryCond;
-        }
-        @Override
-        protected ProvidePatientConditionDiseaseRecord doInBackground(Void... voids) {
-            ProvidePatientConditionDiseaseRecord retbean = null;
-            try{
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryCond),Constant.SERVICEURL+ INetAddress.QUERY_PERSON_PASTHIST_URL);
-                NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
-                if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
-                    retbean = JSON.parseObject(retEntity.getResJsonData(),ProvidePatientConditionDiseaseRecord.class);
-                }
-            }catch (Exception ex){
-                ex.printStackTrace();
-            }
-            return retbean;
-        }
-
-        @Override
-        protected void onPostExecute(ProvidePatientConditionDiseaseRecord providePatientConditionDiseaseRecord) {
-            if(null!=providePatientConditionDiseaseRecord){
-                tv_activityHZZL_userSG.setText(providePatientConditionDiseaseRecord.getRecordName());
-                tv_activityHZZL_userYW.setText(DateUtils.fomrDateSeflFormat(providePatientConditionDiseaseRecord.getTreatmentDate(),"yyyy-MM-dd"));
-                tv_activityHZZL_region.setText(providePatientConditionDiseaseRecord.getRecordContent());
-            }
-        }
-    }
-
-    class LoadImgsTask extends AsyncTask<Void,Void, List<PatientRecordImg>>{
-        QueryRecordImgCond queryCond;
-        LoadImgsTask(QueryRecordImgCond queryCond){
-            this.queryCond = queryCond;
-        }
-        @Override
-        protected List<PatientRecordImg> doInBackground(Void... voids) {
-            List<PatientRecordImg> retlist = new ArrayList();
-            try {
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryCond),Constant.SERVICEURL+INetAddress.QUERY_PATIENTRECIMG_URL);
-                NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
-                if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
-                    retlist = JSON.parseArray(retEntity.getResJsonData(),PatientRecordImg.class);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return retlist;
-        }
-
-        @Override
-        protected void onPostExecute(List<PatientRecordImg> patientRecordImgs) {
-            mPhotoInfos.clear();
-            for(int i=0;i<patientRecordImgs.size();i++){
-                PatientRecordImg theimg = patientRecordImgs.get(i);
-                Photo_Info parphont =  new Photo_Info();
-                parphont.setItemID(theimg.getBasicsImgId());
-                parphont.setPhotoUrl(theimg.getImgUrl());
-                mPhotoInfos.add(parphont);
-            }
-            if(patientRecordImgs.size()>0){
-                mImageViewRecycleAdapter.setDate(mPhotoInfos);
-                mImageViewRecycleAdapter.notifyDataSetChanged();
-            }
-        }
-    }
-
-
-    class SubDataTask extends AsyncTask<Void,Void,Boolean> {
-        String submsg = "";
-        SubPatientHistInfo subinfo;
-        SubDataTask(SubPatientHistInfo subinfo){
-            this.subinfo = subinfo;
-        }
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            try {
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(subinfo),Constant.SERVICEURL+ INetAddress.MAINTAIN_PATIENTHIST_URL);
-                NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
-                if(1==retEntity.getResCode()){
-                    submsg = "保存成功";
-                    return true;
-                }else{
-                    submsg = retEntity.getResMsg();
-                    return false;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                submsg = "保存失败";
-            }
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            Toast.makeText(mContext,submsg,Toast.LENGTH_SHORT);
-            if(aBoolean){
-                finish();
-            }
         }
     }
 }

@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
+import com.hyphenate.easeui.EaseConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJLActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJLListActivity;
 import www.patient.jykj_zxyl.activity.home.patient.ZJXQ_ZJBDActivity;
 import www.patient.jykj_zxyl.activity.home.twjz.WDZS_WZXQActivity;
+import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
 import www.patient.jykj_zxyl.activity.myself.UserAuthenticationActivity;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeWDYSFQYYSAdapter;
 import www.patient.jykj_zxyl.R;
@@ -171,7 +173,21 @@ public class FragmentWDYS_FQYYS extends Fragment {
         mAdapter.setOnItemClickZXListener(new FragmentHomeWDYSFQYYSAdapter.OnItemClickZXListener() {
             @Override
             public void onClick(int position) {
-                Toast.makeText(mContext,"咨询",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                intent.setClass(mContext,ChatActivity.class);
+                intent.putExtra("userCode",providePatientBindingMyDoctorInfos.get(position).getDoctorCode());
+                intent.putExtra("userName",providePatientBindingMyDoctorInfos.get(position).getUserName());
+//                intent.putExtra("chatType","twjz");
+
+                intent.putExtra("loginDoctorPosition",mApp.loginDoctorPosition);
+                intent.putExtra("operDoctorCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                intent.putExtra("operDoctorName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+//                intent.putExtra("orderCode",provideViewInteractOrderTreatmentAndPatientInterrogations.get(position).getOrderCode());
+
+//                intent.putExtra(EaseConstant.EXTRA_MESSAGE_NUM,providePatientBindingMyDoctorInfos.get(position).getLimitImgText());           //消息数量
+//                intent.putExtra(EaseConstant.EXTRA_VOICE_NUM,providePatientBindingMyDoctorInfos.get(position).getLimitAudio());           //音频时长（单位：秒）
+//                intent.putExtra(EaseConstant.EXTRA_VEDIO_NUM,providePatientBindingMyDoctorInfos.get(position).getLimitVideo());           //视频时长（单位：秒）
+                startActivity(intent);
 //                startActivity(new Intent(mContext,ZJXQActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommendList.get(position)));
             }
 
@@ -302,6 +318,8 @@ public class FragmentWDYS_FQYYS extends Fragment {
      * 搜索
      */
     public void getDate(String searchName,String searchProvince,String searchCity,String searchArea,String searchHospitalType,String searchDoctorTitle) {
+        if (mNumPage == 1)
+            providePatientBindingMyDoctorInfos.clear();
         ProvidePatientBindingMyDoctorInfo providePatientBindingMyDoctorInfo = new ProvidePatientBindingMyDoctorInfo();
         providePatientBindingMyDoctorInfo.setRowNum(mRowNum+"");
         providePatientBindingMyDoctorInfo.setPageNum(mNumPage+"");

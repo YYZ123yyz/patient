@@ -2,7 +2,6 @@ package www.patient.jykj_zxyl.fragment.myself.jwbs;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,30 +18,21 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alibaba.fastjson.JSON;
-import com.google.gson.Gson;
-import entity.mySelf.conditions.QueryHistCond;
 import entity.patientInfo.ProvidePatientConditionDiseaseRecord;
-import netService.HttpNetService;
-import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.jyzl.JWBSDetailActivity;
 import www.patient.jykj_zxyl.activity.home.myself.JWBSActivity;
 import www.patient.jykj_zxyl.activity.home.myself.JWBSBSXQActivity;
 import www.patient.jykj_zxyl.adapter.myself.JDDA_JWBS_BRTXAdapter;
 import www.patient.jykj_zxyl.adapter.myself.JDDA_JWBS_YSTXAdapter;
-import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.util.IConstant;
-import www.patient.jykj_zxyl.util.INetAddress;
-import www.patient.jykj_zxyl.util.StrUtils;
 
 
 /**
  * 建档档案 == 》 既往病史 ==》 本人填写
  * Created by admin on 2016/6/1.
  */
-public class FragmentJWBS_YSTX extends Fragment implements AbsListView.OnScrollListener {
+public class FragmentJWBS_YSTX extends Fragment {
     private             Context                             mContext;
     private             Handler                             mHandler;
     private JWBSActivity mActivity;
@@ -66,9 +55,7 @@ public class FragmentJWBS_YSTX extends Fragment implements AbsListView.OnScrollL
     private         List<ProvidePatientConditionDiseaseRecord> mProvidePatientConditionDiseaseRecords = new ArrayList<>();
 
     private JDDA_JWBS_YSTXAdapter mJDDA_JWBS_YSTXAdapter;
-    private int pageno = 1;
-    private LoadDataTask loadDataTask = null;
-    private int lastVisibleIndex = 0;
+
 
 
     @Override
@@ -133,6 +120,8 @@ public class FragmentJWBS_YSTX extends Fragment implements AbsListView.OnScrollL
         public void onClick(View view) {
             switch (view.getId()) {
 
+
+
             }
         }
     }
@@ -140,80 +129,7 @@ public class FragmentJWBS_YSTX extends Fragment implements AbsListView.OnScrollL
       * 设置数据
      */
     private void setData() {
-        if(null==loadDataTask){
-            QueryHistCond quebean = new QueryHistCond();
-            quebean.setPageNum(String.valueOf(pageno));
-            quebean.setDataSourceType("1");
-            quebean.setLoginPatientPosition(mApp.loginDoctorPosition);
-            quebean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-            quebean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-            quebean.setRequestClientType("1");
-            quebean.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
-            loadDataTask = new LoadDataTask(quebean);
-            loadDataTask.execute();
-        }else{
-            loadDataTask.execute();
-        }
-    }
 
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-        if(null==loadDataTask){
-            QueryHistCond quebean = new QueryHistCond();
-            quebean.setPageNum(String.valueOf(pageno));
-            quebean.setDataSourceType("1");
-            quebean.setLoginPatientPosition(mApp.loginDoctorPosition);
-            quebean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-            quebean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-            quebean.setRequestClientType("1");
-            quebean.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
-            loadDataTask = new LoadDataTask(quebean);
-            loadDataTask.execute();
-        }else{
-            pageno = pageno + 1;
-            loadDataTask.execute();
-        }
-    }
-
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
-    }
-
-
-    class LoadDataTask extends AsyncTask<Void,Void,List<ProvidePatientConditionDiseaseRecord>> {
-        private QueryHistCond queryCond;
-        LoadDataTask(QueryHistCond queryCond){
-            this.queryCond = queryCond;
-        }
-        @Override
-        protected List<ProvidePatientConditionDiseaseRecord> doInBackground(Void... voids) {
-            List<ProvidePatientConditionDiseaseRecord> retlist = new ArrayList();
-            try {
-                queryCond.setPageNum(String.valueOf(pageno));
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryCond), Constant.SERVICEURL+ INetAddress.QUERY_PASTHIST_URL);
-                NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
-                if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
-                    retlist = JSON.parseArray(retEntity.getResJsonData(),ProvidePatientConditionDiseaseRecord.class);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return retlist;
-        }
-
-        @Override
-        protected void onPostExecute(List<ProvidePatientConditionDiseaseRecord> providePatientConditionDiseaseRecords) {
-            if(providePatientConditionDiseaseRecords.size()>0){
-                mProvidePatientConditionDiseaseRecords.addAll(providePatientConditionDiseaseRecords);
-                mJDDA_JWBS_YSTXAdapter.setDate(mProvidePatientConditionDiseaseRecords);
-                mJDDA_JWBS_YSTXAdapter.notifyDataSetChanged();
-            }else{
-                if(pageno>1) {
-                    pageno = pageno - 1;
-                }
-            }
-        }
     }
 
 }

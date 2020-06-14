@@ -61,7 +61,6 @@ public class JDDAQBZZRecycleAdapter extends RecyclerView.Adapter<JDDAQBZZRecycle
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         viewHolder.tv_text.setText(datas.get(position).getAttrName());
-        viewHolder.tv_text.setTag(datas.get(position).getAttrCode());
         if (mOnItemClickListener != null)
         {
             viewHolder.mClickLinearLayout.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +85,7 @@ public class JDDAQBZZRecycleAdapter extends RecyclerView.Adapter<JDDAQBZZRecycle
         //获取数据的数量
         @Override
         public int getItemCount(){
-            return datas.size();
+        return datas.size();
         }
 
 

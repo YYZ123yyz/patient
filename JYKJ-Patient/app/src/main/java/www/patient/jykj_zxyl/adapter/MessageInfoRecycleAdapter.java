@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
@@ -67,14 +70,16 @@ public class MessageInfoRecycleAdapter extends RecyclerView.Adapter<MessageInfoR
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
-        /**
-         * 显示图片
-         * 参数1：图片url
-         * 参数2：显示图片的控件
-         * 参数3：显示图片的设置
-         * 参数4：监听器
-         */
-        mApp.imageLoader.displayImage(datas.get(position).getPatientUserLogoUrl(), viewHolder.mImageView, mApp.mImageOptions, animateFirstListener);
+        try {
+            int avatarResId = Integer.parseInt(datas.get(position).getPatientUserLogoUrl());
+            Glide.with(mContext).load(avatarResId).into(viewHolder.mImageView);
+        } catch (Exception e) {
+            //use default avatar
+            Glide.with(mContext).load(datas.get(position).getPatientUserLogoUrl())
+                    .apply(RequestOptions.placeholderOf(com.hyphenate.easeui.R.mipmap.docter_heard)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(viewHolder.mImageView);
+        }
 
         viewHolder.mUserName.setText(datas.get(position).getPatientUserName());
         viewHolder.mSSY.setText(datas.get(position).getPatientTitleDesc());

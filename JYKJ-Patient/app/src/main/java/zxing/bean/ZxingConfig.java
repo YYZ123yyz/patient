@@ -26,7 +26,7 @@ public class ZxingConfig implements Serializable {
     /*是否显示闪光灯按钮*/
     private boolean isShowFlashLight = true;
     /*是否显示相册按钮*/
-    private boolean isShowAlbum = false;
+    private boolean isShowAlbum = true;
     /*是否解析条形码*/
     private boolean isDecodeBarCode = true;
     /*是否全屏扫描*/

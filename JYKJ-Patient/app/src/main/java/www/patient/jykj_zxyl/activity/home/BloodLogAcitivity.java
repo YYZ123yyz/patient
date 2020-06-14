@@ -148,6 +148,7 @@ public class BloodLogAcitivity extends AppCompatActivity {
                     bloodLogRequest.setRequestClientType("1");
                     String jsonString = JSON.toJSONString(bloodLogRequest);
                     mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + jsonString, Constant.SERVICEURL + "PatientConditionControlle/searchPatientStateResBloodPressureLogTitle");
+
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
                     if (netRetEntity.getResCode() == 0) {
                         NetRetEntity retEntity = new NetRetEntity();
@@ -162,6 +163,14 @@ public class BloodLogAcitivity extends AppCompatActivity {
                         return;
                     }
                     List<ProvidePatientConditionBloodPressureGroup> list = JSON.parseArray(netRetEntity.getResJsonData(), ProvidePatientConditionBloodPressureGroup.class);
+                    if (list == null || list.size() == 0)
+                    {
+                        mLoadDate = false;
+                    }
+                    if (list != null && list.size() < mRowNum)
+                    {
+                        mLoadDate = false;
+                    }
                     pressureGroupsList.addAll(list);
 //                    if (dialogUtil.isShow()) {
 //                        dialogUtil.dismiss();

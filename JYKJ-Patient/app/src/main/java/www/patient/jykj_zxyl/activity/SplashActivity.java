@@ -6,9 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
@@ -150,7 +151,7 @@ public class SplashActivity extends AppCompatActivity {
                                 {
                                     mApp.gActivityList.get(i).finish();
                                 }
-                                startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                                startActivity(new Intent(SplashActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));//它可以关掉所要到的界面中间的activity);
                                 finish();
                             }
                             else

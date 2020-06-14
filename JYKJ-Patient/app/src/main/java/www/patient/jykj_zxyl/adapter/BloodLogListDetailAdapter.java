@@ -13,6 +13,7 @@ import java.util.List;
 
 import entity.patientInfo.ProvidePatientConditionBloodPressureRecord;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.util.Util;
 
 public class BloodLogListDetailAdapter extends RecyclerView.Adapter<BloodLogListDetailAdapter.ViewHolder> {
 
@@ -44,7 +45,9 @@ public class BloodLogListDetailAdapter extends RecyclerView.Adapter<BloodLogList
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ProvidePatientConditionBloodPressureRecord data = datas.get(position);
-        holder.tvXy.setText(data.getBloodTypeName());
+        holder.tvXy.setText(data.getHighPressureNum()+"/"+data.getLowPressureNum());
+        holder.tvXl.setText(data.getHeartRateNum()+"");
+        holder.tvSj.setText(Util.dateToStrTime(data.getRecordTime()));
     }
 
     @Override

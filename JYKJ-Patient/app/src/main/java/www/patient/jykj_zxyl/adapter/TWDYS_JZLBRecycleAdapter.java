@@ -63,7 +63,7 @@ public class TWDYS_JZLBRecycleAdapter extends RecyclerView.Adapter<TWDYS_JZLBRec
         else
             viewHolder.tv_ywc.setTextColor(mContext.getResources().getColor(R.color.groabColor));
         if (datas.get(position).getTreatmentDate() != null)
-            viewHolder.tv_jzsj.setText("就诊时间："+ Util.dateToStr(datas.get(position).getTreatmentDate()));
+            viewHolder.tv_jzsj.setText("就诊时间："+ datas.get(position).getTreatmentDate());
         viewHolder.tv_zj.setText("总价："+datas.get(position).getServiceTotal());
         viewHolder.tv_sfk.setText("实付款："+datas.get(position).getActualPayment());
 

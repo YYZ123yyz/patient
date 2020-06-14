@@ -25,16 +25,17 @@ public class ProvideMsgPushReminder implements java.io.Serializable {
 	private Integer flagMsgRead;//消息是否已读.0:未读;1:已读;
 	private Integer flagMsgTop;//是否置顶消息.即首页中提醒.0:否;1:是;
 	private Integer flagOperBtn;//阅读消息时,是否需要带有操作按钮.0:不需要;1:需要;
-	private String operBtnContent;//操作按钮内容,以[^]进行分割.Eg.接受^拒绝;确认^取消	
+	private String operBtnContent;//操作按钮内容,以[^]进行分割.Eg.接受^拒绝;确认^取消
 	private Date msgReadDate;//消息读取日期
-	
+
 	private String userLogoUrl;
 	private String sendMsgDate;//发送消息日期
 	private String msgLookUrl;//消息查看H5链接地址
-	
+
 	private String msgTitleName;//消息标题
 	private String msgTypeName;//消息类型.
 	private String msgOperName;//消息操作.
+
 
 	private	String rowNum;
 	private	String pageNum;

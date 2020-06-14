@@ -133,7 +133,23 @@ public class FragmentShouYe_DDXX extends Fragment {
         //创建并设置Adapter
         mFragment_Shouye_OrderMessageRecycleAdapter = new Fragment_Shouye_OrderMessageRecycleAdapter(mList,mContext,this);
         mRecycleView.setAdapter(mFragment_Shouye_OrderMessageRecycleAdapter);
-
+        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (loadDate) {
+                        int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+                        if (lastVisiblePosition >= layoutManager.getItemCount() - 1) {
+                            if (loadDate) {
+                                mPageNum++;
+                                getOrderMessageInfo();
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
 

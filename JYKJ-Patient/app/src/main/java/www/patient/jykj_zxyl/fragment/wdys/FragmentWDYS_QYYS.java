@@ -203,6 +203,11 @@ public class FragmentWDYS_QYYS extends Fragment {
         provideViewMyDoctorSigningRenewal.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideViewMyDoctorSigningRenewal.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         provideViewMyDoctorSigningRenewal.setSigningDoctorCode(provideViewMyDoctorSignings.get(mXYChoiceIndex).getDoctorCode());
+        if (provideViewMyDoctorSignings.get(mXYChoiceIndex).getDoctorCode() == null)
+        {
+            Toast.makeText(mContext,"医生编码为空",Toast.LENGTH_SHORT).show();
+            return;
+        }
         new Thread(){
             public void run(){
                 try {
@@ -315,6 +320,8 @@ public class FragmentWDYS_QYYS extends Fragment {
      * 搜索
      */
     public void getDate(String searchName,String searchProvince,String searchCity,String searchArea,String searchHospitalType,String searchDoctorTitle) {
+        if (mNumPage == 1)
+            provideViewMyDoctorSignings.clear();
         ProvideViewMyDoctorSigning provideViewMyDoctorSigning = new ProvideViewMyDoctorSigning();
         provideViewMyDoctorSigning.setRowNum(mRowNum+"");
         provideViewMyDoctorSigning.setPageNum(mNumPage+"");

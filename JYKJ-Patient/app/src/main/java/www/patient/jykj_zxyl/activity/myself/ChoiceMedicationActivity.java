@@ -151,6 +151,12 @@ public class ChoiceMedicationActivity extends AppCompatActivity implements View.
             }
         });
         llBack = findViewById(R.id.ll_back);
+        llBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         mRecyclerView = (RecyclerView)this.findViewById(R.id.rv_choiceMedic);
 
         LinearLayoutManager manager = new LinearLayoutManager(this);

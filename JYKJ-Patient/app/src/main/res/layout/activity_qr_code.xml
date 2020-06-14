@@ -114,6 +114,7 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:drawableLeft="@mipmap/icon_save_white"
+                android:id="@+id/tv_save_img"
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/writeColor"/>
         </LinearLayout>
