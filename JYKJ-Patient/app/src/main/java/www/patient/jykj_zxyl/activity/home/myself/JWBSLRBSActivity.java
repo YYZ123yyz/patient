@@ -215,15 +215,15 @@ public class JWBSLRBSActivity extends AppCompatActivity {
         }
         QueryPatientHist quehistcon = new QueryPatientHist();
         quehistcon.setLoginPatientPosition(mApp.loginDoctorPosition);
-        quehistcon.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
-        quehistcon.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+        quehistcon.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        quehistcon.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         quehistcon.setRecordId(mRecordId);
         quehistcon.setRequestClientType("1");
         QueryRecordImgCond queimgcond = new QueryRecordImgCond();
         queimgcond.setImgCode(mImgcode);
         queimgcond.setLoginPatientPosition(mApp.loginDoctorPosition);
-        queimgcond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
-        queimgcond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+        queimgcond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        queimgcond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         queimgcond.setRequestClientType("1");
         loadDataTask = new LoadDataTask(quehistcon);
         loadDataTask.execute();
@@ -352,8 +352,8 @@ public class JWBSLRBSActivity extends AppCompatActivity {
         SubPatientHistInfo subinfo = new SubPatientHistInfo();
         subinfo.setLoginPatientPosition(mApp.loginDoctorPosition);
         subinfo.setRequestClientType("1");
-        subinfo.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
-        subinfo.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+        subinfo.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        subinfo.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         if(null!=mRecordId && mRecordId.length()>0){
             subinfo.setRecordId(mRecordId);
         }else{
@@ -375,8 +375,8 @@ public class JWBSLRBSActivity extends AppCompatActivity {
                 SubPatientImg subimg = new SubPatientImg();
                 subimg.setImgBase64Data(parphoto.getPhoto());
                 subimg.setRequestClientType("1");
-                subimg.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
-                subimg.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+                subimg.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                subimg.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
                 subimg.setImgCode(mImgcode);
                 subImgTask = new SubImgTask(subimg);
                 subImgTask.execute();

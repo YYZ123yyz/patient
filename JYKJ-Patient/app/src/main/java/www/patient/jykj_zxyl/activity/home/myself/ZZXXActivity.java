@@ -270,8 +270,8 @@ public class ZZXXActivity extends AppCompatActivity {
         SubSymptomInfo subinfo = new SubSymptomInfo();
         subinfo.setLoginPatientPosition(mApp.loginDoctorPosition);
         subinfo.setRequestClientType("1");
-        subinfo.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
-        subinfo.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+        subinfo.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        subinfo.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         if(isupstate){
             subinfo.setHealthyId(String.valueOf(upid));
         }else{
@@ -435,8 +435,8 @@ public class ZZXXActivity extends AppCompatActivity {
            QueryContactCond querycond = new QueryContactCond();
            querycond.setLoginPatientPosition(mApp.loginDoctorPosition);
            querycond.setRequestClientType("1");
-           querycond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
-           querycond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+           querycond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+           querycond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
            loadDataTask = new LoadDataTask(querycond);
            loadDataTask.execute();
        }else{

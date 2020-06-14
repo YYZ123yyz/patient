@@ -173,8 +173,8 @@ public class BQJLActivity extends AppCompatActivity implements AbsListView.OnScr
             QueryContactCondPage querybean = new QueryContactCondPage();
             querybean.setPageNum(String.valueOf(pageno));
             querybean.setLoginPatientPosition(mApp.loginDoctorPosition);
-            querybean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
-            querybean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+            querybean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+            querybean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
             querybean.setRequestClientType("1");
             querybean.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
             loadDataTask = new LoadDataTask(querybean);
@@ -245,8 +245,8 @@ public class BQJLActivity extends AppCompatActivity implements AbsListView.OnScr
             QueryContactCondPage quebean = new QueryContactCondPage();
             quebean.setPageNum(String.valueOf(pageno));
             quebean.setLoginPatientPosition(mApp.loginDoctorPosition);
-            quebean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
-            quebean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+            quebean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+            quebean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
             quebean.setRequestClientType("1");
             quebean.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
             loadDataTask = new LoadDataTask(quebean);

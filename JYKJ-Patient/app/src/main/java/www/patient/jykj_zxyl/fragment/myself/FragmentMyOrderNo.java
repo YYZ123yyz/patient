@@ -164,8 +164,8 @@ public class FragmentMyOrderNo extends Fragment implements OnScrollListener {
             QueryOrder queorder = new QueryOrder();
             queorder.setPageNum(String.valueOf(pageno));
             queorder.setLoginPatientPosition(mApp.loginDoctorPosition);
-            queorder.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
-            queorder.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+            queorder.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+            queorder.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
             queorder.setRequestClientType("1");
             queorder.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
             loadDataTask = new LoadDataTask(queorder);
@@ -179,8 +179,8 @@ public class FragmentMyOrderNo extends Fragment implements OnScrollListener {
             QueryOrder queorder = new QueryOrder();
             queorder.setPageNum(String.valueOf(pageno));
             queorder.setLoginPatientPosition(mApp.loginDoctorPosition);
-            queorder.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
-            queorder.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+            queorder.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+            queorder.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
             queorder.setRequestClientType("1");
             queorder.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
             loadDataTask = new LoadDataTask(queorder);

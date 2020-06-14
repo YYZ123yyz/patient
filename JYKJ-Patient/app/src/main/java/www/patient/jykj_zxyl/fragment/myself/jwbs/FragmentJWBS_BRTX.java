@@ -153,8 +153,8 @@ public class FragmentJWBS_BRTX extends Fragment implements AbsListView.OnScrollL
             quebean.setPageNum(String.valueOf(pageno));
             quebean.setDataSourceType("1");
             quebean.setLoginPatientPosition(mApp.loginDoctorPosition);
-            quebean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
-            quebean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+            quebean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+            quebean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
             quebean.setRequestClientType("1");
             quebean.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
             loadDataTask = new LoadDataTask(quebean);
@@ -178,8 +178,8 @@ public class FragmentJWBS_BRTX extends Fragment implements AbsListView.OnScrollL
             quebean.setPageNum(String.valueOf(pageno));
             quebean.setDataSourceType("1");
             quebean.setLoginPatientPosition(mApp.loginDoctorPosition);
-            quebean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
-            quebean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+            quebean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+            quebean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
             quebean.setRequestClientType("1");
             quebean.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
             loadDataTask = new LoadDataTask(quebean);

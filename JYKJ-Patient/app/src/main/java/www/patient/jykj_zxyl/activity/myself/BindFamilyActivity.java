@@ -97,8 +97,8 @@ private String opetype = "0";
     void loadContacts(){
         QueryContactCond querycond = new QueryContactCond();
         querycond.setLoginPatientPosition(mApp.loginDoctorPosition);
-        querycond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
-        querycond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+        querycond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        querycond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         querycond.setRequestClientType("3");
         queryFamilyTask = new QueryFamilyTask(querycond);
         queryFamilyTask.execute();
@@ -200,7 +200,7 @@ private String opetype = "0";
             upbean.setContactsPhone1(onephone);
             upbean.setContactsPhone2(twopgone);
             upbean.setLoginPatientPosition(mApp.loginDoctorPosition);
-            upbean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
+            upbean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
             upbean.setRequestClientType("1");
             maintainFamilyTask = new MaintainFamilyTask(upbean);
             maintainFamilyTask.execute();
@@ -246,8 +246,8 @@ private String opetype = "0";
                 String queFaimlys = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(querycond),Constant.SERVICEURL+ INetAddress.QUERY_CONTACT_URL);
                 if(!TextUtils.isEmpty(queFaimlys)){
                     NetRetEntity retnetbean = JSON.parseObject(queFaimlys,NetRetEntity.class);
-                    if(1==retnetbean.getResCode()){
-                        retbean = JSON.parseObject(retnetbean.getResData(),ProvidePatientUrgentContacts.class);
+                    if(1==retnetbean.getResCode() && StrUtils.defaultStr(retnetbean.getResJsonData()).length()>3){
+                        retbean = JSON.parseObject(retnetbean.getResJsonData(),ProvidePatientUrgentContacts.class);
                     }
                 }
             } catch (Exception e) {
@@ -270,6 +270,7 @@ private String opetype = "0";
 
     class MaintainFamilyTask extends AsyncTask<Void,Void,Boolean>{
         UpContactBean upcondbean;
+        String repmsg = "";
         MaintainFamilyTask(UpContactBean upcondbean){
             this.upcondbean = upcondbean;
         }
@@ -277,13 +278,20 @@ private String opetype = "0";
         protected Boolean doInBackground(Void... voids) {
             Boolean retbool = false;
             try {
-                String retmaintaincontstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(upcondbean),Constant.SERVICEURL+INetAddress.MATAIN_CONTACT_URL);
+                String transtr = new Gson().toJson(upcondbean);
+                String retmaintaincontstr = HttpNetService.urlConnectionService("jsonDataInfo="+transtr,Constant.SERVICEURL+INetAddress.MATAIN_CONTACT_URL);
                 NetRetEntity retnetbean = JSON.parseObject(retmaintaincontstr,NetRetEntity.class);
                 if(null!=retnetbean && 1==retnetbean.getResCode()){
+                    repmsg = "保存成功";
                     retbool = true;
+                }else{
+                    repmsg = retnetbean.getResMsg();
+                    retbool = false;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                repmsg = "保存失败";
+                retbool = false;
             }
 
             return retbool;
@@ -292,9 +300,10 @@ private String opetype = "0";
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             if(aBoolean){
-                Toast.makeText(mContext,"保存成功",Toast.LENGTH_SHORT);
+                Toast.makeText(mContext,repmsg,Toast.LENGTH_SHORT);
+                finish();
             }else {
-                Toast.makeText(mContext,"保存成功",Toast.LENGTH_SHORT);
+                Toast.makeText(mContext,repmsg,Toast.LENGTH_SHORT);
             }
         }
     }

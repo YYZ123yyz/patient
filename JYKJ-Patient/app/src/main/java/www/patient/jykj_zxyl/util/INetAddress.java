@@ -2,7 +2,7 @@ package www.patient.jykj_zxyl.util;
 
 public class INetAddress {
     public static String QUERY_CONTACT_URL = "patientPersonalSetControlle/getUserPatientUrgentContacts";//查询联系人
-    public static String MATAIN_CONTACT_URL = "patientPersonalSetControlle/operUserPatientUrgentContacts";//维护联系人数据
+    public static String MATAIN_CONTACT_URL = "/patientPersonalSetControlle/operUserPatientUrgentContacts";//维护联系人数据
     public static String QUERY_UNIMPLEMENT_ORDER_URL = "patientMyOrderControlle/searchPatientMyOrderResIncomplete";//订单列表-未完成
     public static String QUERY_HEALTHY_BASIC_URL = "patientHealthRecordsControlle/searchPatientConditionHealthyResBasics";//查询基本健康信息
     public static String MAINTAIN_HEALTHY_BASIC_URL = "patientHealthRecordsControlle/operUpdPatientConditionHealthyResBasics";//修改基本健康信息

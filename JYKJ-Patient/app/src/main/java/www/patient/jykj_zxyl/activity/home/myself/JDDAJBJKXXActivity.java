@@ -452,8 +452,8 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
             SubPatientBasicBean subbean = new SubPatientBasicBean();
             subbean.setLoginPatientPosition(mApp.loginDoctorPosition);
             subbean.setRequestClientType("1");
-            subbean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode());
-            subbean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName());
+            subbean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+            subbean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
             if(isupdateope){
                 subbean.setHealthyId(String.valueOf(uphealthyid));
             }else{
