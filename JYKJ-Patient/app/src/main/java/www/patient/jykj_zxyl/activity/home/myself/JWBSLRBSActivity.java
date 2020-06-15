@@ -248,6 +248,7 @@ public class JWBSLRBSActivity extends AppCompatActivity {
         tv_activityHZZL_userSG = findViewById(R.id.tv_activityHZZL_userSG);
         tv_activityHZZL_region = findViewById(R.id.tv_activityHZZL_region);
         tv_szbs = findViewById(R.id.tv_szbs);
+        tv_szbs.setOnClickListener(new ButtonClick());
         //创建并设置Adapter
         final Photo_Info photo_info = new Photo_Info();
         photo_info.setPhotoID("ADDPHOTO");
@@ -373,7 +374,7 @@ public class JWBSLRBSActivity extends AppCompatActivity {
             Photo_Info parphoto = mPhotoInfos.get(j);
             if(null!=parphoto.getPhoto()){
                 SubPatientImg subimg = new SubPatientImg();
-                subimg.setImgBase64Data(parphoto.getPhoto());
+                subimg.setImgBase64Data("data:image/jpg;base64,"+parphoto.getPhoto());
                 subimg.setRequestClientType("1");
                 subimg.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
                 subimg.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
@@ -502,7 +503,7 @@ public class JWBSLRBSActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<PatientRecordImg> patientRecordImgs) {
-            mPhotoInfos.clear();
+            //mPhotoInfos.clear();
             for(int i=0;i<patientRecordImgs.size();i++){
                 PatientRecordImg theimg = patientRecordImgs.get(i);
                 Photo_Info parphont =  new Photo_Info();

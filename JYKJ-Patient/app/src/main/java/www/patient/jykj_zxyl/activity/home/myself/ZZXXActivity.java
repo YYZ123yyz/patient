@@ -484,7 +484,7 @@ public class ZZXXActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... voids) {
             try {
                 String substr = new Gson().toJson(subean);
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+substr,Constant.SERVICEURL+INetAddress.QUERY_HEALTHY_SYMPTOM_URL);
+                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+substr,Constant.SERVICEURL+INetAddress.MAINTAIN_HEALTHY_SYMPTOM_URL);
                 NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
                 if(1==retEntity.getResCode()){
                     savemsg = "保存成功";
@@ -538,13 +538,13 @@ public class ZZXXActivity extends AppCompatActivity {
                 String parattrcodes = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getOnsetSymptoms());
                 String parattrnames = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getOnsetSymptomsName());
                 if(parattrcodes.length()>0){
-                    String[] paracodearr = parattrcodes.split("^");
-                    String[] paranamearr = parattrnames.split("^");
+                    String[] paracodearr = parattrcodes.split("\\^");
+                    String[] paranamearr = parattrnames.split("、");
                     mQBZZList = new ArrayList<>();
                     for(int i=0;i<paracodearr.length;i++){
                         ProvideBasicsDomain attrbean = new ProvideBasicsDomain();
                         attrbean.setAttrCode(Integer.parseInt(paracodearr[i]));
-                        attrbean.setAttrName(paranamearr[i]);
+                        attrbean.setAttrName(paranamearr[i].replaceAll("。",""));
                         mQBZZList.add(attrbean);
                     }
                     mJDDAQBZZRecycleAdapter.setDate(mQBZZList);
@@ -554,13 +554,13 @@ public class ZZXXActivity extends AppCompatActivity {
                 parattrcodes = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getCurrentSymptoms());
                 parattrnames = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getCurrentSymptomsName());
                 if(parattrcodes.length()>0){
-                    String[] paracodearr = parattrcodes.split("^");
-                    String[] paranamearr = parattrnames.split("^");
+                    String[] paracodearr = parattrcodes.split("\\^");
+                    String[] paranamearr = parattrnames.split("、");
                     mMQZZList = new ArrayList<>();
                     for(int i=0;i<paracodearr.length;i++){
                         ProvideBasicsDomain attrbean = new ProvideBasicsDomain();
                         attrbean.setAttrCode(Integer.parseInt(paracodearr[i]));
-                        attrbean.setAttrName(paranamearr[i]);
+                        attrbean.setAttrName(paranamearr[i].replaceAll("。",""));
                         mMQZZList.add(attrbean);
                     }
                     mJDDAMQZZRecycleAdapter.setDate(mMQZZList);
@@ -570,13 +570,13 @@ public class ZZXXActivity extends AppCompatActivity {
                 parattrcodes = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getComplication());
                 parattrnames = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getComplicationName());
                 if(parattrcodes.length()>0){
-                    String[] paracodearr = parattrcodes.split("^");
-                    String[] paranamearr = parattrnames.split("^");
+                    String[] paracodearr = parattrcodes.split("\\^");
+                    String[] paranamearr = parattrnames.split("、");
                     mBFZList = new ArrayList<>();
                     for(int i=0;i<paracodearr.length;i++){
                         ProvideBasicsDomain attrbean = new ProvideBasicsDomain();
                         attrbean.setAttrCode(Integer.parseInt(paracodearr[i]));
-                        attrbean.setAttrName(paranamearr[i]);
+                        attrbean.setAttrName(paranamearr[i].replaceAll("。",""));
                         mBFZList.add(attrbean);
                     }
                     mJDDABFZRecycleAdapter.setDate(mBFZList);
@@ -586,13 +586,13 @@ public class ZZXXActivity extends AppCompatActivity {
                 parattrcodes = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getCombinedDisease());
                 parattrnames = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getCombinedDiseaseName());
                 if(parattrcodes.length()>0){
-                    String[] paracodearr = parattrcodes.split("^");
-                    String[] paranamearr = parattrnames.split("^");
+                    String[] paracodearr = parattrcodes.split("\\^");
+                    String[] paranamearr = parattrnames.split("、");
                     mHBJBList = new ArrayList<>();
                     for(int i=0;i<paracodearr.length;i++){
                         ProvideBasicsDomain attrbean = new ProvideBasicsDomain();
                         attrbean.setAttrCode(Integer.parseInt(paracodearr[i]));
-                        attrbean.setAttrName(paranamearr[i]);
+                        attrbean.setAttrName(paranamearr[i].replaceAll("。",""));
                         mHBJBList.add(attrbean);
                     }
                     mJDDAHBJBRecycleAdapter.setDate(mHBJBList);
@@ -602,13 +602,13 @@ public class ZZXXActivity extends AppCompatActivity {
                 parattrcodes = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getCurrentTreatmentPlan());
                 parattrnames = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getCurrentTreatmentPlanName());
                 if(parattrcodes.length()>0){
-                    String[] paracodearr = parattrcodes.split("^");
-                    String[] paranamearr = parattrnames.split("^");
+                    String[] paracodearr = parattrcodes.split("\\^");
+                    String[] paranamearr = parattrnames.split("、");
                     mMQZLFAList = new ArrayList<>();
                     for(int i=0;i<paracodearr.length;i++){
                         ProvideBasicsDomain attrbean = new ProvideBasicsDomain();
                         attrbean.setAttrCode(Integer.parseInt(paracodearr[i]));
-                        attrbean.setAttrName(paranamearr[i]);
+                        attrbean.setAttrName(paranamearr[i].replaceAll("。",""));
                         mMQZLFAList.add(attrbean);
                     }
                     mJDDAMQZLFARecycleAdapter.setDate(mMQZLFAList);
