@@ -89,7 +89,7 @@ public class JWBSDetailActivity extends AppCompatActivity {
         mProvidePatientConditionDiseaseRecords = (ProvidePatientConditionDiseaseRecord) getIntent().getSerializableExtra("patientInfo");
         mContext = this;
         mApp = (JYKJApplication) getApplication();
-//        initLayout();
+        initLayout();
 
     }
 

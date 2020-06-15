@@ -92,6 +92,13 @@ public class FragmentJWBS_BRTX extends Fragment implements AbsListView.OnScrollL
      * 初始化界面
      */
     private void initLayout(View view) {
+        /*LinearLayout mBack = (LinearLayout)view.findViewById(R.id.iv_back_left);
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActivity.onBackPressed();
+            }
+        });*/
         tv_xzbs = (TextView)view.findViewById(R.id.tv_szbs);
         tv_xzbs.setOnClickListener(new ButtonClick());
         mRecycleView = (RecyclerView)view.findViewById(R.id.rv_activityPatientLaber_patientLaber);
@@ -108,7 +115,7 @@ public class FragmentJWBS_BRTX extends Fragment implements AbsListView.OnScrollL
         mJDDA_JWBS_BRTXAdapter.setOnItemClickListener(new JDDA_JWBS_BRTXAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
-//                startActivity(new Intent(mContext,JWBSDetailActivity.class).putExtra("patientInfo",mProvidePatientConditionDiseaseRecords.get(position)));
+               startActivity(new Intent(mContext,JWBSDetailActivity.class).putExtra("patientInfo",mProvidePatientConditionDiseaseRecords.get(position)));
             }
 
             @Override
@@ -199,7 +206,8 @@ public class FragmentJWBS_BRTX extends Fragment implements AbsListView.OnScrollL
             List<ProvidePatientConditionDiseaseRecord> retlist = new ArrayList();
             try {
                 queryCond.setPageNum(String.valueOf(pageno));
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryCond), Constant.SERVICEURL+ INetAddress.QUERY_PASTHIST_URL);
+                String querypara = new Gson().toJson(queryCond);
+                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+querypara, Constant.SERVICEURL+ INetAddress.QUERY_PASTHIST_URL);
                 NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
                 if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
                     retlist = JSON.parseArray(retEntity.getResJsonData(),ProvidePatientConditionDiseaseRecord.class);

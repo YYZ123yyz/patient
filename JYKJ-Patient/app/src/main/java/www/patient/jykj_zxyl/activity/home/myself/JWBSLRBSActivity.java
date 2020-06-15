@@ -29,6 +29,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -374,6 +375,7 @@ public class JWBSLRBSActivity extends AppCompatActivity {
             Photo_Info parphoto = mPhotoInfos.get(j);
             if(null!=parphoto.getPhoto()){
                 SubPatientImg subimg = new SubPatientImg();
+                subimg.setLoginPatientPosition(mApp.loginDoctorPosition);
                 subimg.setImgBase64Data("data:image/jpg;base64,"+parphoto.getPhoto());
                 subimg.setRequestClientType("1");
                 subimg.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
@@ -424,7 +426,8 @@ public class JWBSLRBSActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(subimg),Constant.SERVICEURL+INetAddress.SUB_PATIENTHISTIMG_URL);
+                String subjson = new Gson().toJson(subimg);
+                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+subjson,Constant.SERVICEURL+INetAddress.SUB_PATIENTHISTIMG_URL);
                 NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
                 if(1==retEntity.getResCode()){
                     repmsg = "上传成功";
