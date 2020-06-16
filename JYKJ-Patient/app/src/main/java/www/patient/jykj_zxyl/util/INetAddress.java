@@ -15,4 +15,5 @@ public class INetAddress {
     public static String MAINTAIN_PATIENTHIST_URL = "patientHealthRecordsControlle/operUpdPatientConditionDiseaseRecord";//更新既往病史
     public static String QUERY_PATIENTRECIMG_URL = "patientHealthRecordsControlle/searchPatientConditionDiseaseRecordResImg";//获取既往病史详情图片
     public static String SUB_PATIENTHISTIMG_URL = "patientHealthRecordsControlle/operUpdPatientConditionDiseaseRecordImg";//既往病史上传图片
+    public static String QUERY_PATIENTHISTIMG_URL = "patientHealthRecordsControlle/searchPatientConditionDiseaseRecordResImg";//既往病史详情[本人填写][图片数据]
 }

@@ -52,7 +52,7 @@ import www.patient.jykj_zxyl.util.*;
 /**
  * 个人中心==》建档档案==》==>标签记录
  */
-public class BQJLActivity extends AppCompatActivity implements AbsListView.OnScrollListener {
+public class BQJLActivity extends AppCompatActivity{
 
 
     private         Context                 mContext;
@@ -78,7 +78,7 @@ public class BQJLActivity extends AppCompatActivity implements AbsListView.OnScr
     private LoadDataTask loadDataTask;
     private int pageno = 1;
     private int lastVisibleIndex = 0;
-
+    private boolean mLoadDate = true;
 
     /**
      * 初始化布局
@@ -116,6 +116,21 @@ public class BQJLActivity extends AppCompatActivity implements AbsListView.OnScr
             @Override
             public void onLongClick(int position) {
 
+            }
+        });
+        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (mLoadDate) {
+                        int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+                        if (lastVisiblePosition >= layoutManager.getItemCount() - 1) {
+                            pageno++;
+                            getDate();
+                        }
+                    }
+                }
             }
         });
     }
@@ -167,7 +182,7 @@ public class BQJLActivity extends AppCompatActivity implements AbsListView.OnScr
         };
     }
 
-    @Override
+   /* @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         if(null==loadDataTask){
             QueryContactCondPage querybean = new QueryContactCondPage();
@@ -188,7 +203,7 @@ public class BQJLActivity extends AppCompatActivity implements AbsListView.OnScr
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
-    }
+    }*/
 
 
     /**
@@ -211,7 +226,7 @@ public class BQJLActivity extends AppCompatActivity implements AbsListView.OnScr
      */
     private void getDate() {
         //连接网络，登录
-        getProgressBar("请稍候。。。。", "正在加载数据");
+        //getProgressBar("请稍候。。。。", "正在加载数据");
         /*new Thread() {
             public void run() {
                 try {
@@ -241,7 +256,7 @@ public class BQJLActivity extends AppCompatActivity implements AbsListView.OnScr
                 mHandler.sendEmptyMessage(1);
             }
         }.start();*/
-        if(null==loadDataTask){
+        //if(null==loadDataTask){
             QueryContactCondPage quebean = new QueryContactCondPage();
             quebean.setPageNum(String.valueOf(pageno));
             quebean.setLoginPatientPosition(mApp.loginDoctorPosition);
@@ -251,7 +266,7 @@ public class BQJLActivity extends AppCompatActivity implements AbsListView.OnScr
             quebean.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
             loadDataTask = new LoadDataTask(quebean);
             loadDataTask.execute();
-        }
+        //}
     }
 
 
@@ -291,6 +306,7 @@ public class BQJLActivity extends AppCompatActivity implements AbsListView.OnScr
         }
         @Override
         protected List<ProvidePatientLabel> doInBackground(Void... voids) {
+            mLoadDate = false;
             List<ProvidePatientLabel> retlist = new ArrayList();
             try {
                 querybean.setPageNum(String.valueOf(pageno));
@@ -317,7 +333,8 @@ public class BQJLActivity extends AppCompatActivity implements AbsListView.OnScr
                     pageno = pageno - 1;
                 }
             }
-            cacerProgress();
+            mLoadDate = true;
+            //cacerProgress();
         }
     }
 

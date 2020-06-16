@@ -43,7 +43,7 @@ import www.patient.jykj_zxyl.util.StrUtils;
  * 建档档案 == 》 既往病史 ==》 本人填写
  * Created by admin on 2016/6/1.
  */
-public class FragmentJWBS_YSTX extends Fragment implements AbsListView.OnScrollListener {
+public class FragmentJWBS_YSTX extends Fragment{
     private             Context                             mContext;
     private             Handler                             mHandler;
     private JWBSActivity mActivity;
@@ -69,7 +69,7 @@ public class FragmentJWBS_YSTX extends Fragment implements AbsListView.OnScrollL
     private int pageno = 1;
     private LoadDataTask loadDataTask = null;
     private int lastVisibleIndex = 0;
-
+    private boolean mLoadDate = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -111,6 +111,21 @@ public class FragmentJWBS_YSTX extends Fragment implements AbsListView.OnScrollL
 
             }
         });
+        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (mLoadDate) {
+                        int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+                        if (lastVisiblePosition >= layoutManager.getItemCount() - 1) {
+                            pageno++;
+                            setData();
+                        }
+                    }
+                }
+            }
+        });
     }
 
 
@@ -140,7 +155,7 @@ public class FragmentJWBS_YSTX extends Fragment implements AbsListView.OnScrollL
       * 设置数据
      */
     private void setData() {
-        if(null==loadDataTask){
+        //if(null==loadDataTask){
             QueryHistCond quebean = new QueryHistCond();
             quebean.setPageNum(String.valueOf(pageno));
             quebean.setDataSourceType("1");
@@ -151,12 +166,12 @@ public class FragmentJWBS_YSTX extends Fragment implements AbsListView.OnScrollL
             quebean.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
             loadDataTask = new LoadDataTask(quebean);
             loadDataTask.execute();
-        }else{
+        /*}else{
             loadDataTask.execute();
-        }
+        }*/
     }
 
-    @Override
+   /* @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         if(null==loadDataTask){
             QueryHistCond quebean = new QueryHistCond();
@@ -178,7 +193,7 @@ public class FragmentJWBS_YSTX extends Fragment implements AbsListView.OnScrollL
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
-    }
+    }*/
 
 
     class LoadDataTask extends AsyncTask<Void,Void,List<ProvidePatientConditionDiseaseRecord>> {
@@ -188,6 +203,7 @@ public class FragmentJWBS_YSTX extends Fragment implements AbsListView.OnScrollL
         }
         @Override
         protected List<ProvidePatientConditionDiseaseRecord> doInBackground(Void... voids) {
+            mLoadDate = false;
             List<ProvidePatientConditionDiseaseRecord> retlist = new ArrayList();
             try {
                 queryCond.setPageNum(String.valueOf(pageno));
@@ -213,6 +229,7 @@ public class FragmentJWBS_YSTX extends Fragment implements AbsListView.OnScrollL
                     pageno = pageno - 1;
                 }
             }
+            mLoadDate = true;
         }
     }
 

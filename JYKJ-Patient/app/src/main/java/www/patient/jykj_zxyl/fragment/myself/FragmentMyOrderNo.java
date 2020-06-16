@@ -42,7 +42,7 @@ import android.widget.AbsListView.OnScrollListener;
  * 我的订单未完成
  * Created by admin on 2016/6/1.
  */
-public class FragmentMyOrderNo extends Fragment implements OnScrollListener {
+public class FragmentMyOrderNo extends Fragment{
     private             Context                             mContext;
     private             Handler                             mHandler;
     private MyOrderActivity mActivity;
@@ -56,6 +56,7 @@ public class FragmentMyOrderNo extends Fragment implements OnScrollListener {
     private int pageno=1;
     private int lastVisibleIndex = 0;
     private LoadDataTask loadDataTask = null;
+    private boolean mLoadDate = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,6 +97,22 @@ public class FragmentMyOrderNo extends Fragment implements OnScrollListener {
             @Override
             public void onLongClick(int position) {
 
+            }
+        });
+
+        mRMJXRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (mLoadDate) {
+                        int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+                        if (lastVisiblePosition >= layoutManager.getItemCount() - 1) {
+                            pageno++;
+                            setData();
+                        }
+                    }
+                }
             }
         });
     }
@@ -158,9 +175,9 @@ public class FragmentMyOrderNo extends Fragment implements OnScrollListener {
             }
             mHZEntyties.add(hzIfno);
         }*/
-        mAdapter.setDate(mHZEntyties);
-        mAdapter.notifyDataSetChanged();
-        if(null==loadDataTask){
+        //mAdapter.setDate(mHZEntyties);
+        //mAdapter.notifyDataSetChanged();
+        //if(null==loadDataTask){
             QueryOrder queorder = new QueryOrder();
             queorder.setPageNum(String.valueOf(pageno));
             queorder.setLoginPatientPosition(mApp.loginDoctorPosition);
@@ -170,10 +187,10 @@ public class FragmentMyOrderNo extends Fragment implements OnScrollListener {
             queorder.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
             loadDataTask = new LoadDataTask(queorder);
             loadDataTask.execute();
-        }
+        //}
     }
 
-    @Override
+    /*@Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         if(null==loadDataTask){
             QueryOrder queorder = new QueryOrder();
@@ -194,7 +211,7 @@ public class FragmentMyOrderNo extends Fragment implements OnScrollListener {
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
-    }
+    }*/
 
     class LoadDataTask extends AsyncTask<Void,Void,List<ProvideInteractOrderInfo>>{
         private QueryOrder queryOrder;
@@ -203,6 +220,7 @@ public class FragmentMyOrderNo extends Fragment implements OnScrollListener {
         }
         @Override
         protected List<ProvideInteractOrderInfo> doInBackground(Void... voids) {
+            mLoadDate = false;
             List<ProvideInteractOrderInfo> retlist = new ArrayList();
             queryOrder.setPageNum(String.valueOf(pageno));
             try {
@@ -229,6 +247,7 @@ public class FragmentMyOrderNo extends Fragment implements OnScrollListener {
                     pageno = pageno - 1;
                 }
             }
+            mLoadDate = true;
         }
     }
 }
