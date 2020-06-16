@@ -35,6 +35,9 @@ public class ChatActivity extends AppCompatActivity {
     private                 EaseChatInputMenu           inputMenu;
     private                 JYKJApplication             mApp;
 
+    private                 String                      doctorUrl;
+    private                 String                      patientUrl;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,11 @@ public class ChatActivity extends AppCompatActivity {
         String operDoctorCode = getIntent().getStringExtra("operDoctorCode");
         String operDoctorName = getIntent().getStringExtra("operDoctorName");
         String orderCode = getIntent().getStringExtra("orderCode");
+
+        //头像
+        doctorUrl = getIntent().getStringExtra("doctorUrl");
+        patientUrl = getIntent().getStringExtra("patientUrl");
+
         //传入参数
         Bundle args = new Bundle();
         args.putInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
@@ -65,6 +73,9 @@ public class ChatActivity extends AppCompatActivity {
         args.putString("operDoctorCode", operDoctorCode);
         args.putString("operDoctorName", operDoctorName);
         args.putString("orderCode", orderCode);
+
+        args.putString("doctorUrl", doctorUrl);
+        args.putString("patientUrl", patientUrl);
 
         args.putInt(EaseConstant.EXTRA_MESSAGE_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_MESSAGE_NUM,0));
         args.putLong(EaseConstant.EXTRA_VOICE_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_VOICE_NUM,0));
@@ -84,7 +95,7 @@ public class ChatActivity extends AppCompatActivity {
 
         messageList = (EaseChatMessageList) this.findViewById(R.id.message_list);
         //初始化messagelist
-        messageList.init(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), 1, null);
+        messageList.init(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), 1, null,doctorUrl,patientUrl);
         //设置item里的控件的点击事件
         messageList.setItemClickListener(new EaseChatMessageList.MessageListItemClickListener() {
 

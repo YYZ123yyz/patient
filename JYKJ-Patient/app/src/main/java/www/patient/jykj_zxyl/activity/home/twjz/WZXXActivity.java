@@ -801,7 +801,7 @@ public class WZXXActivity extends AppCompatActivity {
                             mProvideInteractPatientInterrogationParment.setBirthday(mProvideInteractPatientInterrogation.getBirthday());
                             Date date = mProvideInteractPatientInterrogation.getBloodPressureAbnormalDate();
                             if(mProvideInteractPatientInterrogation.getBloodPressureAbnormalDate() != null)
-                                mProvideInteractPatientInterrogationParment.setBloodPressureAbnormalDate(Util.dateToStr(mProvideInteractPatientInterrogation.getBloodPressureAbnormalDate()));
+                                mProvideInteractPatientInterrogationParment.setBloodPressureAbnormalDate(Util.dateToStrDate(mProvideInteractPatientInterrogation.getBloodPressureAbnormalDate()));
                             mProvideInteractPatientInterrogationParment.setHtnHistory(mProvideInteractPatientInterrogation.getHtnHistory());
                             mProvideInteractPatientInterrogationParment.setFlagFamilyHtn(mProvideInteractPatientInterrogation.getFlagFamilyHtn());
                             mProvideInteractPatientInterrogationParment.setHighPressureNum(mProvideInteractPatientInterrogation.getHighPressureNum());
@@ -842,6 +842,7 @@ public class WZXXActivity extends AppCompatActivity {
 
                         mProvideInteractPatientInterrogationParment.setDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
                         mProvideInteractPatientInterrogationParment.setDoctorName(provideViewDoctorExpertRecommend.getUserName());
+                        provideViewDoctorExpertRecommend.setLinkPhone(mProvideInteractPatientInterrogationParment.getPatientLinkPhone());
                         cacerProgress();
                         netRetEntity = JSON.parseObject(mAddNetRetStr,NetRetEntity.class);
                         Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
@@ -1140,7 +1141,7 @@ public class WZXXActivity extends AppCompatActivity {
         getInteractOrderCodeGenerate.setRequestClientType("1");
         getInteractOrderCodeGenerate.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         getInteractOrderCodeGenerate.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        getInteractOrderCodeGenerate.setUserLinkPhone(mApp.mLoginUserInfo.getUserPhone());
+        getInteractOrderCodeGenerate.setUserLinkPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
         getInteractOrderCodeGenerate.setOrderTreatmentType(mOperaType);
 
         new Thread(){

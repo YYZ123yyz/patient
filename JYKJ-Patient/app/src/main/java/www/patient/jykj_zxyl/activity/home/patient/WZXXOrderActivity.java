@@ -131,8 +131,6 @@ public class WZXXOrderActivity extends AppCompatActivity {
                 //判断是否超过服务截止时间
                 try {
                     boolean is = compare(str,Util.dateToStr(mXYEntity.getLimitSigningExpireDate()));
-                    Toast.makeText(mContext,str,Toast.LENGTH_SHORT).show();
-
                     if (!is)
                     {
                         Toast.makeText(mContext,"超过医生服务截止时间",Toast.LENGTH_SHORT).show();
@@ -352,6 +350,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
         provideInteractOrderInfo.setIntegralHaveCode("0");
         provideInteractOrderInfo.setIntegralDeductionMoney("0");
         provideInteractOrderInfo.setFlagPayType(String.valueOf(payModel));
+        provideInteractOrderInfo.setOperPatientPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
         getProgressBar("请稍候。。。。","正在获取数据");
         new Thread(){
             public void run(){
@@ -420,7 +419,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
         switch (Integer.valueOf(mOrderType))
         {
             case 2:
-                provideInteractOrderInfo.setTreatmentDate(provideDoctorSetSchedulingInfoGroupDate.getWorkDate());
+                provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
                 for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++)
                 {
                     if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
@@ -428,7 +427,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
                 }
                 break;
             case 3:
-                provideInteractOrderInfo.setTreatmentDate(provideDoctorSetSchedulingInfoGroupDate.getWorkDate());
+                provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
                 for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++)
                 {
                     if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
@@ -436,7 +435,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
                 }
                 break;
             case 5:
-                provideInteractOrderInfo.setTreatmentDate(provideDoctorSetSchedulingInfoGroupDate.getWorkDate());
+                provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
                 for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++)
                 {
                     if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
@@ -646,7 +645,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
         //将appid注册到微信
         //boolean a = msgApi.registerApp(provideWechatPayModel.getAppId());
         //调起微信支付
-        if(null!=msgApi) {
+        if(null==msgApi) {
             msgApi = WXAPIFactory.createWXAPI(this, "wx4ccb2ac1c5491336");
             msgApi.registerApp("wx4ccb2ac1c5491336");
         }

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -13,12 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
-import androidx.annotation.NonNull;
 import entity.ProvideViewMyDoctorOrderAndTreatment;
-import netService.HttpNetService;
-import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.OrderMessage_OrderPayActivity;
 import www.patient.jykj_zxyl.application.JYKJApplication;
@@ -52,7 +48,7 @@ public class AuthorityDialog extends Dialog {
 
 
 
-    public AuthorityDialog(@NonNull Context context,OrderMessage_OrderPayActivity activity) {
+    public AuthorityDialog(@NonNull Context context, OrderMessage_OrderPayActivity activity) {
         super(context, R.style.MyCommonDialog);
         mContext = context;
         mActivity = activity;

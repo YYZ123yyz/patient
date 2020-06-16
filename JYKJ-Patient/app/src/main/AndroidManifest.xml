@@ -355,6 +355,11 @@
         <activity android:name=".activity.home.patient.WDYS_JZJLListActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"/>
 
 
+        <!--首页=》》 医患互动  ==> 系统通知详情-->
+        <activity android:name=".XTTZDetailActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"/>
+
+
+
         <!--首页=》》 我的医生 == 》就诊记录-->
         <activity android:name=".activity.home.patient.WDYS_JZJLActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"/>
 
@@ -485,6 +490,21 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="T9EnCIL7LexKqGmQoAyiXZ9rxfxlDCcH" />
+       <!--< meta-data-->
+            <!--android:name="com.baidu.lbsapi.API_KEY"-->
+            <!--android:value="ItMylMpbeZNsTcNGSedrSmpa9ii497XH" />-->
+        <service
+            android:name="com.baidu.location.f" android:enabled="true"
+            android:process=":remote">
+        </service>
+
+        <service android:name="com.amap.api.location.APSService"></service>
+        <meta-data android:name="com.amap.api.v2.apikey" android:value="3e97b265f69130eb4eabec58459996e7">
+
+        </meta-data>
     </application>
 
 

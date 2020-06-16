@@ -3,9 +3,13 @@ package www.patient.jykj_zxyl.fragment.shouye;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
+import androidx.annotation.RequiresApi;
+
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,26 +19,39 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.easeui.EaseConstant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import entity.DoctorInfo.InteractPatient;
 import entity.HZIfno;
-import entity.ProvidePatientBindingMyDoctorInfo;
+import entity.basicDate.EMMessageEntity;
+import entity.basicDate.ProvideDoctorPatientUserInfo;
+import entity.service.ViewSysUserDoctorInfoAndHospital;
+import entity.yhhd.ProvideDoctorGoodFriendGroup;
+import entity.yhhd.ProvideGroupConsultationUserInfo;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.activity.LoginActivity;
 import www.patient.jykj_zxyl.activity.MainActivity;
-import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
-import www.patient.jykj_zxyl.activity.myself.hzgl.HZGLSearchActivity;
-import www.patient.jykj_zxyl.adapter.HZGLRecycleAdapter;
+import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
+import www.patient.jykj_zxyl.adapter.DorcerFriendExpandableListViewAdapter;
+import www.patient.jykj_zxyl.adapter.MessageInfoRecycleAdapter;
+import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.util.NestedExpandaleListView;
+import www.patient.jykj_zxyl.util.Util;
 
 
 /**
@@ -42,98 +59,65 @@ import www.patient.jykj_zxyl.application.JYKJApplication;
  * Created by admin on 2016/6/1.
  */
 public class FragmentShouYe_HYHD extends Fragment {
+    public              ProgressDialog              mDialogProgress =null;
+
     private             Context                             mContext;
+    private             MainActivity                        mActivity;
     private             Handler                             mHandler;
-    private MainActivity mActivity;
     private             JYKJApplication                     mApp;
-    private             RecyclerView                        mHZInfoRecycleView;              //患者列表
-    private             LinearLayoutManager                 layoutManager;
-    private HZGLRecycleAdapter mHZGLRecycleAdapter;       //适配器
-    private             List<HZIfno>                        mHZEntyties = new ArrayList<>();            //所有数据
+    private RecyclerView mMessageRecycleView;
+
+    private LinearLayoutManager layoutManager;
+    private MessageInfoRecycleAdapter mMessageInfoRecycleAdapter;       //适配器
+    private             List<InteractPatient>                        mInteractPatient = new ArrayList<>();            //所有数据
+    private             List<ProvideDoctorGoodFriendGroup>   mInteractDoctorUnionInfo = new ArrayList<>();            //医生联盟数据
     private             List<HZIfno>                        mHZEntytiesClick = new ArrayList<>();            //点击之后的数据
+    private             TextView                            mMessageList;                       //消息列表
+    private             TextView                            mAll;                               //全部患者
+    private             TextView                            mPay;                               //消息列表
+    private             TextView                            mFriend;                            //消息列表
 
-    private             LinearLayout                        mQB;            //全部
-    private             LinearLayout                        mQBCut;         //全部下划线
-    private             LinearLayout                        mYJ;            //预警
-    private             LinearLayout                        mYJCut;         //预警下划线
-    private             LinearLayout                        mTX;            //提醒
-    private             LinearLayout                        mTXCut;         //提醒下划线
-    private             LinearLayout                        mZC;            //正常
-    private             LinearLayout                        mZCCut;         //正常下划线
-    private             int                                 mState;         //状态
+    private NestedExpandaleListView mYSHY;                              //医生好友
+    private DorcerFriendExpandableListViewAdapter mDorcerFriendExpandableListViewAdapter;   //医生好友适配器
 
-    private             ImageView                           mSearch;        //搜索
 
-    public ProgressDialog mDialogProgress = null;
-
+    private             ImageView                           mJQImage;                           //建群
+    private             TextView                            mHYSQText;                          //好友申请
     private             String                              mNetRetStr;                 //返回字符串
-    private                 List<ProvidePatientBindingMyDoctorInfo> providePatientBindingMyDoctorInfos = new ArrayList<>();         //获取到的我的医生数据
 
-    private             LinearLayout                        shouye_layout1;                     //医生1
-    private             ImageView                        shouye_heard1;                     //头像1
-    private             TextView                        shouye_name1;                     //姓名1
-    private             TextView                        shouye_bind1;                     //绑定1
-    private             TextView                        shouye_hospatal1;                     //医院1
+    private             InteractPatient                     mClickInteractPatient;              //点击进入聊天的患者
 
-    private             LinearLayout                        shouye_layout2;                     //医生2
-    private             ImageView                        shouye_heard2;                     //头像2
-    private             TextView                        shouye_name2;                     //姓名2
-    private             TextView                        shouye_bind2;                     //绑定2
-    private             TextView                        shouye_hospatal2;                     //医院2
+    private             List<ProvideDoctorPatientUserInfo> mProvideDoctorPatientUserInfo = new ArrayList<>();
 
-    private             LinearLayout                        shouye_layout3;                     //医生3
-    private             ImageView                        shouye_heard3;                     //头像3
-    private             TextView                        shouye_name3;                     //姓名3
-    private             TextView                        shouye_bind3;                     //绑定3
-    private             TextView                        shouye_hospatal3;                     //医院3
+    private             TextView                            mHXNetWorkState;                    //环信网络状态监听
 
+    private             int                                 mCurrent = 0;                       //当前下标
 
-    private             LinearLayout                        shouye_layout4;                     //医生4
-    private             ImageView                        shouye_heard4;                     //头像4
-    private             TextView                        shouye_name4;                     //姓名4
-    private             TextView                        shouye_bind4;                     //绑定4
-    private             TextView                        shouye_hospatal4;                     //医院4
+    private             int                                 clickIndex;                         //点击列表下标
 
-
-    private             TextView                        more;                                   //更多
-
-    private             LinearLayout                    noHint;                               //没有数据提示
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_shouye_hyhd, container, false);
+        View v = inflater.inflate(R.layout.fragment_xxzx_hyhd, container, false);
         mContext = getContext();
         mActivity = (MainActivity) getActivity();
         mApp = (JYKJApplication) getActivity().getApplication();
         initLayout(v);
-//        initHandler();
-//        searchIndexMyDoctorShow();
+        initHandler();
+        mApp.gNetWorkTextView = true;
+        getMessageList();
+
         return v;
     }
 
 
-    /**
-     * 展示我的医生数据
-     * @param
-     */
-    private void showMyDoctorInfo() {
-    }
-
-    /**
-     * 获取我的医生数据
-     */
-    private void searchIndexMyDoctorShow() {
-        ProvidePatientBindingMyDoctorInfo providePatientBindingMyDoctorInfo = new ProvidePatientBindingMyDoctorInfo();
-        providePatientBindingMyDoctorInfo.setLoginPatientPosition(mApp.loginDoctorPosition);
-        providePatientBindingMyDoctorInfo.setRequestClientType("1");
-        providePatientBindingMyDoctorInfo.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        providePatientBindingMyDoctorInfo.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        providePatientBindingMyDoctorInfo.setShowNum("4");
-
+    private void getUserIdentification(String code){
+        ProvideGroupConsultationUserInfo provideGroupConsultationUserInfo = new ProvideGroupConsultationUserInfo();
+        provideGroupConsultationUserInfo.setLoginUserPosition(mApp.loginDoctorPosition);
+        provideGroupConsultationUserInfo.setUserCode(code);
         new Thread(){
             public void run(){
                 try {
-                    String string = new Gson().toJson(providePatientBindingMyDoctorInfo);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, www.patient.jykj_zxyl.application.Constant.SERVICEURL+"PatientMyDoctorControlle/searchIndexMyDoctorShow");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideGroupConsultationUserInfo),Constant.SERVICEURL+"doctorGroupConsultationControlle/searchUserIdentificationByUserCode");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
@@ -147,39 +131,558 @@ public class FragmentShouYe_HYHD extends Fragment {
     }
 
     /**
-     * 初始化界面
+     * 获取消息列表
      */
-    private void initLayout(View view) {
+    public void getMessageList() {
 
+        if (mHandler == null)
+            return;
+
+        new Thread(){
+
+            public void run(){
+                try {
+                    Map<String, EMConversation> conversationMap = EMClient.getInstance().chatManager().getAllConversations();
+
+                    List<String> userCodeList = new ArrayList<>();
+                    //遍历map中的键,获取用户Code列表
+                    for (String key : conversationMap.keySet()) {
+                        List<EMMessage> emMessages =  conversationMap.get(key).getAllMessages();
+                        String from = emMessages.get(0).getFrom();
+                        String to = emMessages.get(0).getTo();
+                        if (mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode().equals(from) || mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode().equals(to))
+                            userCodeList.add(key);
+                    }
+
+                    String parmentString = "";
+                    for (int i = 0; i < userCodeList.size(); i++)
+                    {
+                        if (i == userCodeList.size()-1)
+                            parmentString += userCodeList.get(i);
+                        else
+                            parmentString += userCodeList.get(i)+",";
+                    }
+                    ProvideDoctorPatientUserInfo provideDoctorPatientUserInfo = new ProvideDoctorPatientUserInfo();
+                    provideDoctorPatientUserInfo.setUserCodeList(parmentString);
+                    String parment =  "jsonDataInfo="+new Gson().toJson(provideDoctorPatientUserInfo);
+                    mNetRetStr = HttpNetService.urlConnectionService(parment ,Constant.SERVICEURL+"patientDoctorCommonDataController/getUserInfoList");
+                    NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr,NetRetEntity.class);
+                    if (netRetEntity.getResCode() == 0)
+                    {
+                        NetRetEntity retEntity = new NetRetEntity();
+                        retEntity.setResCode(0);
+                        mNetRetStr = new Gson().toJson(retEntity);
+                        retEntity.setResCode(0);
+                        mHandler.sendEmptyMessage(4);
+                        return;
+                    }
+                    else
+                    {
+                        mProvideDoctorPatientUserInfo =  new Gson().fromJson(netRetEntity.getResJsonData(), new TypeToken<List<ProvideDoctorPatientUserInfo>>(){}.getType());
+                        for (int i = 0; i < mProvideDoctorPatientUserInfo.size(); i++)
+                        {
+                            EMConversation emcConversation = conversationMap.get(mProvideDoctorPatientUserInfo.get(i).getUserCode());
+                            List<EMMessage> emMessages =  emcConversation.getAllMessages();
+                            EMMessage emMessage =  emcConversation.getAllMessages().get(emcConversation.getAllMessages().size()-1);
+                            String str = "{"+emMessage.getBody().toString()+"}";
+                            EMMessageEntity emMessageEntity = null;
+                            try {
+                                emMessageEntity = new Gson().fromJson(str,EMMessageEntity.class);
+                                mProvideDoctorPatientUserInfo.get(i).setLastMessage(emMessageEntity.getTxt());
+                            }catch (Exception e)
+                            {
+                                mProvideDoctorPatientUserInfo.get(i).setLastMessage("图片");
+                            }
+
+                            //获取未读消息数
+                            EMConversation conversation = EMClient.getInstance().chatManager().getConversation(mProvideDoctorPatientUserInfo.get(i).getUserCode());
+                            int num = conversation.getUnreadMsgCount();
+                            if (num > 0)
+                            {
+                                mProvideDoctorPatientUserInfo.get(i).setNoRead(true);
+                            }
+                            else
+                                mProvideDoctorPatientUserInfo.get(i).setNoRead(false);
+                            System.out.println("");
+                        }
+
+                    }
+
+                } catch (Exception e) {
+
+                    NetRetEntity retEntity = new NetRetEntity();
+                    retEntity.setResCode(0);
+                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    mNetRetStr = new Gson().toJson(retEntity);
+                    e.printStackTrace();
+                }
+
+                mHandler.sendEmptyMessage(4);
+            }
+        }.start();
+    }
+
+    /**
+     *
+     * @param v
+     */
+    private void initLayout(View v) {
+        mHXNetWorkState = (TextView)v.findViewById(R.id.tv_hxNetWorkState);
+        if (mApp.gNetConnectionHX)
+            mHXNetWorkState.setVisibility(View.GONE);
+        else
+        {
+//            startActivity(new Intent(mContext,LoginActivity.class));
+//            getActivity().finish();
+            mHXNetWorkState.setVisibility(View.VISIBLE);
+        }
+
+        mMessageRecycleView = (RecyclerView) v.findViewById(R.id.rv_fragmethyhd_messageInfo);
+        //创建默认的线性LayoutManager
+        layoutManager = new LinearLayoutManager(mContext);
+        layoutManager.setOrientation(LinearLayout.VERTICAL);
+        mMessageRecycleView.setLayoutManager(layoutManager);
+        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        mMessageRecycleView.setHasFixedSize(true);
+        //创建并设置Adapter
+        mMessageInfoRecycleAdapter = new MessageInfoRecycleAdapter(mApp,mInteractPatient,mContext,mActivity);
+        mMessageRecycleView.setAdapter(mMessageInfoRecycleAdapter);
+        mMessageInfoRecycleAdapter.setOnItemClickListener(new MessageInfoRecycleAdapter.OnItemClickListener() {
+
+            @Override
+            public void onClick(int position) {
+                mClickInteractPatient = mInteractPatient.get(position);
+//                if (mCurrent == 0)
+//                {
+//                    clickIndex = position;
+//                    getUserIdentification(mClickInteractPatient.getPatientCode());
+//                }
+//                else
+//                {
+
+                mInteractPatient.get(position).setNoRead(false);
+                Intent intent = new Intent();
+                intent.setClass(mContext,ChatActivity.class);
+                intent.putExtra("userCode",mClickInteractPatient.getPatientCode());
+                intent.putExtra("userName",mClickInteractPatient.getPatientUserName());
+                intent.putExtra("doctorUrl",mClickInteractPatient.getPatientUserLogoUrl());
+                intent.putExtra("patientUrl",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+                startActivity(intent);
+//                }
+            }
+
+            @Override
+            public void onLongClick(int position) {
+
+            }
+        });
+
+//        mYSHY = (NestedExpandaleListView)v.findViewById(R.id.rv_fragmethyhd_yshyInfo);
+//        mDorcerFriendExpandableListViewAdapter = new DorcerFriendExpandableListViewAdapter(mInteractDoctorUnionInfo,mContext,mApp);
+//        mYSHY.setAdapter(mDorcerFriendExpandableListViewAdapter);
+
+//        mMessageList = (TextView)v.findViewById(R.id.tv_fragmentHYHD_messageList);
+//        mAll = (TextView)v.findViewById(R.id.tv_fragmentHYHD_all);
+//        mPay = (TextView)v.findViewById(R.id.tv_fragmentHYHD_pay);
+//        mFriend = (TextView)v.findViewById(R.id.tv_fragmentHYHD_friend);
+
+//        mMessageList.setOnClickListener(new ButtonClick());
+//        mAll.setOnClickListener(new ButtonClick());
+//        mPay.setOnClickListener(new ButtonClick());
+//        mFriend.setOnClickListener(new ButtonClick());
+
+//        mYSHY.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+//            @Override
+//            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+//                mInteractDoctorUnionInfo.get(groupPosition).setClick(!mInteractDoctorUnionInfo.get(groupPosition).isClick());
+//                mDorcerFriendExpandableListViewAdapter.setDate(mInteractDoctorUnionInfo);
+//                mDorcerFriendExpandableListViewAdapter.notifyDataSetInvalidated();
+//                mDorcerFriendExpandableListViewAdapter.notifyDataSetChanged();
+//                return false;
+//            }
+//        });
+//        mYSHY.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+//            @Override
+//            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+//                Intent intent = new Intent();
+//                intent.setClass(mContext,ChatActivity.class);
+//                intent.putExtra("userCode",mInteractDoctorUnionInfo.get(i).getDoctorGoodFriendInfoList().get(i1).getDoctorCode());
+//                intent.putExtra("userName",mInteractDoctorUnionInfo.get(i).getDoctorGoodFriendInfoList().get(i1).getDoctorUserName());
+//                intent.putExtra("vedioNum",1000000);
+//                intent.putExtra("voiceNum",1000000);
+//                startActivity(intent);
+//                return false;
+//            }
+//        });
+
+//        mJQImage = (ImageView)v.findViewById(R.id.iv_fragmentHYHD_jqImage);
+//        mJQImage.setOnClickListener(new ButtonClick());
+//        mYSHY.setVisibility(View.GONE);
+//        mMessageRecycleView.setVisibility(View.VISIBLE);
+//        mJQImage.setVisibility(View.VISIBLE);
+//        mHYSQText = (TextView)v.findViewById(R.id.iv_fragmentHYHD_hysqImage);
+//        mHYSQText.setOnClickListener(new ButtonClick());
+//        mHYSQText.setVisibility(View.GONE);
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mMessageInfoRecycleAdapter != null)
+        {
+            mMessageInfoRecycleAdapter.setDate(mInteractPatient);
+            mMessageInfoRecycleAdapter.notifyDataSetChanged();
+        }
+        if (mCurrent == 0)
+            getMessageList();
+    }
 
     private void initHandler() {
         mHandler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
+                super.handleMessage(msg);
                 switch (msg.what)
                 {
-                    case 6:
+                    case 0:
                         cacerProgress();
-                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 1 &&  netRetEntity.getResJsonData() != null && !"".equals(netRetEntity.getResJsonData()))
-                            providePatientBindingMyDoctorInfos = JSON.parseArray(netRetEntity.getResJsonData(),ProvidePatientBindingMyDoctorInfo.class);
-                        showMyDoctorInfo();
+                        break;
+                    case 1:
+                        cacerProgress();
+                        if (mNetRetStr != null && !mNetRetStr.equals("")) {
+                            NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
+                            mInteractPatient.clear();
+                            if (netRetEntity.getResCode() == 1) {
+                                mInteractPatient =  new Gson().fromJson(netRetEntity.getResJsonData(), new TypeToken<List<InteractPatient>>(){}.getType());
+                                for (int i = 0; i < mInteractPatient.size(); i++)
+                                {
+                                    mInteractPatient.get(i).setType("user");
+                                }
+                                mMessageInfoRecycleAdapter.setDate(mInteractPatient);
+                                mMessageInfoRecycleAdapter.notifyDataSetChanged();
+                            }
+                            else
+                            {
+                                Toast.makeText(mContext, "登录失败，"+netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else
+                        {
+                            Toast.makeText(mContext, "网络异常，请联系管理员", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
 
+                    case 2:
+                        cacerProgress();
+                        if (mNetRetStr != null && !mNetRetStr.equals("")) {
+                            NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
+                            if (netRetEntity.getResCode() == 1) {
+                                List<ViewSysUserDoctorInfoAndHospital> viewSysUserDoctorInfoAndHospitals = new Gson().fromJson(netRetEntity.getResJsonData(), new TypeToken<List<ViewSysUserDoctorInfoAndHospital>>(){}.getType());
+                                mInteractPatient.removeAll(mInteractPatient);
+                                for (int i = 0; i < viewSysUserDoctorInfoAndHospitals.size(); i++)
+                                {
+                                    InteractPatient interactPatient = new InteractPatient();
+                                    interactPatient.setPatientCode(viewSysUserDoctorInfoAndHospitals.get(i).getPatientCode());
+                                    interactPatient.setPatientTitleDesc(viewSysUserDoctorInfoAndHospitals.get(i).getDoctorTitleName());
+                                    interactPatient.setPatientDiagnosisType(viewSysUserDoctorInfoAndHospitals.get(i).getUserUseType());
+                                    interactPatient.setPatientNewLoginDate(viewSysUserDoctorInfoAndHospitals.get(i).getNewLoginDate());
+                                    interactPatient.setPatientUserLabelName(viewSysUserDoctorInfoAndHospitals.get(i).getHospitalInfoName());
+
+                                    interactPatient.setPatientUserName(viewSysUserDoctorInfoAndHospitals.get(i).getUserName());
+                                    interactPatient.setType("user");
+                                    mInteractPatient.add(interactPatient);
+                                }
+                                mMessageInfoRecycleAdapter.setDate(mInteractPatient);
+                                mMessageInfoRecycleAdapter.notifyDataSetChanged();
+
+
+                            }
+                            else
+                            {
+                                Toast.makeText(mContext, "获取失败，"+netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else
+                        {
+                            Toast.makeText(mContext, "网络异常，请联系管理员", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+
+                    case 3:
+                        cacerProgress();
+                        if (mNetRetStr != null && !mNetRetStr.equals("")) {
+                            NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
+                            if (netRetEntity.getResCode() == 1) {
+                                mInteractDoctorUnionInfo =  JSON.parseArray(netRetEntity.getResJsonData(),ProvideDoctorGoodFriendGroup.class);
+                                mDorcerFriendExpandableListViewAdapter.setDate(mInteractDoctorUnionInfo);
+                                mDorcerFriendExpandableListViewAdapter.notifyDataSetChanged();
+
+                            }
+                            else
+                            {
+                                Toast.makeText(mContext, "获取失败，"+netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else
+                        {
+                            Toast.makeText(mContext, "网络异常，请联系管理员", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+
+                    case 4:
+                        cacerProgress();
+                        mInteractPatient.removeAll(mInteractPatient);
+                        for (int i = 0; i < mProvideDoctorPatientUserInfo.size(); i++)
+                        {
+                            InteractPatient interactPatient = new InteractPatient();
+                            interactPatient.setPatientCode(mProvideDoctorPatientUserInfo.get(i).getUserCode());
+                            interactPatient.setPatientTitleDesc(mProvideDoctorPatientUserInfo.get(i).getDoctorTitleName());
+                            interactPatient.setPatientDiagnosisType(mProvideDoctorPatientUserInfo.get(i).getUserUseType());
+                            interactPatient.setPatientNewLoginDate(mProvideDoctorPatientUserInfo.get(i).getNewLoginDate());
+                            interactPatient.setPatientUserLabelName(mProvideDoctorPatientUserInfo.get(i).getHospitalInfoName());
+                            interactPatient.setPatientUserName(mProvideDoctorPatientUserInfo.get(i).getUserName());
+                            interactPatient.setType("message");
+                            interactPatient.setLastMessage(mProvideDoctorPatientUserInfo.get(i).getLastMessage());
+                            interactPatient.setNoRead(mProvideDoctorPatientUserInfo.get(i).isNoRead());
+                            interactPatient.setPatientUserLogoUrl(mProvideDoctorPatientUserInfo.get(i).getUserLogoUrl());
+                            mInteractPatient.add(interactPatient);
+                        }
+                        mMessageInfoRecycleAdapter.setDate(mInteractPatient);
+                        mMessageInfoRecycleAdapter.notifyDataSetChanged();
+                        mApp.setNewsMessage();
+                        mActivity.setHZTabView();
+                        break;
+                    case 10:
+                        //连接正常
+                        if (mApp.gNetConnectionHX)
+                        {
+                            mHXNetWorkState.setVisibility(View.GONE);
+                        }
+                        else
+                        {
+                            mHXNetWorkState.setVisibility(View.VISIBLE);
+                        }
+                        break;
+
+                    case 6:
+                        if (mNetRetStr != null && !mNetRetStr.equals("")) {
+                            NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
+                            if (netRetEntity.getResCode() == 1) {
+                                ProvideGroupConsultationUserInfo provideGroupConsultationUserInfo = JSON.parseObject(netRetEntity.getResJsonData(),ProvideGroupConsultationUserInfo.class);
+                                if (provideGroupConsultationUserInfo.getUserUseType() == 6)
+                                {
+                                    mClickInteractPatient = mInteractPatient.get(clickIndex);
+                                    mInteractPatient.get(clickIndex).setNoRead(false);
+                                    Intent intent = new Intent();
+                                    intent.setClass(mContext,ChatActivity.class);
+                                    intent.putExtra(EaseConstant.EXTRA_MESSAGE_NUM,-1);
+                                    intent.putExtra("userCode",mClickInteractPatient.getPatientCode());
+                                    intent.putExtra("userName",mClickInteractPatient.getPatientUserName());
+                                    intent.putExtra("chatType","twjz");
+                                    intent.putExtra("chatType","twjz");
+                                    String date = Util.dateToStr(provideGroupConsultationUserInfo.getServiceStopDate());
+                                    intent.putExtra("date",date);
+                                    startActivity(intent);
+                                }
+                                else
+                                {
+                                    mClickInteractPatient = mInteractPatient.get(clickIndex);
+                                    mInteractPatient.get(clickIndex).setNoRead(false);
+                                    Intent intent = new Intent();
+                                    intent.setClass(mContext,ChatActivity.class);
+                                    intent.putExtra("userCode",mClickInteractPatient.getPatientCode());
+                                    intent.putExtra("userName",mClickInteractPatient.getPatientUserName());
+                                    intent.putExtra("vedioNum",1000000);
+                                    intent.putExtra("voiceNum",1000000);
+                                    startActivity(intent);
+                                }
+
+
+                            }
+                            else
+                            {
+                                Toast.makeText(mContext, "用户类型获取失败"+netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else
+                        {
+                            Toast.makeText(mContext, "网络异常，请联系管理员", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                 }
             }
         };
     }
 
+    /**
+     * 按钮默认布局
+     */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void defaultLayout(){
+        mMessageList.setBackgroundResource(0);
+        mMessageList.setTextColor(mActivity.getResources().getColor(R.color.writeColor));
+        mAll.setBackgroundResource(0);
+        mAll.setTextColor(mActivity.getResources().getColor(R.color.writeColor));
+        mPay.setBackgroundResource(0);
+        mPay.setTextColor(mActivity.getResources().getColor(R.color.writeColor));
+        mFriend.setBackgroundResource(0);
+        mFriend.setTextColor(mActivity.getResources().getColor(R.color.writeColor));
+    }
 
     /**
-     * 获取进度条
+     * 设置环信网络状态
+     * @param gNetConnectionHX
+     */
+    public void setHXNetWorkState(boolean gNetConnectionHX) {
+        if (mHandler != null)
+            mHandler.sendEmptyMessage(10);
+
+    }
+
+
+    class   ButtonClick implements View.OnClickListener {
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+
+                case R.id.tv_fragmentHYHD_messageList:
+                    mCurrent = 0;
+                    defaultLayout();
+                    mYSHY.setVisibility(View.GONE);
+                    mMessageRecycleView.setVisibility(View.VISIBLE);
+                    mJQImage.setVisibility(View.VISIBLE);
+                    mHYSQText.setVisibility(View.GONE);
+                    mMessageList.setBackgroundResource(R.mipmap.pg_messagetitle);
+                    mMessageList.setTextColor(mActivity.getResources().getColor(R.color.tabColor_nomal));
+                    getMessageList();
+                    break;
+//                case R.id.tv_fragmentHYHD_all:
+//                    mCurrent = 1;
+//                    defaultLayout();
+//                    mYSHY.setVisibility(View.GONE);
+//                    mHYSQText.setVisibility(View.GONE);
+//                    mMessageRecycleView.setVisibility(View.VISIBLE);
+//                    mJQImage.setVisibility(View.VISIBLE);
+//                    mAll.setBackgroundResource(R.mipmap.pg_messagetitle);
+//                    mAll.setTextColor(mActivity.getResources().getColor(R.color.tabColor_nomal));
+//                    //获取数据
+//                    getHZDate();
+//                    break;
+//                case R.id.tv_fragmentHYHD_pay:
+//                    mCurrent = 2;
+//                    defaultLayout();
+//                    mYSHY.setVisibility(View.GONE);
+//                    mJQImage.setVisibility(View.VISIBLE);
+//                    mHYSQText.setVisibility(View.GONE);
+//                    mPay.setBackgroundResource(R.mipmap.pg_messagetitle);
+//                    mPay.setTextColor(mActivity.getResources().getColor(R.color.tabColor_nomal));
+//                    //获取数据
+//                    getQYHXDate();
+//                    break;
+//
+//                case R.id.tv_fragmentHYHD_friend:
+//                    mCurrent = 3;
+//                    defaultLayout();
+//                    mYSHY.setVisibility(View.VISIBLE);
+//                    mMessageRecycleView.setVisibility(View.GONE);
+//                    mJQImage.setVisibility(View.GONE);
+//                    mHYSQText.setVisibility(View.VISIBLE);
+//                    mFriend.setBackgroundResource(R.mipmap.pg_messagetitle);
+//                    mFriend.setTextColor(mActivity.getResources().getColor(R.color.tabColor_nomal));
+//
+//                    //获取数据
+//                    getYSLMDate();
+//
+//                    break;
+//                case R.id.iv_fragmentHYHD_jqImage:
+//                    startActivity(new Intent(mContext,NewChatGroupActivity.class));
+//                    break;
+//                case R.id.iv_fragmentHYHD_hysqImage:
+//                    startActivity(new Intent(mContext,HYHD_HYSQActivity.class));
+//                    break;
+            }
+        }
+    }
+
+//    /**
+//     * 获取医生好友联盟数据
+//     */
+//    private void getYSLMDate() {
+//        getProgressBar("请稍候。。。","正在获取数据");
+//        InteractDoctorDetailInfo interactDoctorDetailInfo = new InteractDoctorDetailInfo();
+//        interactDoctorDetailInfo.setDoctorId(mApp.mViewSysUserDoctorInfoAndHospital.getDoctorId());
+//        interactDoctorDetailInfo.setDoctorCode(mApp.mViewSysUserDoctorInfoAndHospital.getDoctorCode());
+//        new Thread(){
+//            public void run(){
+//                try {
+//                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(interactDoctorDetailInfo),Constant.SERVICEURL+"doctorManagePatient/interactDoctorUnionAllList");
+//                } catch (Exception e) {
+//                    NetRetEntity retEntity = new NetRetEntity();
+//                    retEntity.setResCode(0);
+//                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+//                    mNetRetStr = new Gson().toJson(retEntity);
+//                    e.printStackTrace();
+//                }
+//                mHandler.sendEmptyMessage(3);
+//            }
+//        }.start();
+//    }
+//
+//    /**
+//     * 获取签约患者数据
+//     */
+//    private void getQYHXDate() {
+//        getProgressBar("请稍候。。。","正在获取数据");
+//        InteractDoctorDetailInfo interactDoctorDetailInfo = new InteractDoctorDetailInfo();
+//        interactDoctorDetailInfo.setDoctorId(mApp.mViewSysUserDoctorInfoAndHospital.getDoctorId());
+//        interactDoctorDetailInfo.setDoctorCode(mApp.mViewSysUserDoctorInfoAndHospital.getDoctorCode());
+//        new Thread(){
+//            public void run(){
+//                try {
+//                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(interactDoctorDetailInfo),Constant.SERVICEURL+"doctorManagePatient/interactPatientSigningList");
+//                } catch (Exception e) {
+//                    NetRetEntity retEntity = new NetRetEntity();
+//                    retEntity.setResCode(0);
+//                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+//                    mNetRetStr = new Gson().toJson(retEntity);
+//                    e.printStackTrace();
+//                }
+//                mHandler.sendEmptyMessage(1);
+//            }
+//        }.start();
+//    }
+//
+//    /**
+//     * 获取全部患者数据
+//     */
+//    private void getHZDate() {
+//        getProgressBar("请稍候。。。","正在获取数据");
+//        InteractDoctorDetailInfo interactDoctorDetailInfo = new InteractDoctorDetailInfo();
+//        interactDoctorDetailInfo.setDoctorId(mApp.mViewSysUserDoctorInfoAndHospital.getDoctorId());
+//        interactDoctorDetailInfo.setDoctorCode(mApp.mViewSysUserDoctorInfoAndHospital.getDoctorCode());
+//        new Thread(){
+//            public void run(){
+//                try {
+//                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(interactDoctorDetailInfo),Constant.SERVICEURL+"doctorManagePatient/interactPatientAllList");
+//                } catch (Exception e) {
+//                    NetRetEntity retEntity = new NetRetEntity();
+//                    retEntity.setResCode(0);
+//                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+//                    mNetRetStr = new Gson().toJson(retEntity);
+//                    e.printStackTrace();
+//                }
+//                mHandler.sendEmptyMessage(1);
+//            }
+//        }.start();
+//    }
+
+    /**
+     *   获取进度条
      */
 
-    public void getProgressBar(String title, String progressPrompt) {
+    public void getProgressBar(String title,String progressPrompt){
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(mContext);
         }
@@ -192,102 +695,9 @@ public class FragmentShouYe_HYHD extends Fragment {
     /**
      * 取消进度条
      */
-    public void cacerProgress() {
+    public void cacerProgress(){
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }
-    }
-
-    class   ButtonClick implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-
-                case R.id.li_fragmentHZGL_qb:
-                    cutDefault();
-                    mQBCut.setVisibility(View.VISIBLE);
-                    mState = 0;
-                    mHandler.sendEmptyMessage(1);
-                    break;
-                case R.id.li_fragmentHZGL_yj:
-                    cutDefault();
-                    mYJCut.setVisibility(View.VISIBLE);
-                    mState = 1;
-                    mHandler.sendEmptyMessage(1);
-                    break;
-                case R.id.li_fragmentHZGL_tx:
-                    cutDefault();
-                    mTXCut.setVisibility(View.VISIBLE);
-                    mState = 2;
-                    mHandler.sendEmptyMessage(1);
-                    break;
-                case R.id.li_fragmentHZGL_zc:
-                    cutDefault();
-                    mZCCut.setVisibility(View.VISIBLE);
-                    mState = 3;
-                    mHandler.sendEmptyMessage(1);
-                    break;
-                case R.id.tv_fragmentHZGL_ss:
-                    Intent intent = new Intent();
-                    intent.setClass(mContext,HZGLSearchActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.more:
-                    intent = new Intent();
-                    intent.setClass(mContext,WDYSActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.noHint:
-                    intent = new Intent();
-                    intent.setClass(mContext,WDYSActivity.class);
-                    startActivity(intent);
-                    break;
-
-            }
-        }
-    }
-
-    private void cutDefault(){
-        mQBCut.setVisibility(View.GONE);
-        mYJCut.setVisibility(View.GONE);
-        mTXCut.setVisibility(View.GONE);
-        mZCCut.setVisibility(View.GONE);
-    }
-
-    /**
-     * 设置数据
-     */
-    private void setData() {
-        for (int i = 0; i < 40; i++)
-        {
-            HZIfno hzIfno = new HZIfno();
-            if (i%3 == 0)
-            {
-                hzIfno.setHzName("测试名"+i);
-                hzIfno.setHzAge((30+(i%3))+"");
-                hzIfno.setHzSex(1);
-                hzIfno.setLaber("患者标签：高血压I期");
-                hzIfno.setState(1);
-            }
-            if (i%3 == 1)
-            {
-                hzIfno.setHzName("测试名"+i);
-                hzIfno.setHzAge((30+(i%3))+"");
-                hzIfno.setHzSex(-1);
-                hzIfno.setLaber("患者标签：高血压I期");
-                hzIfno.setState(2);
-            }
-            if (i%3 == 2)
-            {
-                hzIfno.setHzName("测试名"+i);
-                hzIfno.setHzAge((30+(i%3))+"");
-                hzIfno.setHzSex(1);
-                hzIfno.setLaber("患者标签：高血压I期");
-                hzIfno.setState(3);
-            }
-            mHZEntyties.add(hzIfno);
-        }
-        mHZGLRecycleAdapter.setDate(mHZEntyties);
-        mHZGLRecycleAdapter.notifyDataSetChanged();
     }
 }

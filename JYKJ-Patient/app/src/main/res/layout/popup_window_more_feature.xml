@@ -34,19 +34,7 @@
             android:id="@+id/tv_yqth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="邀请同行"
-            android:textSize="16sp"
-            android:paddingLeft="35dp"
-            android:paddingRight="35dp"
-            android:paddingTop="15dp"
-            android:drawablePadding="10dp"
-            android:textColor="@color/textColor_black"
-            android:drawableLeft="@mipmap/pop_yqth"/>
-        <TextView
-            android:id="@+id/tv_tjhz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="添加患者"
+            android:text="专家推荐"
             android:textSize="16sp"
             android:paddingLeft="35dp"
             android:paddingRight="35dp"
@@ -55,79 +43,84 @@
             android:textColor="@color/textColor_black"
             android:drawableLeft="@mipmap/pop_tjhz"/>
         <TextView
+            android:id="@+id/tv_tjhz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的医生"
+            android:textSize="16sp"
+            android:paddingLeft="35dp"
+            android:paddingRight="35dp"
+            android:paddingTop="15dp"
+            android:drawablePadding="10dp"
+            android:textColor="@color/textColor_black"
+            android:drawableLeft="@mipmap/pop_tjhz"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/tv_wdzs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="我的诊所"
-            android:textSize="16sp"
-            android:paddingLeft="35dp"
-            android:paddingRight="35dp"
+            android:layout_gravity="center"
             android:paddingTop="15dp"
-            android:drawablePadding="10dp"
-            android:textColor="@color/textColor_black"
-            android:drawableLeft="@mipmap/pop_wdzs"/>
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:background="@mipmap/jx"/>
         <TextView
-            android:id="@+id/tv_wdxx"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="我的消息"
-            android:textSize="16sp"
-            android:paddingLeft="35dp"
-            android:paddingRight="35dp"
-            android:paddingTop="15dp"
-            android:drawablePadding="10dp"
-            android:textColor="@color/textColor_black"
-            android:drawableLeft="@mipmap/pop_wdxx"/>
-        <TextView
-            android:id="@+id/tv_cjlm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="医生联盟"
-            android:textSize="16sp"
-            android:paddingLeft="35dp"
-            android:paddingRight="35dp"
-            android:paddingTop="15dp"
-            android:drawablePadding="10dp"
-            android:textColor="@color/textColor_black"
-            android:drawableLeft="@mipmap/pop_cjlm"/>
-        <TextView
-            android:id="@+id/tv_fqhz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="发起会诊"
-            android:textSize="16sp"
-            android:paddingLeft="35dp"
-            android:paddingRight="35dp"
-            android:paddingTop="15dp"
-            android:drawablePadding="10dp"
-            android:textColor="@color/textColor_black"
-            android:drawableLeft="@mipmap/pop_fqhz"/>
-        <TextView
-            android:id="@+id/tv_wdbb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="我的报表"
-            android:textSize="16sp"
-            android:paddingLeft="35dp"
-            android:paddingRight="35dp"
-            android:paddingTop="15dp"
-            android:drawablePadding="10dp"
-            android:textColor="@color/textColor_black"
-            android:drawableLeft="@mipmap/pop_wdbb"/>
-        <TextView
-            android:id="@+id/tv_bzfk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="帮助与反馈"
-            android:textSize="16sp"
-            android:paddingLeft="35dp"
-            android:paddingRight="35dp"
-            android:paddingTop="15dp"
-            android:drawablePadding="10dp"
-            android:layout_marginBottom="15dp"
-            android:textColor="@color/textColor_black"
-            android:drawableLeft="@mipmap/pop_bzfk"/>
 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的订单"
+            android:textSize="16sp"
+           android:layout_marginLeft="10dp"
+            android:textColor="@color/textColor_black"
+            />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/tv_wdxx"
+            android:paddingTop="15dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:background="@mipmap/kyy_da"/>
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的档案"
+            android:textSize="16sp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/textColor_black"
+            />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="15dp"
+            android:id="@+id/tv_bzfk"
+            android:paddingBottom="15dp"
+            android:orientation="horizontal">
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center_vertical"
+            android:background="@mipmap/yqth"/>
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的好友"
+            android:textSize="16sp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/textColor_black"
+           />
+        </LinearLayout>
 
 
     </LinearLayout>

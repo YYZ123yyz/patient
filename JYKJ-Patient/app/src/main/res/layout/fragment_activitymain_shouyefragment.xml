@@ -58,7 +58,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="未设置"
+                                android:text="正在获取位置信息"
                                 android:layout_marginLeft="5dp"
                                 android:id="@+id/tv_fragmentShouYe_userTitleText"
                                 android:textColor="@color/writeColor"
@@ -642,41 +642,6 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:id="@+id/li_fragmentShouYe_newMessage"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/writeColor"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:src="@mipmap/mainpage_zyxx" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="20dp"
-                        android:layout_weight="1"
-                        android:text="您有2条新的患医互动消息！"
-                        android:id="@+id/tv_fragmentShouYe_NewMessage"
-                        android:textColor="@color/textColor_vo"
-                        android:textSize="8pt" />
-
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="10dp"
-                        android:src="@mipmap/roww_right" />
-                </LinearLayout>
-
 
 
             <ImageView

@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -16,59 +15,39 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import androidx.annotation.RequiresApi;
 import entity.DoctorInfo.InteractDoctorDetailInfo;
 import entity.DoctorInfo.InteractPatient;
 import entity.HZIfno;
-import entity.basicDate.EMMessageEntity;
 import entity.basicDate.ProvideDoctorPatientUserInfo;
 import entity.service.ViewSysUserDoctorInfoAndHospital;
 import entity.yhhd.ProvideDoctorGoodFriendGroup;
 import entity.yhhd.ProvideGroupConsultationUserInfo;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
-import www.patient.jykj_zxyl.activity.MainActivity;
-import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
-import www.patient.jykj_zxyl.activity.hyhd.HYHD_HYSQActivity;
-import www.patient.jykj_zxyl.activity.hyhd.NewChatGroupActivity;
-import www.patient.jykj_zxyl.activity.myself.couponFragment.FragmentAdapter;
-import www.patient.jykj_zxyl.adapter.DorcerFriendExpandableListViewAdapter;
-import www.patient.jykj_zxyl.adapter.MessageInfoRecycleAdapter;
-import www.patient.jykj_zxyl.fragment.myself.FragmentMyOrderAl;
-import www.patient.jykj_zxyl.fragment.myself.FragmentMyOrderNo;
-import www.patient.jykj_zxyl.fragment.myself.FragmentMyOrderOn;
-import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_DDXX;
-import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_HYHD;
-import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_XTTZ;
-import www.patient.jykj_zxyl.util.ActivityUtil;
-import www.patient.jykj_zxyl.util.NestedExpandaleListView;
-import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.MainActivity;
 import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
-import www.patient.jykj_zxyl.activity.hyhd.HYHD_HYSQActivity;
-import www.patient.jykj_zxyl.activity.hyhd.NewChatGroupActivity;
+import www.patient.jykj_zxyl.activity.myself.couponFragment.FragmentAdapter;
 import www.patient.jykj_zxyl.adapter.DorcerFriendExpandableListViewAdapter;
 import www.patient.jykj_zxyl.adapter.MessageInfoRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_DDXX;
+import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_HYHD;
+import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_XTTZ;
 import www.patient.jykj_zxyl.util.NestedExpandaleListView;
 import www.patient.jykj_zxyl.util.Util;
 
@@ -79,48 +58,50 @@ import www.patient.jykj_zxyl.util.Util;
  */
 public class FragmentYHHD extends Fragment {
 
-    public              ProgressDialog              mDialogProgress =null;
+    public ProgressDialog mDialogProgress =null;
 
-    private             Context                             mContext;
+    private Context mContext;
     private MainActivity mActivity;
-    private             Handler                             mHandler;
-    private             JYKJApplication                     mApp;
-    private             RecyclerView                        mMessageRecycleView;
+    private Handler mHandler;
+    private JYKJApplication mApp;
+    private RecyclerView mMessageRecycleView;
 
-    private             LinearLayoutManager                 layoutManager;
+    private LinearLayoutManager layoutManager;
     private MessageInfoRecycleAdapter mMessageInfoRecycleAdapter;       //适配器
-    private             List<InteractPatient>                        mInteractPatient = new ArrayList<>();            //所有数据
-    private             List<ProvideDoctorGoodFriendGroup>   mInteractDoctorUnionInfo = new ArrayList<>();            //医生联盟数据
-    private             List<HZIfno>                        mHZEntytiesClick = new ArrayList<>();            //点击之后的数据
-    private             TextView                            mMessageList;                       //消息列表
-    private             TextView                            mAll;                               //全部患者
-    private             TextView                            mPay;                               //消息列表
-    private             TextView                            mFriend;                            //消息列表
+    private List<InteractPatient> mInteractPatient = new ArrayList<>();            //所有数据
+    private List<ProvideDoctorGoodFriendGroup> mInteractDoctorUnionInfo = new ArrayList<>();            //医生联盟数据
+    private List<HZIfno> mHZEntytiesClick = new ArrayList<>();            //点击之后的数据
+    private TextView mMessageList;                       //消息列表
+    private TextView mAll;                               //全部患者
+    private TextView mPay;                               //消息列表
+    private TextView mFriend;                            //消息列表
 
     private NestedExpandaleListView mYSHY;                              //医生好友
     private DorcerFriendExpandableListViewAdapter mDorcerFriendExpandableListViewAdapter;   //医生好友适配器
 
 
-    private             ImageView                           mJQImage;                           //建群
-    private             TextView                            mHYSQText;                          //好友申请
-    private             String                              mNetRetStr;                 //返回字符串
+    private ImageView mJQImage;                           //建群
+    private TextView mHYSQText;                          //好友申请
+    private String mNetRetStr;                 //返回字符串
 
-    private             InteractPatient                     mClickInteractPatient;              //点击进入聊天的患者
+    private InteractPatient mClickInteractPatient;              //点击进入聊天的患者
 
-    private             List<ProvideDoctorPatientUserInfo> mProvideDoctorPatientUserInfo = new ArrayList<>();
+    private List<ProvideDoctorPatientUserInfo> mProvideDoctorPatientUserInfo = new ArrayList<>();
 
-    private             TextView                            mHXNetWorkState;                    //环信网络状态监听
+    private TextView mHXNetWorkState;                    //环信网络状态监听
 
     private             int                                 mCurrent = 0;                       //当前下标
 
     private             int                                 clickIndex;                         //点击列表下标
 
 
-    private                 ViewPager                   pager;
+    private ViewPager pager;
     private FragmentAdapter fragmentAdapter;
     private List<Fragment> fragmentList;
-    private                 TabLayout                   tabLayout;
-    private                 List<String>                mTitles;
+    private TabLayout tabLayout;
+    private List<String> mTitles;
+
+    private FragmentShouYe_HYHD mFragmentShouYe_HYHD;
 
 
 
@@ -160,84 +141,7 @@ public class FragmentYHHD extends Fragment {
         }.start();
     }
 
-    /**
-     * 获取消息列表
-     */
-    public void getMessageList() {
 
-        if (mHandler == null)
-            return;
-
-        new Thread(){
-
-            public void run(){
-                try {
-                    Map<String, EMConversation> conversationMap = EMClient.getInstance().chatManager().getAllConversations();
-                    List<String> userCodeList = new ArrayList<>();
-                    //遍历map中的键,获取用户Code列表
-                    for (String key : conversationMap.keySet()) {
-                        userCodeList.add(key);
-                    }
-
-                    String parmentString = "";
-                    for (int i = 0; i < userCodeList.size(); i++)
-                    {
-                        if (i == userCodeList.size()-1)
-                            parmentString += userCodeList.get(i);
-                        else
-                            parmentString += userCodeList.get(i)+",";
-                    }
-                    ProvideDoctorPatientUserInfo provideDoctorPatientUserInfo = new ProvideDoctorPatientUserInfo();
-                    provideDoctorPatientUserInfo.setUserCodeList(parmentString);
-                    String parment =  "jsonDataInfo="+new Gson().toJson(provideDoctorPatientUserInfo);
-                    mNetRetStr = HttpNetService.urlConnectionService(parment ,Constant.SERVICEURL+"doctorPatientCommonDataController/getUserInfoList");
-                    NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr,NetRetEntity.class);
-                    if (netRetEntity.getResCode() == 0)
-                    {
-                        NetRetEntity retEntity = new NetRetEntity();
-                        retEntity.setResCode(0);
-                        mNetRetStr = new Gson().toJson(retEntity);
-                        retEntity.setResCode(0);
-                        mHandler.sendEmptyMessage(4);
-                        return;
-                    }
-                    else
-                    {
-                         mProvideDoctorPatientUserInfo =  new Gson().fromJson(netRetEntity.getResJsonData(), new TypeToken<List<ProvideDoctorPatientUserInfo>>(){}.getType());
-                        for (int i = 0; i < mProvideDoctorPatientUserInfo.size(); i++)
-                        {
-                            EMConversation emcConversation = conversationMap.get(mProvideDoctorPatientUserInfo.get(i).getUserCode());
-                            List<EMMessage> emMessages =  emcConversation.getAllMessages();
-                            EMMessage emMessage =  emcConversation.getAllMessages().get(emcConversation.getAllMessages().size()-1);
-                            String str = "{"+emMessage.getBody().toString()+"}";
-                            EMMessageEntity emMessageEntity = new Gson().fromJson(str,EMMessageEntity.class);
-                            mProvideDoctorPatientUserInfo.get(i).setLastMessage(emMessageEntity.getTxt());
-                            //获取未读消息数
-                            EMConversation conversation = EMClient.getInstance().chatManager().getConversation(mProvideDoctorPatientUserInfo.get(i).getUserCode());
-                            int num = conversation.getUnreadMsgCount();
-                            if (num > 0)
-                            {
-                                mProvideDoctorPatientUserInfo.get(i).setNoRead(true);
-                            }
-                            else
-                                mProvideDoctorPatientUserInfo.get(i).setNoRead(false);
-                            System.out.println("");
-                        }
-
-                    }
-
-                } catch (Exception e) {
-                    NetRetEntity retEntity = new NetRetEntity();
-                    retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
-                    mNetRetStr = new Gson().toJson(retEntity);
-                    e.printStackTrace();
-                }
-
-                mHandler.sendEmptyMessage(4);
-            }
-        }.start();
-    }
 
     /**
      *
@@ -252,7 +156,8 @@ public class FragmentYHHD extends Fragment {
         mTitles.add("患医互动");
         mTitles.add("系统通知");
         mTitles.add("订单消息");
-        fragmentList.add(new FragmentShouYe_HYHD());
+        mFragmentShouYe_HYHD = new FragmentShouYe_HYHD();
+        fragmentList.add(mFragmentShouYe_HYHD);
         fragmentList.add(new FragmentShouYe_XTTZ());
         fragmentList.add(new FragmentShouYe_DDXX());
 
@@ -265,13 +170,13 @@ public class FragmentYHHD extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mMessageInfoRecycleAdapter != null)
-        {
-            mMessageInfoRecycleAdapter.setDate(mInteractPatient);
-            mMessageInfoRecycleAdapter.notifyDataSetChanged();
-        }
-        if (mCurrent == 0)
-            getMessageList();
+//        if (mMessageInfoRecycleAdapter != null)
+//        {
+//            mMessageInfoRecycleAdapter.setDate(mInteractPatient);
+//            mMessageInfoRecycleAdapter.notifyDataSetChanged();
+//        }
+//        if (mCurrent == 0)
+//            getMessageList();
     }
 
     private void initHandler() {
@@ -469,9 +374,16 @@ public class FragmentYHHD extends Fragment {
      * @param gNetConnectionHX
      */
     public void setHXNetWorkState(boolean gNetConnectionHX) {
-        if (mHandler != null)
-            mHandler.sendEmptyMessage(10);
+        if (mFragmentShouYe_HYHD != null)
+            mFragmentShouYe_HYHD.setHXNetWorkState(gNetConnectionHX);
 
+    }
+
+    /**
+     * 获取消息
+     */
+    public void getYHHDMessage() {
+        mFragmentShouYe_HYHD.getMessageList();
     }
 
 
@@ -481,55 +393,55 @@ public class FragmentYHHD extends Fragment {
         public void onClick(View view) {
             switch (view.getId()) {
 
-                case R.id.tv_fragmentHYHD_messageList:
-                    mCurrent = 0;
-                    defaultLayout();
-                    mYSHY.setVisibility(View.GONE);
-                    mMessageRecycleView.setVisibility(View.VISIBLE);
-                    mJQImage.setVisibility(View.VISIBLE);
-                    mHYSQText.setVisibility(View.GONE);
-                    mMessageList.setBackgroundResource(R.mipmap.pg_messagetitle);
-                    mMessageList.setTextColor(mActivity.getResources().getColor(R.color.tabColor_nomal));
-                    getMessageList();
-                    break;
-                case R.id.tv_fragmentHYHD_all:
-                    mCurrent = 1;
-                    defaultLayout();
-                    mYSHY.setVisibility(View.GONE);
-                    mHYSQText.setVisibility(View.GONE);
-                    mMessageRecycleView.setVisibility(View.VISIBLE);
-                    mJQImage.setVisibility(View.VISIBLE);
-                    mAll.setBackgroundResource(R.mipmap.pg_messagetitle);
-                    mAll.setTextColor(mActivity.getResources().getColor(R.color.tabColor_nomal));
-                    //获取数据
-                    getHZDate();
-                    break;
-                case R.id.tv_fragmentHYHD_pay:
-                    mCurrent = 2;
-                    defaultLayout();
-                    mYSHY.setVisibility(View.GONE);
-                    mJQImage.setVisibility(View.VISIBLE);
-                    mHYSQText.setVisibility(View.GONE);
-                    mPay.setBackgroundResource(R.mipmap.pg_messagetitle);
-                    mPay.setTextColor(mActivity.getResources().getColor(R.color.tabColor_nomal));
-                    //获取数据
-                    getQYHXDate();
-                    break;
-
-                case R.id.tv_fragmentHYHD_friend:
-                    mCurrent = 3;
-                    defaultLayout();
-                    mYSHY.setVisibility(View.VISIBLE);
-                    mMessageRecycleView.setVisibility(View.GONE);
-                    mJQImage.setVisibility(View.GONE);
-                    mHYSQText.setVisibility(View.VISIBLE);
-                    mFriend.setBackgroundResource(R.mipmap.pg_messagetitle);
-                    mFriend.setTextColor(mActivity.getResources().getColor(R.color.tabColor_nomal));
-
-                    //获取数据
-                    getYSLMDate();
-
-                    break;
+//                case R.id.tv_fragmentHYHD_messageList:
+//                    mCurrent = 0;
+//                    defaultLayout();
+//                    mYSHY.setVisibility(View.GONE);
+//                    mMessageRecycleView.setVisibility(View.VISIBLE);
+//                    mJQImage.setVisibility(View.VISIBLE);
+//                    mHYSQText.setVisibility(View.GONE);
+//                    mMessageList.setBackgroundResource(R.mipmap.pg_messagetitle);
+//                    mMessageList.setTextColor(mActivity.getResources().getColor(R.color.tabColor_nomal));
+//                    getMessageList();
+//                    break;
+//                case R.id.tv_fragmentHYHD_all:
+//                    mCurrent = 1;
+//                    defaultLayout();
+//                    mYSHY.setVisibility(View.GONE);
+//                    mHYSQText.setVisibility(View.GONE);
+//                    mMessageRecycleView.setVisibility(View.VISIBLE);
+//                    mJQImage.setVisibility(View.VISIBLE);
+//                    mAll.setBackgroundResource(R.mipmap.pg_messagetitle);
+//                    mAll.setTextColor(mActivity.getResources().getColor(R.color.tabColor_nomal));
+//                    //获取数据
+//                    getHZDate();
+//                    break;
+//                case R.id.tv_fragmentHYHD_pay:
+//                    mCurrent = 2;
+//                    defaultLayout();
+//                    mYSHY.setVisibility(View.GONE);
+//                    mJQImage.setVisibility(View.VISIBLE);
+//                    mHYSQText.setVisibility(View.GONE);
+//                    mPay.setBackgroundResource(R.mipmap.pg_messagetitle);
+//                    mPay.setTextColor(mActivity.getResources().getColor(R.color.tabColor_nomal));
+//                    //获取数据
+//                    getQYHXDate();
+//                    break;
+//
+//                case R.id.tv_fragmentHYHD_friend:
+//                    mCurrent = 3;
+//                    defaultLayout();
+//                    mYSHY.setVisibility(View.VISIBLE);
+//                    mMessageRecycleView.setVisibility(View.GONE);
+//                    mJQImage.setVisibility(View.GONE);
+//                    mHYSQText.setVisibility(View.VISIBLE);
+//                    mFriend.setBackgroundResource(R.mipmap.pg_messagetitle);
+//                    mFriend.setTextColor(mActivity.getResources().getColor(R.color.tabColor_nomal));
+//
+//                    //获取数据
+//                    getYSLMDate();
+//
+//                    break;
 //                case R.id.iv_fragmentHYHD_jqImage:
 //                    startActivity(new Intent(mContext,NewChatGroupActivity.class));
 //                    break;
@@ -616,7 +528,7 @@ public class FragmentYHHD extends Fragment {
      *   获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt){
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(getContext());
         }

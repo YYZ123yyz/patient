@@ -3,7 +3,6 @@ package www.patient.jykj_zxyl.activity.home.myself;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,7 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.*;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
@@ -33,9 +35,8 @@ import java.util.Map;
 
 import entity.HZIfno;
 import entity.basicDate.ProvideBasicsRegion;
-import entity.mySelf.conditions.QueryContactCondPage;
 import entity.patientInfo.ProvidePatientConditionHealthy;
-import entity.mySelf.ProvidePatientLabel;
+import entity.patientInfo.ProvidePatientLabel;
 import entity.patientInfo.ProvideViewSysUserPatientInfoAndRegion;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
@@ -43,16 +44,17 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.ylzx.YLZXWebActivity;
 import www.patient.jykj_zxyl.adapter.ChoiceMedicationDateAdapter;
 import www.patient.jykj_zxyl.adapter.JYZL_GRZLRecycleAdapter;
-import www.patient.jykj_zxyl.adapter.NewPatientLaberAdapter;
+import www.patient.jykj_zxyl.adapter.PatientLaberAdapter;
 import www.patient.jykj_zxyl.adapter.myself.MyOrderAlRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.util.*;
+import www.patient.jykj_zxyl.util.ProvincePicker;
+import www.patient.jykj_zxyl.util.Util;
 
 /**
  * 个人中心==》建档档案==》==>标签记录
  */
-public class BQJLActivity extends AppCompatActivity{
+public class BQJLActivity extends AppCompatActivity {
 
 
     private         Context                 mContext;
@@ -70,21 +72,18 @@ public class BQJLActivity extends AppCompatActivity{
     public                  ProgressDialog              mDialogProgress =null;
     private                 String                      mNetRetStr;                 //获取返回字符串
 
-    private NewPatientLaberAdapter mPatientLaberAdapter;
+    private PatientLaberAdapter mPatientLaberAdapter;
     private List<ProvidePatientLabel> mProvidePatientLabel = new ArrayList<>();
 
     private             LinearLayout        li_back;
 
-    private LoadDataTask loadDataTask;
-    private int pageno = 1;
-    private int lastVisibleIndex = 0;
-    private boolean mLoadDate = true;
+
 
     /**
      * 初始化布局
      */
     private void initLayout() {
-       /* ProvidePatientLabel providePatientLabel = new ProvidePatientLabel();
+        ProvidePatientLabel providePatientLabel = new ProvidePatientLabel();
         providePatientLabel.setUserLabelSecondName("轻度高血压");
         providePatientLabel.setCreateDate(Util.strToDateLongV("2020-03-04 12:22:11"));
         mProvidePatientLabel.add(providePatientLabel);
@@ -92,7 +91,7 @@ public class BQJLActivity extends AppCompatActivity{
         ProvidePatientLabel providePatientLabel1 = new ProvidePatientLabel();
         providePatientLabel1.setUserLabelSecondName("中度高血压");
         providePatientLabel1.setCreateDate(Util.strToDateLongV("1111-03-04 12:22:11"));
-        mProvidePatientLabel.add(providePatientLabel1);*/
+        mProvidePatientLabel.add(providePatientLabel1);
 
 
         li_back = (LinearLayout)this.findViewById(R.id.li_back);
@@ -105,9 +104,9 @@ public class BQJLActivity extends AppCompatActivity{
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecycleView.setHasFixedSize(true);
         //创建并设置Adapter
-        mPatientLaberAdapter = new NewPatientLaberAdapter(mProvidePatientLabel,mContext);
+        mPatientLaberAdapter = new PatientLaberAdapter(mProvidePatientLabel,mContext);
         mRecycleView.setAdapter(mPatientLaberAdapter);
-        mPatientLaberAdapter.setOnItemClickListener(new NewPatientLaberAdapter.OnItemClickListener() {
+        mPatientLaberAdapter.setOnItemClickListener(new PatientLaberAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
 
@@ -116,21 +115,6 @@ public class BQJLActivity extends AppCompatActivity{
             @Override
             public void onLongClick(int position) {
 
-            }
-        });
-        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (mLoadDate) {
-                        int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
-                        if (lastVisiblePosition >= layoutManager.getItemCount() - 1) {
-                            pageno++;
-                            getDate();
-                        }
-                    }
-                }
             }
         });
     }
@@ -159,7 +143,7 @@ public class BQJLActivity extends AppCompatActivity{
         mApp = (JYKJApplication) getApplication();
         initLayout();
         initHandler();
-        getDate();
+
     }
 
     private void initHandler() {
@@ -182,28 +166,6 @@ public class BQJLActivity extends AppCompatActivity{
         };
     }
 
-   /* @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-        if(null==loadDataTask){
-            QueryContactCondPage querybean = new QueryContactCondPage();
-            querybean.setPageNum(String.valueOf(pageno));
-            querybean.setLoginPatientPosition(mApp.loginDoctorPosition);
-            querybean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-            querybean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-            querybean.setRequestClientType("1");
-            querybean.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
-            loadDataTask = new LoadDataTask(querybean);
-            loadDataTask.execute();
-        }else{
-            pageno = pageno + 1;
-            loadDataTask.execute();
-        }
-    }
-
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
-    }*/
 
 
     /**
@@ -226,8 +188,8 @@ public class BQJLActivity extends AppCompatActivity{
      */
     private void getDate() {
         //连接网络，登录
-        //getProgressBar("请稍候。。。。", "正在加载数据");
-        /*new Thread() {
+        getProgressBar("请稍候。。。。", "正在加载数据");
+        new Thread() {
             public void run() {
                 try {
                     ProvideViewSysUserPatientInfoAndRegion provideViewSysUserPatientInfoAndRegion = new ProvideViewSysUserPatientInfoAndRegion();
@@ -255,18 +217,7 @@ public class BQJLActivity extends AppCompatActivity{
                 }
                 mHandler.sendEmptyMessage(1);
             }
-        }.start();*/
-        //if(null==loadDataTask){
-            QueryContactCondPage quebean = new QueryContactCondPage();
-            quebean.setPageNum(String.valueOf(pageno));
-            quebean.setLoginPatientPosition(mApp.loginDoctorPosition);
-            quebean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-            quebean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-            quebean.setRequestClientType("1");
-            quebean.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
-            loadDataTask = new LoadDataTask(quebean);
-            loadDataTask.execute();
-        //}
+        }.start();
     }
 
 
@@ -298,44 +249,5 @@ public class BQJLActivity extends AppCompatActivity{
         }
     }
 
-
-    class LoadDataTask extends AsyncTask<Void,Void,List<ProvidePatientLabel>>{
-        QueryContactCondPage querybean;
-        LoadDataTask(QueryContactCondPage querybean){
-            this.querybean = querybean;
-        }
-        @Override
-        protected List<ProvidePatientLabel> doInBackground(Void... voids) {
-            mLoadDate = false;
-            List<ProvidePatientLabel> retlist = new ArrayList();
-            try {
-                querybean.setPageNum(String.valueOf(pageno));
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(querybean),Constant.SERVICEURL+ INetAddress.QUERY_PATIENTLABEL_URL);
-                NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
-                if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
-                    retlist = JSON.parseArray(retEntity.getResJsonData(),ProvidePatientLabel.class);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return retlist;
-        }
-
-        @Override
-        protected void onPostExecute(List<ProvidePatientLabel> providePatientLabels) {
-            if(providePatientLabels.size()>0){
-                mProvidePatientLabel.addAll(providePatientLabels);
-                mPatientLaberAdapter.setDate(mProvidePatientLabel);
-                mPatientLaberAdapter.notifyDataSetChanged();
-            }else{
-                if(pageno>1){
-                    pageno = pageno - 1;
-                }
-            }
-            mLoadDate = true;
-            //cacerProgress();
-        }
-    }
 
 }

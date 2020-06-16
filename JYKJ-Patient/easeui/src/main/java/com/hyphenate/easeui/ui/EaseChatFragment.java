@@ -180,6 +180,9 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     private             String                  operDoctorName;
     private             String                  orderCode;
 
+    private             String                  doctorUrl;
+    private             String                  patientUrl;
+
     public              UpdMyClinicDetailByOrderTreatmentLimitNum updMyClinicDetailByOrderTreatmentLimitNum;
 
     @Override
@@ -209,36 +212,40 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         operDoctorName = fragmentArgs.getString("operDoctorName","");
         orderCode = fragmentArgs.getString("orderCode","");
 
-
+        //头像
+        doctorUrl = fragmentArgs.getString("doctorUrl");
+        patientUrl = fragmentArgs.getString("patientUrl");
+        com.hyphenate.easeui.Constant.doctorUrl = doctorUrl;
+        com.hyphenate.easeui.Constant.patientUrl = patientUrl;
         // userId you are chat with or group id
         toChatUsername = fragmentArgs.getString(EaseConstant.EXTRA_USER_ID);
         toChatUsernameName = fragmentArgs.getString(EaseConstant.EXTRA_USER_NAME);
         mChatType = fragmentArgs.getString("chatType");
-        itemStrings = new int[]{ R.string.attach_take_pic, R.string.attach_picture,
-                R.string.attach_voice_call,R.string.attach_video,R.string.attach_file};
-        itemdrawables = new int[]{ R.mipmap.hyhd_pz, R.mipmap.hyhd_tp,
-                R.mipmap.hyhd_yy, R.mipmap.hyhd_sp,R.mipmap.hyhd_wj };
-        itemIds = new int[]{ ITEM_TAKE_PICTURE, ITEM_PICTURE,ITEM_CALL,ITEM_VIDEO,ITEM_WJ };
-        if ("twjz".equals(mChatType))
-        {
+//        itemStrings = new int[]{ R.string.attach_take_pic, R.string.attach_picture,
+//                R.string.attach_voice_call,R.string.attach_video,R.string.attach_file};
+//        itemdrawables = new int[]{ R.mipmap.hyhd_pz, R.mipmap.hyhd_tp,
+//                R.mipmap.hyhd_yy, R.mipmap.hyhd_sp,R.mipmap.hyhd_wj };
+//        itemIds = new int[]{ ITEM_TAKE_PICTURE, ITEM_PICTURE,ITEM_CALL,ITEM_VIDEO,ITEM_WJ };
+//        if ("twjz".equals(mChatType))
+//        {
             itemStrings = new int[]{ R.string.attach_take_pic, R.string.attach_picture};
              itemdrawables = new int[]{ R.mipmap.hyhd_pz, R.mipmap.hyhd_tp};
             itemIds = new int[]{ ITEM_TAKE_PICTURE, ITEM_PICTURE };
-        }
-
-        if ("dhjz".equals(mChatType))
-        {
-            itemStrings = new int[]{R.string.attach_voice_call};
-            itemdrawables = new int[]{ R.mipmap.hyhd_yy};
-            itemIds = new int[]{ ITEM_CALL };
-        }
-
-        if ("spjz".equals(mChatType))
-        {
-            itemStrings = new int[]{R.string.attach_video};
-            itemdrawables = new int[]{ R.mipmap.hyhd_sp};
-            itemIds = new int[]{ ITEM_VIDEO };
-        }
+//        }
+//
+//        if ("dhjz".equals(mChatType))
+//        {
+//            itemStrings = new int[]{R.string.attach_voice_call};
+//            itemdrawables = new int[]{ R.mipmap.hyhd_yy};
+//            itemIds = new int[]{ ITEM_CALL };
+//        }
+//
+//        if ("spjz".equals(mChatType))
+//        {
+//            itemStrings = new int[]{R.string.attach_video};
+//            itemdrawables = new int[]{ R.mipmap.hyhd_sp};
+//            itemIds = new int[]{ ITEM_VIDEO };
+//        }
         this.turnOnTyping = turnOnTyping();
 
         super.onActivityCreated(savedInstanceState);
@@ -492,7 +499,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 
     protected void onMessageListInit(){
         messageList.init(toChatUsername, chatType, chatFragmentHelper != null ?
-                chatFragmentHelper.onSetCustomChatRowProvider() : null);
+                chatFragmentHelper.onSetCustomChatRowProvider() : null,doctorUrl,patientUrl);
         setListItemClickListener();
 
         messageList.getListView().setOnTouchListener(new OnTouchListener() {
