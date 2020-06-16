@@ -3,6 +3,7 @@ package www.patient.jykj_zxyl.activity.home.myself;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,9 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.google.zxing.Result;
 
@@ -25,6 +29,9 @@ import java.util.List;
 
 import entity.HZIfno;
 import entity.basicDate.ProvideBasicsDomain;
+import entity.mySelf.ProvideViewPatientHealthyAndBasics;
+import entity.mySelf.SubSymptomInfo;
+import entity.mySelf.conditions.QueryContactCond;
 import entity.patientInfo.ProvidePatientLabel;
 import entity.patientInfo.ProvideViewSysUserPatientInfoAndRegion;
 import netService.HttpNetService;
@@ -36,6 +43,8 @@ import www.patient.jykj_zxyl.adapter.myself.JDDAQBZZRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
+import www.patient.jykj_zxyl.util.INetAddress;
+import www.patient.jykj_zxyl.util.StrUtils;
 import www.patient.jykj_zxyl.util.Util;
 import zxing.android.CaptureActivity;
 import zxing.decode.DecodeImgCallback;
@@ -83,8 +92,12 @@ public class ZZXXActivity extends AppCompatActivity {
     private         LinearLayout            li_hbjb;
     private         LinearLayout            li_mqzlfa;
     private         LinearLayout    li_back;
-
-
+    private TextView subinfo_btn;
+    private EditText self_descrip;
+    private LoadDataTask loadDataTask = null;
+    private SubDataTask subDataTask = null;
+    private boolean isupstate = false;
+    private int upid = 0;
     /**
      * 初始化布局
      */
@@ -158,12 +171,15 @@ public class ZZXXActivity extends AppCompatActivity {
         li_bfz = (LinearLayout)this.findViewById(R.id.li_bfz);
         li_hbjb = (LinearLayout)this.findViewById(R.id.li_hbjb);
         li_mqzlfa = (LinearLayout)this.findViewById(R.id.li_mqzlfa);
-
-        li_qbzz.setOnClickListener(new ButtonClick());
-        li_mqzz.setOnClickListener(new ButtonClick());
-        li_bfz.setOnClickListener(new ButtonClick());
-        li_hbjb.setOnClickListener(new ButtonClick());
-        li_mqzlfa.setOnClickListener(new ButtonClick());
+        subinfo_btn = (TextView)this.findViewById(R.id.subinfo_btn);
+        self_descrip = (EditText)this.findViewById(R.id.self_descrip);
+        ButtonClick parbtnclick = new ButtonClick();
+        li_qbzz.setOnClickListener(parbtnclick);
+        li_mqzz.setOnClickListener(parbtnclick);
+        li_bfz.setOnClickListener(parbtnclick);
+        li_hbjb.setOnClickListener(parbtnclick);
+        li_mqzlfa.setOnClickListener(parbtnclick);
+        subinfo_btn.setOnClickListener(parbtnclick);
     }
 
     @Override
@@ -243,12 +259,93 @@ public class ZZXXActivity extends AppCompatActivity {
                             .putExtra("type",5)
                             .putExtra("zzxx",(Serializable) mMQZLFAList),5);
                     break;
-
+                case R.id.subinfo_btn:
+                    savedata();
+                    break;
             }
         }
     }
 
-
+    void savedata(){
+        SubSymptomInfo subinfo = new SubSymptomInfo();
+        subinfo.setLoginPatientPosition(mApp.loginDoctorPosition);
+        subinfo.setRequestClientType("1");
+        subinfo.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        subinfo.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        if(isupstate){
+            subinfo.setHealthyId(String.valueOf(upid));
+        }else{
+            subinfo.setHealthyId("0");
+        }
+        StringBuffer codesb = new StringBuffer();
+        for(int i=0;i<mQBZZList.size();i++){
+            ProvideBasicsDomain parbean = mQBZZList.get(i);
+            if(codesb.toString().length()>0){
+                codesb.append("^");
+            }
+            codesb.append(parbean.getAttrCode());
+        }
+        if(codesb.toString().length()>0){
+            subinfo.setOnsetSymptoms(codesb.toString());
+        }else{
+            subinfo.setOnsetSymptoms("");
+        }
+        codesb = new StringBuffer();
+        for(int i=0;i<mMQZZList.size();i++){
+            ProvideBasicsDomain parbean = mMQZZList.get(i);
+            if(codesb.toString().length()>0){
+                codesb.append("^");
+            }
+            codesb.append(parbean.getAttrCode());
+        }
+        if(codesb.toString().length()>0){
+            subinfo.setCurrentSymptoms(codesb.toString());
+        }else{
+            subinfo.setCurrentSymptoms("");
+        }
+        codesb = new StringBuffer();
+        for(int i=0;i<mBFZList.size();i++){
+            ProvideBasicsDomain parbean = mBFZList.get(i);
+            if(codesb.toString().length()>0){
+                codesb.append("^");
+            }
+            codesb.append(parbean.getAttrCode());
+        }
+        if(codesb.toString().length()>0){
+            subinfo.setComplication(codesb.toString());
+        }else{
+            subinfo.setComplication("");
+        }
+        codesb = new StringBuffer();
+        for(int i=0;i<mHBJBList.size();i++){
+            ProvideBasicsDomain parbean = mHBJBList.get(i);
+            if(codesb.toString().length()>0){
+                codesb.append("^");
+            }
+            codesb.append(parbean.getAttrCode());
+        }
+        if(codesb.toString().length()>0){
+            subinfo.setCombinedDisease(codesb.toString());
+        }else{
+            subinfo.setCombinedDisease("");
+        }
+        codesb = new StringBuffer();
+        for(int i=0;i<mMQZLFAList.size();i++){
+            ProvideBasicsDomain parbean = mMQZLFAList.get(i);
+            if(codesb.toString().length()>0){
+                codesb.append("^");
+            }
+            codesb.append(parbean.getAttrCode());
+        }
+        if(codesb.toString().length()>0){
+            subinfo.setCurrentTreatmentPlan(codesb.toString());
+        }else{
+            subinfo.setCurrentTreatmentPlan("");
+        }
+        subinfo.setStateOfIllness(StrUtils.defaultStr(self_descrip.getText()));
+        subDataTask = new SubDataTask(subinfo);
+        subDataTask.execute();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -259,7 +356,7 @@ public class ZZXXActivity extends AppCompatActivity {
         mApp = (JYKJApplication) getApplication();
         initLayout();
         initHandler();
-
+        getDate();
     }
 
     private void initHandler() {
@@ -305,7 +402,7 @@ public class ZZXXActivity extends AppCompatActivity {
     private void getDate() {
         //连接网络，登录
         getProgressBar("请稍候。。。。", "正在加载数据");
-        new Thread() {
+       /* new Thread() {
             public void run() {
                 try {
                     ProvideViewSysUserPatientInfoAndRegion provideViewSysUserPatientInfoAndRegion = new ProvideViewSysUserPatientInfoAndRegion();
@@ -333,7 +430,19 @@ public class ZZXXActivity extends AppCompatActivity {
                 }
                 mHandler.sendEmptyMessage(1);
             }
-        }.start();
+        }.start();*/
+       if(null==loadDataTask) {
+           QueryContactCond querycond = new QueryContactCond();
+           querycond.setLoginPatientPosition(mApp.loginDoctorPosition);
+           querycond.setRequestClientType("1");
+           querycond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+           querycond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+           loadDataTask = new LoadDataTask(querycond);
+           loadDataTask.execute();
+       }else{
+           loadDataTask.execute();
+       }
+
     }
 
 
@@ -365,5 +474,152 @@ public class ZZXXActivity extends AppCompatActivity {
         }
     }
 
+    class SubDataTask extends AsyncTask<Void,Void,Boolean>{
+        SubSymptomInfo subean;
+        String savemsg = "";
+        SubDataTask(SubSymptomInfo subean){
+            this.subean = subean;
+        }
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try {
+                String substr = new Gson().toJson(subean);
+                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+substr,Constant.SERVICEURL+INetAddress.MAINTAIN_HEALTHY_SYMPTOM_URL);
+                NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
+                if(1==retEntity.getResCode()){
+                    savemsg = "保存成功";
+                    return true;
+                }else{
+                    savemsg = retEntity.getResMsg();
+                    return false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                savemsg = "保存失败";
+            }
 
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if(aBoolean) {
+                Toast.makeText(mContext, savemsg, Toast.LENGTH_SHORT);
+                finish();
+            }
+            else
+                Toast.makeText(mContext,savemsg,Toast.LENGTH_SHORT);
+        }
+    }
+
+    class LoadDataTask extends AsyncTask<Void,Void, ProvideViewPatientHealthyAndBasics>{
+        QueryContactCond queryCond;
+        LoadDataTask(QueryContactCond queryCond){
+            this.queryCond = queryCond;
+        }
+        @Override
+        protected ProvideViewPatientHealthyAndBasics doInBackground(Void... voids) {
+            ProvideViewPatientHealthyAndBasics retbean = null;
+            try {
+                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryCond),Constant.SERVICEURL+ INetAddress.QUERY_HEALTHY_SYMPTOM_URL);
+                NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
+                if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
+                    retbean = JSON.parseObject(retEntity.getResJsonData(),ProvideViewPatientHealthyAndBasics.class);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return retbean;
+        }
+
+        @Override
+        protected void onPostExecute(ProvideViewPatientHealthyAndBasics provideViewPatientHealthyAndBasics) {
+            if(null!=provideViewPatientHealthyAndBasics){
+                String parattrcodes = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getOnsetSymptoms());
+                String parattrnames = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getOnsetSymptomsName());
+                if(parattrcodes.length()>0){
+                    String[] paracodearr = parattrcodes.split("\\^");
+                    String[] paranamearr = parattrnames.split("、");
+                    mQBZZList = new ArrayList<>();
+                    for(int i=0;i<paracodearr.length;i++){
+                        ProvideBasicsDomain attrbean = new ProvideBasicsDomain();
+                        attrbean.setAttrCode(Integer.parseInt(paracodearr[i]));
+                        attrbean.setAttrName(paranamearr[i].replaceAll("。",""));
+                        mQBZZList.add(attrbean);
+                    }
+                    mJDDAQBZZRecycleAdapter.setDate(mQBZZList);
+                    mJDDAQBZZRecycleAdapter.notifyDataSetChanged();
+                }
+
+                parattrcodes = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getCurrentSymptoms());
+                parattrnames = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getCurrentSymptomsName());
+                if(parattrcodes.length()>0){
+                    String[] paracodearr = parattrcodes.split("\\^");
+                    String[] paranamearr = parattrnames.split("、");
+                    mMQZZList = new ArrayList<>();
+                    for(int i=0;i<paracodearr.length;i++){
+                        ProvideBasicsDomain attrbean = new ProvideBasicsDomain();
+                        attrbean.setAttrCode(Integer.parseInt(paracodearr[i]));
+                        attrbean.setAttrName(paranamearr[i].replaceAll("。",""));
+                        mMQZZList.add(attrbean);
+                    }
+                    mJDDAMQZZRecycleAdapter.setDate(mMQZZList);
+                    mJDDAMQZZRecycleAdapter.notifyDataSetChanged();
+                }
+
+                parattrcodes = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getComplication());
+                parattrnames = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getComplicationName());
+                if(parattrcodes.length()>0){
+                    String[] paracodearr = parattrcodes.split("\\^");
+                    String[] paranamearr = parattrnames.split("、");
+                    mBFZList = new ArrayList<>();
+                    for(int i=0;i<paracodearr.length;i++){
+                        ProvideBasicsDomain attrbean = new ProvideBasicsDomain();
+                        attrbean.setAttrCode(Integer.parseInt(paracodearr[i]));
+                        attrbean.setAttrName(paranamearr[i].replaceAll("。",""));
+                        mBFZList.add(attrbean);
+                    }
+                    mJDDABFZRecycleAdapter.setDate(mBFZList);
+                    mJDDABFZRecycleAdapter.notifyDataSetChanged();
+                }
+
+                parattrcodes = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getCombinedDisease());
+                parattrnames = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getCombinedDiseaseName());
+                if(parattrcodes.length()>0){
+                    String[] paracodearr = parattrcodes.split("\\^");
+                    String[] paranamearr = parattrnames.split("、");
+                    mHBJBList = new ArrayList<>();
+                    for(int i=0;i<paracodearr.length;i++){
+                        ProvideBasicsDomain attrbean = new ProvideBasicsDomain();
+                        attrbean.setAttrCode(Integer.parseInt(paracodearr[i]));
+                        attrbean.setAttrName(paranamearr[i].replaceAll("。",""));
+                        mHBJBList.add(attrbean);
+                    }
+                    mJDDAHBJBRecycleAdapter.setDate(mHBJBList);
+                    mJDDAHBJBRecycleAdapter.notifyDataSetChanged();
+                }
+
+                parattrcodes = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getCurrentTreatmentPlan());
+                parattrnames = StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getCurrentTreatmentPlanName());
+                if(parattrcodes.length()>0){
+                    String[] paracodearr = parattrcodes.split("\\^");
+                    String[] paranamearr = parattrnames.split("、");
+                    mMQZLFAList = new ArrayList<>();
+                    for(int i=0;i<paracodearr.length;i++){
+                        ProvideBasicsDomain attrbean = new ProvideBasicsDomain();
+                        attrbean.setAttrCode(Integer.parseInt(paracodearr[i]));
+                        attrbean.setAttrName(paranamearr[i].replaceAll("。",""));
+                        mMQZLFAList.add(attrbean);
+                    }
+                    mJDDAMQZLFARecycleAdapter.setDate(mMQZLFAList);
+                    mJDDAMQZLFARecycleAdapter.notifyDataSetChanged();
+                }
+
+                self_descrip.setText(StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getStateOfIllness()));
+                isupstate = true;
+                upid = provideViewPatientHealthyAndBasics.getHealthyId().intValue();
+            }
+            cacerProgress();
+        }
+    }
 }

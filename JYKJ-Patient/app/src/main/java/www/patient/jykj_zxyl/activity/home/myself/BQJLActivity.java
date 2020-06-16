@@ -54,7 +54,11 @@ import www.patient.jykj_zxyl.util.Util;
 /**
  * 个人中心==》建档档案==》==>标签记录
  */
+<<<<<<< HEAD
 public class BQJLActivity extends AppCompatActivity {
+=======
+public class BQJLActivity extends AppCompatActivity{
+>>>>>>> 49c9f5f523ecf3ad74076ea6a5fea416f7a7cda6
 
 
     private         Context                 mContext;
@@ -77,7 +81,14 @@ public class BQJLActivity extends AppCompatActivity {
 
     private             LinearLayout        li_back;
 
+<<<<<<< HEAD
 
+=======
+    private LoadDataTask loadDataTask;
+    private int pageno = 1;
+    private int lastVisibleIndex = 0;
+    private boolean mLoadDate = true;
+>>>>>>> 49c9f5f523ecf3ad74076ea6a5fea416f7a7cda6
 
     /**
      * 初始化布局
@@ -115,6 +126,21 @@ public class BQJLActivity extends AppCompatActivity {
             @Override
             public void onLongClick(int position) {
 
+            }
+        });
+        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (mLoadDate) {
+                        int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+                        if (lastVisiblePosition >= layoutManager.getItemCount() - 1) {
+                            pageno++;
+                            getDate();
+                        }
+                    }
+                }
             }
         });
     }
@@ -166,6 +192,31 @@ public class BQJLActivity extends AppCompatActivity {
         };
     }
 
+<<<<<<< HEAD
+=======
+   /* @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        if(null==loadDataTask){
+            QueryContactCondPage querybean = new QueryContactCondPage();
+            querybean.setPageNum(String.valueOf(pageno));
+            querybean.setLoginPatientPosition(mApp.loginDoctorPosition);
+            querybean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+            querybean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+            querybean.setRequestClientType("1");
+            querybean.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
+            loadDataTask = new LoadDataTask(querybean);
+            loadDataTask.execute();
+        }else{
+            pageno = pageno + 1;
+            loadDataTask.execute();
+        }
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
+    }*/
+>>>>>>> 49c9f5f523ecf3ad74076ea6a5fea416f7a7cda6
 
 
     /**
@@ -188,8 +239,13 @@ public class BQJLActivity extends AppCompatActivity {
      */
     private void getDate() {
         //连接网络，登录
+<<<<<<< HEAD
         getProgressBar("请稍候。。。。", "正在加载数据");
         new Thread() {
+=======
+        //getProgressBar("请稍候。。。。", "正在加载数据");
+        /*new Thread() {
+>>>>>>> 49c9f5f523ecf3ad74076ea6a5fea416f7a7cda6
             public void run() {
                 try {
                     ProvideViewSysUserPatientInfoAndRegion provideViewSysUserPatientInfoAndRegion = new ProvideViewSysUserPatientInfoAndRegion();
@@ -217,7 +273,22 @@ public class BQJLActivity extends AppCompatActivity {
                 }
                 mHandler.sendEmptyMessage(1);
             }
+<<<<<<< HEAD
         }.start();
+=======
+        }.start();*/
+        //if(null==loadDataTask){
+            QueryContactCondPage quebean = new QueryContactCondPage();
+            quebean.setPageNum(String.valueOf(pageno));
+            quebean.setLoginPatientPosition(mApp.loginDoctorPosition);
+            quebean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+            quebean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+            quebean.setRequestClientType("1");
+            quebean.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
+            loadDataTask = new LoadDataTask(quebean);
+            loadDataTask.execute();
+        //}
+>>>>>>> 49c9f5f523ecf3ad74076ea6a5fea416f7a7cda6
     }
 
 
@@ -250,4 +321,46 @@ public class BQJLActivity extends AppCompatActivity {
     }
 
 
+<<<<<<< HEAD
+=======
+    class LoadDataTask extends AsyncTask<Void,Void,List<ProvidePatientLabel>>{
+        QueryContactCondPage querybean;
+        LoadDataTask(QueryContactCondPage querybean){
+            this.querybean = querybean;
+        }
+        @Override
+        protected List<ProvidePatientLabel> doInBackground(Void... voids) {
+            mLoadDate = false;
+            List<ProvidePatientLabel> retlist = new ArrayList();
+            try {
+                querybean.setPageNum(String.valueOf(pageno));
+                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(querybean),Constant.SERVICEURL+ INetAddress.QUERY_PATIENTLABEL_URL);
+                NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
+                if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
+                    retlist = JSON.parseArray(retEntity.getResJsonData(),ProvidePatientLabel.class);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return retlist;
+        }
+
+        @Override
+        protected void onPostExecute(List<ProvidePatientLabel> providePatientLabels) {
+            if(providePatientLabels.size()>0){
+                mProvidePatientLabel.addAll(providePatientLabels);
+                mPatientLaberAdapter.setDate(mProvidePatientLabel);
+                mPatientLaberAdapter.notifyDataSetChanged();
+            }else{
+                if(pageno>1){
+                    pageno = pageno - 1;
+                }
+            }
+            mLoadDate = true;
+            //cacerProgress();
+        }
+    }
+
+>>>>>>> 49c9f5f523ecf3ad74076ea6a5fea416f7a7cda6
 }
