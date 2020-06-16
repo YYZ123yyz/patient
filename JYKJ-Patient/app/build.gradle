@@ -12,6 +12,9 @@ android {
         packagingOptions {
             exclude 'META-INF/proguard/androidx-annotations.pro'
         }
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86"
+        }
     }
     buildTypes {
         release {
@@ -47,14 +50,16 @@ android {
 
     signingConfigs{
         debug{  //这里配置的就是debug的签名配置了
-            //storeFile file("E:\\项目\\贾青\\在线医疗系统\\apk\\患者端\\xianjiuyipatient.jsk")   //这个文件是我的,改成你自己的release签名文件
-            storeFile file("E:\\tmpwork\\git\\androidwork\\JYKJcode\\JYKJ-Patient\\app\\src\\main\\yyz.jks")
-            //storePassword "jiuyihtnpatient"   //密码改成自己的
-            //keyAlias "xianjiuyipatient"              //再改成你自己的
-            //keyPassword "jiuyihealthpatient"     //再改成你自己的
-            storePassword "JYKJ123456"   //密码改成自己的
-            keyAlias "JYKJ"              //再改成你自己的
-            keyPassword "JYKJ123456"     //再改成你自己的
+            storeFile file("E:\\tmpwork\\git\\androidwork\\JYKJcode\\JYKJ-Patient\\app\\src\\main\\xianjiuyipatient.jsk")   //这个文件是我的,改成你自己的release签名文件
+            //storeFile file("E:\\tmpwork\\git\\androidwork\\JYKJcode\\JYKJ-Patient\\app\\src\\main\\yyz.jks")
+            storePassword "jiuyihtnpatient"   //密码改成自己的
+            //storeFile file("E:\tmpwork\git\androidwork\JYKJcode\JYKJ-Patient\app\src\main\xianjiuyipatient.jsk")   //这个文件是我的,改成你自己的release签名文件
+            //storeFile file("E:\\tmpwork\\git\\androidwork\\JYKJcode\\JYKJ-Patient\\app\\src\\main\\yy
+            keyAlias "xianjiuyipatient"              //再改成你自己的
+            keyPassword "jiuyihealthpatient"     //再改成你自己的
+            //storePassword "JYKJ123456"   //密码改成自己的
+            //keyAlias "JYKJ"              //再改成你自己的
+            //keyPassword "JYKJ123456"     //再改成你自己的
         }
     }
 
@@ -104,5 +109,5 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
-    api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.1.6'
 }
