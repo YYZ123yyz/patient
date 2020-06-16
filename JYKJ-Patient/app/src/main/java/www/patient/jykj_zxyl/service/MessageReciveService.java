@@ -89,7 +89,10 @@ public class MessageReciveService extends Service {
                 JYKJApplication  application = (JYKJApplication) getApplication();
                 application.gNetConnectionHX = false;
                 application.setNetConnectionStateHX();
-                if (error == EMError.USER_REMOVED || error == EMError.USER_LOGIN_ANOTHER_DEVICE || error == EMError.SERVER_SERVICE_RESTRICTED) {
+                if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
+                    application.user_login_another_device();
+                }
+                if (error == EMError.USER_REMOVED || error == EMError.SERVER_SERVICE_RESTRICTED) {
                     System.out.println("掉线");
                 } else {
                     System.out.println("掉线");

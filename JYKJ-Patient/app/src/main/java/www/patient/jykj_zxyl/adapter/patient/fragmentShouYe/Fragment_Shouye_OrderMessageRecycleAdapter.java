@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -85,10 +86,12 @@ public class Fragment_Shouye_OrderMessageRecycleAdapter extends RecyclerView.Ada
         {
             viewHolder.tv_zf.setVisibility(View.GONE);
             viewHolder.iv_sc.setVisibility(View.GONE);
+            viewHolder.rv_zf_sc.setVisibility(View.GONE);
         }
         else if (datas.get(position).getFlagPayBtn() == 1) {
             viewHolder.tv_zf.setVisibility(View.VISIBLE);
             viewHolder.iv_sc.setVisibility(View.VISIBLE);
+            viewHolder.rv_zf_sc.setVisibility(View.VISIBLE);
         }
         viewHolder.iv_sc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +100,12 @@ public class Fragment_Shouye_OrderMessageRecycleAdapter extends RecyclerView.Ada
             }
         });
         viewHolder.tv_zf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mFragmentShouYe_DDXX.zhifuOrderMessage(position);
+            }
+        });
+        viewHolder.mClickLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mFragmentShouYe_DDXX.zhifuOrderMessage(position);
@@ -145,10 +154,11 @@ public class Fragment_Shouye_OrderMessageRecycleAdapter extends RecyclerView.Ada
             public ImageView iv_sc;                               //删除
             public TextView tv_zf;                               //支付
 
+            public RelativeLayout rv_zf_sc;
 
             public ViewHolder(View view){
                 super(view);
-                mClickLinearLayout = (LinearLayout) view.findViewById(R.id.item_fragmentYLZX_rmjxLayout);
+                mClickLinearLayout = (LinearLayout) view.findViewById(R.id.itemClick);
 
                 tv_jzlx = (TextView)view.findViewById(R.id.tv_jzlx);
                 tv_zfzt = (TextView)view.findViewById(R.id.tv_zfzt);
@@ -156,6 +166,8 @@ public class Fragment_Shouye_OrderMessageRecycleAdapter extends RecyclerView.Ada
                 tv_xxnr = (TextView)view.findViewById(R.id.tv_xxnr);
                 iv_sc = (ImageView)view.findViewById(R.id.iv_sc);
                 tv_zf = (TextView)view.findViewById(R.id.tv_zf);
+
+                rv_zf_sc = (RelativeLayout)view.findViewById(R.id.rv_zf_sc);
 
             }
         }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    >
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="200dp"
+        android:id="@+id/iv_gb"
+        android:background="@mipmap/yjjx" />
+        <LinearLayout
+            android:layout_width="233dp"
+            android:layout_height="297dp"
+            android:layout_marginTop="15dp"
+            android:background="@mipmap/bkdtc"
+
+            android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新功能即将上线"
+            android:textColor="#ff343434"
+            android:layout_marginTop="176dp"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="敬请期待"
+        android:textColor="#ff343434"
+        android:textSize="18sp"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <TextView
+        android:layout_width="140dp"
+        android:layout_height="30dp"
+        android:text="确 定"
+        android:background="@drawable/jqqd_qd"
+        android:textColor="#ffffffff"
+        android:textSize="15sp"
+        android:id="@+id/tv_qd"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        />
+        </LinearLayout>
+</RelativeLayout>

@@ -2,18 +2,22 @@ package www.patient.jykj_zxyl.activity.home;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.alipay.sdk.app.PayTask;
 import com.google.gson.Gson;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -23,6 +27,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 import entity.ProvideInteractOrderInfo;
 import entity.ProvideViewMyDoctorOrderAndTreatment;
@@ -30,10 +35,14 @@ import entity.ProvideWechatPayModel;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
+import www.patient.jykj_zxyl.activity.home.patient.WZXXOrderActivity;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeTJZJAdapter;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.pay.PayResult;
 import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.util.widget.AuthorityDialog;
+import www.patient.jykj_zxyl.wxapi.WXPayEntryActivity;
 
 
 /**
@@ -75,12 +84,21 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
     private         TextView                    tv_serviceName;             //名称
     private         LinearLayout                tv_jzsj;                      //截止时间
 
+//    private         TextView                    tv_kszx;                    //开始咨询
+
+    private         TextView                tv_payModel;                    //支付类型
+    private         ImageView                iv_payModel;                    //支付类型图片
 
     public          IWXAPI                  msgApi;
 
     private         ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatment;
 
     private         AuthorityDialog         mAuthorityDialog;
+
+    private String pay_appid;
+    private String pay_productid;
+    private static final int SDK_PAY_FLAG = 3;
+
     /**
      * 展示数据
      * @param provideViewMyDoctorOrderAndTreatment
@@ -95,10 +113,10 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
             tv_ddrq.setText(Util.dateToStr(provideViewMyDoctorOrderAndTreatment.getOrderDate()));
 
         tv_fwjzsj.setText(provideViewMyDoctorOrderAndTreatment.getServiceStopDate());
-        if (provideViewMyDoctorOrderAndTreatment.getOrderTotal() == null)
+        if (provideViewMyDoctorOrderAndTreatment.getServiceTotal() == null)
             tv_fwzj.setText("0.0元");
         else
-            tv_fwzj.setText(provideViewMyDoctorOrderAndTreatment.getOrderTotal()+"元");
+            tv_fwzj.setText(provideViewMyDoctorOrderAndTreatment.getServiceTotal()+"元");
         tv_ddms1.setText(provideViewMyDoctorOrderAndTreatment.getOrderDesc());
         if (provideViewMyDoctorOrderAndTreatment.getActualPayment() == null)
             tv_sfk.setText("0.0元");
@@ -136,6 +154,47 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
                     tv_fwkssj.setText(Util.dateToStr(provideViewMyDoctorOrderAndTreatment.getTreatmentDate()));
                 break;
         }
+
+        //待付款
+       if (provideViewMyDoctorOrderAndTreatment.getFlagOrderState() == 1)
+       {
+           mCommit.setVisibility(View.VISIBLE);
+//           tv_kszx.setVisibility(View.GONE);
+       }
+       else if (provideViewMyDoctorOrderAndTreatment.getFlagOrderState() == 2)
+        {
+            mCommit.setVisibility(View.GONE);
+//            tv_kszx.setVisibility(View.VISIBLE);
+        }
+        else
+       {
+           mCommit.setVisibility(View.GONE);
+//           tv_kszx.setVisibility(View.GONE);
+       }
+
+       if (provideViewMyDoctorOrderAndTreatment.getPaymentMode() != null)
+       {
+           //0:未知;1:微信支付;2:支付宝支付;3:银联支付;
+           switch (provideViewMyDoctorOrderAndTreatment.getPaymentMode())
+           {
+               case 0:
+                   tv_payModel.setText("未知");
+                   iv_payModel.setVisibility(View.GONE);
+                   break;
+               case 1:
+                   tv_payModel.setText("微信");
+                   iv_payModel.setBackgroundResource(R.mipmap.zffs_wxzf);
+                   break;
+               case 2:
+                   tv_payModel.setText("支付宝");
+                   iv_payModel.setBackgroundResource(R.mipmap.pay_zfb);
+                   break;
+               case 3:
+                   tv_payModel.setText("银联支付");
+                   iv_payModel.setVisibility(View.GONE);
+                   break;
+           }
+       }
     }
 
 
@@ -151,11 +210,21 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
         tv_fwzj = (TextView)this.findViewById(R.id.tv_fwzj);
         tv_ddms1 = (TextView)this.findViewById(R.id.tv_ddms1);
         tv_sfk = (TextView)this.findViewById(R.id.tv_sfk);
-
+//        tv_kszx = (TextView)this.findViewById(R.id.tv_kszx);
+//        tv_kszx.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(mContext,WDYSActivity.class));
+//            }
+//        });
         tv_serviceName = (TextView)this.findViewById(R.id.tv_serviceName);
         tv_jzsj = (LinearLayout) this.findViewById(R.id.tv_jzsj);
         mCommit = (TextView)this.findViewById(R.id.commit);
         mCommit.setOnClickListener(new ButtonClick());
+
+        tv_payModel = (TextView)this.findViewById(R.id.tv_payModel);
+        iv_payModel = (ImageView)this.findViewById(R.id.iv_payModel);
+
 //        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
@@ -191,7 +260,12 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
         }.start();
     }
 
-
+    /**
+     * 关闭支付
+     */
+    public void gbZF() {
+        mAuthorityDialog.cancel();
+    }
 
 
     class   ButtonClick implements View.OnClickListener {
@@ -285,6 +359,7 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
         mContext = this;
         mActivity = this;
         mApp = (JYKJApplication) getApplication();
+        mApp.gPayCloseActivity.add(mActivity);
         provideInteractOrderInfo = (ProvideInteractOrderInfo) getIntent().getSerializableExtra("provideInteractOrderInfo");
 //        provideViewDoctorExpertRecommend = (ProvideViewDoctorExpertRecommend) getIntent().getSerializableExtra("provideViewDoctorExpertRecommend");
 //        provideDoctorSetSchedulingInfoGroupDate= (ProvideDoctorSetSchedulingInfoGroupDate) getIntent().getSerializableExtra("provideDoctorSetSchedulingInfoGroupDate");
@@ -296,6 +371,12 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
 //        }
         initView();
         initHandler();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         getDate();
     }
 
@@ -346,24 +427,77 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
                         break;
                     case 1:
                         cacerProgress();
-
-                        netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-
-                        if(netRetEntity.getResCode() == 1)
-                        {
-                            ProvideWechatPayModel provideWechatPayModel = JSON.parseObject(netRetEntity.getResJsonData(),ProvideWechatPayModel.class);
-                            //开始调起微信支付
-                            weichatPay(provideWechatPayModel);
+//                        ProvideWechatPayModel provideWechatPayModel = JSON.parseObject(mNetRetStr,ProvideWechatPayModel.class);
+//                        //开始调起微信支付
+//                        weichatPay(provideWechatPayModel);
+                        if (mNetRetStr.contains("&sign_type=")) {
+                            //mNetRetStr = mNetRetStr.substring(mNetRetStr.indexOf("&sign=")+"&sign=".length(),mNetRetStr.indexOf("&sign_type="));
+                            pay_appid = mNetRetStr.substring(mNetRetStr.indexOf("&app_id=") + "&app_id=".length(), mNetRetStr.indexOf("&biz_content="));
+                            pay_productid = mNetRetStr.substring(mNetRetStr.indexOf("&app_id=") + "&app_id=".length(), mNetRetStr.indexOf("&biz_content="));
+                            netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                            sendAliPay(netRetEntity.getResJsonData());
+                        } else {
+                            netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                            if (null != netRetEntity.getResMsg() && netRetEntity.getResMsg().length() > 0) {
+                                Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                            }
+                            if (netRetEntity.getResCode() == 1) {
+                                ProvideWechatPayModel provideWechatPayModel = JSON.parseObject(netRetEntity.getResJsonData(), ProvideWechatPayModel.class);
+                                //开始调起微信支付
+                                pay_appid = provideWechatPayModel.getAppId();
+                                pay_productid = pay_appid;
+                                weichatPay(provideWechatPayModel);
+                            }
                         }
-                        else
-                        {
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
-                        }
 
+                        break;
+                    case SDK_PAY_FLAG:
+                        PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                        /**
+                         * 对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                         */
+                        String resultInfo = payResult.getResult();
+                        String resultStatus = payResult.getResultStatus();
+                        Intent intent = new Intent(OrderMessage_OrderPayActivity.this, WXPayEntryActivity.class);
+                        intent.putExtra(WXPayEntryActivity.PAY_MESSAGE, resultInfo);
+                        intent.putExtra("pay_appid", pay_appid);
+                        intent.putExtra("pay_productid", pay_productid);
+                        if (TextUtils.equals(resultStatus, "9000")) {
+                            // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+//                        showAlert(WXEntryActivity.this, getString(R.string.pay_success) + payResult);
+                            intent.putExtra(WXPayEntryActivity.PAY_STATE, WXPayEntryActivity.SUCCESS);
+                        } else if (TextUtils.equals(resultStatus, "6001")) {
+//                         用户取消
+                            intent.putExtra(WXPayEntryActivity.PAY_STATE, WXPayEntryActivity.CANCEL);
+                        } else {
+                            // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+//                        showAlert(WXEntryActivity.this, getString(R.string.pay_failed) + payResult);
+                            intent.putExtra(WXPayEntryActivity.PAY_STATE, WXPayEntryActivity.FAILURE);
+                        }
+                        startActivity(intent);
+                        //PayResult payResult = new PayResult((Map<String, String>) msg.obj);
                         break;
                 }
             }
         };
+    }
+
+    public void sendAliPay(final String orderInfo){
+        //final String orderInfo = provideWechatPayModel.getSign();
+        final Runnable payRunnable = new Runnable() {
+
+            @Override
+            public void run() {
+                PayTask alipay = new PayTask(mActivity);
+                Map<String, String> result = alipay.payV2(orderInfo, true);
+//                mApp.gPayOrderCode =  mOrderNum;
+                Message msg = new Message();
+                msg.what = SDK_PAY_FLAG;
+                msg.obj = result;
+                mHandler.sendMessage(msg);
+            }
+        };
+        new Thread(payRunnable).start();
     }
 
 

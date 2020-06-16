@@ -96,6 +96,15 @@ public class ProvideViewDoctorExpertRecommend implements java.io.Serializable {
 	/********** 【我的医生】 **********/
 	private Integer pcBindingId;//【关注医生】使用。患者关注收藏医生编号
 
+	private String patientCode;
+
+	public String getPatientCode() {
+		return patientCode;
+	}
+
+	public void setPatientCode(String patientCode) {
+		this.patientCode = patientCode;
+	}
 
 	public String getImgTextPriceShow() {
 		return imgTextPriceShow;
@@ -455,9 +464,7 @@ public class ProvideViewDoctorExpertRecommend implements java.io.Serializable {
 		this.doctorId = doctorId;
 	}
 
-	public String getPatientCode() {
-		return doctorCode;
-	}
+
 
 	public void setDoctorCode(String doctorCode) {
 		this.doctorCode = doctorCode;

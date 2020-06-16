@@ -23,7 +23,6 @@
             android:text="图文就诊"
             android:textColor="#ff000000"
             android:textSize="15sp"
-            android:id="@+id/treat_type"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -34,7 +33,6 @@
             android:textColor="@color/textColor_hztltabyj"
             android:layout_weight="1"
             android:textSize="15sp"
-            android:id="@+id/treat_state"
             />
 
         <TextView
@@ -44,7 +42,6 @@
             android:textColor="#ff999999"
             android:gravity="center_vertical"
             android:textSize="15sp"
-            android:id="@+id/order_date"
             />
 
     </LinearLayout>
@@ -57,7 +54,6 @@
         android:layout_marginRight="10dp"
         android:textColor="#ff666666"
         android:textSize="15sp"
-        android:id="@+id/order_desc"
         />
 
     <TextView
@@ -73,7 +69,6 @@
         android:layout_marginTop="20dp"
         android:visibility="gone"
         android:textSize="15sp"
-        android:id="@+id/pay_btn"
         />
     <TextView
         android:layout_width="70dp"
@@ -88,7 +83,6 @@
         android:layout_marginTop="20dp"
         android:visibility="visible"
         android:textSize="15sp"
-        android:id="@+id/find_doc_btn"
         />
 
 </LinearLayout>

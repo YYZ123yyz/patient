@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
     android:background="@color/writeColor"
+    android:id="@+id/itemClick"
     android:orientation="vertical"
     >
     <LinearLayout
@@ -58,10 +59,12 @@
         android:layout_marginRight="10dp"
         android:textColor="#ff666666"
         android:textSize="15sp"
+        android:layout_marginBottom="10dp"
         />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:id="@+id/rv_zf_sc"
         android:orientation="horizontal">
     <ImageView
         android:layout_width="25dp"

@@ -30,6 +30,7 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.hyhd.BindDoctorFriend;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
+import www.patient.jykj_zxyl.util.SaveImg;
 import zxing.android.CaptureActivity;
 import zxing.common.Constant;
 import zxing.encode.CodeCreator;
@@ -58,11 +59,13 @@ public class QRCodeActivity extends AppCompatActivity {
     private             String                              qrCode;                         //需要绑定的二维码
     private             String                              mNetRetStr;                 //返回字符串
     private Handler mHandler;
+    private             Context                             mContext;
     public ProgressDialog mDialogProgress = null;
 
     private             TextView            tv_wrz;
     private             TextView            tv_xm;
     private             TextView            tv_dq;
+    private             TextView            tv_save_img;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -225,6 +228,7 @@ public class QRCodeActivity extends AppCompatActivity {
         tv_wrz = (TextView)this.findViewById(R.id.tv_wrz);
         tv_xm = (TextView)this.findViewById(R.id.tv_xm);
         tv_dq = (TextView)this.findViewById(R.id.tv_dq);
+        tv_save_img = (TextView) this.findViewById(R.id.tv_save_img);
         if (mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName() != null && !"".equals(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName()))
             tv_xm.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         String dq = "";
@@ -252,6 +256,17 @@ public class QRCodeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(context, CaptureActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_SCAN);
+            }
+        });
+
+        tv_save_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean hasSaved = SaveImg.saveImg(bitmap, "心血管健康二维码.jpeg",context);
+                if(hasSaved){
+                    Toast.makeText(context,"已保存至相册^.^",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 //        userName.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());

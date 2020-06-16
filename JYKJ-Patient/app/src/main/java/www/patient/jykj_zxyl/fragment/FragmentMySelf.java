@@ -30,6 +30,7 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.BloodLogAcitivity;
 import www.patient.jykj_zxyl.activity.myself.MedicationActivity;
 import www.patient.jykj_zxyl.custom.MyselfItemView;
+import www.patient.jykj_zxyl.util.widget.AuthorityJQQDDialog;
 
 
 /**
@@ -51,7 +52,7 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
     private Context mContext;
     private TextView tv_fragmentMySelf_nameText;
 
-    private LinearLayout  tv_wdye;
+    private LinearLayout  tv_wdye,li_yhq,li_jf;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_activitymain_myselffragment, container, false);
@@ -64,6 +65,28 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
 
     private void initLayout(View v) {
         tv_wdye = v.findViewById(R.id.tv_wdye);
+
+
+        li_yhq = v.findViewById(R.id.li_yhq);
+        li_jf = v.findViewById(R.id.li_jf);
+        li_jf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AuthorityJQQDDialog mAuthorityJQQDDialog = new AuthorityJQQDDialog(mContext);
+//                mAuthorityDialog.setmProvideViewMyDoctorOrderAndTreatment(provideViewMyDoctorOrderAndTreatment);
+                mAuthorityJQQDDialog.show();
+            }
+        });
+
+        li_yhq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AuthorityJQQDDialog mAuthorityJQQDDialog = new AuthorityJQQDDialog(mContext);
+//                mAuthorityDialog.setmProvideViewMyDoctorOrderAndTreatment(provideViewMyDoctorOrderAndTreatment);
+                mAuthorityJQQDDialog.show();
+            }
+        });
+
         myselfBindFriend = v.findViewById(R.id.myself_bind_friend);
         myselfOrder = v.findViewById(R.id.myself_order);
         myselfMyDoctor = v.findViewById(R.id.myself_doctor);

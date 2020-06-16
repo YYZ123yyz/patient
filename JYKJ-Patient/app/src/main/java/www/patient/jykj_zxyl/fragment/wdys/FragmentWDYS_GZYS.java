@@ -279,6 +279,8 @@ public class FragmentWDYS_GZYS extends Fragment {
      * 搜索
      */
     public void getDate(String searchName, String searchProvince, String searchCity, String searchArea, String searchHospitalType, String searchDoctorTitle) {
+        if (mNumPage == 1)
+            provideViewDoctorExpertRecommends.clear();
         ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend = new ProvideViewDoctorExpertRecommend();
         provideViewDoctorExpertRecommend.setRowNum(mRowNum + "");
         provideViewDoctorExpertRecommend.setPageNum(mNumPage + "");

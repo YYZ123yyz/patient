@@ -66,19 +66,33 @@ public class MedicationSettingAdapter extends RecyclerView.Adapter<MedicationSet
             {
                 case 0:
                     holder.time1.setVisibility(View.GONE);
+
                     holder.time2.setVisibility(View.GONE);
                     holder.time3.setVisibility(View.GONE);
+                    holder.time4.setVisibility(View.GONE);
+                    holder.time5.setVisibility(View.GONE);
+                    holder.time6.setVisibility(View.GONE);
+                    holder.more_date.setVisibility(View.GONE);
                     break;
                 case 1:
                     holder.time1.setVisibility(View.VISIBLE);
                     holder.time1.setText(time[0]);
                     holder.time2.setVisibility(View.GONE);
                     holder.time3.setVisibility(View.GONE);
+                    holder.time4.setVisibility(View.GONE);
+                    holder.time5.setVisibility(View.GONE);
+                    holder.time6.setVisibility(View.GONE);
+                    holder.more_date.setVisibility(View.GONE);
                     break;
                 case 2:
                     holder.time1.setVisibility(View.VISIBLE);
                     holder.time2.setVisibility(View.VISIBLE);
                     holder.time3.setVisibility(View.GONE);
+                    holder.time4.setVisibility(View.GONE);
+                    holder.time5.setVisibility(View.GONE);
+                    holder.time6.setVisibility(View.GONE);
+                    holder.more_date.setVisibility(View.GONE);
+
                     holder.time1.setText(time[0]);
                     holder.time2.setText(time[1]);
                     break;
@@ -86,11 +100,72 @@ public class MedicationSettingAdapter extends RecyclerView.Adapter<MedicationSet
                     holder.time1.setVisibility(View.VISIBLE);
                     holder.time2.setVisibility(View.VISIBLE);
                     holder.time3.setVisibility(View.VISIBLE);
+
+                    holder.time4.setVisibility(View.GONE);
+                    holder.time5.setVisibility(View.GONE);
+                    holder.time6.setVisibility(View.GONE);
+                    holder.more_date.setVisibility(View.GONE);
                     holder.time1.setText(time[0]);
                     holder.time2.setText(time[1]);
                     holder.time3.setText(time[2]);
-                    break;
 
+                    break;
+                case 4:
+                    holder.time1.setVisibility(View.VISIBLE);
+                    holder.time2.setVisibility(View.VISIBLE);
+                    holder.time3.setVisibility(View.VISIBLE);
+                    holder.time4.setVisibility(View.VISIBLE);
+                    holder.time5.setVisibility(View.GONE);
+                    holder.time6.setVisibility(View.GONE);
+                    holder.more_date.setVisibility(View.VISIBLE);
+                    holder.time1.setText(time[0]);
+                    holder.time2.setText(time[1]);
+                    holder.time3.setText(time[2]);
+                    holder.time4.setText(time[3]);
+                    break;
+                case 5:
+                    holder.time1.setVisibility(View.VISIBLE);
+                    holder.time2.setVisibility(View.VISIBLE);
+                    holder.time3.setVisibility(View.VISIBLE);
+                    holder.time4.setVisibility(View.VISIBLE);
+                    holder.time5.setVisibility(View.VISIBLE);
+                    holder.time6.setVisibility(View.GONE);
+                    holder.more_date.setVisibility(View.VISIBLE);
+                    holder.time1.setText(time[0]);
+                    holder.time2.setText(time[1]);
+                    holder.time3.setText(time[2]);
+                    holder.time4.setText(time[3]);
+                    holder.time5.setText(time[4]);
+                    break;
+                case 6:
+                    holder.time1.setVisibility(View.VISIBLE);
+                    holder.time2.setVisibility(View.VISIBLE);
+                    holder.time3.setVisibility(View.VISIBLE);
+                    holder.time4.setVisibility(View.VISIBLE);
+                    holder.time5.setVisibility(View.VISIBLE);
+                    holder.time6.setVisibility(View.VISIBLE);
+                    holder.more_date.setVisibility(View.VISIBLE);
+                    holder.time1.setText(time[0]);
+                    holder.time2.setText(time[1]);
+                    holder.time3.setText(time[2]);
+                    holder.time4.setText(time[3]);
+                    holder.time5.setText(time[4]);
+                    holder.time6.setText(time[5]);
+                    break;
+                default:
+                    holder.time1.setVisibility(View.VISIBLE);
+                    holder.time2.setVisibility(View.VISIBLE);
+                    holder.time3.setVisibility(View.VISIBLE);
+                    holder.time4.setVisibility(View.VISIBLE);
+                    holder.time5.setVisibility(View.VISIBLE);
+                    holder.time6.setVisibility(View.VISIBLE);
+                    holder.time1.setText(time[0]);
+                    holder.time2.setText(time[1]);
+                    holder.time3.setText(time[2]);
+                    holder.time4.setText(time[3]);
+                    holder.time5.setText(time[4]);
+                    holder.time6.setText(time[5]);
+                    break;
             }
         }
 
@@ -134,7 +209,13 @@ public class MedicationSettingAdapter extends RecyclerView.Adapter<MedicationSet
         private TextView time1;
         private TextView time2;
         private TextView time3;
+
+        private TextView time4;
+        private TextView time5;
+        private TextView time6;
         private LinearLayout mOnItemClick;
+
+        private LinearLayout more_date;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -143,7 +224,12 @@ public class MedicationSettingAdapter extends RecyclerView.Adapter<MedicationSet
             time1 = itemView.findViewById(R.id.tv_time1);
             time2 = itemView.findViewById(R.id.tv_time2);
             time3 = itemView.findViewById(R.id.tv_time3);
+            time4 = itemView.findViewById(R.id.tv_time4);
+            time5 = itemView.findViewById(R.id.tv_time5);
+            time6 = itemView.findViewById(R.id.tv_time6);
             mOnItemClick = (LinearLayout)itemView.findViewById(R.id.layoutClick);
+
+            more_date = (LinearLayout)itemView.findViewById(R.id.more_date);
         }
     }
 }

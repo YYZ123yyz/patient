@@ -34,6 +34,7 @@ import java.util.Map;
 
 import entity.ProvideDoctorSetSchedulingInfoGroupDate;
 import entity.ProvideInteractOrderInfo;
+import entity.ProvideViewMyDoctorOrderAndTreatment;
 import entity.ProvideWechatPayModel;
 import entity.XYEntiy;
 import entity.patientapp.ProvideMarketingAvailableCoupons;
@@ -131,8 +132,6 @@ public class WZXXOrderActivity extends AppCompatActivity {
                 //判断是否超过服务截止时间
                 try {
                     boolean is = compare(str,Util.dateToStr(mXYEntity.getLimitSigningExpireDate()));
-                    Toast.makeText(mContext,str,Toast.LENGTH_SHORT).show();
-
                     if (!is)
                     {
                         Toast.makeText(mContext,"超过医生服务截止时间",Toast.LENGTH_SHORT).show();
@@ -352,6 +351,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
         provideInteractOrderInfo.setIntegralHaveCode("0");
         provideInteractOrderInfo.setIntegralDeductionMoney("0");
         provideInteractOrderInfo.setFlagPayType(String.valueOf(payModel));
+        provideInteractOrderInfo.setOperPatientPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
         getProgressBar("请稍候。。。。","正在获取数据");
         new Thread(){
             public void run(){
@@ -384,7 +384,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
         provideInteractOrderInfo.setTreatmentType(Integer.valueOf(mOrderType));
         provideInteractOrderInfo.setDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
         provideInteractOrderInfo.setDoctorName(provideViewDoctorExpertRecommend.getUserName());
-        provideInteractOrderInfo.setPatientCode(provideViewDoctorExpertRecommend.getPatientCode());
+        provideInteractOrderInfo.setPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideInteractOrderInfo.setPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         switch (Integer.valueOf(mOrderType))
         {
@@ -420,7 +420,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
         switch (Integer.valueOf(mOrderType))
         {
             case 2:
-                provideInteractOrderInfo.setTreatmentDate(provideDoctorSetSchedulingInfoGroupDate.getWorkDate());
+                provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
                 for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++)
                 {
                     if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
@@ -428,7 +428,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
                 }
                 break;
             case 3:
-                provideInteractOrderInfo.setTreatmentDate(provideDoctorSetSchedulingInfoGroupDate.getWorkDate());
+                provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
                 for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++)
                 {
                     if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
@@ -436,7 +436,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
                 }
                 break;
             case 5:
-                provideInteractOrderInfo.setTreatmentDate(provideDoctorSetSchedulingInfoGroupDate.getWorkDate());
+                provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
                 for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++)
                 {
                     if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
@@ -480,6 +480,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
         mContext = this;
         mActivity = this;
         mApp = (JYKJApplication) getApplication();
+        mApp.gPayCloseActivity.add(mActivity);
         mProvideInteractPatientInterrogation = (ProvideInteractPatientInterrogation) getIntent().getSerializableExtra("provideInteractPatientInterrogation");
         provideViewDoctorExpertRecommend = (ProvideViewDoctorExpertRecommend) getIntent().getSerializableExtra("provideViewDoctorExpertRecommend");
         provideDoctorSetSchedulingInfoGroupDate= (ProvideDoctorSetSchedulingInfoGroupDate) getIntent().getSerializableExtra("provideDoctorSetSchedulingInfoGroupDate");
@@ -491,7 +492,41 @@ public class WZXXOrderActivity extends AppCompatActivity {
         }
         initView();
         initHandler();
-        getYHQDate();
+//        getYHQDate();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        getDate();
+    }
+
+    /**
+     * 获取订单详情
+     */
+    private void getDate() {
+        getProgressBar("请稍候","正在获取数据。。。");
+        ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreat= new ProvideViewMyDoctorOrderAndTreatment();
+        provideViewMyDoctorOrderAndTreat.setLoginPatientPosition(mApp.loginDoctorPosition);
+        provideViewMyDoctorOrderAndTreat.setRequestClientType("1");
+        provideViewMyDoctorOrderAndTreat.setSearchPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        provideViewMyDoctorOrderAndTreat.setSearchPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        provideViewMyDoctorOrderAndTreat.setOrderCode(mOrderNum);
+        new Thread(){
+            public void run(){
+                try {
+                    String string = new Gson().toJson(provideViewMyDoctorOrderAndTreat);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, www.patient.jykj_zxyl.application.Constant.SERVICEURL+"msgDataControlle/searchPatientMsgInteractOrderInfoDetail");
+                } catch (Exception e) {
+                    NetRetEntity retEntity = new NetRetEntity();
+                    retEntity.setResCode(0);
+                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    mNetRetStr = new Gson().toJson(retEntity);
+                    e.printStackTrace();
+                }
+                mHandler.sendEmptyMessage(6);
+            }
+        }.start();
     }
 
     /**
@@ -588,7 +623,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
 
                         break;
                     }
-                    case SDK_PAY_FLAG: {
+                    case SDK_PAY_FLAG:
                         PayResult payResult = new PayResult((Map<String, String>) msg.obj);
                         /**
                          * 对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
@@ -613,12 +648,31 @@ public class WZXXOrderActivity extends AppCompatActivity {
                         }
                         startActivity(intent);
                         //PayResult payResult = new PayResult((Map<String, String>) msg.obj);
-                    }
+                    break;
+                    case 6:
+                        cacerProgress();
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 0)
+                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        else if(netRetEntity.getResCode() == 1)
+                        {
+                            ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatment = JSON.parseObject(netRetEntity.getResJsonData(),ProvideViewMyDoctorOrderAndTreatment.class);
+                            showDate(provideViewMyDoctorOrderAndTreatment);
+                        }
+                        break;
                     default:
                         break;
                 }
             }
         };
+    }
+
+    /**
+     * 展示支付状态
+     * @param provideViewMyDoctorOrderAndTreatment
+     */
+    private void showDate(ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatment) {
+//        switch (provideViewMyDoctorOrderAndTreatment.getPaymentModeName())
     }
 
 
@@ -630,6 +684,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
             public void run() {
                 PayTask alipay = new PayTask(WZXXOrderActivity.this);
                 Map<String, String> result = alipay.payV2(orderInfo, true);
+                mApp.gPayOrderCode =  mOrderNum;
                 Message msg = new Message();
                 msg.what = SDK_PAY_FLAG;
                 msg.obj = result;
@@ -646,7 +701,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
         //将appid注册到微信
         //boolean a = msgApi.registerApp(provideWechatPayModel.getAppId());
         //调起微信支付
-        if(null!=msgApi) {
+        if(null==msgApi) {
             msgApi = WXAPIFactory.createWXAPI(this, "wx4ccb2ac1c5491336");
             msgApi.registerApp("wx4ccb2ac1c5491336");
         }
@@ -660,6 +715,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
         request.timeStamp= provideWechatPayModel.getTimeStamp();
         request.sign= provideWechatPayModel.getSign();
         request.signType = "MD5";
+        mApp.gPayOrderCode = mOrderNum;
         boolean result = msgApi.sendReq(request);
         //System.out.println();
 //        mHandler.sendEmptyMessage(1);

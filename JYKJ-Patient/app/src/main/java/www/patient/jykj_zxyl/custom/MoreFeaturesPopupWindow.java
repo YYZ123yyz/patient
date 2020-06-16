@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -16,7 +17,11 @@ import www.patient.jykj_zxyl.activity.home.DoctorsUnionActivity;
 import www.patient.jykj_zxyl.activity.home.MyClinicActivity;
 import www.patient.jykj_zxyl.activity.home.MyPatientActivity;
 import www.patient.jykj_zxyl.activity.home.NewsActivity;
+import www.patient.jykj_zxyl.activity.home.myself.JDDAActivity;
+import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
+import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
 import www.patient.jykj_zxyl.activity.home.tjhz.AddPatientActivity;
+import www.patient.jykj_zxyl.activity.myself.MyOrderActivity;
 import www.patient.jykj_zxyl.fragment.FragmentShouYe;
 import zxing.android.CaptureActivity;
 
@@ -29,8 +34,8 @@ public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClick
     private TextView tvSys;
     private TextView tvYqth;
     private TextView tvTjhz;
-    private TextView tvWdzs;
-    private TextView tvWdxx;
+    private LinearLayout tvWdzs;
+    private LinearLayout tvWdxx;
     private TextView tvCjlm;
     private TextView tvFqhz;
     private TextView tvWdbb;
@@ -47,10 +52,8 @@ public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClick
         tvTjhz.setOnClickListener(this);
         tvWdzs.setOnClickListener(this);
         tvWdxx.setOnClickListener(this);
-        tvCjlm.setOnClickListener(this);
-        tvFqhz.setOnClickListener(this);
-        tvWdbb.setOnClickListener(this);
-        tvBzfk.setOnClickListener(this);
+//        tvCjlm.setOnClickListener(this);
+
     }
 
     private void init(Activity context) {
@@ -61,10 +64,6 @@ public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClick
         tvTjhz = mPopView.findViewById(R.id.tv_tjhz);
         tvWdzs = mPopView.findViewById(R.id.tv_wdzs);
         tvWdxx = mPopView.findViewById(R.id.tv_wdxx);
-        tvCjlm = mPopView.findViewById(R.id.tv_cjlm);
-        tvFqhz = mPopView.findViewById(R.id.tv_fqhz);
-        tvWdbb = mPopView.findViewById(R.id.tv_wdbb);
-        tvBzfk = mPopView.findViewById(R.id.tv_bzfk);
 
     }
 
@@ -105,29 +104,36 @@ public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClick
                     mMyPatientActivity.startActivityForResult(intent,fragmentShouYe.REQUEST_CODE_SCAN);
                 break;
             case R.id.tv_yqth:
-
+                intent = new Intent(mContext, TJZJActivity.class);
+                if (fragmentShouYe != null)
+                    fragmentShouYe.startActivity(intent);
+                if (mMyPatientActivity != null)
+                    mMyPatientActivity.startActivity(intent);
                 break;
             case R.id.tv_tjhz:
-                mContext.startActivity(new Intent(mContext,AddPatientActivity.class));
+                intent = new Intent(mContext, WDYSActivity.class);
+                if (fragmentShouYe != null)
+                    fragmentShouYe.startActivity(intent);
+                if (mMyPatientActivity != null)
+                    mMyPatientActivity.startActivity(intent);
                 break;
             case R.id.tv_wdzs:
-                mContext.startActivity(new Intent(mContext,MyClinicActivity.class));
+                intent = new Intent(mContext, MyOrderActivity.class);
+                if (fragmentShouYe != null)
+                    fragmentShouYe.startActivity(intent);
+                if (mMyPatientActivity != null)
+                    mMyPatientActivity.startActivity(intent);
                 break;
             case R.id.tv_wdxx:
-                mContext.startActivity(new Intent(mContext,NewsActivity.class));
+                intent = new Intent(mContext, JDDAActivity.class);
+                if (fragmentShouYe != null)
+                    fragmentShouYe.startActivity(intent);
+                if (mMyPatientActivity != null)
+                    mMyPatientActivity.startActivity(intent);
                 break;
-            case R.id.tv_cjlm:
-                mContext.startActivity(new Intent(mContext,DoctorsUnionActivity.class));
-                break;
-            case R.id.tv_fqhz:
-
-                break;
-            case R.id.tv_wdbb:
-
-                break;
-            case R.id.tv_bzfk:
-
-                break;
+//            case R.id.tv_cjlm:
+//                mContext.startActivity(new Intent(mContext,DoctorsUnionActivity.class));
+//                break;
         }
     }
 

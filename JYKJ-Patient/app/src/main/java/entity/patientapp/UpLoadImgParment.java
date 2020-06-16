@@ -11,6 +11,16 @@ public class UpLoadImgParment {
     private             String                  operPatientName;
     private             String                  orderCode;
     private             String                  imgBase64Data;
+    private             String                  imgCode;
+
+
+    public String getImgCode() {
+        return imgCode;
+    }
+
+    public void setImgCode(String imgCode) {
+        this.imgCode = imgCode;
+    }
 
     public String getLoginPatientPosition() {
         return loginPatientPosition;

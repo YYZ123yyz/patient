@@ -103,7 +103,7 @@
         android:id="@+id/tv_hxNetWorkState"
         android:gravity="center"
         android:textColor="@color/colorRed"/>
-    <androidx.recyclerview.widget.RecyclerView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"

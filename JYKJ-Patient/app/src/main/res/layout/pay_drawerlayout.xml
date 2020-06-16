@@ -13,6 +13,7 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:background="@mipmap/pay_gb"
+            android:id="@+id/iv_gb"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"/>
         <TextView

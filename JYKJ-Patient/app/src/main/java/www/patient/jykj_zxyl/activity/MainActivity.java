@@ -1,7 +1,10 @@
 package www.patient.jykj_zxyl.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -16,12 +19,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.model.EaseNotifier;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -100,8 +107,11 @@ public class MainActivity extends AppCompatActivity {
         mainActivity = this;
         ActivityUtil.setStatusBarMain(mainActivity);
         mApp = (JYKJApplication) getApplication();
+
         mApp.gMainActivity = this;
         mApp.gActivityList.add(this);
+        //登录环信
+        mApp.loginIM();
         //判断是否有新消息
         mApp.setNewsMessage();
         initLayout();               //初始化布局
@@ -121,14 +131,14 @@ public class MainActivity extends AppCompatActivity {
      * 启动定时器，轮询获取未读消息数
      */
     private void startMessageTimer() {
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                getMessageCount();
-            }
-        };
-        timer.schedule(task, 0, mApp.mMsgTimeInterval*60*1000);
+//        Timer timer = new Timer();
+//        TimerTask task = new TimerTask() {
+//            @Override
+//            public void run() {
+//                getMessageCount();
+//            }
+//        };
+//        timer.schedule(task, 0, mApp.mMsgTimeInterval*60*1000);
     }
 
     private void initHandler() {
@@ -165,11 +175,67 @@ public class MainActivity extends AppCompatActivity {
 //                        else
 //                            mFragmentShouYe.setNewMessageView("");
 //
-//                        break;
+                        break;
+                    case 20:
+                        //检测到就直接退出
+                        EMClient.getInstance().logout(true);
+                        Calendar calendar = Calendar.getInstance();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        builder.setTitle("异常登录提醒");
+                        builder.setMessage("您的账号在在另一台手机登录了,如非本人操作,建议修改密码");
+                        builder.setPositiveButton("重新登录", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //通过这个SharedPreferences 库得到账号密码，实现重新登录的功能
+                                EMClient.getInstance().login(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mApp.mProvideViewSysUserPatientInfoAndRegion.getQrCode(),new EMCallBack() {//回调
+                                    @Override
+                                    public void onSuccess() {
+                                        mHandler.sendEmptyMessage(21);
+                                    }
+
+                                    @Override
+                                    public void onProgress(int progress, String status) {
+
+                                    }
+
+                                    @Override
+                                    public void onError(int code, String message) {
+                                        Log.d("main", "登录聊天服务器失败！");
+                                    }
+                                });
+                            }
+                        });
+
+                        //退出 退到登录页面
+                        builder.setNeutralButton("退出", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EMClient.getInstance().logout(true);
+                                for (int i = 0; i < mApp.gActivityList.size(); i++)
+                                {
+                                    mApp.gActivityList.get(i).finish();
+                                }
+
+                                mApp.gActivityList.clear();
+                                startActivity(new Intent(mContext,LoginActivity.class));
+                            }
+                        });
+                        //不关闭写法
+                        builder.setCancelable(false);
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                        break;
+
+                    case 21:
+                        Toast.makeText(mContext,"登录成功",Toast.LENGTH_SHORT).show();
+                        break;
                 }
+
             }
         };
     }
+
+
 
 
 
@@ -407,7 +473,15 @@ public class MainActivity extends AppCompatActivity {
      */
     public void setNewsMessageView() {
         if (mFragmentYHHD != null)
-            mFragmentYHHD.getMessageList();
+            mFragmentYHHD.getYHHDMessage();
+    }
+
+    /**
+     * 检测到异地登录环信
+     */
+    public void user_login_another_device() {
+        mHandler.sendEmptyMessage(20);
+
     }
 
 

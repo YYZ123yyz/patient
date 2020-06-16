@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 
 import java.util.Timer;
@@ -129,10 +130,11 @@ public class PhoneLoginActivity extends AppCompatActivity {
 
                             if (netRetEntity.getResCode() == 1) {
                                 UserInfo userInfo = new UserInfo();
-//                                userInfo.setUserPhone(mAccountEdit.getText().toString());
-//                                userInfo.setUserPwd(mPassWordEdit.getText().toString());
+
+                                mApp.mProvideViewSysUserPatientInfoAndRegion = JSON.parseObject(netRetEntity.getResJsonData(), ProvideViewSysUserPatientInfoAndRegion.class);
+                                userInfo.setUserPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
+                                userInfo.setUserPwd(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
                                 mApp.mLoginUserInfo = userInfo;
-                                mApp.mProvideViewSysUserPatientInfoAndRegion = new Gson().fromJson(netRetEntity.getResJsonData(),ProvideViewSysUserPatientInfoAndRegion.class);
                                 mApp.saveUserInfo();
                                 Toast.makeText(mContext, "恭喜，登录成功", Toast.LENGTH_SHORT).show();
                                 //登录IM

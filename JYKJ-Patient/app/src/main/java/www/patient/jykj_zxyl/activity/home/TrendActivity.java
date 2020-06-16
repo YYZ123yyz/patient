@@ -281,7 +281,12 @@ public class TrendActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public String getFormattedValue(float value) {
                 if(groupList.size()>0) {
-                    return groupList.get((int) value).getGroupRecordDate();
+                    int index = (int) value;
+                    if (index < 0 || index >= groupList.size()) {
+                        return "";
+                    } else {
+                        return groupList.get((int) value).getGroupRecordDate();
+                    }
                 }
                 return "";
             }

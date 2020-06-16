@@ -84,7 +84,7 @@ public class EaseMessageAdapter extends BaseAdapter{
     private ListView listView;
 	private EaseMessageListItemStyle itemStyle;
 
-	public EaseMessageAdapter(Context context, String username, int chatType, ListView listView) {
+	public EaseMessageAdapter(Context context, String username, int chatType, ListView listView,String doctorUrl,String patientUrl) {
 		this.context = context;
 		this.listView = listView;
 		toChatUsername = username;
@@ -294,7 +294,8 @@ public class EaseMessageAdapter extends BaseAdapter{
 
 
     public boolean isShowAvatar() {
-        return showAvatar;
+
+	    return showAvatar;
     }
 
 

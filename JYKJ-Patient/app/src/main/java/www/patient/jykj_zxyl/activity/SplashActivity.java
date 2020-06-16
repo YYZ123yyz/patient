@@ -6,9 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
@@ -78,10 +79,19 @@ public class SplashActivity extends AppCompatActivity {
      * 自动登录
      */
     private void autoLogin() {
-        if (mApp.mLoginUserInfo != null && mApp.mLoginUserInfo.getUserPhone() != null &&
-                mApp.mLoginUserInfo.getUserPwd() != null && !"".equals(mApp.mLoginUserInfo.getUserPhone())
-                && !"".equals(mApp.mLoginUserInfo.getUserPhone())) {
-            userLogin();
+//        if (mApp.mLoginUserInfo != null && mApp.mLoginUserInfo.getUserPhone() != null &&
+//                mApp.mLoginUserInfo.getUserPwd() != null && !"".equals(mApp.mLoginUserInfo.getUserPhone())
+//                && !"".equals(mApp.mLoginUserInfo.getUserPhone())) {
+//            userLogin();
+//        }else{
+//            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
+        if (mApp.mProvideViewSysUserPatientInfoAndRegion != null) {
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }else{
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent);
@@ -145,13 +155,13 @@ public class SplashActivity extends AppCompatActivity {
                                 Toast.makeText(SplashActivity.this, "恭喜，登录成功", Toast.LENGTH_SHORT).show();
                                 //登录IM
                                 mApp.loginIM();
-                                startActivity(new Intent(SplashActivity.this,MainActivity.class));
+//                                startActivity(new Intent(SplashActivity.this,MainActivity.class));
                                 for (int i = 0; i < mApp.gActivityList.size(); i++)
                                 {
                                     mApp.gActivityList.get(i).finish();
                                 }
-                                startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                                finish();
+                                startActivity(new Intent(SplashActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));//它可以关掉所要到的界面中间的activity);
+//                                finish();
                             }
                             else
                             {

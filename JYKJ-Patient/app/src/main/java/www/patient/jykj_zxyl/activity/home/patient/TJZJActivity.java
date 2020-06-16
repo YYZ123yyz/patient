@@ -150,6 +150,7 @@ public class TJZJActivity extends AppCompatActivity {
         mActivity = this;
         mApp = (JYKJApplication) getApplication();
         provideViewDoctorExpertRecommend = new ProvideViewDoctorExpertRecommend();
+        mApp.gPayCloseActivity.add(mActivity);
         initView();
         initHandler();
         //获取所有联盟
@@ -477,13 +478,13 @@ public class TJZJActivity extends AppCompatActivity {
                     for (int i = 0; i < mProvideBasicsDominJGBJ.size(); i++)
                     {
                         if (mProvideBasicsDominJGBJ.get(i).isChoice())
-                            provideViewDoctorExpertRecommend.setSearchHospitalType(mProvideBasicsDominJGBJ.get(i).getBaseCode()+"");
+                            provideViewDoctorExpertRecommend.setSearchHospitalType(mProvideBasicsDominJGBJ.get(i).getAttrCode()+"");
                     }
 
                     for (int i = 0; i < mProvideBasicsDominYSZC.size(); i++)
                     {
                         if (mProvideBasicsDominYSZC.get(i).isChoice())
-                            provideViewDoctorExpertRecommend.setDoctorTitle(mProvideBasicsDominYSZC.get(i).getBaseCode());
+                            provideViewDoctorExpertRecommend.setSearchDoctorTitle(mProvideBasicsDominYSZC.get(i).getAttrCode()+"");
                     }
 
                     provideViewDoctorExpertRecommend.setSearchPriceSectionLow(tv_zdj.getText().toString());
@@ -654,7 +655,6 @@ public class TJZJActivity extends AppCompatActivity {
                 try {
                     String string = new Gson().toJson(provideViewDoctorExpertRecommend);
                     String urlStr = Constant.SERVICEURL+"patientSearchDoctorControlle/searchIndexExpertRecommendDoctorMoreShow";
-//                    mNetRetStr = HttpNetService.getUpgradeInfo("jsonDataInfo="+string, urlStr);
                     mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"patientSearchDoctorControlle/searchIndexExpertRecommendDoctorMoreShow");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();

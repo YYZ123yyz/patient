@@ -2,7 +2,6 @@ package www.patient.jykj_zxyl.activity.home.jyzl;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -16,28 +15,17 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
 import entity.HZIfno;
-import entity.ProvideBasicsImg;
-import entity.mySelf.conditions.QueryBasicImgCond;
 import entity.patientInfo.ProvidePatientConditionDiseaseRecord;
-import netService.HttpNetService;
-import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.adapter.JYZL_GRZLRecycleAdapter;
 import www.patient.jykj_zxyl.adapter.PatientJWBSAdapter;
-import www.patient.jykj_zxyl.application.Constant;
-import www.patient.jykj_zxyl.util.INetAddress;
-import www.patient.jykj_zxyl.util.StrUtils;
 import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.twjz.TWJZ_CFQActivity;
@@ -91,7 +79,6 @@ public class JWBSDetailActivity extends AppCompatActivity {
     private         ImageView               mImageView04;
     private         ImageView               mImageView05;
 
-    private LoadImgTask loadImgTask;
 
 
 
@@ -102,7 +89,7 @@ public class JWBSDetailActivity extends AppCompatActivity {
         mProvidePatientConditionDiseaseRecords = (ProvidePatientConditionDiseaseRecord) getIntent().getSerializableExtra("patientInfo");
         mContext = this;
         mApp = (JYKJApplication) getApplication();
-        initLayout();
+//        initLayout();
 
     }
 
@@ -192,23 +179,8 @@ public class JWBSDetailActivity extends AppCompatActivity {
                         .into(mImageView05);
             }
         }
-        loadimgs();
-    }
 
-    void loadimgs(){
-        if(StrUtils.defaultStr(mProvidePatientConditionDiseaseRecords.getImgCode()).length()>0) {
-            getProgressBar("加载数据","数据加载中...");
-            QueryBasicImgCond queyCond = new QueryBasicImgCond();
-            queyCond.setLoginPatientPosition(mApp.loginDoctorPosition);
-            queyCond.setRequestClientType("1");
-            queyCond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-            queyCond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-            queyCond.setImgCode(mProvidePatientConditionDiseaseRecords.getImgCode());
-            loadImgTask = new LoadImgTask(queyCond);
-            loadImgTask.execute();
-        }
     }
-
 
     class   ButtonClick implements View.OnClickListener {
         @Override
@@ -241,73 +213,6 @@ public class JWBSDetailActivity extends AppCompatActivity {
     public void cacerProgress(){
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
-        }
-    }
-
-    class LoadImgTask extends AsyncTask<Void,Void, List<ProvideBasicsImg>>{
-        QueryBasicImgCond queryBasicImgCond;
-        LoadImgTask(QueryBasicImgCond queryBasicImgCond){
-            this.queryBasicImgCond = queryBasicImgCond;
-        }
-        @Override
-        protected List<ProvideBasicsImg> doInBackground(Void... voids) {
-            List<ProvideBasicsImg> retlist = new ArrayList();
-            try {
-                String retstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryBasicImgCond), Constant.SERVICEURL+ INetAddress.QUERY_PATIENTHISTIMG_URL);
-                NetRetEntity retEntity = JSON.parseObject(retstr,NetRetEntity.class);
-                if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
-                    retlist = JSON.parseArray(retEntity.getResJsonData(),ProvideBasicsImg.class);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return retlist;
-        }
-
-        @Override
-        protected void onPostExecute(List<ProvideBasicsImg> provideBasicsImgs) {
-            if(provideBasicsImgs.size()>0){
-                ProvideBasicsImg imgbean = provideBasicsImgs.get(0);
-                try {
-                    Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView01);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(provideBasicsImgs.size()>1){
-                ProvideBasicsImg imgbean = provideBasicsImgs.get(1);
-                try {
-                    Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView02);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(provideBasicsImgs.size()>2){
-                ProvideBasicsImg imgbean = provideBasicsImgs.get(2);
-                try {
-                    Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView03);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(provideBasicsImgs.size()>3){
-                ProvideBasicsImg imgbean = provideBasicsImgs.get(3);
-                try {
-                    Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView04);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(provideBasicsImgs.size()>4){
-                ProvideBasicsImg imgbean = provideBasicsImgs.get(4);
-                try {
-                    Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView05);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-            }
-            cacerProgress();
         }
     }
 }

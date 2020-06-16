@@ -26,8 +26,11 @@ import com.google.zxing.Result;
 
 import java.io.IOException;
 
+import entity.shouye.ProvideViewDoctorExpertRecommend;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.QRCodeActivity;
+import www.patient.jykj_zxyl.activity.home.patient.ZJXQ_ZJBDActivity;
+import www.patient.jykj_zxyl.activity.hyhd.BindDoctorFriend;
 import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
 import zxing.bean.ZxingConfig;
 import zxing.camera.CameraManager;
@@ -212,9 +215,13 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
 
 //        beepManager.playBeepSoundAndVibrate();
 
-        Intent intent = getIntent();
-        intent.putExtra(Constant.CODED_CONTENT, rawResult.getText());
-        setResult(RESULT_OK, intent);
+//        Intent intent = getIntent();
+//        intent.putExtra(Constant.CODED_CONTENT, rawResult.getText());
+//        setResult(RESULT_OK, intent);
+        ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend = new ProvideViewDoctorExpertRecommend();
+        provideViewDoctorExpertRecommend.setDoctorCode(rawResult.getText());
+        provideViewDoctorExpertRecommend.setUserName(rawResult.getText());
+        startActivity(new Intent(this,ZJXQ_ZJBDActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommend));
         this.finish();
 
 

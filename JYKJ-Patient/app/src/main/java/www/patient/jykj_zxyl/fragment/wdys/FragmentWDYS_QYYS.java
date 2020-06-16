@@ -148,6 +148,10 @@ public class FragmentWDYS_QYYS extends Fragment {
                 intent.putExtra("loginDoctorPosition",mApp.loginDoctorPosition);
                 intent.putExtra("operDoctorCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
                 intent.putExtra("operDoctorName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+
+                intent.putExtra("doctorUrl",provideViewMyDoctorSignings.get(position).getUserLogoUrl());
+                intent.putExtra("patientUrl",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+
 //                intent.putExtra("orderCode",provideViewInteractOrderTreatmentAndPatientInterrogations.get(position).getOrderCode());
 
                 intent.putExtra(EaseConstant.EXTRA_MESSAGE_NUM,provideViewMyDoctorSignings.get(position).getLimitImgText());           //消息数量
@@ -203,6 +207,11 @@ public class FragmentWDYS_QYYS extends Fragment {
         provideViewMyDoctorSigningRenewal.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideViewMyDoctorSigningRenewal.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         provideViewMyDoctorSigningRenewal.setSigningDoctorCode(provideViewMyDoctorSignings.get(mXYChoiceIndex).getDoctorCode());
+        if (provideViewMyDoctorSignings.get(mXYChoiceIndex).getDoctorCode() == null)
+        {
+            Toast.makeText(mContext,"医生编码为空",Toast.LENGTH_SHORT).show();
+            return;
+        }
         new Thread(){
             public void run(){
                 try {
@@ -315,6 +324,8 @@ public class FragmentWDYS_QYYS extends Fragment {
      * 搜索
      */
     public void getDate(String searchName,String searchProvince,String searchCity,String searchArea,String searchHospitalType,String searchDoctorTitle) {
+        if (mNumPage == 1)
+            provideViewMyDoctorSignings.clear();
         ProvideViewMyDoctorSigning provideViewMyDoctorSigning = new ProvideViewMyDoctorSigning();
         provideViewMyDoctorSigning.setRowNum(mRowNum+"");
         provideViewMyDoctorSigning.setPageNum(mNumPage+"");

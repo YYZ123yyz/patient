@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import entity.ProvideDoctorSetSchedulingInfoGroupDate;
 import entity.mySelf.ProvideDoctorSetScheduling;
@@ -317,7 +318,7 @@ public class WZXXActivity extends AppCompatActivity {
 //            Toast.makeText(mContext,"问诊类型获取失败，请稍后重试",Toast.LENGTH_SHORT).show();
 //            return;
 //        }
-        mProvideInteractPatientInterrogationParment.setDoctorCode(provideViewDoctorExpertRecommend.getPatientCode());
+        mProvideInteractPatientInterrogationParment.setDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
         mProvideInteractPatientInterrogationParment.setDoctorName(provideViewDoctorExpertRecommend.getUserName());
         mProvideInteractPatientInterrogationParment.setPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         mProvideInteractPatientInterrogationParment.setPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
@@ -389,6 +390,9 @@ public class WZXXActivity extends AppCompatActivity {
             Toast.makeText(mContext,"请选择方法",Toast.LENGTH_SHORT).show();
             return;
         }
+
+        //生成图片编码
+        mProvideInteractPatientInterrogationParment.setImgCode(UUID.randomUUID().toString());
         getProgressBar("请稍候","正在提交数据");
         new Thread() {
             public void run() {
@@ -420,6 +424,7 @@ public class WZXXActivity extends AppCompatActivity {
                                 upLoadImgParment.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
                                 upLoadImgParment.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
                                 upLoadImgParment.setImgBase64Data("data:image/jpg;base64,"+mPhotoInfos.get(i).getPhoto());
+                                upLoadImgParment.setImgCode(mProvideInteractPatientInterrogationParment.getImgCode());
                                 //上传图片
                                 str = new Gson().toJson(upLoadImgParment);
                                 mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + str, Constant.SERVICEURL + "patientInteractDataControlle/operUpdPatientInterrogationImg");
@@ -685,6 +690,7 @@ public class WZXXActivity extends AppCompatActivity {
         mContext = this;
         mActivity = this;
         mApp = (JYKJApplication) getApplication();
+        mApp.gPayCloseActivity.add(mActivity);
         provideViewDoctorExpertRecommend = (ProvideViewDoctorExpertRecommend) getIntent().getSerializableExtra("provideViewDoctorExpertRecommend");
         provideDoctorSetSchedulingInfoGroupDate = (ProvideDoctorSetSchedulingInfoGroupDate) getIntent().getSerializableExtra("provideDoctorSetSchedulingInfoGroupDate");
         mOperaType = getIntent().getStringExtra("operaType");
@@ -801,7 +807,7 @@ public class WZXXActivity extends AppCompatActivity {
                             mProvideInteractPatientInterrogationParment.setBirthday(mProvideInteractPatientInterrogation.getBirthday());
                             Date date = mProvideInteractPatientInterrogation.getBloodPressureAbnormalDate();
                             if(mProvideInteractPatientInterrogation.getBloodPressureAbnormalDate() != null)
-                                mProvideInteractPatientInterrogationParment.setBloodPressureAbnormalDate(Util.dateToStr(mProvideInteractPatientInterrogation.getBloodPressureAbnormalDate()));
+                                mProvideInteractPatientInterrogationParment.setBloodPressureAbnormalDate(Util.dateToStrDate(mProvideInteractPatientInterrogation.getBloodPressureAbnormalDate()));
                             mProvideInteractPatientInterrogationParment.setHtnHistory(mProvideInteractPatientInterrogation.getHtnHistory());
                             mProvideInteractPatientInterrogationParment.setFlagFamilyHtn(mProvideInteractPatientInterrogation.getFlagFamilyHtn());
                             mProvideInteractPatientInterrogationParment.setHighPressureNum(mProvideInteractPatientInterrogation.getHighPressureNum());
@@ -817,6 +823,7 @@ public class WZXXActivity extends AppCompatActivity {
                             mProvideInteractPatientInterrogationParment.setMeasureModeName(mProvideInteractPatientInterrogation.getMeasureModeName());
                             //设置数据
                             setLayoutDate();
+
                         }
                         else
                         {
@@ -842,6 +849,7 @@ public class WZXXActivity extends AppCompatActivity {
 
                         mProvideInteractPatientInterrogationParment.setDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
                         mProvideInteractPatientInterrogationParment.setDoctorName(provideViewDoctorExpertRecommend.getUserName());
+                        provideViewDoctorExpertRecommend.setLinkPhone(mProvideInteractPatientInterrogationParment.getPatientLinkPhone());
                         cacerProgress();
                         netRetEntity = JSON.parseObject(mAddNetRetStr,NetRetEntity.class);
                         Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
@@ -1140,7 +1148,7 @@ public class WZXXActivity extends AppCompatActivity {
         getInteractOrderCodeGenerate.setRequestClientType("1");
         getInteractOrderCodeGenerate.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         getInteractOrderCodeGenerate.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        getInteractOrderCodeGenerate.setUserLinkPhone(mApp.mLoginUserInfo.getUserPhone());
+        getInteractOrderCodeGenerate.setUserLinkPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
         getInteractOrderCodeGenerate.setOrderTreatmentType(mOperaType);
 
         new Thread(){

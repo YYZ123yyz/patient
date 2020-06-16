@@ -36,7 +36,7 @@ public class ProvideInteractOrderInfo implements java.io.Serializable {
     private String integralRecordHistoryCode;//使用的积分记录编码
     private String orderDesc;//订单描述.Eg.音频就诊 128元/10分钟
     private Integer flagOrderState;//订单状态.0:未知;1:待付款;2:已付款;3:;4:;5:;10:已完成;11:交易关闭(未付款超时);
-    private Date treatmentDate;//就诊日期(音视频就诊需要)
+    private String treatmentDate;//就诊日期(音视频就诊需要)
     private String treatmentTimeSlot;//就诊时间段(音视频就诊需要)
     private String treatmentLinkPhone;//就诊联系电话(电话就诊需要)
 
@@ -47,6 +47,16 @@ public class ProvideInteractOrderInfo implements java.io.Serializable {
 
 	private String orderShowContent;//订单内容描述
 	private Integer flagPayBtn;//支付按钮显示状态.0:不显示;1:显示;
+
+	private String operPatientPhone;
+
+	public String getOperPatientPhone() {
+		return operPatientPhone;
+	}
+
+	public void setOperPatientPhone(String operPatientPhone) {
+		this.operPatientPhone = operPatientPhone;
+	}
 
 	public String getOrderShowContent() {
 		return orderShowContent;
@@ -396,11 +406,11 @@ public class ProvideInteractOrderInfo implements java.io.Serializable {
 		this.flagOrderState = flagOrderState;
 	}
 
-	public Date getTreatmentDate() {
+	public String getTreatmentDate() {
 		return treatmentDate;
 	}
 
-	public void setTreatmentDate(Date treatmentDate) {
+	public void setTreatmentDate(String treatmentDate) {
 		this.treatmentDate = treatmentDate;
 	}
 

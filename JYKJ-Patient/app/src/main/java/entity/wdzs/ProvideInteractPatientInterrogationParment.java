@@ -45,6 +45,8 @@ public class ProvideInteractPatientInterrogationParment implements java.io.Seria
 	private String operPatientCode;
 	private String operPatientName;
 
+
+
 	public String getFlagHtnHistory() {
 		return flagHtnHistory;
 	}

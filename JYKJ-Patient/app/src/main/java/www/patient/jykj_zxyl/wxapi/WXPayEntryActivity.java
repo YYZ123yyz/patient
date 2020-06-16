@@ -3,16 +3,16 @@ package www.patient.jykj_zxyl.wxapi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -20,7 +20,12 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import entity.ProvideInteractOrderInfo;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.activity.home.OrderMessage_OrderPayActivity;
+import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
+import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.LoadSharedPreferences;
 
 public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
@@ -36,11 +41,14 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
     public String categoryKey;
     public String paramAppid = "";
     public String paramProductid = "";
+
+    private JYKJApplication     mApp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wxpay_result_activity);
         initToolbar();
+        mApp = (JYKJApplication) getApplication();
         setDisplayHomeAsUpEnabled(true);
         setTitle("支付结果");
         textView = findViewById(R.id.textView);
@@ -117,7 +125,15 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
     }
 
     public void showMessage() {
-        showMessage("当前支付成功");
+        Toast.makeText(WXPayEntryActivity.this,"支付成功",Toast.LENGTH_SHORT).show();
+//        ProvideInteractOrderInfo provideInteractOrderInfo = new ProvideInteractOrderInfo();
+//        provideInteractOrderInfo.setOrderCode(mApp.gPayOrderCode);
+        for (int i = 0; i < mApp.gPayCloseActivity.size(); i++)
+        {
+            mApp.gPayCloseActivity.get(i).finish();
+        }
+        startActivity(new Intent(WXPayEntryActivity.this,WDYSActivity.class));
+        finish();
     }
 
     public void showMessage(String message) {

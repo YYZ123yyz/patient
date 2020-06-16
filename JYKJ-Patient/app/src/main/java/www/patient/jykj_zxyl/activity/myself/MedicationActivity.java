@@ -4,13 +4,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.alibaba.fastjson.JSON;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
@@ -44,6 +45,10 @@ import www.patient.jykj_zxyl.adapter.MedicationListAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 
+
+/**
+ * 服药统计
+ */
 public class MedicationActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView tvStartTime, tvEndTime;
     private TextView tvViewTime;
@@ -123,7 +128,7 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
      */
     private void showDate(ProvidePatientConditionTakingRecordStatistics providePatientConditionTakingRecordStatistics) {
         List<PieEntry> pieEntryList = setPieEntry(providePatientConditionTakingRecordStatistics);//设置PieEntry
-        PieData pieData = setPieData(pieEntryList);//设置PieData
+        PieData pieData = setPieData(pieEntryList,providePatientConditionTakingRecordStatistics);//设置PieData
         pieChart.setExtraOffsets(0, 0, 0, 0); //设置边距
         setDescription();//设置图表的描述
         setLegend();//设置图例描述
@@ -180,11 +185,17 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
         PieEntry pie1 = new PieEntry(providePatientConditionTakingRecordStatistics.getFlagTakingMedicine1(),"未按时服用");
         PieEntry pie2 = new PieEntry(providePatientConditionTakingRecordStatistics.getFlagTakingMedicine3(),"已按时服用");
         PieEntry pie3 = new PieEntry(providePatientConditionTakingRecordStatistics.getFlagTakingMedicine2(),"操作已过期");
-        PieEntry pie4 = new PieEntry(providePatientConditionTakingRecordStatistics.getFlagTakingMedicine0(),"暂未操作");
+        PieEntry pie4 = new PieEntry(providePatientConditionTakingRecordStatistics.getFlagTakingMedicine0(),"暂未  操作");
 //
         List<PieEntry> pieEntryList = new ArrayList<>();
-        pieEntryList.add(pie1);pieEntryList.add(pie2);
-        pieEntryList.add(pie3);pieEntryList.add(pie4);
+        if (providePatientConditionTakingRecordStatistics.getFlagTakingMedicine1() != 0)
+            pieEntryList.add(pie1);
+        if (providePatientConditionTakingRecordStatistics.getFlagTakingMedicine3() != 0)
+            pieEntryList.add(pie2);
+        if (providePatientConditionTakingRecordStatistics.getFlagTakingMedicine2() != 0)
+            pieEntryList.add(pie3);
+        if (providePatientConditionTakingRecordStatistics.getFlagTakingMedicine0() != 0)
+            pieEntryList.add(pie4);
         return pieEntryList;
     }
 
@@ -193,13 +204,18 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
      * @param pieEntryList
      * @return
      */
-    private PieData setPieData(List<PieEntry> pieEntryList){
+    private PieData setPieData(List<PieEntry> pieEntryList,ProvidePatientConditionTakingRecordStatistics providePatientConditionTakingRecordStatistics){
         PieDataSet set = new PieDataSet(pieEntryList,"");
         List<Integer> colors = new ArrayList<>();
-        colors.add(Color.parseColor("#E34945"));
-        colors.add(Color.parseColor("#51B495"));
-        colors.add(Color.parseColor("#EB8938"));
-        colors.add(Color.parseColor("#3389A2"));
+        if (providePatientConditionTakingRecordStatistics.getFlagTakingMedicine1() != 0)
+            colors.add(Color.parseColor("#3486AF"));
+        if (providePatientConditionTakingRecordStatistics.getFlagTakingMedicine3() != 0)
+            colors.add(Color.parseColor("#52B394"));
+        if (providePatientConditionTakingRecordStatistics.getFlagTakingMedicine2() != 0)
+            colors.add(Color.parseColor("#EA883B"));
+        if (providePatientConditionTakingRecordStatistics.getFlagTakingMedicine0() != 0)
+            colors.add(Color.parseColor("#E24A47"));
+
 
 //        set.setSliceSpace(4f);//切割空间
         set.setYValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE);//值在图表内显示
@@ -212,6 +228,7 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
 //                }else{
 //                    flag="已按时服用：";
 //                }
+                value = (float)(Math.round(value*100))/100;
                 return value+"%";
 
             }

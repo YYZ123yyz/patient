@@ -426,6 +426,7 @@
             android:layout_marginLeft="10dp"
             android:textSize="8pt"
             android:text="微信支付"
+            android:id="@+id/tv_payModel"
             android:layout_marginRight="10dp"
             android:textColor="@color/textColor_vo"
             android:layout_gravity="center_vertical"/>
@@ -433,6 +434,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
+            android:id="@+id/iv_payModel"
             android:background="@mipmap/zffs_wxzf"/>
     </LinearLayout>
     <TextView
@@ -445,6 +447,18 @@
         android:background="@mipmap/login"
         android:layout_margin="60dp"
         android:gravity="center"/>
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:textColor="@color/writeColor"-->
+                <!--android:textSize="9pt"-->
+                <!--android:text="开始咨询"-->
+                <!--android:id="@+id/tv_kszx"-->
+                <!--android:background="@mipmap/login"-->
+                <!--android:layout_margin="60dp"-->
+                <!--android:gravity="center"/>-->
     </LinearLayout>
+
+
     </ScrollView>
 </LinearLayout>

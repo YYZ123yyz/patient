@@ -3,8 +3,10 @@ package www.patient.jykj_zxyl.util.widget;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -13,12 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
-import androidx.annotation.NonNull;
 import entity.ProvideViewMyDoctorOrderAndTreatment;
-import netService.HttpNetService;
-import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.OrderMessage_OrderPayActivity;
 import www.patient.jykj_zxyl.application.JYKJApplication;
@@ -50,9 +47,10 @@ public class AuthorityDialog extends Dialog {
 
     private OrderMessage_OrderPayActivity mActivity;
 
+    private         ImageView   iv_gb;
 
 
-    public AuthorityDialog(@NonNull Context context,OrderMessage_OrderPayActivity activity) {
+    public AuthorityDialog(@NonNull Context context, OrderMessage_OrderPayActivity activity) {
         super(context, R.style.MyCommonDialog);
         mContext = context;
         mActivity = activity;
@@ -80,7 +78,13 @@ public class AuthorityDialog extends Dialog {
         li_zfbzf = (LinearLayout)this.findViewById(R.id.li_zfbzf);
         iv_wxzf = (ImageView)this.findViewById(R.id.iv_wxzf);
         iv_zfbzf = (ImageView)this.findViewById(R.id.iv_zfbzf);
-
+        iv_gb = (ImageView)this.findViewById(R.id.iv_gb);
+        iv_gb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActivity.gbZF();
+            }
+        });
         li_wxzf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

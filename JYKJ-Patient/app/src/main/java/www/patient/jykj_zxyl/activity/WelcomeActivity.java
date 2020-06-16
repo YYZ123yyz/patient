@@ -4,8 +4,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +32,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     private View view2;
     private View view3;
     private ArrayList<View> list;
-    private TextView tvLogin,tvRegister;
+    private TextView tvLogin,tv_yd1_tg,tv_yd2_tg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,50 +48,57 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initView() {
         mViewPager = this.findViewById(R.id.viewpager);
-        ivOneDot = this.findViewById(R.id.iv_one_dot);
-        ivTwoDot = this.findViewById(R.id.iv_two_dot);
-        ivThreeDot = this.findViewById(R.id.iv_three_dot);
+
+//        ivOneDot = this.findViewById(R.id.iv_one_dot);
+//        ivTwoDot = this.findViewById(R.id.iv_two_dot);
+//        ivThreeDot = this.findViewById(R.id.iv_three_dot);
         list = new ArrayList<>();
         view1 = View.inflate(this, R.layout.view_guide_one, null);
         view2 = View.inflate(this, R.layout.view_guide_two, null);
         view3 = View.inflate(this, R.layout.view_guide_three, null);
+
+        tv_yd1_tg = view1.findViewById(R.id.tv_yd1_tg);
+        tv_yd1_tg.setOnClickListener(this);
+        tv_yd2_tg = view2.findViewById(R.id.tv_yd2_tg);
+        tv_yd2_tg.setOnClickListener(this);
+
         tvLogin = view3.findViewById(R.id.tv_login);
-        tvRegister = view3.findViewById(R.id.tv_regist);
+//        tvRegister = view3.findViewById(R.id.tv_regist);
         tvLogin.setOnClickListener(this);
-        tvRegister.setOnClickListener(this);
+//        tvRegister.setOnClickListener(this);
         list.add(view1);
         list.add(view2);
         list.add(view3);
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (position == 0) {
-                    ivOneDot.setImageResource(R.drawable.shape_dot_white);
-                    ivTwoDot.setImageResource(R.drawable.shape_dot_gray);
-                    ivThreeDot.setImageResource(R.drawable.shape_dot_gray);
-                }
-                if (position == 1) {
-                    ivOneDot.setImageResource(R.drawable.shape_dot_gray);
-                    ivTwoDot.setImageResource(R.drawable.shape_dot_white);
-                    ivThreeDot.setImageResource(R.drawable.shape_dot_gray);
-                }
-                if (position == 2) {
-                    ivOneDot.setImageResource(R.drawable.shape_dot_gray);
-                    ivTwoDot.setImageResource(R.drawable.shape_dot_gray);
-                    ivThreeDot.setImageResource(R.drawable.shape_dot_white);
-                }
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+//        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//                if (position == 0) {
+//                    ivOneDot.setImageResource(R.drawable.shape_dot_white);
+//                    ivTwoDot.setImageResource(R.drawable.shape_dot_gray);
+//                    ivThreeDot.setImageResource(R.drawable.shape_dot_gray);
+//                }
+//                if (position == 1) {
+//                    ivOneDot.setImageResource(R.drawable.shape_dot_gray);
+//                    ivTwoDot.setImageResource(R.drawable.shape_dot_white);
+//                    ivThreeDot.setImageResource(R.drawable.shape_dot_gray);
+//                }
+//                if (position == 2) {
+//                    ivOneDot.setImageResource(R.drawable.shape_dot_gray);
+//                    ivTwoDot.setImageResource(R.drawable.shape_dot_gray);
+//                    ivThreeDot.setImageResource(R.drawable.shape_dot_white);
+//                }
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        });
         mViewPager.setAdapter(new PagerAdapter() {
             @Override
             public int getCount() {
@@ -143,8 +152,17 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         if(v.getId()==R.id.tv_login){
             startActivity(new Intent(this,LoginActivity.class));
-        }else if(v.getId()==R.id.tv_regist){
-            startActivity(new Intent(this,UseRegistActivity.class));
+            finish();
+        }
+        if (v.getId() == R.id.tv_yd1_tg)
+        {
+            startActivity(new Intent(this,LoginActivity.class));
+            finish();
+        }
+        if (v.getId() == R.id.tv_yd2_tg)
+        {
+            startActivity(new Intent(this,LoginActivity.class));
+            finish();
         }
     }
 }

@@ -298,7 +298,7 @@ public class ZJXQActivity extends AppCompatActivity {
             signingSumNum.setText("未设置");
         else
             signingSumNum.setText(provideViewDoctorExpertRecommend.getSigningSumNum()+"人咨询");
-        if (provideViewDoctorExpertRecommend.getFlagBindingState() == 1)
+        if (provideViewDoctorExpertRecommend.getFlagBindingState() != null && provideViewDoctorExpertRecommend.getFlagBindingState() == 1)
         {
             tv_ybd.setVisibility(View.VISIBLE);
             tv_bd.setVisibility(View.GONE);
@@ -309,7 +309,7 @@ public class ZJXQActivity extends AppCompatActivity {
             tv_bd.setVisibility(View.VISIBLE);
         }
 
-        if (provideViewDoctorExpertRecommend.getFlagThumbsUpState() == 1)
+        if (provideViewDoctorExpertRecommend.getFlagThumbsUpState() != null && provideViewDoctorExpertRecommend.getFlagThumbsUpState() == 1)
         {
             iv_dz.setBackgroundResource(R.mipmap.dianzan);
         }
@@ -318,7 +318,7 @@ public class ZJXQActivity extends AppCompatActivity {
             iv_dz.setBackgroundResource(R.mipmap.dz);
         }
 
-        if (provideViewDoctorExpertRecommend.getFlagCollectState() == 1)
+        if (provideViewDoctorExpertRecommend.getFlagCollectState() != null && provideViewDoctorExpertRecommend.getFlagCollectState() == 1)
         {
             iv_sc.setBackgroundResource(R.mipmap.sc);
         }
@@ -374,6 +374,7 @@ public class ZJXQActivity extends AppCompatActivity {
         mContext = this;
         mActivity = this;
         mApp = (JYKJApplication) getApplication();
+        mApp.gPayCloseActivity.add(mActivity);
         initView();
         initHandler();
         provideViewDoctorExpertRecommend = (ProvideViewDoctorExpertRecommend) getIntent().getSerializableExtra("provideViewDoctorExpertRecommend");
@@ -382,7 +383,7 @@ public class ZJXQActivity extends AppCompatActivity {
 //        mSearchModel = 1;
 //        mUnionList.removeAll(mUnionList);
         getDate();
-        getPLDate();
+
     }
 
 
@@ -412,6 +413,7 @@ public class ZJXQActivity extends AppCompatActivity {
 
                         }
                         showDoctorExpertRecommend();
+                        getPLDate();
                         break;
 
                     case 10:
@@ -718,7 +720,7 @@ public class ZJXQActivity extends AppCompatActivity {
         getProgressBar("请稍候","正在获取数据");
         provideViewDoctorExpertRecommend.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideViewDoctorExpertRecommend.setRequestClientType("1");
-        provideViewDoctorExpertRecommend.setSearchDoctorCode(provideViewDoctorExpertRecommend.getPatientCode());
+        provideViewDoctorExpertRecommend.setSearchDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
         provideViewDoctorExpertRecommend.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideViewDoctorExpertRecommend.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
 //        provideViewDoctorExpertRecommend.setShowNum("4");

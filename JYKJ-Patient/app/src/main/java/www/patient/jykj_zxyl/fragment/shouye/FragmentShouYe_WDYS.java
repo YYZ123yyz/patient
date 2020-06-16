@@ -220,20 +220,6 @@ public class FragmentShouYe_WDYS extends Fragment {
 
 
                 try {
-                    int avatarResId = Integer.parseInt(providePatientBindingMyDoctorInfos.get(0).getUserLogoUrl());
-                    Glide.with(mContext).load(avatarResId).into(shouye_heard1);
-                } catch (Exception e) {
-                    //use default avatar
-                    Glide.with(mContext).load(providePatientBindingMyDoctorInfos.get(0).getUserLogoUrl())
-                            .apply(RequestOptions.placeholderOf(R.mipmap.nhtx)
-                                    .diskCacheStrategy(DiskCacheStrategy.ALL))
-                            .into(shouye_heard1);
-                }
-                shouye_name1.setText(providePatientBindingMyDoctorInfos.get(0).getUserName());
-                shouye_bind1.setText(providePatientBindingMyDoctorInfos.get(0).getBindingTypeName());
-                shouye_hospatal1.setText(providePatientBindingMyDoctorInfos.get(0).getHospitalInfoName());
-
-                try {
                     int avatarResId = Integer.parseInt(providePatientBindingMyDoctorInfos.get(2).getUserLogoUrl());
                     Glide.with(mContext).load(avatarResId).into(shouye_heard3);
                 } catch (Exception e) {
@@ -246,6 +232,7 @@ public class FragmentShouYe_WDYS extends Fragment {
                 shouye_name3.setText(providePatientBindingMyDoctorInfos.get(2).getUserName());
                 shouye_bind3.setText(providePatientBindingMyDoctorInfos.get(2).getBindingTypeName());
                 shouye_hospatal3.setText(providePatientBindingMyDoctorInfos.get(2).getHospitalInfoName());
+
 
 
                 shouye_layout1.setVisibility(View.VISIBLE);
@@ -288,20 +275,6 @@ public class FragmentShouYe_WDYS extends Fragment {
 
 
                 try {
-                    int avatarResId = Integer.parseInt(providePatientBindingMyDoctorInfos.get(0).getUserLogoUrl());
-                    Glide.with(mContext).load(avatarResId).into(shouye_heard1);
-                } catch (Exception e) {
-                    //use default avatar
-                    Glide.with(mContext).load(providePatientBindingMyDoctorInfos.get(0).getUserLogoUrl())
-                            .apply(RequestOptions.placeholderOf(R.mipmap.nhtx)
-                                    .diskCacheStrategy(DiskCacheStrategy.ALL))
-                            .into(shouye_heard1);
-                }
-                shouye_name1.setText(providePatientBindingMyDoctorInfos.get(0).getUserName());
-                shouye_bind1.setText(providePatientBindingMyDoctorInfos.get(0).getBindingTypeName());
-                shouye_hospatal1.setText(providePatientBindingMyDoctorInfos.get(0).getHospitalInfoName());
-
-                try {
                     int avatarResId = Integer.parseInt(providePatientBindingMyDoctorInfos.get(2).getUserLogoUrl());
                     Glide.with(mContext).load(avatarResId).into(shouye_heard3);
                 } catch (Exception e) {
@@ -315,7 +288,6 @@ public class FragmentShouYe_WDYS extends Fragment {
                 shouye_bind3.setText(providePatientBindingMyDoctorInfos.get(2).getBindingTypeName());
                 shouye_hospatal3.setText(providePatientBindingMyDoctorInfos.get(2).getHospitalInfoName());
 
-
                 try {
                     int avatarResId = Integer.parseInt(providePatientBindingMyDoctorInfos.get(3).getUserLogoUrl());
                     Glide.with(mContext).load(avatarResId).into(shouye_heard4);
@@ -326,9 +298,11 @@ public class FragmentShouYe_WDYS extends Fragment {
                                     .diskCacheStrategy(DiskCacheStrategy.ALL))
                             .into(shouye_heard4);
                 }
-                shouye_name3.setText(providePatientBindingMyDoctorInfos.get(3).getUserName());
-                shouye_bind3.setText(providePatientBindingMyDoctorInfos.get(3).getBindingTypeName());
-                shouye_hospatal3.setText(providePatientBindingMyDoctorInfos.get(3).getHospitalInfoName());
+                shouye_name4.setText(providePatientBindingMyDoctorInfos.get(3).getUserName());
+                shouye_bind4.setText(providePatientBindingMyDoctorInfos.get(3).getBindingTypeName());
+                shouye_hospatal4.setText(providePatientBindingMyDoctorInfos.get(3).getHospitalInfoName());
+
+
 
                 shouye_layout1.setVisibility(View.VISIBLE);
                 shouye_layout2.setVisibility(View.VISIBLE);

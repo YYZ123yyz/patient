@@ -20,7 +20,6 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.ActivityUtil;
-import www.patient.jykj_zxyl.util.StrUtils;
 
 /**
  * 设置 == > 关于我们
@@ -59,9 +58,7 @@ public class AboutActivity extends AppCompatActivity {
                     case 0:
                         cacerProgress();
                         NetRetEntity retEntity = new Gson().fromJson(mNetRetStr,NetRetEntity.class);
-                        if(StrUtils.defaultStr(retEntity.getResJsonData()).length()>0) {
-                            mAboutText.setText(Html.fromHtml(retEntity.getResJsonData()));
-                        }
+                        mAboutText.setText(Html.fromHtml(retEntity.getResJsonData()));
                         break;
                 }
             }

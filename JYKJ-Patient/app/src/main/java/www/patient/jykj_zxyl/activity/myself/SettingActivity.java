@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.hyphenate.chat.EMClient;
+
 import www.patient.jykj_zxyl.activity.myself.setting.AboutActivity;
 import www.patient.jykj_zxyl.activity.myself.setting.OpeaPassWordActivity;
 import www.patient.jykj_zxyl.activity.myself.setting.ServiceHotlineActivity;
@@ -76,6 +78,11 @@ public class SettingActivity extends AppCompatActivity {
                 case R.id.bt_activityMySelfSetting_exitButton:
                     //清除缓存
                     mApp.cleanPersistence();
+                    mApp.mProvideViewSysUserPatientInfoAndRegion = null;
+                    mApp.mLoginUserInfo = null;
+                    mApp.saveUserInfo();
+                    //退出环信
+                    EMClient.getInstance().logout(true);
                     startActivity(new Intent(SettingActivity.this,LoginActivity.class));
                     for (int i = 0; i < mApp.gActivityList.size(); i++)
                     {

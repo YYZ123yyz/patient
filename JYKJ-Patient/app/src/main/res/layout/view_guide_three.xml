@@ -7,41 +7,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@mipmap/guide_three" />
+        android:src="@mipmap/ydy_3" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="60dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp">
+      >
 
         <TextView
             android:id="@+id/tv_login"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="登录"
+            android:text="立即开始"
+            android:layout_centerInParent="true"
             android:padding="5dp"
-            android:textColor="@color/groabColor"
-            android:background="@drawable/shape_button_login"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="#FEBD57"
+            android:background="@drawable/bd_ydy_ljks"
             android:textSize="16sp"
             android:gravity="center"/>
-        <TextView
-            android:id="@+id/tv_regist"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:layout_marginLeft="10dp"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textColor="@color/writeColor"
-            android:background="@drawable/shape_button_regist"
-            android:text="注册"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

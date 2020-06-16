@@ -31,9 +31,6 @@
             android:text="基本健康信息"
             android:textColor="@color/writeColor"
             android:textSize="10pt" />
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                  android:layout_alignParentRight="true" android:textColor="@color/writeColor"
-                  android:textSize="10pt" android:id="@+id/subinfo_btn" android:text="提交" android:layout_centerVertical="true"></TextView>
     </RelativeLayout>
 
     <ScrollView

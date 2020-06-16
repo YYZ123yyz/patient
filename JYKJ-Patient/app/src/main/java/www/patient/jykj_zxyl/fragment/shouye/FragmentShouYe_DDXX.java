@@ -80,10 +80,15 @@ public class FragmentShouYe_DDXX extends Fragment {
         mApp = (JYKJApplication) getActivity().getApplication();
         initLayout(v);
         initHandler();
-        getOrderMessageInfo();
+
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getOrderMessageInfo();
+    }
 
     /**
      * 展示我的医生数据
@@ -134,6 +139,23 @@ public class FragmentShouYe_DDXX extends Fragment {
         mFragment_Shouye_OrderMessageRecycleAdapter = new Fragment_Shouye_OrderMessageRecycleAdapter(mList,mContext,this);
         mRecycleView.setAdapter(mFragment_Shouye_OrderMessageRecycleAdapter);
 
+        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (loadDate) {
+                        int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+                        if (lastVisiblePosition >= layoutManager.getItemCount() - 1) {
+                            if (loadDate) {
+                                mPageNum++;
+                                getOrderMessageInfo();
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
 

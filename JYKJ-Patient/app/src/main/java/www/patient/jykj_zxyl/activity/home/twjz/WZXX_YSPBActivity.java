@@ -275,7 +275,9 @@ public class WZXX_YSPBActivity extends AppCompatActivity {
         setContentView(R.layout.activity_wzxx_yspb);
         mContext = this;
         mActivity = this;
+
         mApp = (JYKJApplication) getApplication();
+        mApp.gPayCloseActivity.add(mActivity);
         provideViewDoctorExpertRecommend = (ProvideViewDoctorExpertRecommend) getIntent().getSerializableExtra("provideViewDoctorExpertRecommend");
         mOperaType = getIntent().getStringExtra("operaType");
         initLayout();
@@ -373,7 +375,7 @@ public class WZXX_YSPBActivity extends AppCompatActivity {
         ProvideDoctorSetScheduling provideDoctorSetScheduling = new ProvideDoctorSetScheduling();
         provideDoctorSetScheduling.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideDoctorSetScheduling.setRequestClientType("1");
-        provideDoctorSetScheduling.setSearchDoctorCode(provideViewDoctorExpertRecommend.getPatientCode());
+        provideDoctorSetScheduling.setSearchDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
         provideDoctorSetScheduling.setSearchDoctorName(provideViewDoctorExpertRecommend.getUserName());
 
         new Thread(){
