@@ -1,13 +1,17 @@
 package www.patient.jykj_zxyl.activity.myself;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import android.widget.TextView;
 import www.patient.jykj_zxyl.activity.myself.setting.AboutActivity;
 import www.patient.jykj_zxyl.activity.myself.setting.OpeaPassWordActivity;
 import www.patient.jykj_zxyl.activity.myself.setting.ServiceHotlineActivity;
@@ -18,6 +22,7 @@ import www.patient.jykj_zxyl.activity.myself.setting.OpeaPassWordActivity;
 import www.patient.jykj_zxyl.activity.myself.setting.ServiceHotlineActivity;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.ActivityUtil;
+import www.patient.jykj_zxyl.util.MyUtil;
 
 /**
  * 设置
@@ -31,7 +36,9 @@ public class SettingActivity extends AppCompatActivity {
     private                 LinearLayout                mAboutLayout;                   //关于我们
     private                 LinearLayout                mServiceHolting;                //客服热线
     private                 LinearLayout                mOperPassWord;                  //修改密码
-
+    private LinearLayout clear_app_cache;//清除缓存
+    private TextView cache_size;
+    private TextView version_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +70,12 @@ public class SettingActivity extends AppCompatActivity {
 
         mOperPassWord = (LinearLayout)this.findViewById(R.id.li_activitySetting_operPassWord);
         mOperPassWord.setOnClickListener(new ButtonClick());
+
+        clear_app_cache = findViewById(R.id.clear_app_cache);
+        clear_app_cache.setOnClickListener(new ButtonClick());
+
+        version_name = findViewById(R.id.version_name);
+        cache_size = findViewById(R.id.cache_size);
     }
 
 
@@ -91,6 +104,19 @@ public class SettingActivity extends AppCompatActivity {
                 case R.id.li_activitySetting_operPassWord:
                     startActivity(new Intent(SettingActivity.this,OpeaPassWordActivity.class));
                     break;
+                case R.id.clear_app_cache:
+                    new AlertDialog.Builder(mContext).setTitle("确认清楚缓存")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    //按下确定键后的事件
+                                    MyUtil.cleanExternalCache(mContext);
+                                    MyUtil.cleanInternalCache(mContext);
+                                    Intent theint = new Intent(SettingActivity.this,LoginActivity.class);
+                                    SettingActivity.this.startActivity(theint);
+                                }
+                            }).setNegativeButton("取消",null).show();
+                    break;
             }
         }
     }
@@ -99,7 +125,12 @@ public class SettingActivity extends AppCompatActivity {
      * 设置数据
      */
     private void setData() {
+        try {
+            cache_size.setText(MyUtil.getAllCacheSize(mContext));
+            version_name.setText(MyUtil.getAppVersionName(mContext));
+        }catch (Exception ex){
 
+        }
     }
 
 
