@@ -709,6 +709,7 @@ public class LivePlayerActivity extends ChatPopDialogActivity implements ITXLive
     private boolean startPlayRtmp() {
 
         String playUrl = mRtmpUrlView.getText().toString();
+        playUrl = "rtmp://historypush.jiuyihtn.com/live/jiuyikeji";
 
 //        //由于iOS AppStore要求新上架的app必须使用https,所以后续腾讯云的视频连接会支持https,但https会有一定的性能损耗,所以android将统一替换会http
 //        if (playUrl.startsWith("https://")) {

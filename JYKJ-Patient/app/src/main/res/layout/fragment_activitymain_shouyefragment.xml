@@ -517,6 +517,7 @@
                             android:layout_height="1dp"
                             android:background="@color/pBackColor"/>
                         <LinearLayout
+                                android:id="@+id/live_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="15dp"
@@ -554,6 +555,7 @@
                             android:layout_marginBottom="15dp"
                             android:orientation="horizontal">
                             <LinearLayout
+                                    android:id="@+id/diet_layout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -573,6 +575,7 @@
                                     android:textSize="8pt" />
                             </LinearLayout>
                             <LinearLayout
+                                    android:id="@+id/port_layout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -603,6 +606,7 @@
                             android:layout_marginBottom="15dp"
                             android:orientation="horizontal">
                             <LinearLayout
+                                    android:id="@+id/sweem_layout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -622,6 +626,7 @@
                                     android:textSize="8pt" />
                             </LinearLayout>
                             <LinearLayout
+                                    android:id="@+id/feeling_layout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"

@@ -1,6 +1,7 @@
 package www.patient.jykj_zxyl.fragment;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -56,6 +57,7 @@ import www.patient.jykj_zxyl.activity.home.QRCodeActivity;
 import www.patient.jykj_zxyl.activity.home.patient.BloodEntryActivity;
 import www.patient.jykj_zxyl.activity.home.patient.ZJXQ_ZJBDActivity;
 import www.patient.jykj_zxyl.activity.hyhd.BindDoctorFriend;
+import www.patient.jykj_zxyl.activity.hyhd.LivePlayerActivity;
 import www.patient.jykj_zxyl.activity.myself.MedicationSettingsActivity;
 import www.patient.jykj_zxyl.activity.myself.couponFragment.FragmentAdapter;
 import www.patient.jykj_zxyl.activity.patient_home.KSWYSActivity;
@@ -162,6 +164,13 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
     private             LinearLayout                    mXYTX;                              //血压提醒
     private             LinearLayout                    mYYTX;                              //用药提醒
+
+    private  LinearLayout live_layout;
+    private  LinearLayout  kswys;
+    private LinearLayout diet_layout;
+    private LinearLayout port_layout;
+    private LinearLayout sweem_layout;
+    private LinearLayout feeling_layout;
 
     private             TextView                        mYPMC1;                             //药品名称1
     private             TextView                        mYPMC2;                             //药品名称2
@@ -581,6 +590,13 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         fragmentAdapter=new FragmentAdapter(getChildFragmentManager(),fragmentList,mTitles);
         pager.setAdapter(fragmentAdapter);
         tabLayout.setupWithViewPager(pager);//与ViewPage建立关系
+
+        live_layout = view.findViewById(R.id.live_layout);
+        kswys = view.findViewById(R.id.kswys);
+        diet_layout = view.findViewById(R.id.diet_layout);
+        port_layout = view.findViewById(R.id.port_layout);
+        sweem_layout = view.findViewById(R.id.sweem_layout);
+        feeling_layout = view.findViewById(R.id.feeling_layout);
     }
 
 
@@ -604,6 +620,13 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 //        mMyPatient.setOnClickListener(this);
 //        mNewMessageLayout.setOnClickListener(this);
         llQuickApplication.setOnClickListener(this);
+
+        live_layout.setOnClickListener(this);
+        kswys.setOnClickListener(this);
+        diet_layout.setOnClickListener(this);
+        port_layout.setOnClickListener(this);
+        sweem_layout.setOnClickListener(this);
+        feeling_layout.setOnClickListener(this);
     }
 
     @Override
@@ -664,7 +687,43 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                     mPopupWindow.showAsDropDown(llQuickApplication,0,0);
                 }
                 break;
+            case R.id.kswys:
+                alertWillpub();
+                break;
+            case R.id.diet_layout:
+                alertWillpub();
+                break;
+            case R.id.port_layout:
+                alertWillpub();
+                break;
+            case R.id.sweem_layout:
+                alertWillpub();
+                break;
+            case R.id.feeling_layout:
+                alertWillpub();
+                break;
+            case R.id.live_layout:
+                Intent goliveintent = new Intent(mContext, LivePlayerActivity.class);
+                goliveintent.putExtra("TITLE","医生直播间");
+                goliveintent.putExtra("TYPE", LivePlayerActivity.ACTIVITY_TYPE_LIVE_PLAY);
+                startActivity(goliveintent);
+                break;
         }
+    }
+
+    void alertWillpub(){
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View diagview = inflater.inflate(R.layout.willupdiag, null);
+        AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
+        builder.setView(diagview);
+        AlertDialog dialog=builder.create();
+        dialog.show();
+        diagview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
     /**
