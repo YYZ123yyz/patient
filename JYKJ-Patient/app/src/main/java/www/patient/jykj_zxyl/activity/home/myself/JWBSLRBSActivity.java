@@ -120,6 +120,8 @@ public class JWBSLRBSActivity extends AppCompatActivity {
     private SubDataTask subDataTask = null;
     private SubImgTask subImgTask = null;
     private TextView tv_szbs;
+    private int opeimgcount = 0;
+    private int hasimgcount = 0;
 
     /**
      * 创建临时文件夹 _tempphoto
@@ -374,9 +376,15 @@ public class JWBSLRBSActivity extends AppCompatActivity {
         for(int j=0;j<mPhotoInfos.size();j++){
             Photo_Info parphoto = mPhotoInfos.get(j);
             if(null!=parphoto.getPhoto()){
+                hasimgcount =  hasimgcount + 1;
+            }
+        }
+        for(int j=0;j<mPhotoInfos.size();j++){
+            Photo_Info parphoto = mPhotoInfos.get(j);
+            if(null!=parphoto.getPhoto()){
                 SubPatientImg subimg = new SubPatientImg();
                 subimg.setLoginPatientPosition(mApp.loginDoctorPosition);
-                subimg.setImgBase64Data("data:image/jpg;base64,"+parphoto.getPhoto());
+                subimg.setImgBase64Data(URLEncoder.encode("data:image/jpg;base64,"+parphoto.getPhoto()));
                 subimg.setRequestClientType("1");
                 subimg.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
                 subimg.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
@@ -450,6 +458,10 @@ public class JWBSLRBSActivity extends AppCompatActivity {
             }else{
                 Toast.makeText(mContext,repmsg,Toast.LENGTH_SHORT);
             }
+            opeimgcount = opeimgcount+1;
+            if(opeimgcount>=hasimgcount){
+                finish();
+            }
         }
     }
 
@@ -518,6 +530,7 @@ public class JWBSLRBSActivity extends AppCompatActivity {
                 mImageViewRecycleAdapter.setDate(mPhotoInfos);
                 mImageViewRecycleAdapter.notifyDataSetChanged();
             }
+
         }
     }
 

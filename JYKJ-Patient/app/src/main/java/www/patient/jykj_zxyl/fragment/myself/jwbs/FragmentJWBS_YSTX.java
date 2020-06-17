@@ -158,7 +158,7 @@ public class FragmentJWBS_YSTX extends Fragment{
         //if(null==loadDataTask){
         QueryHistCond quebean = new QueryHistCond();
         quebean.setPageNum(String.valueOf(pageno));
-        quebean.setDataSourceType("1");
+        quebean.setDataSourceType("2");
         quebean.setLoginPatientPosition(mApp.loginDoctorPosition);
         quebean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         quebean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());

@@ -49,16 +49,14 @@ import entity.basicDate.ProvideHospitalDepartment;
 import entity.basicDate.ProvideHospitalInfo;
 import entity.basicDate.ProvideViewSysUserPatientInfoAndRegion;
 import entity.mySelf.ProvideViewSysUserDoctorInfoAndHospital;
+import entity.mySelf.UpProvideViewSysUserPatientInfoAndRegion;
 import entity.user.UserInfo;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
-import www.patient.jykj_zxyl.util.Util;
+import www.patient.jykj_zxyl.util.*;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.util.ActivityUtil;
-import www.patient.jykj_zxyl.util.BitmapUtil;
-import www.patient.jykj_zxyl.util.ProvincePicker;
 import www.patient.jykj_zxyl.util.Util;
 
 /**
@@ -253,7 +251,17 @@ public class UserCenterActivity extends AppCompatActivity {
                         .into(mUserHeadImage);
             }
         }
+        if(null!=mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() && 1==mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus().intValue()){
+            nickName_open.setImageResource(R.mipmap.open);
+            nickName_open.setTag(R.mipmap.open);
+        }else{
+            nickName_open.setImageResource(R.mipmap.close);
+            nickName_open.setTag(R.mipmap.close);
+        }
 
+        mChoiceRegionText.setText(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getArea()));
+        mSynopsisEdit.setText(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getAddress()));
+        tv_activityUserCenter_userNikeNameText.setText(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias()));
     }
 
     /**
@@ -357,7 +365,13 @@ public class UserCenterActivity extends AppCompatActivity {
                     mPicker.show();
                     break;
                 case R.id.nickName_open:
-//                    if ()
+                    if (R.mipmap.open==((Integer)nickName_open.getTag()).intValue()){
+                        nickName_open.setImageResource(R.mipmap.close);
+                        nickName_open.setTag(R.mipmap.close);
+                    }else{
+                        nickName_open.setImageResource(R.mipmap.open);
+                        nickName_open.setTag(R.mipmap.open);
+                    }
                     break;
                 case R.id.tv_activityUserCenter_commit:
                     commit();
@@ -383,22 +397,46 @@ public class UserCenterActivity extends AppCompatActivity {
         mProvideViewSysUserPatientInfoAndRegion.setUserName(mUserNameText.getText().toString());
         mProvideViewSysUserPatientInfoAndRegion.setUserNameAlias(tv_activityUserCenter_userNikeNameText.getText().toString());
         mProvideViewSysUserPatientInfoAndRegion.setAddress(mSynopsisEdit.getText().toString());
+        if (R.mipmap.open==((Integer)nickName_open.getTag()).intValue()){
+            mProvideViewSysUserPatientInfoAndRegion.setFlagPatientStatus(1);
+        }else{
+            mProvideViewSysUserPatientInfoAndRegion.setFlagPatientStatus(0);
+        }
+
         getProgressBar("请稍候。。。。","正在提交");
         new Thread(){
             public void run(){
+                boolean isupsuccess = false;
                 try {
-//                    if (mUserHeadBitmap != null)
-//                        mProvideViewSysUserPatientInfoAndRegion.setBase64ImgData((URLEncoder.encode("data:image/jpg;base64,"+BitmapUtil.bitmaptoString(mUserHeadBitmap))));
-//                    String str = new Gson().toJson(mProvideViewSysUserDoctorInfoAndHospital);
-//                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+str,Constant.SERVICEURL+"doctorPersonalSetControlle/operUserDoctorInfo");
+                    UpProvideViewSysUserPatientInfoAndRegion upbean = new UpProvideViewSysUserPatientInfoAndRegion();
+                    upbean.setLoginPatientPosition(mApp.loginDoctorPosition);
+                    upbean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                    upbean.setRequestClientType("1");
+                    upbean.setPatientId(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getPatientId()));
+                    upbean.setUserName(mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                    upbean.setUserNameAlias(mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias());
+                    upbean.setFlagUserNameAliasStatus(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus()));
+                    upbean.setGender(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getGender()));
+                    if(null!=mProvideViewSysUserPatientInfoAndRegion.getBirthday()) {
+                        upbean.setBirthdayStr(DateUtils.getStringTimeOfYMD(mProvideViewSysUserPatientInfoAndRegion.getBirthday().getTime()));
+                    }
+                    upbean.setCity(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getCity()));
+                    upbean.setProvince(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getProvince()));
+                    upbean.setAddress(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getAddress()));
+                    upbean.setArea(StrUtils.defaultStr(mChoiceRegionText.getText()));
+                    if (mUserHeadBitmap != null)
+                        upbean.setBase64ImgData((URLEncoder.encode("data:image/jpg;base64,"+BitmapUtil.bitmaptoString(mUserHeadBitmap))));
+                   String str = new Gson().toJson(upbean);
+                   mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+str,Constant.SERVICEURL+"patientPersonalSetControlle/operUserPatientInfo");
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
-                    if (netRetEntity.getResCode() == 0) {
-                        NetRetEntity retEntity = new NetRetEntity();
+                    if (netRetEntity.getResCode() == 1) {
+                        isupsuccess = true;
+                       /* NetRetEntity retEntity = new NetRetEntity();
                         retEntity.setResCode(0);
-                        retEntity.setResMsg("获取提交失败："+netRetEntity.getResMsg());
-                        mNetRetStr = new Gson().toJson(retEntity);
-                        mHandler.sendEmptyMessage(3);
-                        return;
+                        retEntity.setResMsg("获取提交失败："+netRetEntity.getResMsg());*/
+                        mNetRetStr = new Gson().toJson(netRetEntity);
+                        //mHandler.sendEmptyMessage(3);
+                        //return;
                     }
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
@@ -408,20 +446,24 @@ public class UserCenterActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 //重新登录，刷新用户信息
-                UserInfo userInfo = new UserInfo();
-                userInfo.setUserPhone(mApp.mLoginUserInfo.getUserPhone());
-                userInfo.setUserPwd(mApp.mLoginUserInfo.getUserPwd());
-                try {
-                    mNetLoginRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(userInfo),Constant.SERVICEURL+"doctorLoginController/loginDoctorPwd");
-                } catch (Exception e) {
-                    NetRetEntity retEntity = new NetRetEntity();
-                    retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
-                    mNetLoginRetStr = new Gson().toJson(retEntity);
-                    e.printStackTrace();
+                if(isupsuccess) {
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.setLoginPatientPosition(mApp.loginDoctorPosition);
+                    userInfo.setRequestClientType("1");
+                    userInfo.setUserPhone(mApp.mLoginUserInfo.getUserPhone());
+                    userInfo.setUserPwd(mApp.mLoginUserInfo.getUserPwd());
+                    try {
+                        mNetLoginRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(userInfo), Constant.SERVICEURL + "patientLoginControlle/loginPatientAppPwdLogin");
+                    } catch (Exception e) {
+                        NetRetEntity retEntity = new NetRetEntity();
+                        retEntity.setResCode(0);
+                        retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
+                        mNetLoginRetStr = new Gson().toJson(retEntity);
+                        e.printStackTrace();
+                    }
                 }
+                    mHandler.sendEmptyMessage(3);
 
-                mHandler.sendEmptyMessage(3);
             }
         }.start();
     }
@@ -759,7 +801,6 @@ public class UserCenterActivity extends AppCompatActivity {
             //显示图片
 //            mUserHeadImage.setImageBitmap(photo);
             Glide.with(this).load(photo).into(mUserHeadImage);
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -873,7 +914,7 @@ public class UserCenterActivity extends AppCompatActivity {
                     //实体转JSON字符串
                     String str = new Gson().toJson(provideViewSysUserPatientInfoAndRegion);
                     //获取用户数据
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+str,Constant.SERVICEURL+"/PatientConditionControlle/searchPatientStateResBasic");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+str,Constant.SERVICEURL+"/patientPersonalSetControlle/getUserPatientInfo");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
@@ -951,7 +992,6 @@ public class UserCenterActivity extends AppCompatActivity {
      * 设置所在地区显示
      */
     public void setRegionText() {
-
         if ("sqb".equals(mChoiceRegionMap.get("city").getRegion_id()))
         {
             mProvideViewSysUserPatientInfoAndRegion.setProvince(mChoiceRegionMap.get("provice").getRegion_id());

@@ -39,7 +39,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="修改手机号"
+            android:text="修改密码"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:layout_marginLeft="10dp"
@@ -88,6 +88,7 @@
         android:background="@color/writeColor"
         android:id="@+id/li_activitySetting_serviceHolting"
         android:layout_marginTop="1dp"
+        android:visibility="gone"
         android:orientation="horizontal">
 
         <TextView

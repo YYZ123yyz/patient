@@ -1,14 +1,11 @@
-package entity.basicDate;
+package entity.mySelf.usercenter;
 
 import java.util.Date;
-
-
 /**
  * 患者信息
  * 
  * @author JiaQ
  */
-
 public class ProvideViewSysUserPatientInfoAndRegion implements java.io.Serializable {
 	
 	private Integer patientId;//用户ID
@@ -39,106 +36,7 @@ public class ProvideViewSysUserPatientInfoAndRegion implements java.io.Serializa
 	private Integer flagPatientStatus;//患者认证状态(0:未认证;1:已认证;)
 	private String newLoginDate;//最后一次登录日期
 
-	private String loginPatientPosition;
-	private String requestClientType;
-	private String userPhone;
-	private String userPwd;
-	private String sendUserLinkPhone;
-	private String userRegisterSmsVerify;
-    private String tokenSmsVerify;
-	private String userLoginSmsVerify;
-	private String newPassWord;
-	private String smsVerifyData;
-	private String smsVerifyTokenData;
-
-	private String openId;
-
-	private String operPatientCode;
-	private String operPatientName;
-	private String base64ImgData;
-
-
-	public String getOperPatientCode() {
-		return operPatientCode;
-	}
-
-	public void setOperPatientCode(String operPatientCode) {
-		this.operPatientCode = operPatientCode;
-	}
-
-	public String getOperPatientName() {
-		return operPatientName;
-	}
-
-	public void setOperPatientName(String operPatientName) {
-		this.operPatientName = operPatientName;
-	}
-
-	public String getOpenId() {
-		return openId;
-	}
-
-	public void setOpenId(String openId) {
-		this.openId = openId;
-	}
-
-	public String getSmsVerifyTokenData() {
-		return smsVerifyTokenData;
-	}
-
-	public void setSmsVerifyTokenData(String smsVerifyTokenData) {
-		this.smsVerifyTokenData = smsVerifyTokenData;
-	}
-
-	public String getSmsVerifyData() {
-		return smsVerifyData;
-	}
-
-	public void setSmsVerifyData(String smsVerifyData) {
-		this.smsVerifyData = smsVerifyData;
-	}
-
-	public String getNewPassWord() {
-		return newPassWord;
-	}
-
-	public void setNewPassWord(String newPassWord) {
-		this.newPassWord = newPassWord;
-	}
-
-	public String getUserLoginSmsVerify() {
-		return userLoginSmsVerify;
-	}
-
-	public void setUserLoginSmsVerify(String userLoginSmsVerify) {
-		this.userLoginSmsVerify = userLoginSmsVerify;
-	}
-
-	public String getTokenSmsVerify() {
-        return tokenSmsVerify;
-    }
-
-    public void setTokenSmsVerify(String tokenSmsVerify) {
-        this.tokenSmsVerify = tokenSmsVerify;
-    }
-
-    public String getUserRegisterSmsVerify() {
-        return userRegisterSmsVerify;
-    }
-
-    public void setUserRegisterSmsVerify(String userRegisterSmsVerify) {
-        this.userRegisterSmsVerify = userRegisterSmsVerify;
-    }
-
-    public String getSendUserLinkPhone() {
-        return sendUserLinkPhone;
-    }
-
-    public void setSendUserLinkPhone(String sendUserLinkPhone) {
-        this.sendUserLinkPhone = sendUserLinkPhone;
-    }
-
-    public Integer getPatientId() {
+	public Integer getPatientId() {
 		return patientId;
 	}
 
@@ -352,45 +250,5 @@ public class ProvideViewSysUserPatientInfoAndRegion implements java.io.Serializa
 
 	public void setNewLoginDate(String newLoginDate) {
 		this.newLoginDate = newLoginDate;
-	}
-
-	public String getLoginPatientPosition() {
-		return loginPatientPosition;
-	}
-
-	public void setLoginPatientPosition(String loginPatientPosition) {
-		this.loginPatientPosition = loginPatientPosition;
-	}
-
-	public String getRequestClientType() {
-		return requestClientType;
-	}
-
-	public void setRequestClientType(String requestClientType) {
-		this.requestClientType = requestClientType;
-	}
-
-	public String getUserPhone() {
-		return userPhone;
-	}
-
-	public void setUserPhone(String userPhone) {
-		this.userPhone = userPhone;
-	}
-
-	public String getUserPwd() {
-		return userPwd;
-	}
-
-	public void setUserPwd(String userPwd) {
-		this.userPwd = userPwd;
-	}
-
-	public String getBase64ImgData() {
-		return base64ImgData;
-	}
-
-	public void setBase64ImgData(String base64ImgData) {
-		this.base64ImgData = base64ImgData;
 	}
 }

@@ -66,6 +66,7 @@ public class FragmentMyOrderNo extends Fragment{
         mApp = (JYKJApplication) getActivity().getApplication();
         initLayout(v);
         initHandler();
+        mHZEntyties = new ArrayList<>();
         setData();
         return v;
     }
