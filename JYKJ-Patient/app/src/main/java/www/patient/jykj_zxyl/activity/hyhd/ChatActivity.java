@@ -95,7 +95,8 @@ public class ChatActivity extends AppCompatActivity {
 
         messageList = (EaseChatMessageList) this.findViewById(R.id.message_list);
         //初始化messagelist
-        messageList.init(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), 1, null,doctorUrl,patientUrl);
+        //messageList.init(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), 1, null,doctorUrl,patientUrl);
+        messageList.init(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),1,null);
         //设置item里的控件的点击事件
         messageList.setItemClickListener(new EaseChatMessageList.MessageListItemClickListener() {
 
