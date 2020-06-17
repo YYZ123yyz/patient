@@ -304,14 +304,14 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
                     timePickerView = new TimePickerBuilder(mContext, new OnTimeSelectListener() {
                         @Override
                         public void onTimeSelect(Date date, View v) {
-                            time = getDate(date);
+                            time = getYear(date);
                             tv_qznf.setText(time);
 //                            mData.add(time);
 //                            mAdapter.setDate(mData);
 //                            mAdapter.notifyDataSetChanged();
                         }
-                    }).setType(new boolean[]{true, true, true, false, false, false})
-                            .setLabel("年", "月", "日", "", "", "").build();
+                    }).setType(new boolean[]{true, false, false, false, false, false})
+                            .setLabel("年", "", "", "", "", "").build();
                     timePickerView.show();
                     break;
                 case R.id.li_zxybs:
@@ -397,6 +397,13 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd");
         String string = simpleDateFormat.format(data);
+        return string;
+    }
+
+    private String getYear(Date date){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                "yyyy");
+        String string = simpleDateFormat.format(date);
         return string;
     }
 
