@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,6 +53,8 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
     private TextView tv_fragmentMySelf_nameText;
 
     private LinearLayout  tv_wdye;
+    ImageView discountBtn;
+    ImageView gradeBtn;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_activitymain_myselffragment, container, false);
@@ -72,6 +75,9 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
         myselfMedication = v.findViewById(R.id.myself_medication);
         myselfRecommend = v.findViewById(R.id.myself_recommend);
         myselfSetting = v.findViewById(R.id.myself_setting);
+        discountBtn = v.findViewById(R.id.discountBtn);
+        gradeBtn = v.findViewById(R.id.gradeBtn);
+
         iv_fragmentMyself_userHeadImage = (ImageView)v.findViewById(R.id.iv_fragmentMyself_userHeadImage);
         tv_fragmentMySelf_nameText = (TextView)v.findViewById(R.id.tv_fragmentMySelf_nameText);
         try {
@@ -100,6 +106,8 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
         tv_fragmentMySelf_nameText.setOnClickListener(this);
         iv_fragmentMyself_userHeadImage.setOnClickListener(this);
         tv_wdye.setOnClickListener(this);
+        discountBtn.setOnClickListener(this);
+        gradeBtn.setOnClickListener(this);
     }
 
 
@@ -141,6 +149,27 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
             case R.id.tv_wdye:
                 startActivity(new Intent(getActivity(),MySurplusActivity.class));
                 break;
+            case R.id.discountBtn:
+                alertWillpub();
+                break;
+            case R.id.gradeBtn:
+                alertWillpub();
+                break;
         }
+    }
+
+    void alertWillpub(){
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View diagview = inflater.inflate(R.layout.willupdiag, null);
+        AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
+        builder.setView(diagview);
+        AlertDialog dialog=builder.create();
+        dialog.show();
+        diagview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 }
