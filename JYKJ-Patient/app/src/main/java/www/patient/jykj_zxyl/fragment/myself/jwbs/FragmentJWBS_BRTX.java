@@ -88,6 +88,14 @@ public class FragmentJWBS_BRTX extends Fragment{
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mProvidePatientConditionDiseaseRecords = new ArrayList();
+        mPageNum = 1;
+        pageno = 1;
+        setData();
+    }
 
     /**
      * 初始化界面

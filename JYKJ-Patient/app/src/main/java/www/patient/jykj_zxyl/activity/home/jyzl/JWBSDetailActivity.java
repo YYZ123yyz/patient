@@ -270,40 +270,59 @@ public class JWBSDetailActivity extends AppCompatActivity {
             if(provideBasicsImgs.size()>0){
                 ProvideBasicsImg imgbean = provideBasicsImgs.get(0);
                 try {
-                    Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView01);
-                } catch (URISyntaxException e) {
+                    //Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView01);
+                    Glide.with(mContext).load(imgbean.getImgUrl())
+                            .apply(RequestOptions.placeholderOf(com.hyphenate.easeui.R.mipmap.docter_heard)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL))
+                            .into(mImageView01);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             if(provideBasicsImgs.size()>1){
                 ProvideBasicsImg imgbean = provideBasicsImgs.get(1);
                 try {
-                    Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView02);
-                } catch (URISyntaxException e) {
+                    Glide.with(mContext).load(imgbean.getImgUrl())
+                            .apply(RequestOptions.placeholderOf(com.hyphenate.easeui.R.mipmap.docter_heard)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL))
+                            .into(mImageView02);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             if(provideBasicsImgs.size()>2){
                 ProvideBasicsImg imgbean = provideBasicsImgs.get(2);
                 try {
-                    Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView03);
-                } catch (URISyntaxException e) {
+                    //Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView03);
+                    Glide.with(mContext).load(imgbean.getImgUrl())
+                            .apply(RequestOptions.placeholderOf(com.hyphenate.easeui.R.mipmap.docter_heard)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL))
+                            .into(mImageView03);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             if(provideBasicsImgs.size()>3){
                 ProvideBasicsImg imgbean = provideBasicsImgs.get(3);
                 try {
-                    Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView04);
-                } catch (URISyntaxException e) {
+                    //Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView04);
+                    Glide.with(mContext).load(imgbean.getImgUrl())
+                            .apply(RequestOptions.placeholderOf(com.hyphenate.easeui.R.mipmap.docter_heard)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL))
+                            .into(mImageView04);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             if(provideBasicsImgs.size()>4){
                 ProvideBasicsImg imgbean = provideBasicsImgs.get(4);
                 try {
-                    Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView05);
-                } catch (URISyntaxException e) {
+                    //Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView05);
+                    Glide.with(mContext).load(imgbean.getImgUrl())
+                            .apply(RequestOptions.placeholderOf(com.hyphenate.easeui.R.mipmap.docter_heard)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL))
+                            .into(mImageView05);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
