@@ -63,6 +63,7 @@ import com.hyphenate.easeui.netService.HttpNetService;
 import com.hyphenate.easeui.netService.entity.NetRetEntity;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.easeui.utils.EaseUserUtils;
+import com.hyphenate.easeui.utils.ExtEaseUtils;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
 import com.hyphenate.easeui.widget.EaseAlertDialog.AlertDialogUser;
 import com.hyphenate.easeui.widget.EaseChatExtendMenu;
@@ -528,7 +529,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
             @Override
             public boolean onResendClick(final EMMessage message) {
                 EMLog.i(TAG, "onResendClick");
-                new EaseAlertDialog(getContext(), R.string.resend, R.string.confirm_resend, null, new EaseAlertDialog.AlertDialogUser() {
+                new EaseAlertDialog(getContext(), R.string.resend, R.string.confirm_resend, null, new AlertDialogUser() {
                     @Override
                     public void onResult(boolean confirmed, Bundle bundle) {
                         if (!confirmed) {
@@ -1149,6 +1150,16 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         if (message == null) {
             return;
         }
+        String theNickName = ExtEaseUtils.getInstance().getNickName();
+        String theImageUrl = ExtEaseUtils.getInstance().getImageUrl();
+        theNickName = (null==theNickName)?"":theNickName;
+        theImageUrl = (null==theImageUrl)?"":theImageUrl;
+        if (theNickName.length()>0) {
+            message.setAttribute("nickName", theNickName);
+        }
+        if (theImageUrl.length()>0) {
+            message.setAttribute("imageUrl", theImageUrl);
+        }
         if(chatFragmentHelper != null){
             //set extension
             chatFragmentHelper.onSetMessageAttributes(message);
@@ -1220,6 +1231,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         new Thread(){
             public void run(){
                 try {
+
                     String string = new Gson().toJson(updMyClinicDetailByOrderTreatmentLimitNum);
                     HttpNetService.urlConnectionService("jsonDataInfo="+string,Constant.SERVICEURL+"doctorInteractDataControlle/operUpdMyClinicDetailByOrderTreatmentLimitNum");
                     String string01 = Constant.SERVICEURL+"msgDataControlle/searchMsgPushReminderAllCount";

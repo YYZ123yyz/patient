@@ -46,5 +46,8 @@
     <color name="color_52B394">#52B394</color>
     <color name="color_E24A47">#E24A47</color>
     <color name="color_EA883B">#EA883B</color>
-
+    <color name="colorGray4">#787878</color>
+    <color name="background_gray1">#EBEBEB</color>
+    <color name="c8">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
 </resources>
