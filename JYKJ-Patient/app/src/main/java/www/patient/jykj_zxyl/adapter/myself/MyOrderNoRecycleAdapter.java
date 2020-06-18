@@ -37,14 +37,14 @@ public class MyOrderNoRecycleAdapter extends RecyclerView.Adapter<MyOrderNoRecyc
         datas = list;
     }
 
-        //创建新View，被LayoutManager所调用
-       @Override
-        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType){
-                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_fragment_myorder_no,viewGroup,false);
-                ViewHolder vh = new ViewHolder(view);
-                return vh;
-       }
-        //将数据与界面进行绑定的操作
+    //创建新View，被LayoutManager所调用
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType){
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_fragment_myorder_no,viewGroup,false);
+        ViewHolder vh = new ViewHolder(view);
+        return vh;
+    }
+    //将数据与界面进行绑定的操作
 
     /**
      * 如果是第一条数据，那么他肯定是该组的第一个用户，所以显示组别
@@ -79,31 +79,31 @@ public class MyOrderNoRecycleAdapter extends RecyclerView.Adapter<MyOrderNoRecyc
 
 
     }
-        //获取数据的数量
-        @Override
-        public int getItemCount(){
+    //获取数据的数量
+    @Override
+    public int getItemCount(){
 
         return datas.size();
+    }
+
+
+
+
+    //自定义的ViewHolder，持有每个Item的的所有界面元素
+
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+        public LinearLayout mClickLinearLayout;                     //整个布局，用来监听点击事件
+        public TextView mSuType;                                //类型
+        public TextView price;                                  //金额
+        public TextView mDate;                                  //时间
+        public TextView mSurPrice;                               //余额
+
+        public ViewHolder(View view){
+            super(view);
+            mClickLinearLayout = (LinearLayout) view.findViewById(R.id.item_fragmentYLZX_rmjxLayout);
+
         }
-
-
-
-
-        //自定义的ViewHolder，持有每个Item的的所有界面元素
-
-        public static class ViewHolder extends RecyclerView.ViewHolder{
-            public LinearLayout mClickLinearLayout;                     //整个布局，用来监听点击事件
-            public TextView mSuType;                                //类型
-            public TextView price;                                  //金额
-            public TextView mDate;                                  //时间
-            public TextView mSurPrice;                               //余额
-
-            public ViewHolder(View view){
-                super(view);
-                mClickLinearLayout = (LinearLayout) view.findViewById(R.id.item_fragmentYLZX_rmjxLayout);
-
-            }
-        }
+    }
 
 
 

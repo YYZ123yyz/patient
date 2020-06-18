@@ -381,7 +381,6 @@ public class JYKJApplication extends Application {
 
     }
 
-<<<<<<< HEAD
 //    /**
 //     * 定位
 //     */
@@ -428,7 +427,7 @@ public class JYKJApplication extends Application {
 ////开始定位
 //        locationClient.start();
 //    }
-=======
+
     /**
      * 定位
      */
@@ -437,9 +436,9 @@ public class JYKJApplication extends Application {
         LocationClient locationClient = new LocationClient(getApplicationContext());
 //声明LocationClient类实例并配置定位参数
         LocationClientOption locationOption = new LocationClientOption();
-        MyLocationListener myLocationListener = new MyLocationListener();
+        //MyLocationListener myLocationListener = new MyLocationListener();
 //注册监听函数
-        locationClient.registerLocationListener(myLocationListener);
+        //locationClient.registerLocationListener(myLocationListener);
 //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
         locationOption.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
 //可选，默认gcj02，设置返回的定位结果坐标系，如果配合百度地图使用，建议设置为bd09ll;
@@ -475,7 +474,6 @@ public class JYKJApplication extends Application {
 //开始定位
         locationClient.start();
     }
->>>>>>> d306232a77cc2074ab3e3e86ec89a534bd5bf931
 
 
 

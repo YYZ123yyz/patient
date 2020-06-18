@@ -48,6 +48,12 @@ public class DateUtils {
         return date;
     }
 
+    public static String getStringTimeMinute(Long time){
+        Date date = new Date(time);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        return sdf.format(date);
+    }
+
     public static int getAgeFromBirthTime(String birthTimeString) {
         // 先截取到字符串中的年、月、日
         String strs[] = birthTimeString.trim().split("-");
@@ -469,5 +475,14 @@ public class DateUtils {
         void onCancel();
     }
 
-
+    /**
+     * 自定义格式化日期
+     * @param paramDate
+     * @param format
+     * @return
+     */
+    public static String fomrDateSeflFormat(Date paramDate,String format){
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(paramDate);
+    }
 }

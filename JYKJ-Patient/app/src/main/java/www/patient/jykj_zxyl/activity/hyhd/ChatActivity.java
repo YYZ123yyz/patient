@@ -95,7 +95,6 @@ public class ChatActivity extends AppCompatActivity {
 
         messageList = (EaseChatMessageList) this.findViewById(R.id.message_list);
         //初始化messagelist
-<<<<<<< HEAD
 //        messageList.init(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), 1, null,doctorUrl,patientUrl);
 //        //设置item里的控件的点击事件
 //        messageList.setItemClickListener(new EaseChatMessageList.MessageListItemClickListener() {
@@ -132,8 +131,8 @@ public class ChatActivity extends AppCompatActivity {
 //                return false;
 //            }
 //        });
-=======
-        messageList.init(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), 1, null,doctorUrl,patientUrl);
+        //messageList.init(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), 1, null,doctorUrl,patientUrl);
+        //messageList.init();
         //设置item里的控件的点击事件
         messageList.setItemClickListener(new EaseChatMessageList.MessageListItemClickListener() {
 
@@ -169,7 +168,6 @@ public class ChatActivity extends AppCompatActivity {
                 return false;
             }
         });
->>>>>>> d306232a77cc2074ab3e3e86ec89a534bd5bf931
 //        //获取下拉刷新控件
 //        swipeRefreshLayout = messageList.getSwipeRefreshLayout();
 //        //刷新消息列表

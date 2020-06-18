@@ -2,12 +2,17 @@ package www.patient.jykj_zxyl.activity.myself.setting;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.*;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,6 +40,8 @@ public class AboutActivity extends AppCompatActivity {
     private                 Handler                     mHandler;
     private                 TextView                    mAboutText;
     private                 LinearLayout                mBack;
+    private WebView abotuspage;
+    WebSettings mWebSettings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +54,24 @@ public class AboutActivity extends AppCompatActivity {
         ActivityUtil.setStatusBarMain(mActivity);
         initLayout();
         initHandler();
-        getData();
+        //getData();
+        loadWebPage();
+    }
+
+    void loadWebPage(){
+        abotuspage.loadUrl("http://jiuyihtn.com/AppAssembly/aboutUs.html");
+        abotuspage.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+
+                // 不要使用super，否则有些手机访问不了，因为包含了一条 handler.cancel()
+                // super.onReceivedSslError(view, handler, error);
+
+                // 接受所有网站的证书，忽略SSL错误，执行访问网页
+                handler.proceed();
+                super.onReceivedSslError(view, handler, error);
+            }
+        });
     }
 
     private void initHandler() {
@@ -72,12 +96,27 @@ public class AboutActivity extends AppCompatActivity {
     private void initLayout() {
         mAboutText = (TextView)this.findViewById(R.id.tv_about);
         mBack = (LinearLayout)this.findViewById(R.id.back);
+        abotuspage = findViewById(R.id.abotuspage);
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+        mWebSettings = abotuspage.getSettings();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mWebSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+        mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);//设置js可以直接打开窗口，如window.open()，默认为false
+        mWebSettings.setJavaScriptEnabled(true);//是否允许JavaScript脚本运行，默认为false。设置true时，会提醒可能造成XSS漏洞
+        mWebSettings.setSupportZoom(true);//是否可以缩放，默认true
+        mWebSettings.setBuiltInZoomControls(true);//是否显示缩放按钮，默认false
+        mWebSettings.setUseWideViewPort(true);//设置此属性，可任意比例缩放。大视图模式
+        mWebSettings.setLoadWithOverviewMode(true);//和setUseWideViewPort(true)一起解决网页自适应问题
+        mWebSettings.setAppCacheEnabled(true);//是否使用缓存
+        mWebSettings.setDomStorageEnabled(true);//开启本地DOM存储
+        mWebSettings.setLoadsImagesAutomatically(true); // 加载图片
+        mWebSettings.setMediaPlaybackRequiresUserGesture(false);//播放音频，多媒体需要用户手动？设置为false为可自动播放
     }
 
 
@@ -152,5 +191,30 @@ public class AboutActivity extends AppCompatActivity {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }
+    }
+
+    //点击返回上一页面而不是退出浏览器
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && abotuspage.canGoBack()) {
+            abotuspage.goBack();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    //销毁Webview
+    @Override
+    protected void onDestroy() {
+        if (abotuspage != null) {
+            abotuspage.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+            abotuspage.clearHistory();
+
+            ((ViewGroup) abotuspage.getParent()).removeView(abotuspage);
+            abotuspage.destroy();
+            abotuspage = null;
+        }
+        super.onDestroy();
     }
 }

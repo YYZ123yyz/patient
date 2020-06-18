@@ -461,6 +461,14 @@
         <service android:name=".service.MessageReciveService" android:exported="true"/>
 
         <!-- 声明SDK所需的receiver -->
+        <receiver android:name="com.tencent.imsdk.session.SessionBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="com.tencent.imsdk.session.boot" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="com.tencent.qcloud.qal.TASK_REMOVED" />
+            </intent-filter>
+        </receiver>
         <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REMOVED"/>
@@ -506,10 +514,6 @@
         <meta-data android:name="com.amap.api.v2.apikey" android:value="3e97b265f69130eb4eabec58459996e7">
 
         </meta-data>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
         <service
                 android:name="com.tencent.imsdk.session.remote.SessionService"
                 android:process=":network" />
@@ -523,8 +527,6 @@
         <uses-library
                 android:name="org.apache.http.legacy"
                 android:required="false" />
->>>>>>> 6b241d1596341c7588a14c503ea11dee2b7b050e
->>>>>>> d306232a77cc2074ab3e3e86ec89a534bd5bf931
     </application>
 
 

@@ -55,6 +55,7 @@ public class ProvideViewSysUserPatientInfoAndRegion implements java.io.Serializa
 
 	private String operPatientCode;
 	private String operPatientName;
+	private String base64ImgData;
 
 	public String getOperPatientCode() {
 		return operPatientCode;
@@ -382,5 +383,12 @@ public class ProvideViewSysUserPatientInfoAndRegion implements java.io.Serializa
 
 	public void setUserPwd(String userPwd) {
 		this.userPwd = userPwd;
+	}
+	public String getBase64ImgData() {
+		return base64ImgData;
+	}
+
+	public void setBase64ImgData(String base64ImgData) {
+		this.base64ImgData = base64ImgData;
 	}
 }

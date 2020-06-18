@@ -19,7 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.Toast;
+
 
 import com.google.gson.Gson;
 import com.hyphenate.easeui.entity.DoctorPatientUserInfo;

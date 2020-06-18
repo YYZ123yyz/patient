@@ -455,10 +455,6 @@
         <!--<string name="alert_request_tobe_talker">请求连麦 &#8230;</string>-->
         <!--<string name="alert_request_tobe_audience">请求下麦 &#8230;</string>-->
 
-
-||||||| .r53
-=======
-
     <string name="msg_camera_framework_bug">The camera is occupied or has no camera permission, please check</string>
     <string name="button_ok">Exit</string>
     <string name="scan_code">扫一扫</string>
@@ -466,6 +462,6 @@
     <string name="close_flash">Turn off the flash</string>
     <string name="gallery">Gallery</string>
     <string name="scan_failed_tip">Scan image failed, please retry.</string>
-
->>>>>>> .r58
+    <string name="vod_ffplay">ffplay</string>
+    <string name="vod_exo">exo</string>
 </resources>

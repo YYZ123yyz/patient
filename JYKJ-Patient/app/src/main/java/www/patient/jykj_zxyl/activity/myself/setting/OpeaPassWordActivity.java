@@ -21,6 +21,7 @@ import java.util.TimerTask;
 
 import entity.hzgl.BindPatientGetVCodeParment;
 import entity.mySelf.OperPassWordParment;
+import entity.mySelf.conditions.QueryPatientSmsCond;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
@@ -260,19 +261,25 @@ public class OpeaPassWordActivity extends AppCompatActivity {
             public void run() {
 //                //提交数据
                 try {
-                    BindPatientGetVCodeParment bindPatientGetVCodeParment = new BindPatientGetVCodeParment();
+                    /*BindPatientGetVCodeParment bindPatientGetVCodeParment = new BindPatientGetVCodeParment();
                     bindPatientGetVCodeParment.setLoginDoctorPosition(mApp.loginDoctorPosition);
                     bindPatientGetVCodeParment.setOperDoctorCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
                     bindPatientGetVCodeParment.setOperDoctorName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-                    bindPatientGetVCodeParment.setSendUserLinkPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
-                    if (bindPatientGetVCodeParment.getSendUserLinkPhone() == null || "".equals(bindPatientGetVCodeParment.getSendUserLinkPhone()))
+                    bindPatientGetVCodeParment.setSendUserLinkPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());*/
+                    QueryPatientSmsCond quersmscond = new QueryPatientSmsCond();
+                    quersmscond.setLoginPatientPosition(mApp.loginDoctorPosition);
+                    quersmscond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                    quersmscond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                    quersmscond.setRequestClientType("1");
+                    quersmscond.setSendUserLinkPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
+                    if (quersmscond.getSendUserLinkPhone() == null || "".equals(quersmscond.getSendUserLinkPhone()))
                     {
                         Toast.makeText(mContext,"请先填写手机号",Toast.LENGTH_SHORT).show();
                     }
-                    String str = new Gson().toJson(bindPatientGetVCodeParment);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + str, Constant.SERVICEURL + "doctorPersonalSetControlle/getUserPassWordSmsVerify");
+                    String str = new Gson().toJson(quersmscond);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + str, Constant.SERVICEURL + "patientPersonalSetControlle/getUserPassWordSmsVerify");
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
-                    if (netRetEntity.getResCode() == 0) {
+                    if (1!=netRetEntity.getResCode()) {
                         NetRetEntity retEntity = new NetRetEntity();
                         retEntity.setResCode(0);
                         retEntity.setResMsg("获取失败：" + netRetEntity.getResMsg());

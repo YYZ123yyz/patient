@@ -95,7 +95,7 @@ public class FragmentMyOrderNo extends Fragment {
                 switch (msg.what)
                 {
                     case 1:
-                      break;
+                        break;
                 }
             }
         };
@@ -113,7 +113,7 @@ public class FragmentMyOrderNo extends Fragment {
         }
     }
     /**
-      * 设置数据
+     * 设置数据
      */
     private void setData() {
         for (int i = 0; i < 40; i++)

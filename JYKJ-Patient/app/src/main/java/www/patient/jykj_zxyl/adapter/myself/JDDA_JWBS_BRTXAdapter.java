@@ -53,38 +53,38 @@ public class JDDA_JWBS_BRTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_BRTXAd
      */
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-//        viewHolder.mBM.setText(datas.get(position).getRecordName());
-//        viewHolder.mDate.setText(Util.dateToStr(datas.get(position).getTreatmentDate()));
+        viewHolder.mBM.setText(datas.get(position).getRecordName());
+        viewHolder.mDate.setText(Util.dateToStrDate(datas.get(position).getTreatmentDate()));
 //        viewHolder.mType.setText(datas.get(position).getRecordTypeName());
-//        viewHolder.mContent.setText(datas.get(position).getRecordContent());
+        viewHolder.mContent.setText(datas.get(position).getRecordContent());
 
-//        if (mOnItemClickListener != null)
-//        {
-//            viewHolder.mClickLinearLayout.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    mOnItemClickListener.onClick(position);
-//                }
-//            });
-//
-//            viewHolder.mClickLinearLayout.setOnLongClickListener(new View.OnLongClickListener() {
-//
-//                @Override
-//                public boolean onLongClick(View view) {
-//                    mOnItemClickListener.onLongClick(position);
-//                    return false;
-//                }
-//            });
-//        }
+        if (mOnItemClickListener != null)
+        {
+            viewHolder.mClickLinearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnItemClickListener.onClick(position);
+                }
+            });
+
+            viewHolder.mClickLinearLayout.setOnLongClickListener(new View.OnLongClickListener() {
+
+                @Override
+                public boolean onLongClick(View view) {
+                    mOnItemClickListener.onLongClick(position);
+                    return false;
+                }
+            });
+        }
 
     }
     //获取数据的数量
     @Override
     public int getItemCount(){
-//        if (datas == null )
-//            return 0;
-//        return datas.size();
-        return 10;
+        if (datas == null )
+            return 0;
+        return datas.size();
+        //return 10;
     }
 
 

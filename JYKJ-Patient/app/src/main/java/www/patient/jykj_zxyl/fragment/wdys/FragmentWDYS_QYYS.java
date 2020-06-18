@@ -148,10 +148,6 @@ public class FragmentWDYS_QYYS extends Fragment {
                 intent.putExtra("loginDoctorPosition",mApp.loginDoctorPosition);
                 intent.putExtra("operDoctorCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
                 intent.putExtra("operDoctorName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-
-                intent.putExtra("doctorUrl",provideViewMyDoctorSignings.get(position).getUserLogoUrl());
-                intent.putExtra("patientUrl",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
-
 //                intent.putExtra("orderCode",provideViewInteractOrderTreatmentAndPatientInterrogations.get(position).getOrderCode());
 
                 intent.putExtra(EaseConstant.EXTRA_MESSAGE_NUM,provideViewMyDoctorSignings.get(position).getLimitImgText());           //消息数量

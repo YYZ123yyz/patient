@@ -14,6 +14,7 @@ import java.util.List;
 import entity.patientInfo.ProvidePatientConditionDiseaseRecord;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.myself.RedeemRecordActivity;
+import www.patient.jykj_zxyl.util.Util;
 
 /**
  * 建档档案 == 》 既往病史 ==》 医生填写
@@ -52,10 +53,10 @@ public class JDDA_JWBS_YSTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_YSTXAd
      */
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-//        viewHolder.mBM.setText(datas.get(position).getRecordName());
-//        viewHolder.mDate.setText(Util.dateToStr(datas.get(position).getTreatmentDate()));
+        viewHolder.mBM.setText(datas.get(position).getRecordName());
+        viewHolder.mDate.setText(Util.dateToStrDate(datas.get(position).getTreatmentDate()));
 //        viewHolder.mType.setText(datas.get(position).getRecordTypeName());
-//        viewHolder.mContent.setText(datas.get(position).getRecordContent());
+        viewHolder.mContent.setText(datas.get(position).getRecordContent());
 
         if (mOnItemClickListener != null)
         {
@@ -80,10 +81,10 @@ public class JDDA_JWBS_YSTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_YSTXAd
     //获取数据的数量
     @Override
     public int getItemCount(){
-//        if (datas == null )
-//            return 0;
-//        return datas.size();
-        return 10;
+       if (datas == null )
+           return 0;
+        return datas.size();
+        //return 10;
     }
 
 

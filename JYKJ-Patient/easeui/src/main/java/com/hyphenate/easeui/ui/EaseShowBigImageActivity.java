@@ -39,7 +39,6 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -56,19 +55,12 @@ public class EaseShowBigImageActivity extends EaseBaseActivity {
 	private Bitmap bitmap;
 	private boolean isDownloaded;
 
-	private ImageView back;
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.ease_activity_show_big_image);
 		super.onCreate(savedInstanceState);
-		back = (ImageView)this.findViewById(R.id.back);
-		back.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
+
 		image = (EasePhotoView) findViewById(R.id.image);
 		ProgressBar loadLocalPb = (ProgressBar) findViewById(R.id.pb_load_local);
 		default_res = getIntent().getIntExtra("default_image", R.mipmap.docter_heard);
