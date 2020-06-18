@@ -1,9 +1,11 @@
 package www.patient.jykj_zxyl.activity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -166,15 +168,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
                                 Toast.makeText(mContext, "恭喜，登录成功", LENGTH_SHORT).show();
-//                                mApp.mProvideViewSysUserPatientInfoAndRegion.getUserRoleId();
-
-                                //登录IM
                                 mApp.loginIM();
+                                startActivity(new Intent(mContext, MainActivity.class));//它可以关掉所要到的界面中间的activity);
+//                                mApp.mProvideViewSysUserPatientInfoAndRegion.getUserRoleId();
+                                //登录IM
+
                                 cacerProgress();
-                                startActivity(new Intent(mContext, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));//它可以关掉所要到的界面中间的activity);
-                                for (int i = 0; i < mApp.gActivityList.size(); i++) {
-                                    mApp.gActivityList.get(i).finish();
-                                }
+//
                             } else {
                                 Toast.makeText(mContext, "登录失败，" + netRetEntity.getResMsg(), LENGTH_SHORT).show();
                                 cacerProgress();

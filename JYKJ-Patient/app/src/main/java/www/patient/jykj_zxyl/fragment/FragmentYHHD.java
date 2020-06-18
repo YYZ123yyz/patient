@@ -383,7 +383,8 @@ public class FragmentYHHD extends Fragment {
      * 获取消息
      */
     public void getYHHDMessage() {
-        mFragmentShouYe_HYHD.getMessageList();
+        if (mFragmentShouYe_HYHD != null)
+            mFragmentShouYe_HYHD.getMessageList();
     }
 
 

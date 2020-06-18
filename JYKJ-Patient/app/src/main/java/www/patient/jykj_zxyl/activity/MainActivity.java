@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
@@ -25,6 +26,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.hyhd.model.CallReceiver;
 import com.hyphenate.easeui.model.EaseNotifier;
 
 import java.util.ArrayList;
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
     public          ProvideMsgPushReminderCount           mProvideMsgPushReminderCount = new ProvideMsgPushReminderCount();         //未读消息数
 
-
+    public                      CallReceiver                    mCallReceiver;
 
 
     /**
@@ -124,6 +126,14 @@ public class MainActivity extends AppCompatActivity {
         startMessageTimer();
 
         Util.getRegionDate(mApp);
+
+
+
+    }
+
+
+    public void registHX(){
+        mHandler.sendEmptyMessage(22);
 
     }
 
@@ -228,6 +238,15 @@ public class MainActivity extends AppCompatActivity {
 
                     case 21:
                         Toast.makeText(mContext,"登录成功",Toast.LENGTH_SHORT).show();
+                        break;
+                    case 22:
+                        //注册
+                        IntentFilter callFilter = new IntentFilter(EMClient.getInstance().callManager().getIncomingCallBroadcastAction());
+                        if(mCallReceiver == null){
+                            mCallReceiver = new CallReceiver();
+                        }
+                       mContext.registerReceiver(mCallReceiver, callFilter);
+                        System.out.println("进来了");
                         break;
                 }
 
