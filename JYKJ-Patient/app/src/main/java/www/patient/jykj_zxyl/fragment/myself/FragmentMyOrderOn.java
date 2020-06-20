@@ -96,7 +96,7 @@ public class FragmentMyOrderOn extends Fragment {
                         startActivity(new Intent(mActivity, OrderMessage_OrderPayActivity.class).putExtra("provideInteractOrderInfo",parorder));
                         break;
                     case  R.id.back_btn:
-
+                        break;
                 }
 
                 //intent.setClass(mContext,YLZXWebActivity.class);
