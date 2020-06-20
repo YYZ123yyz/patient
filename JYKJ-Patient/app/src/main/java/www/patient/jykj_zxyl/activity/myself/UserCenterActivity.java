@@ -258,8 +258,9 @@ public class UserCenterActivity extends AppCompatActivity {
             nickName_open.setImageResource(R.mipmap.close);
             nickName_open.setTag(R.mipmap.close);
         }
+        mChoiceRegionID = mProvideViewSysUserPatientInfoAndRegion.getArea();
 
-        mChoiceRegionText.setText(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getArea()));
+        mChoiceRegionText.setText(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getAreaName()));
         mSynopsisEdit.setText(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getAddress()));
         tv_activityUserCenter_userNikeNameText.setText(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias()));
     }
@@ -423,7 +424,7 @@ public class UserCenterActivity extends AppCompatActivity {
                     upbean.setCity(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getCity()));
                     upbean.setProvince(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getProvince()));
                     upbean.setAddress(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getAddress()));
-                    upbean.setArea(StrUtils.defaultStr(mChoiceRegionText.getText()));
+                    upbean.setArea(mChoiceRegionID);
                     if (mUserHeadBitmap != null)
                         upbean.setBase64ImgData((URLEncoder.encode("data:image/jpg;base64,"+BitmapUtil.bitmaptoString(mUserHeadBitmap))));
                    String str = new Gson().toJson(upbean);
