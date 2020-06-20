@@ -424,7 +424,7 @@ public class UserCenterActivity extends AppCompatActivity {
                     upbean.setCity(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getCity()));
                     upbean.setProvince(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getProvince()));
                     upbean.setAddress(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getAddress()));
-                    upbean.setArea(mChoiceRegionID);
+                    upbean.setArea(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getArea()));
                     if (mUserHeadBitmap != null)
                         upbean.setBase64ImgData((URLEncoder.encode("data:image/jpg;base64,"+BitmapUtil.bitmaptoString(mUserHeadBitmap))));
                    String str = new Gson().toJson(upbean);
@@ -1024,7 +1024,7 @@ public class UserCenterActivity extends AppCompatActivity {
         {
             mProvideViewSysUserPatientInfoAndRegion.setProvince(mChoiceRegionMap.get("provice").getRegion_id());
             mProvideViewSysUserPatientInfoAndRegion.setCity(mChoiceRegionMap.get("city").getRegion_id());
-            mProvideViewSysUserPatientInfoAndRegion.setArea("");
+            mProvideViewSysUserPatientInfoAndRegion.setArea(mChoiceRegionMap.get("dist").getRegion_id());
             mChoiceRegionText.setText(mChoiceRegionMap.get("provice").getRegion_name()+mChoiceRegionMap.get("city").getRegion_name()+mChoiceRegionMap.get("dist").getRegion_name());
             mChoiceRegionLevel = 3;               //区级全部，则是市级
             mChoiceRegionID = mChoiceRegionMap.get("dist").getRegion_id();
