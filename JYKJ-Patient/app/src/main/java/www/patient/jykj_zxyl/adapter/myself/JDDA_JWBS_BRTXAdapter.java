@@ -107,7 +107,6 @@ public class JDDA_JWBS_BRTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_BRTXAd
             mDate = (TextView)view.findViewById(R.id.tv_activityPatientLaber_createDate);
             mType = (TextView)view.findViewById(R.id.tv_activityPatientLaber_laberName);
             mContent = (TextView)view.findViewById(R.id.tv_activityPatientLaber_content);
-
         }
     }
 

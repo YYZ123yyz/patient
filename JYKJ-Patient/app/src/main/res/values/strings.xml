@@ -464,4 +464,10 @@
     <string name="scan_failed_tip">Scan image failed, please retry.</string>
     <string name="vod_ffplay">ffplay</string>
     <string name="vod_exo">exo</string>
+    <string name="service_start_time">服务开始时间</string>
+    <string name="hold_on">接听电话</string>
+    <string name="service_expire_time">服务到期时间</string>
+    <string name="service_deadline_time">服务截止时间</string>
+    <string name="preserve_service_time">预约服务时间</string>
+    <string name="preserve_service_time_zone">预约服务时间段</string>
 </resources>

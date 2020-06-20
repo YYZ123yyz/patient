@@ -84,7 +84,7 @@ public class FragmentJWBS_BRTX extends Fragment{
         mApp = (JYKJApplication) getActivity().getApplication();
         initLayout(v);
         initHandler();
-        setData();
+        //setData();
         return v;
     }
 

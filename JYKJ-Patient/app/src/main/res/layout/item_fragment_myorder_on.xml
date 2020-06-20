@@ -24,6 +24,7 @@
             android:textColor="#ff000000"
             android:layout_weight="1"
             android:textSize="15sp"
+            android:id="@+id/treatment_type"
             />
 
         <TextView
@@ -33,7 +34,37 @@
             android:textColor="#ff999999"
             android:gravity="center_vertical"
             android:textSize="15sp"
+            android:id="@+id/process_state"
             />
+
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/writeColor"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:text="订单日期"
+                android:textColor="#ff000000"
+                android:layout_weight="1"
+                android:textSize="15sp"
+        />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="2020/05/10  8:00"
+                android:textColor="#ff999999"
+                android:gravity="center_vertical"
+                android:textSize="15sp"
+                android:id="@+id/order_date"
+        />
 
     </LinearLayout>
 
@@ -62,6 +93,7 @@
             android:textColor="#ff999999"
             android:gravity="center_vertical"
             android:textSize="15sp"
+            android:id="@+id/advise_doctor"
             />
 
     </LinearLayout>
@@ -83,6 +115,7 @@
             android:textColor="#ff000000"
             android:layout_weight="1"
             android:textSize="15sp"
+            android:id="@+id/treat_style"
             />
 
         <TextView
@@ -92,6 +125,7 @@
             android:textColor="#ff999999"
             android:gravity="center_vertical"
             android:textSize="15sp"
+            android:id="@+id/treat_style_tool"
             />
 
     </LinearLayout>
@@ -112,6 +146,7 @@
             android:textColor="#ff000000"
             android:layout_weight="1"
             android:textSize="15sp"
+            android:id="@+id/service_time_title"
             />
 
         <TextView
@@ -121,6 +156,7 @@
             android:textColor="#ff999999"
             android:gravity="center_vertical"
             android:textSize="15sp"
+            android:id="@+id/service_time"
             />
 
     </LinearLayout>
@@ -144,8 +180,9 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/bg_myorder_button"
         android:layout_marginTop="20dp"
-        android:visibility="visible"
+        android:visibility="gone"
         android:textSize="15sp"
+        android:id="@+id/quest_btn"
         />
     <TextView
         android:layout_width="70dp"
@@ -160,6 +197,7 @@
         android:layout_marginTop="20dp"
         android:visibility="visible"
         android:textSize="15sp"
+        android:id="@+id/back_btn"
         />
     </RelativeLayout>
 </LinearLayout>

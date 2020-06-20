@@ -15,4 +15,6 @@ public class INetAddress {
     public static String QUERY_PATIENTRECIMG_URL = "patientHealthRecordsControlle/searchPatientConditionDiseaseRecordResImg";//获取既往病史详情图片
     public static String SUB_PATIENTHISTIMG_URL = "patientHealthRecordsControlle/operUpdPatientConditionDiseaseRecordImg";//既往病史上传图片
     public static String QUERY_PATIENTHISTIMG_URL = "patientHealthRecordsControlle/searchPatientConditionDiseaseRecordResImg";//既往病史详情[本人填写][图片数据]
+    public static String QUERY_MYORDER_PROCESS_URL = "patientMyOrderControlle/searchPatientMyOrderResOngoing";//订单列表-进行中
+    public static String QUERY_MYORDER_FINISH_URL = "patientMyOrderControlle/searchPatientMyOrderResCompleted";//订单列表-已完成
 }
