@@ -21,6 +21,8 @@ import www.patient.jykj_zxyl.activity.home.myself.JDDAActivity;
 import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
 import www.patient.jykj_zxyl.activity.home.tjhz.AddPatientActivity;
+import www.patient.jykj_zxyl.activity.myself.MedicationRecordActivity;
+import www.patient.jykj_zxyl.activity.myself.MedicationSettingsActivity;
 import www.patient.jykj_zxyl.activity.myself.MyOrderActivity;
 import www.patient.jykj_zxyl.fragment.FragmentShouYe;
 import zxing.android.CaptureActivity;
@@ -28,7 +30,8 @@ import zxing.android.CaptureActivity;
 public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClickListener {
 
     private FragmentShouYe  fragmentShouYe;
-    private MyPatientActivity  mMyPatientActivity;
+    private MedicationSettingsActivity mMedicationSettingsActivity;
+    private MedicationRecordActivity mMedicationRecordActivity;
     private Context mContext;
     private View mPopView;
     private TextView tvSys;
@@ -100,36 +103,46 @@ public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClick
                 Intent intent = new Intent(mContext, CaptureActivity.class);
                 if (fragmentShouYe != null)
                     fragmentShouYe.startActivityForResult(intent,fragmentShouYe.REQUEST_CODE_SCAN);
-                if (mMyPatientActivity != null)
-                    mMyPatientActivity.startActivityForResult(intent,fragmentShouYe.REQUEST_CODE_SCAN);
+                if (mMedicationSettingsActivity != null)
+                    mMedicationSettingsActivity.startActivityForResult(intent,fragmentShouYe.REQUEST_CODE_SCAN);
+                if (mMedicationRecordActivity != null)
+                    mMedicationRecordActivity.startActivityForResult(intent,fragmentShouYe.REQUEST_CODE_SCAN);
                 break;
             case R.id.tv_yqth:
                 intent = new Intent(mContext, TJZJActivity.class);
                 if (fragmentShouYe != null)
                     fragmentShouYe.startActivity(intent);
-                if (mMyPatientActivity != null)
-                    mMyPatientActivity.startActivity(intent);
+                if (mMedicationSettingsActivity != null)
+                    mMedicationSettingsActivity.startActivity(intent);
+                if (mMedicationRecordActivity != null)
+                    mMedicationRecordActivity.startActivity(intent);
                 break;
             case R.id.tv_tjhz:
                 intent = new Intent(mContext, WDYSActivity.class);
                 if (fragmentShouYe != null)
                     fragmentShouYe.startActivity(intent);
-                if (mMyPatientActivity != null)
-                    mMyPatientActivity.startActivity(intent);
+                if (mMedicationSettingsActivity != null)
+                    mMedicationSettingsActivity.startActivity(intent);
+                if (mMedicationRecordActivity != null)
+                    mMedicationRecordActivity.startActivity(intent);
                 break;
             case R.id.tv_wdzs:
                 intent = new Intent(mContext, MyOrderActivity.class);
                 if (fragmentShouYe != null)
                     fragmentShouYe.startActivity(intent);
-                if (mMyPatientActivity != null)
-                    mMyPatientActivity.startActivity(intent);
+                if (mMedicationSettingsActivity != null)
+                    mMedicationSettingsActivity.startActivity(intent);
+                if (mMedicationRecordActivity != null)
+                    mMedicationRecordActivity.startActivity(intent);
                 break;
             case R.id.tv_wdxx:
                 intent = new Intent(mContext, JDDAActivity.class);
                 if (fragmentShouYe != null)
                     fragmentShouYe.startActivity(intent);
-                if (mMyPatientActivity != null)
-                    mMyPatientActivity.startActivity(intent);
+                if (mMedicationSettingsActivity != null)
+                    mMedicationSettingsActivity.startActivity(intent);
+                if (mMedicationRecordActivity != null)
+                    mMedicationRecordActivity.startActivity(intent);
                 break;
 //            case R.id.tv_cjlm:
 //                mContext.startActivity(new Intent(mContext,DoctorsUnionActivity.class));
@@ -145,11 +158,21 @@ public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClick
         fragmentShouYe = mFragment;
     }
 
+
+
     /**
-     * 设置入口为我的
+     * 设置入口为用药设置
      * @param mActivity
      */
-    public void setMyPatientActivity(MyPatientActivity mActivity) {
-        mMyPatientActivity = mActivity;
+    public void setMedicationSettingsActivity(MedicationSettingsActivity mActivity) {
+        mMedicationSettingsActivity = mActivity;
+    }
+
+    /**
+     * 设置入口为用药打卡
+     * @param medicationRecordActivity
+     */
+    public void setMedicationRecordActivity(MedicationRecordActivity medicationRecordActivity) {
+        mMedicationRecordActivity = medicationRecordActivity;
     }
 }

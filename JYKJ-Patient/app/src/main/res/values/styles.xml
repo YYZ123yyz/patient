@@ -116,4 +116,10 @@
         <item name="android:textColorPrimary">#000000</item>
         <item name="colorAccent">#0accac</item>
     </style>
+
+    <style name="BottomDialog" parent="@style/Base.V7.Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>
