@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
                     case 22:
 //                        Toast.makeText(getApplicationContext(),"登录成功",Toast.LENGTH_SHORT).show();
                         DemoHelper.getInstance().init(mContext);
-                        DemoHelper.getInstance().setEaseUIProviders();
+//                        DemoHelper.getInstance().setEaseUIProviders();
                         //注册
                         IntentFilter callFilter = new IntentFilter(EMClient.getInstance().callManager().getIncomingCallBroadcastAction());
                         if(mCallReceiver == null){
