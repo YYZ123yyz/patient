@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <ImageView
@@ -21,49 +21,64 @@
         <TextView
             android:id="@+id/tv_sys"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:text="扫一扫"
             android:textSize="16sp"
             android:paddingLeft="35dp"
-            android:paddingRight="35dp"
-            android:paddingTop="15dp"
+            android:paddingRight="43dp"
             android:drawablePadding="10dp"
+            android:gravity="center_vertical"
             android:textColor="@color/textColor_black"
             android:drawableLeft="@mipmap/pop_sys"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ffeeeeee"
+            />
         <TextView
             android:id="@+id/tv_yqth"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:text="专家推荐"
             android:textSize="16sp"
             android:paddingLeft="35dp"
             android:paddingRight="35dp"
-            android:paddingTop="15dp"
-            android:drawablePadding="10dp"
-            android:textColor="@color/textColor_black"
-            android:drawableLeft="@mipmap/pop_tjhz"/>
-        <TextView
-            android:id="@+id/tv_tjhz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="我的医生"
-            android:textSize="16sp"
-            android:paddingLeft="35dp"
-            android:paddingRight="35dp"
-            android:paddingTop="15dp"
+            android:gravity="center_vertical"
             android:drawablePadding="10dp"
             android:textColor="@color/textColor_black"
             android:drawableLeft="@mipmap/pop_tjhz"/>
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ffeeeeee"
+            />
+        <TextView
+            android:id="@+id/tv_tjhz"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
+            android:text="我的医生"
+            android:textSize="16sp"
+            android:paddingLeft="35dp"
+            android:paddingRight="35dp"
+            android:gravity="center_vertical"
+            android:drawablePadding="10dp"
+            android:textColor="@color/textColor_black"
+            android:drawableLeft="@mipmap/pop_tjhz"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ffeeeeee"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
             android:id="@+id/tv_wdzs"
             android:layout_gravity="center"
-            android:paddingTop="15dp"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="18dp"
                 android:layout_height="18dp"
+                android:gravity="center_vertical"
                 android:layout_gravity="center_vertical"
                 android:background="@mipmap/jx"/>
         <TextView
@@ -72,16 +87,21 @@
             android:layout_height="wrap_content"
             android:text="我的订单"
             android:textSize="16sp"
+            android:layout_gravity="center_vertical"
            android:layout_marginLeft="10dp"
             android:textColor="@color/textColor_black"
             />
         </LinearLayout>
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ffeeeeee"
+            />
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_gravity="center"
             android:id="@+id/tv_wdxx"
-            android:paddingTop="15dp"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="18dp"
@@ -94,17 +114,21 @@
             android:layout_height="wrap_content"
             android:text="我的档案"
             android:textSize="16sp"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:textColor="@color/textColor_black"
             />
         </LinearLayout>
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ffeeeeee"
+            />
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_gravity="center"
-            android:paddingTop="15dp"
             android:id="@+id/tv_bzfk"
-            android:paddingBottom="15dp"
             android:orientation="horizontal">
         <ImageView
             android:layout_width="18dp"
@@ -115,13 +139,18 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="我的好友"
+            android:text="邀请好友"
+            android:layout_gravity="center_vertical"
             android:textSize="16sp"
             android:layout_marginLeft="10dp"
             android:textColor="@color/textColor_black"
            />
         </LinearLayout>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ffeeeeee"
+            />
 
     </LinearLayout>
 

@@ -12,7 +12,7 @@
         >
 
         <TextView
-            android:text="医疗资讯"
+            android:text="医患圈"
             android:textSize="10pt"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
@@ -21,26 +21,10 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/writeColor">
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:background="@color/writeColor"
-            app:tabIndicatorColor="@color/groabColor"
-            android:layout_height="50dp">
-
-        </android.support.design.widget.TabLayout>
-    </LinearLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/page"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </android.support.v4.view.ViewPager>
+   <WebView
+       android:id="@+id/webView"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       />
 
 </LinearLayout>
