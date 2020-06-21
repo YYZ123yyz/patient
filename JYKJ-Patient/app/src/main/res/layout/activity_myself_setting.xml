@@ -5,9 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/pBackColor"
-    tools:context=".activity.myself.MyAccountActivity">
+    tools:context=".activity.myself.SettingActivity">
 
     <RelativeLayout
+            android:id="@+id/back"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/groabColor"
@@ -115,7 +116,7 @@
         android:layout_height="50dp"
         android:background="@color/writeColor"
         android:layout_marginTop="1dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal" android:id="@+id/feedback_layout">
 
         <TextView
             android:layout_width="wrap_content"
@@ -141,7 +142,7 @@
         android:layout_height="50dp"
         android:background="@color/writeColor"
         android:layout_marginTop="1dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal" android:id="@+id/upver_layout">
 
         <TextView
             android:layout_width="wrap_content"

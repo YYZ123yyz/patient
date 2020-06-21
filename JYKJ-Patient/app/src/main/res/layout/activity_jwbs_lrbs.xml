@@ -158,57 +158,57 @@
                     />
             </LinearLayout>
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/writeColor">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="可上传检查资料、病例照片、医院化验单、报告单、处方单等"
-                android:textColor="#ff999999"
-                android:textSize="7pt"
-                />
-                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="(图片最多不超过5张）"
-                    android:textColor="#ff999999"
-                    android:textSize="7pt"
-                    />
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/rv_img"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="图片仅本人和咨询医生可见"
-                android:layout_marginTop="10dp"
-                android:textColor="#ffd31515"
-                android:textSize="13sp"
+                    android:orientation="vertical"
+                    android:background="@color/writeColor">
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="可上传检查资料、病例照片、医院化验单、报告单、处方单等"
+                        android:textColor="#ff999999"
+                        android:textSize="7pt"
                 />
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@drawable/bg_jwbs_txbs"
-                    android:gravity="center"
-                    android:layout_marginLeft="60dp"
-                    android:layout_marginRight="60dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="80dp"
-                    android:text="确定"
-                    android:id="@+id/tv_szbs"
-                    android:textColor="#ffffffff"
-                    android:textSize="15sp"
-                    />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="(图片最多不超过5张）"
+                        android:textColor="#ff999999"
+                        android:textSize="7pt"
+                />
+                <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/rv_img"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="图片仅本人和咨询医生可见"
+                        android:layout_marginTop="10dp"
+                        android:textColor="#ffd31515"
+                        android:textSize="13sp"
+                />
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_jwbs_txbs"
+                        android:gravity="center"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginRight="60dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="80dp"
+                        android:text="确定"
+                        android:id="@+id/tv_szbs"
+                        android:textColor="#ffffffff"
+                        android:textSize="15sp"
+                />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

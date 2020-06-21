@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="@color/pBackColor"
+              tools:context=".activity.myself.WithdrawActivity">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/groabColor"
+    >
+        <LinearLayout
+                android:layout_width="61dp"
+                android:layout_height="match_parent"
+                android:id="@+id/back"
+                android:orientation="horizontal">
+            <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:src="@mipmap/arrow_left"/>
+        </LinearLayout>
+        <TextView
+                android:text="申请退款"
+                android:textSize="10pt"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:textColor="@color/writeColor"
+                android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="50dp"  android:background="@color/writeColor"
+                  android:layout_marginTop="10dp"
+                  android:orientation="horizontal">
+        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:background="@null"
+                  android:hint="退款原因"
+                  android:textColor="@color/textColor_vt"
+                  android:layout_marginLeft="20dp"
+                  android:layout_marginRight="10dp"
+                  android:textSize="8pt" />
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center_vertical"
+                  android:layout_marginRight="10dp"
+                  android:text="请选择"
+                  android:textColor="@color/tabColor_nomal"
+                  android:textSize="8pt"
+        android:drawableRight="@mipmap/arrow_r"/>
+
+    </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/writeColor">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="退款金额"
+                      android:textSize="@dimen/font_size_title_normal"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="¥60" android:textColor="@color/color_red"
+                      android:layout_marginRight="1dp"></TextView>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#ff999999" android:text="不可修改，最多¥60"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="退款说明："></TextView>
+            <EditText android:layout_width="wrap_content" android:layout_height="wrap_content" android:hint="选填" android:background="@drawable/bg_lrbs_zsedit"></EditText>
+        </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@color/writeColor"
+            android:orientation="horizontal"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/writeColor"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="上传凭证"
+                android:textSize="8pt"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/tabColor_nomal"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+        />
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/writeColor">
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="可上传凭证(最多3张）"
+                android:textColor="#ff999999"
+                android:textSize="7pt"
+        />
+        <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rv_img"/>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_jwbs_txbs"
+                android:gravity="center"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="80dp"
+                android:text="确定"
+                android:id="@+id/tv_szbs"
+                android:textColor="#ffffffff"
+                android:textSize="15sp"
+        />
+    </LinearLayout>
+</LinearLayout>

@@ -31,6 +31,8 @@ import www.patient.jykj_zxyl.activity.home.OrderMessage_OrderPayActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJL_ZHLYActivity;
 import www.patient.jykj_zxyl.activity.home.twjz.TWJZ_JZJLActivity;
 import www.patient.jykj_zxyl.activity.home.wdzs.ProvideViewInteractOrderTreatmentAndPatientInterrogation;
+import www.patient.jykj_zxyl.activity.myself.CommentActivity;
+import www.patient.jykj_zxyl.activity.myself.LeaveMessageActivity;
 import www.patient.jykj_zxyl.activity.myself.MyOrderActivity;
 import www.patient.jykj_zxyl.activity.ylzx.YLZXWebActivity;
 import www.patient.jykj_zxyl.adapter.RMJXRecycleAdapter;
@@ -60,7 +62,7 @@ public class FragmentMyOrderAl extends Fragment {
     private int mPagenum = 1;
     private LoadDataTask loadDataTask;
 
-
+    boolean mLoadDate = true;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_myorder_al, container, false);
@@ -101,11 +103,11 @@ public class FragmentMyOrderAl extends Fragment {
                         break;
                     case  R.id.leave_btn:
                         MyOrderProcess leavebean = (MyOrderProcess)getView().getTag();
-                        ProvideInteractOrderInfo leaveorder = new ProvideInteractOrderInfo();
-                        leaveorder.setOrderCode(leavebean.getOrderCode());
-                        startActivity(new Intent(mContext, WDYS_JZJL_ZHLYActivity.class).putExtra("provideInteractOrderInfo",leaveorder));
+                        startActivity(new Intent(mContext, LeaveMessageActivity.class).putExtra("orderInfo",leavebean));
                         break;
                     case  R.id.opinion_btn:
+                        MyOrderProcess opinion = (MyOrderProcess)getView().getTag();
+                        startActivity(new Intent(mContext, CommentActivity.class).putExtra("orderInfo",opinion));
                         break;
                 }
             }
@@ -113,6 +115,21 @@ public class FragmentMyOrderAl extends Fragment {
             @Override
             public void onLongClick(int position) {
 
+            }
+        });
+        mRMJXRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (mLoadDate) {
+                        int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+                        if (lastVisiblePosition >= layoutManager.getItemCount() - 1) {
+                            mPagenum++;
+                            setData();
+                        }
+                    }
+                }
             }
         });
     }
@@ -164,6 +181,7 @@ public class FragmentMyOrderAl extends Fragment {
         }
         @Override
         protected List<MyOrderProcess> doInBackground(Void... voids) {
+            mLoadDate = false;
             List<MyOrderProcess> retlist = new ArrayList();
             try {
                 querycond.setPageNum(String.valueOf(mPagenum));
@@ -189,6 +207,7 @@ public class FragmentMyOrderAl extends Fragment {
                     mPagenum = mPagenum - 1;
                 }
             }
+            mLoadDate = true;
         }
     }
 }

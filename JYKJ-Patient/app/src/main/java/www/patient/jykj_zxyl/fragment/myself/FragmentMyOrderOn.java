@@ -28,6 +28,7 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.MainActivity;
 import www.patient.jykj_zxyl.activity.home.OrderMessage_OrderPayActivity;
 import www.patient.jykj_zxyl.activity.myself.MyOrderActivity;
+import www.patient.jykj_zxyl.activity.myself.WithdrawActivity;
 import www.patient.jykj_zxyl.activity.ylzx.YLZXWebActivity;
 import www.patient.jykj_zxyl.adapter.RMJXRecycleAdapter;
 import www.patient.jykj_zxyl.adapter.myself.MyOrderOnRecycleAdapter;
@@ -54,7 +55,7 @@ public class FragmentMyOrderOn extends Fragment {
     private             List<MyOrderProcess>                        mHZEntyties = new ArrayList<>();            //所有数据
     private int mPagenum = 1;
     private LoadDataTask loadDataTask;
-
+    boolean mLoadDate = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class FragmentMyOrderOn extends Fragment {
         //创建并设置Adapter
         mAdapter = new MyOrderOnRecycleAdapter(mHZEntyties,mContext,mActivity);
         mRMJXRecycleView.setAdapter(mAdapter);
+
         mAdapter.setOnItemClickListener(new MyOrderOnRecycleAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
@@ -96,6 +98,10 @@ public class FragmentMyOrderOn extends Fragment {
                         startActivity(new Intent(mActivity, OrderMessage_OrderPayActivity.class).putExtra("provideInteractOrderInfo",parorder));
                         break;
                     case  R.id.back_btn:
+                        MyOrderProcess parbackbean = (MyOrderProcess)getView().getTag();
+                        ProvideInteractOrderInfo parbackorder = new ProvideInteractOrderInfo();
+                        parbackorder.setOrderCode(parbackbean.getOrderCode());
+                        startActivity(new Intent(mActivity, WithdrawActivity.class).putExtra("provideInteractOrderInfo",parbackorder));
                         break;
                 }
 
@@ -106,6 +112,22 @@ public class FragmentMyOrderOn extends Fragment {
             @Override
             public void onLongClick(int position) {
 
+            }
+        });
+
+        mRMJXRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (mLoadDate) {
+                        int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+                        if (lastVisiblePosition >= layoutManager.getItemCount() - 1) {
+                            mPagenum++;
+                            setData();
+                        }
+                    }
+                }
             }
         });
     }
@@ -157,6 +179,7 @@ public class FragmentMyOrderOn extends Fragment {
         }
         @Override
         protected List<MyOrderProcess> doInBackground(Void... voids) {
+            mLoadDate = false;
             List<MyOrderProcess> retlist = new ArrayList();
             try {
                 querycond.setPageNum(String.valueOf(mPagenum));
@@ -182,6 +205,7 @@ public class FragmentMyOrderOn extends Fragment {
                     mPagenum = mPagenum - 1;
                 }
             }
+            mLoadDate = true;
         }
     }
 

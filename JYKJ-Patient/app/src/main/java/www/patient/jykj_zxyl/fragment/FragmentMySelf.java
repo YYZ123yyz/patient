@@ -180,17 +180,8 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
         }
     }
     void alertWillpub(){
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View diagview = inflater.inflate(R.layout.willupdiag, null);
-        AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
-        builder.setView(diagview);
-        AlertDialog dialog=builder.create();
-        dialog.show();
-        diagview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        AuthorityJQQDDialog mAuthorityJQQDDialog = new AuthorityJQQDDialog(mContext);
+//                mAuthorityDialog.setmProvideViewMyDoctorOrderAndTreatment(provideViewMyDoctorOrderAndTreatment);
+        mAuthorityJQQDDialog.show();
     }
 }

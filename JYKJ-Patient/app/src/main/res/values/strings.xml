@@ -152,6 +152,9 @@
         <string name="Please_enter_a_username">请输入用户名</string>
         <string name="is_down_please_wait">正在下载视频请稍候</string>
         <string name="Exit_the_group_chat">退出群聊</string>
+        <string name="feedback_tit">反馈意见</string>
+    <string name="question_desp">问题描述</string>
+    <string name="link_style">联系方式</string>
         <!--<string name="accept_join_group">%s同意加入群</string>-->
         <!--<string name="refuse_join_group">%s拒绝加入群</string>-->
         <!--<string name="at_your_in_group">%s在群聊中@了你</string>-->

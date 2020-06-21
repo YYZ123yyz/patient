@@ -279,13 +279,19 @@ public class OpeaPassWordActivity extends AppCompatActivity {
                     String str = new Gson().toJson(quersmscond);
                     mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + str, Constant.SERVICEURL + "patientPersonalSetControlle/getUserPassWordSmsVerify");
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
-                    if (1!=netRetEntity.getResCode()) {
+                    if (1==netRetEntity.getResCode()) {
+                       /* NetRetEntity retEntity = new NetRetEntity();
+                        retEntity.setResCode(0);
+                        retEntity.setResMsg("获取失败：" + netRetEntity.getResMsg());*/
+                        mNetRetStr = new Gson().toJson(netRetEntity);
+                        mHandler.sendEmptyMessage(3);
+                        return;
+                    }else{
                         NetRetEntity retEntity = new NetRetEntity();
                         retEntity.setResCode(0);
                         retEntity.setResMsg("获取失败：" + netRetEntity.getResMsg());
                         mNetRetStr = new Gson().toJson(retEntity);
                         mHandler.sendEmptyMessage(3);
-                        return;
                     }
 
                 } catch (Exception e) {
@@ -294,7 +300,6 @@ public class OpeaPassWordActivity extends AppCompatActivity {
                     retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     mHandler.sendEmptyMessage(3);
-                    return;
                 }
 
                 mHandler.sendEmptyMessage(3);

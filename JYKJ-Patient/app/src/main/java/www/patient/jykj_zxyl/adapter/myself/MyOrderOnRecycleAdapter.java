@@ -168,6 +168,7 @@ public class MyOrderOnRecycleAdapter extends RecyclerView.Adapter<MyOrderOnRecyc
                     mOnItemClickListener.onClick(position);
                 }
             });
+            viewHolder.back_btn.setTag(parbean);
             viewHolder.mClickLinearLayout.setTag(parbean);
         }
 

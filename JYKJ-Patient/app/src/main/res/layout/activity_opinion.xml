@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="@color/pBackColor">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/groabColor"
+    >
+        <LinearLayout
+                android:layout_width="61dp"
+                android:layout_height="match_parent"
+                android:id="@+id/back"
+                android:orientation="horizontal">
+            <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:src="@mipmap/arrow_left"/>
+        </LinearLayout>
+        <TextView
+                android:text="评价"
+                android:textSize="10pt"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:textColor="@color/writeColor"
+                android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp"
+                  android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:padding="2dp">
+        <TextView android:layout_width="60dp" android:layout_height="wrap_content" android:textSize="8dp" android:text="订单编号："></TextView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="16845151132149"></TextView>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp"
+                  android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:padding="2dp">
+        <TextView android:layout_width="60dp" android:layout_height="wrap_content" android:textSize="8dp" android:text="图文就诊："></TextView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2020-04-10 08:00"></TextView>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp"
+                  android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:padding="5dp">
+        <EditText android:layout_width="match_parent" android:layout_height="60dp" android:lines="5" android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
+        android:hint="请填写您对本次服务的评价，可以帮助更多人">
+        </EditText>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:orientation="horizontal">
+        <TextView android:layout_width="50dp" android:layout_height="wrap_content" android:text="评价" android:textSize="8dp"></TextView>
+        <ToggleButton
+                android:id="@+id/good_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/good_comment_btn"
+                android:textOn="@null"
+                android:textOff="@null"/>
+        <ToggleButton
+                android:id="@+id/middle_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/middle_comment_btn"
+                android:textOn="@null"
+                android:textOff="@null"/>
+        <ToggleButton
+                android:id="@+id/weak_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/weak_comment_btn"
+                android:textOn="@null"
+                android:textOff="@null"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:layout_marginTop="10dp" android:orientation="vertical">
+        <android.support.v7.widget.RecyclerView android:layout_width="match_parent" android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_jwbs_txbs"
+                android:gravity="center"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="80dp"
+                android:text="发布"
+                android:id="@+id/pub_comment"
+                android:textColor="#ffffffff"
+                android:textSize="15sp"
+        />
+    </LinearLayout>
+</LinearLayout>

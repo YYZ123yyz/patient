@@ -90,13 +90,17 @@
         <activity android:name=".activity.myself.ExitAllianceActivity"/>
         <!--设置-->
         <activity android:name=".activity.myself.SettingActivity"/>
-
+        <activity android:name=".activity.myself.CommentActivity"/>
+        <activity android:name=".activity.myself.FeedbackActvity"/>
+        <activity android:name=".activity.myself.LeaveMessageActivity"/>
+        <activity android:name=".activity.myself.LeaveMessageShowActivity"/>
+        <activity android:name=".activity.myself.WithdrawActivity"/>
         <!--设置 == > 关于我们-->
         <activity android:name=".activity.myself.setting.AboutActivity"/>
 
         <!--设置 == > 修改密码-->
         <activity android:name=".activity.myself.setting.OpeaPassWordActivity"/>
-
+        <activity android:name=".activity.myself.setting.UpdateVersionShowActivity"/>
         <!--设置 == > 客服热线-->
         <activity android:name=".activity.myself.setting.ServiceHotlineActivity"/>
 
