@@ -34,6 +34,7 @@ import entity.shouye.ProvidePatientConditionTakingRecord;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.adapter.MedicationRecordAdapter;
+import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
 import www.patient.jykj_zxyl.library.PullToRefreshListView;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.adapter.MedicationRecordAdapter;
@@ -67,6 +68,11 @@ public class MedicationRecordActivity extends Activity {
 	private RecyclerView mRecycleView;
 	private MedicationRecordAdapter mAdapter;
 	private MedicationRecordActivity medicationRecordActivity;
+
+	private MoreFeaturesPopupWindow mPopupWindow;
+
+	ImageView iv_add;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -79,7 +85,7 @@ public class MedicationRecordActivity extends Activity {
 		//获取返回按钮
 		ImageView iv_back = (ImageView)findViewById(R.id.iv_back);
 		//获取添加按钮
-		ImageView iv_add = (ImageView)findViewById(R.id.iv_add);
+		iv_add = (ImageView)findViewById(R.id.iv_add);
 		//获取服药打卡按钮
 		LinearLayout ms_punch = (LinearLayout)findViewById(R.id.ms_punch);
 		//获取服药统计按钮
@@ -185,11 +191,7 @@ public class MedicationRecordActivity extends Activity {
 		providePatientConditionTakingRecordGroup.setRequestClientType("1");
 		providePatientConditionTakingRecordGroup.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
 		providePatientConditionTakingRecordGroup.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-
-		providePatientConditionTakingRecordGroup.setSearchTakingMedicine("0");
-//		providePatientConditionTakingRecordGroup.setSearchDateStart(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-//		providePatientConditionTakingRecordGroup.setSearchDateEnd(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-//		providePatientConditionTakingRecordGroup.setSearchDateType(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+		providePatientConditionTakingRecordGroup.setSearchTakingMedicine("-1");
 		getProgressBar("请稍候", "正在获取数据");
 		//连接网络，登录
 		new Thread() {
@@ -300,13 +302,11 @@ public class MedicationRecordActivity extends Activity {
 					finish();
 					break;
 				case R.id.iv_add:
-					//MedicationSettingsActivity.class 替换成需要跳转的界面
-					intent = new Intent(context,AddMedicationActivity.class);
-					//传到下一个界面的参数
-//					String[] add = new String[]{"n1"};
-//					intent.putExtra("list", add);
-					startActivity(intent);
-					finish();
+					mPopupWindow = new MoreFeaturesPopupWindow(MedicationRecordActivity.this);
+					mPopupWindow.setMedicationRecordActivity(MedicationRecordActivity.this);
+					if(mPopupWindow!=null&&!mPopupWindow.isShowing()){
+						mPopupWindow.showAsDropDown(iv_add,0,0);
+					}
 					break;
 				case R.id.ms_punch:
 					//MedicationSettingsActivity.class 替换成需要跳转的界面

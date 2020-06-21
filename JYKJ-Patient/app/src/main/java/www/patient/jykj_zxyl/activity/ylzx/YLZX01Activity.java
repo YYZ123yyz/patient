@@ -15,15 +15,13 @@ import www.patient.jykj_zxyl.util.ActivityUtil;
 /**
  * 医疗资讯
  */
-public class YLZXWebActivity extends AppCompatActivity {
+public class YLZX01Activity extends AppCompatActivity {
 
     private                 Context                     mContext;
-    private                 YLZXWebActivity             mActivity;
+    private YLZX01Activity mActivity;
     private                 WebView                     webView;
 
     private RelativeLayout  rl_back;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +38,6 @@ public class YLZXWebActivity extends AppCompatActivity {
      * 初始化布局
      */
     private void initLayout() {
-
         rl_back = (RelativeLayout)this.findViewById(R.id.rl_back);
         rl_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,10 +45,9 @@ public class YLZXWebActivity extends AppCompatActivity {
                 finish();
             }
         });
-
         webView= (WebView) findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("http://jiuyihtn.com/AppAssembly/medicalAdvice.html");
+        webView.loadUrl("http://jiuyihtn.com/AppAssembly/medicalLink/medicalLink1.html");
         //这一段可以保证在webview中的网页中点击某个链接时仍然在app中打开，而不是用浏览器打开
         webView.setWebViewClient(new WebViewClient(){
             @Override

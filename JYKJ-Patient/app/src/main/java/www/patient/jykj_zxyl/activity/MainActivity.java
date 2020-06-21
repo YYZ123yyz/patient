@@ -26,6 +26,8 @@ import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.EaseUI;
+import com.hyphenate.easeui.hyhd.DemoHelper;
 import com.hyphenate.easeui.hyhd.model.CallReceiver;
 import com.hyphenate.easeui.model.EaseNotifier;
 
@@ -240,6 +242,9 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(mContext,"登录成功",Toast.LENGTH_SHORT).show();
                         break;
                     case 22:
+//                        Toast.makeText(getApplicationContext(),"登录成功",Toast.LENGTH_SHORT).show();
+                        DemoHelper.getInstance().init(mContext);
+//                        DemoHelper.getInstance().setEaseUIProviders();
                         //注册
                         IntentFilter callFilter = new IntentFilter(EMClient.getInstance().callManager().getIncomingCallBroadcastAction());
                         if(mCallReceiver == null){
@@ -248,6 +253,10 @@ public class MainActivity extends AppCompatActivity {
                        mContext.registerReceiver(mCallReceiver, callFilter);
                         System.out.println("进来了");
                         break;
+
+//                    case 23:
+//                        Toast.makeText(mContext,"登录失败："+mApp.hxErrorMessage,Toast.LENGTH_SHORT).show();
+//                        break;
                 }
 
             }
@@ -477,6 +486,7 @@ public class MainActivity extends AppCompatActivity {
 //                mTextViewYHHD.setTextColor(getResources().getColor(R.color.tabColor_nomal));
 //            }
 //        }
+        mHandler.sendEmptyMessage(23);
     }
 
     /**

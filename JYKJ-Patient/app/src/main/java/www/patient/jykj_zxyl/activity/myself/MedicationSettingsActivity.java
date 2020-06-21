@@ -32,6 +32,7 @@ import entity.ProvidePatientConditionTakingMedicine;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.adapter.MedicationSettingAdapter;
+import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
 import www.patient.jykj_zxyl.library.PullToRefreshListView;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.adapter.MedicationSettingAdapter;
@@ -61,6 +62,11 @@ public class MedicationSettingsActivity extends Activity {
 	private RecyclerView mRecycleView;
 	private MedicationSettingAdapter mAdapter;
 	private TextView add_medic_button;			//	添加药品
+
+	private MoreFeaturesPopupWindow mPopupWindow;
+
+	private ImageView iv_add;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -72,7 +78,7 @@ public class MedicationSettingsActivity extends Activity {
 		//获取返回按钮
 		ImageView iv_back = (ImageView)findViewById(R.id.iv_back);
 		//获取添加按钮
-		ImageView iv_add = (ImageView)findViewById(R.id.iv_add);
+		iv_add = (ImageView)findViewById(R.id.iv_add);
 		//获取服药打卡按钮
 		LinearLayout ms_punch = (LinearLayout)findViewById(R.id.ms_punch);
 		//获取服药统计按钮
@@ -244,11 +250,11 @@ public class MedicationSettingsActivity extends Activity {
 					break;
 				case R.id.iv_add:
 					//MedicationSettingsActivity.class 替换成需要跳转的界面
-					intent = new Intent(context,AddMedicationActivity.class);
-					//传到下一个界面的参数
-//					String[] add = new String[]{"n1"};
-//					intent.putExtra("list", add);
-					startActivity(intent);
+					mPopupWindow = new MoreFeaturesPopupWindow(MedicationSettingsActivity.this);
+					mPopupWindow.setMedicationSettingsActivity(MedicationSettingsActivity.this);
+					if(mPopupWindow!=null&&!mPopupWindow.isShowing()){
+						mPopupWindow.showAsDropDown(iv_add,0,0);
+					}
 					break;
 				case R.id.ms_punch:
 					//MedicationSettingsActivity.class 替换成需要跳转的界面

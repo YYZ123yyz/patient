@@ -84,6 +84,7 @@ public class JYKJApplication extends Application {
     public                      String                          gBitMapString;                                  //身份证拍照bitmap
     public                      String                          gPayOrderCode;
     public                      List<Activity>                  gPayCloseActivity = new ArrayList<>();          //支付成功之后需要关闭的页面
+    public                      String                          gProviceName;                                   //定位获取到的位置信息
 
     private                     String                              mNetRetStr;                 //返回字符串
 
@@ -99,6 +100,7 @@ public class JYKJApplication extends Application {
     public                  List<ProvideBasicsDomain>                 gProvideBasicsDomainJGBJ = new ArrayList<>();             //机构背景
     public                  List<ProvideBasicsDomain>                 gProvideBasicsDomainYSZC = new ArrayList<>();                                 //医生职称
 
+    public                      String                      hxErrorMessage;
 //    public BDLocationListener myListener = new MyLocationListener();
     public LocationClient mLocationClient = null;
 
@@ -200,7 +202,7 @@ public class JYKJApplication extends Application {
 
                             System.out.println("登录成功");
                             setNewsMessage();
-//                            Toast.makeText(getApplicationContext(),"登录成功",Toast.LENGTH_SHORT).show();
+
                             System.out.println("登录成功");
                             gMainActivity.registHX();
 
@@ -210,7 +212,8 @@ public class JYKJApplication extends Application {
                         public void onError(int i, String s) {
 
                             System.out.println("登录失败");
-
+                            hxErrorMessage = s;
+//                            gMainActivity.setHZTabView();
                         }
 
                         @Override

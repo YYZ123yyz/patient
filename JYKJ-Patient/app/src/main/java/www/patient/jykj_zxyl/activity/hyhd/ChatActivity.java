@@ -17,6 +17,7 @@ import com.hyphenate.easeui.widget.EaseChatMessageList;
 import com.hyphenate.easeui.widget.EaseTitleBar;
 
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.ActivityUtil;
 
@@ -63,6 +64,8 @@ public class ChatActivity extends AppCompatActivity {
         doctorUrl = getIntent().getStringExtra("doctorUrl");
         patientUrl = getIntent().getStringExtra("patientUrl");
 
+
+
         //传入参数
         Bundle args = new Bundle();
         args.putInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
@@ -75,7 +78,7 @@ public class ChatActivity extends AppCompatActivity {
         args.putString("orderCode", orderCode);
 
         args.putString("doctorUrl", doctorUrl);
-        args.putString("patientUrl", patientUrl);
+        args.putString("userUrl", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
 
         args.putInt(EaseConstant.EXTRA_MESSAGE_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_MESSAGE_NUM,0));
         args.putLong(EaseConstant.EXTRA_VOICE_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_VOICE_NUM,0));
