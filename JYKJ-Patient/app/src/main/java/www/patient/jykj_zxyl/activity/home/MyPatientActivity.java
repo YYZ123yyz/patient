@@ -135,10 +135,10 @@ public class MyPatientActivity extends AppCompatActivity{
                     break;
                 case R.id.iv_add:
                     mPopupWindow = new MoreFeaturesPopupWindow(mActivity);
-                    mPopupWindow.setMyPatientActivity(mActivity);
-                    if(mPopupWindow!=null&&!mPopupWindow.isShowing()){
-                        mPopupWindow.showAsDropDown(ivAdd,0,0);
-                    }
+//                    mPopupWindow.setMyPatientActivity(mActivity);
+//                    if(mPopupWindow!=null&&!mPopupWindow.isShowing()){
+//                        mPopupWindow.showAsDropDown(ivAdd,0,0);
+//                    }
                     break;
             }
         }

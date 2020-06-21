@@ -1,17 +1,22 @@
 package www.patient.jykj_zxyl.activity.home;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,19 +26,31 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+
+import entity.basicDate.ProvideViewSysUserPatientInfoAndRegion;
 import entity.shouye.OperScanQrCodeInside;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
+import www.patient.jykj_zxyl.FXActivity;
 import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.hyhd.BindDoctorFriend;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
 import www.patient.jykj_zxyl.util.SaveImg;
+import www.patient.jykj_zxyl.util.WechatShareManager;
 import zxing.android.CaptureActivity;
 import zxing.common.Constant;
 import zxing.encode.CodeCreator;
+
+import static www.patient.jykj_zxyl.activity.LoginActivity.isWeixinAvilible;
 
 /**
  * 识别码
@@ -67,15 +84,36 @@ public class QRCodeActivity extends AppCompatActivity {
     private             TextView            tv_dq;
     private             TextView            tv_save_img;
 
+    private             TextView            tv_fx;
+    private             Bitmap              logoBitmap;                         //用户头像bitmap
+    private             Bitmap              ewmBitmap;                          //二维码Bitmap
+
+    private             WechatShareManager mShareManager;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_code);
         context = this;
         mApp = (JYKJApplication) getApplication();
+        mShareManager = WechatShareManager.getInstance(context);
+        ProvideViewSysUserPatientInfoAndRegion provideViewSysUserPatientInfoAndRegion=  mApp.mProvideViewSysUserPatientInfoAndRegion;
         initView();
         initHandler();
         initListener();
+        //网络url转bitmao
+        getLogoBitMap();
+    }
+
+
+    private void getLogoBitMap() {
+        new Thread(){
+            public void run(){
+                logoBitmap = getBitmap(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+                mHandler.sendEmptyMessage(10);
+            }
+        }.start();
     }
 
     private void initHandler() {
@@ -122,6 +160,10 @@ public class QRCodeActivity extends AppCompatActivity {
                         cacerProgress();
                         netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
                         Toast.makeText(context,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        break;
+                    case 10:
+                        ewmBitmap = CodeCreator.createQRCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getQrCode(), 200, 200, logoBitmap);
+                        ivEwCode.setImageBitmap(ewmBitmap);
                         break;
                 }
             }
@@ -223,11 +265,11 @@ public class QRCodeActivity extends AppCompatActivity {
         ivEwCode = (ImageView) findViewById(R.id.iv_ew_code);
         mBack = (LinearLayout) findViewById(R.id.ll_back);
         ivAdd = (ImageView) findViewById(R.id.iv_add);
-        Bitmap bitmap = CodeCreator.createQRCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getQrCode(), 200, 200, null);
-        ivEwCode.setImageBitmap(bitmap);
+
         tv_wrz = (TextView)this.findViewById(R.id.tv_wrz);
         tv_xm = (TextView)this.findViewById(R.id.tv_xm);
         tv_dq = (TextView)this.findViewById(R.id.tv_dq);
+        tv_fx = (TextView)this.findViewById(R.id.tv_fx);
         tv_save_img = (TextView) this.findViewById(R.id.tv_save_img);
         if (mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName() != null && !"".equals(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName()))
             tv_xm.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
@@ -262,11 +304,17 @@ public class QRCodeActivity extends AppCompatActivity {
         tv_save_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean hasSaved = SaveImg.saveImg(bitmap, "心血管健康二维码.jpeg",context);
+                boolean hasSaved = SaveImg.saveImg(ewmBitmap, "心血管健康二维码.jpeg",context);
                 if(hasSaved){
                     Toast.makeText(context,"已保存至相册^.^",Toast.LENGTH_SHORT).show();
                 }
 
+            }
+        });
+        tv_fx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                wechatShare();
             }
         });
 //        userName.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
@@ -296,5 +344,104 @@ public class QRCodeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    /**
+     * 图片网络URL转bitmap
+     * @param url
+     * @return
+     */
+    public Bitmap getBitmap(String url) {
+        Bitmap bm = null;
+        try {
+            URL iconUrl = new URL(url);
+            URLConnection conn = iconUrl.openConnection();
+            HttpURLConnection http = (HttpURLConnection) conn;
+
+            int length = http.getContentLength();
+
+            conn.connect();
+            // 获得图像的字符流
+            InputStream is = conn.getInputStream();
+            BufferedInputStream bis = new BufferedInputStream(is, length);
+            bm = BitmapFactory.decodeStream(bis);
+            bis.close();
+            is.close();// 关闭流
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bm;
+    }
+
+    //医生分享
+    private void wechatShare() {
+
+        final Dialog dialog = new Dialog(context, R.style.BottomDialog);
+        View view = LayoutInflater.from(context).inflate(R.layout.bottom_dialog_dynamic, null);
+        dialog.setContentView(view);
+        TextView tv1 = view.findViewById(R.id.tv1);
+        TextView tv2 = view.findViewById(R.id.tv2);
+        TextView tv3 = view.findViewById(R.id.tv3);
+        TextView tv4 = view.findViewById(R.id.tv4);
+        tv1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        //分享好友
+        tv2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToShare(SendMessageToWX.Req.WXSceneSession, "123", "456", "789", R.mipmap.logo);
+                dialog.dismiss();
+            }
+        });
+        //分享朋友圈
+        tv3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToShare(SendMessageToWX.Req.WXSceneTimeline, "123", "456", "789", R.mipmap.logo);
+                dialog.dismiss();
+            }
+        });
+        tv4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        layoutParams.width = context.getResources().getDisplayMetrics().widthPixels;
+        view.setLayoutParams(layoutParams);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        dialog.show();
+
+
+    }
+
+    /**
+     * 分享到微信
+     *
+     * @param type            SendMessageToWX.Req.WXSceneSession  //会话    SendMessageToWX.Req.WXSceneTimeline //朋友圈
+     * @param title           标题
+     * @param content         内容
+     * @param url             地址
+     * @param pictureResource 图标
+     */
+    public void ToShare(int type, String title, String content, String url, int pictureResource) {
+        //i   0是会话  1是朋友圈
+        if (isWeixinAvilible(context)) {
+            WechatShareManager.ShareContentWebpage mShareContent =
+                    (WechatShareManager.ShareContentWebpage) mShareManager.getShareContentWebpag(title, content, url, pictureResource);
+
+            mShareManager.shareByWebchat(mShareContent, type);
+        } else {
+            Toast.makeText(context, "您还没有安装微信，请先安装微信客户端", Toast.LENGTH_SHORT).show();
+        }
     }
 }
