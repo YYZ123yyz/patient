@@ -158,7 +158,8 @@ public class TJZJActivity extends AppCompatActivity {
         mSearchModel = 1;
         getBasicDate(50001);
         getBasicDate(50003);
-
+        Map<Integer,List<ProvideBasicsDomain>> gBasicDate = mApp.gBasicDate;
+        //通过定位获取地区编码
         getDate();
 
     }
