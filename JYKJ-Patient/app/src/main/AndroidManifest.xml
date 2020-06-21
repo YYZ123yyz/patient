@@ -117,10 +117,11 @@
         <activity android:name=".activity.myself.MyCouponDetailActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"/>
         <!--患者管理搜索页面-->
         <activity android:name=".activity.myself.hzgl.HZGLSearchActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"/>
-        <!--医疗资讯WEB页面-->
+        <!--医疗资讯更多页面-->
         <activity android:name=".activity.ylzx.YLZXWebActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"/>
 
-
+        <!--医疗资讯WEB页面-->
+        <activity android:name=".activity.ylzx.YLZX01Activity" android:windowSoftInputMode="stateHidden|stateUnchanged"/>
 
         <!--我的识别码-->
         <activity android:name=".activity.home.QRCodeActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"/>
@@ -411,7 +412,7 @@
         <!--首页=》》 个人中心 零钱统计-->
         <activity android:name=".activity.myself.SurplusDetailTJActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"/>
 
-        <!--我的=》》 用药提醒-->
+        <!--我的=》》服药统计-->
         <activity android:name=".activity.myself.MedicationActivity" android:windowSoftInputMode="stateHidden|stateUnchanged">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
@@ -429,6 +430,9 @@
         <activity android:name=".activity.patient_home.KSWYSActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"/>
 
         <activity android:name=".activity.home.OrderMessage_OrderPayActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"/>
+
+        <!--我的识别码 == 》 分享-->
+        <activity android:name=".FXActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"/>
 
 
         <!--身份证拍照页面-->
