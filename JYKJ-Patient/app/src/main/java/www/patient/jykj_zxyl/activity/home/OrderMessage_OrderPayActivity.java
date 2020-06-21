@@ -225,6 +225,8 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
         tv_payModel = (TextView)this.findViewById(R.id.tv_payModel);
         iv_payModel = (ImageView)this.findViewById(R.id.iv_payModel);
 
+        findViewById(R.id.ll_back).setOnClickListener(new ButtonClick());
+
 //        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
