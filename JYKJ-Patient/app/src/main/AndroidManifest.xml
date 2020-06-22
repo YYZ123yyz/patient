@@ -39,6 +39,7 @@
         <activity android:name=".activity.PhoneLoginActivity"/>
         <!--用户注册-->
         <activity android:name=".activity.UseRegistActivity"/>
+        <activity android:name=".activity.myself.ShareActivity"/>
 
         <!--微信登录Activity-->
         <activity android:name="www.patient.jykj_zxyl.wxapi.WXEntryActivity"
