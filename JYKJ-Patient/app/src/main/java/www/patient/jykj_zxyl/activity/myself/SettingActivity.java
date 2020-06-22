@@ -118,8 +118,13 @@ public class SettingActivity extends AppCompatActivity {
                                     //按下确定键后的事件
                                     MyUtil.cleanExternalCache(mContext);
                                     MyUtil.cleanInternalCache(mContext);
-                                    Intent theint = new Intent(SettingActivity.this,LoginActivity.class);
-                                    SettingActivity.this.startActivity(theint);
+                                    try {
+                                        cache_size.setText(MyUtil.getAllCacheSize(mContext));
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    //Intent theint = new Intent(SettingActivity.this,LoginActivity.class);
+                                    //SettingActivity.this.startActivity(theint);
                                 }
                             }).setNegativeButton("取消",null).show();
                     break;
