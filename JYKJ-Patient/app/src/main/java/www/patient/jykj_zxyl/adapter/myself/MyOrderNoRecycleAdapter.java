@@ -134,6 +134,7 @@ public class MyOrderNoRecycleAdapter extends RecyclerView.Adapter<MyOrderNoRecyc
     //自定义的ViewHolder，持有每个Item的的所有界面元素
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
+        public LinearLayout ll_item;
         public LinearLayout mClickLinearLayout;                     //整个布局，用来监听点击事件
         public TextView mSuType;                                //类型
         public TextView price;                                  //金额
@@ -144,6 +145,7 @@ public class MyOrderNoRecycleAdapter extends RecyclerView.Adapter<MyOrderNoRecyc
 
         public ViewHolder(View view){
             super(view);
+            ll_item = view.findViewById(R.id.ll_item);
             mClickLinearLayout = (LinearLayout) view.findViewById(R.id.item_fragmentYLZX_rmjxLayout);
             mDate = (TextView)view.findViewById(R.id.order_date);
             mSuType = (TextView)view.findViewById(R.id.treat_type);

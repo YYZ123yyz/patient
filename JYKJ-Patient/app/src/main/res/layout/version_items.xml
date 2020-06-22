@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
 android:orientation="vertical" android:background="@color/writeColor">
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp"
                   android:orientation="horizontal">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                  android:textSize="10dp" android:text="7.0.3" android:id="@+id/version_num"></TextView>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="8dp"
-                  android:layout_marginRight="10dp" android:text="1个月前" android:textColor="@color/btn_gray_normal" android:id="@+id/tv_pubversion_time"></TextView>
+                  android:text="7.0.3" android:id="@+id/version_num" android:layout_weight="1" android:gravity="left"></TextView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:layout_marginRight="10dp" android:text="1个月前" android:textColor="@color/btn_gray_normal" android:id="@+id/tv_pubversion_time" android:layout_weight="1" android:gravity="right"></TextView>
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:orientation="vertical">
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginRight="10dp" android:layout_marginLeft="10dp"
-                  android:textSize="8dp" android:text="本次更新"></TextView>
+                  android:text="本次更新"></TextView>
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
-                  android:textSize="8dp" android:text="-解决了一些已知问题" android:id="@+id/thistime_up_desc"></TextView>
+                   android:text="-解决了一些已知问题" android:id="@+id/thistime_up_desc"></TextView>
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:orientation="vertical">
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginRight="10dp" android:layout_marginLeft="10dp"
-                  android:textSize="8dp" android:text="最近更新"></TextView>
+                  android:text="最近更新"></TextView>
         <www.patient.jykj_zxyl.custom.ExpandableTextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
-                                                         android:textSize="8dp" android:text="-发消息时，可以引用之前的内容。\n解决闪退的问题。\n可以更换更多种类的主题。" android:id="@+id/lasttime_up_desc"></www.patient.jykj_zxyl.custom.ExpandableTextView>
+                                                         android:text="-发消息时，可以引用之前的内容。\n解决闪退的问题。\n可以更换更多种类的主题。" android:id="@+id/lasttime_up_desc"></www.patient.jykj_zxyl.custom.ExpandableTextView>
     </LinearLayout>
     <View
-            android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-    />
+            android:layout_height="1px"
+            android:layout_marginTop="5dp"
+            android:background="@color/province_line_border" />
 </LinearLayout>

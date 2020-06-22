@@ -104,6 +104,9 @@ public class UpdateVersionShowActivity extends AppCompatActivity {
                 String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryVersionCond), Constant.SERVICEURL+ INetAddress.QUERY_VERSION_URL);
                 NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
                 if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
+                    /*String jsonstr = retEntity.getResJsonData().replaceAll("\\\n","##n");
+                    jsonstr = jsonstr.replaceAll("\\\\","");
+                    jsonstr = jsonstr.replaceAll("##n","\\n");*/
                     retlist = JSON.parseArray(retEntity.getResJsonData(),VersionInfo.class);
                 }
             } catch (Exception e) {
