@@ -97,6 +97,9 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
         gradeBtn = v.findViewById(R.id.gradeBtn);
         iv_fragmentMyself_userHeadImage = (ImageView)v.findViewById(R.id.iv_fragmentMyself_userHeadImage);
         tv_fragmentMySelf_nameText = (TextView)v.findViewById(R.id.tv_fragmentMySelf_nameText);
+    }
+
+    void initdata(){
         try {
             int avatarResId = Integer.parseInt(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
             Glide.with(mContext).load(avatarResId).into(iv_fragmentMyself_userHeadImage);
@@ -109,6 +112,12 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
         }
         if (mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName() != null)
             tv_fragmentMySelf_nameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initdata();
     }
 
     private void initListener(){

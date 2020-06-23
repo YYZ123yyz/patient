@@ -239,6 +239,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 //        getProgressBar("请稍候","正在加载数据。。。");
         //获取最近一次血压数据
         searchPatientStateResBloodPressureNewData();
+        initData();
     }
 
     /**
@@ -524,16 +525,6 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         mYPYL2 = (TextView)view.findViewById(R.id.ypyl2);
 
         mHeard = (CircleImageView)view.findViewById(R.id.iv_userhead);
-        try {
-            int avatarResId = Integer.parseInt(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
-            Glide.with(mContext).load(avatarResId).into(mHeard);
-        } catch (Exception e) {
-            //use default avatar
-            Glide.with(mContext).load(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl())
-                    .apply(RequestOptions.placeholderOf(R.mipmap.nhtx)
-                            .diskCacheStrategy(DiskCacheStrategy.ALL))
-                    .into(mHeard);
-        }
 //        mYPTX2 = (LinearLayout)view.findViewById(R.id.yytx2);
         mQrCode = view.findViewById(R.id.ll_qr_code);
 //        mNews = view.findViewById(R.id.ll_news);
@@ -546,7 +537,6 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 //        mMyClinic = view.findViewById(R.id.ll_wdzs);
 //
         mUserNameText = (TextView)view.findViewById(R.id.tv_fragmentShouYe_userNameText);
-        mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
 
 //        mMyPatient = view.findViewById(R.id.ll_wdhz);
 //        mNewMessage = (TextView)view.findViewById(R.id.tv_fragmentShouYe_NewMessage);
@@ -613,8 +603,19 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         feeling_layout = view.findViewById(R.id.feeling_layout);
     }
 
-
-
+    void initData(){
+        try {
+            int avatarResId = Integer.parseInt(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+            Glide.with(mContext).load(avatarResId).into(mHeard);
+        } catch (Exception e) {
+            //use default avatar
+            Glide.with(mContext).load(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl())
+                    .apply(RequestOptions.placeholderOf(R.mipmap.nhtx)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(mHeard);
+        }
+        mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+    }
 
     private void initListener(){
         mBloodEntry.setOnClickListener(this);

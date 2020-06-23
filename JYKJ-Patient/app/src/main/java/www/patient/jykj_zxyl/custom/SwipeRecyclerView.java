@@ -164,19 +164,21 @@ public class SwipeRecyclerView extends RecyclerView {
 
                 break;
             case MotionEvent.ACTION_UP://手抬起时
-                int scrollX = mCurItemLayout.getScrollX();
+                if(null!=mCurItemLayout) {
+                    int scrollX = mCurItemLayout.getScrollX();
 
-                if (mHiddenWidth > mMoveWidth) {
-                    int toX = (mHiddenWidth - mMoveWidth);
-                    if (scrollX > mHiddenWidth / 2) {//超过一半长度时松开，则自动滑到左侧
-                        scrollLeft(mCurItemLayout, toX);
-                        mMoveWidth = mHiddenWidth;
-                    } else {//不到一半时松开，则恢复原状
-                        scrollRight(mCurItemLayout, 0 - mMoveWidth);
-                        mMoveWidth = 0;
+                    if (mHiddenWidth > mMoveWidth) {
+                        int toX = (mHiddenWidth - mMoveWidth);
+                        if (scrollX > mHiddenWidth / 2) {//超过一半长度时松开，则自动滑到左侧
+                            scrollLeft(mCurItemLayout, toX);
+                            mMoveWidth = mHiddenWidth;
+                        } else {//不到一半时松开，则恢复原状
+                            scrollRight(mCurItemLayout, 0 - mMoveWidth);
+                            mMoveWidth = 0;
+                        }
                     }
+                    mLastItemLayout = mCurItemLayout;
                 }
-                mLastItemLayout = mCurItemLayout;
                 break;
 
 
