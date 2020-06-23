@@ -92,8 +92,7 @@ public class FragmentMyOrderAl extends Fragment {
         mRMJXRecycleView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new MyOrderAlRecycleAdapter.OnItemClickListener() {
             @Override
-            public void onClick(int position) {
-                View parview = getView();
+            public void onClick(int position,View parview) {
                 switch (parview.getId()){
                     case R.id.item_fragmentYLZX_rmjxLayout:
                         MyOrderProcess parbean = (MyOrderProcess)getView().getTag();
@@ -113,7 +112,7 @@ public class FragmentMyOrderAl extends Fragment {
             }
 
             @Override
-            public void onLongClick(int position) {
+            public void onLongClick(int position,View v) {
 
             }
         });
