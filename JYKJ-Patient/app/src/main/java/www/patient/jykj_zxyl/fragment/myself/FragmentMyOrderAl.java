@@ -93,20 +93,18 @@ public class FragmentMyOrderAl extends Fragment {
         mAdapter.setOnItemClickListener(new MyOrderAlRecycleAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position,View parview) {
+                MyOrderProcess parbean = mHZEntyties.get(position);
                 switch (parview.getId()){
                     case R.id.item_fragmentYLZX_rmjxLayout:
-                        MyOrderProcess parbean = (MyOrderProcess)getView().getTag();
                         ProvideViewInteractOrderTreatmentAndPatientInterrogation parorder = new ProvideViewInteractOrderTreatmentAndPatientInterrogation();
                         parorder.setOrderCode(parbean.getOrderCode());
                         startActivity(new Intent(mActivity, TWJZ_JZJLActivity.class).putExtra("wzxx",parorder));
                         break;
                     case  R.id.leave_btn:
-                        MyOrderProcess leavebean = (MyOrderProcess)getView().getTag();
-                        startActivity(new Intent(mContext, LeaveMessageActivity.class).putExtra("orderInfo",leavebean));
+                        startActivity(new Intent(mContext, LeaveMessageActivity.class).putExtra("orderInfo",parbean));
                         break;
                     case  R.id.opinion_btn:
-                        MyOrderProcess opinion = (MyOrderProcess)getView().getTag();
-                        startActivity(new Intent(mContext, CommentActivity.class).putExtra("orderInfo",opinion));
+                        startActivity(new Intent(mContext, CommentActivity.class).putExtra("orderInfo",parbean));
                         break;
                 }
             }

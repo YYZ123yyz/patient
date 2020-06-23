@@ -87,20 +87,18 @@ public class FragmentMyOrderOn extends Fragment {
 
         mAdapter.setOnItemClickListener(new MyOrderOnRecycleAdapter.OnItemClickListener() {
             @Override
-            public void onClick(int position) {
+            public void onClick(int position,View parview) {
                 Intent intent = new Intent();
-                View parview = getView();
+                MyOrderProcess parbean = mHZEntyties.get(position);
                 switch (parview.getId()){
                     case R.id.item_fragmentYLZX_rmjxLayout:
-                        MyOrderProcess parbean = (MyOrderProcess)getView().getTag();
                         ProvideInteractOrderInfo parorder = new ProvideInteractOrderInfo();
                         parorder.setOrderCode(parbean.getOrderCode());
                         startActivity(new Intent(mActivity, OrderMessage_OrderPayActivity.class).putExtra("provideInteractOrderInfo",parorder));
                         break;
                     case  R.id.back_btn:
-                        MyOrderProcess parbackbean = (MyOrderProcess)getView().getTag();
                         ProvideInteractOrderInfo parbackorder = new ProvideInteractOrderInfo();
-                        parbackorder.setOrderCode(parbackbean.getOrderCode());
+                        parbackorder.setOrderCode(parbean.getOrderCode());
                         startActivity(new Intent(mActivity, WithdrawActivity.class).putExtra("provideInteractOrderInfo",parbackorder));
                         break;
                 }
@@ -110,7 +108,7 @@ public class FragmentMyOrderOn extends Fragment {
             }
 
             @Override
-            public void onLongClick(int position) {
+            public void onLongClick(int position,View view) {
 
             }
         });
