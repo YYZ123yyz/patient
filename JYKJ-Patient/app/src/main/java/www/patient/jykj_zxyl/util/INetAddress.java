@@ -19,4 +19,5 @@ public class INetAddress {
     public static String QUERY_MYORDER_FINISH_URL = "patientMyOrderControlle/searchPatientMyOrderResCompleted";//订单列表-已完成
     public static String QUERY_VERSION_URL = "patientPersonalSetControlle/searchPatientVersionUpdateDescription";//[设置]版本更新说明
     public static String SUB_COMMEND_URL = "patientPersonalSetControlle/operSubmitBasicsSystemFeedback";//[意见反馈]意见反馈内容提交
+    public static String QUERY_JWBS_YSTX_DETAIL = "patientHealthRecordsControlle/searchPatientConditionDiseaseRecordResDoctorData";//既往病史详情[医生填写]
 }

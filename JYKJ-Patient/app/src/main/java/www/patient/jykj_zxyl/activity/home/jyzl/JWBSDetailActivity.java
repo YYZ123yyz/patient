@@ -114,7 +114,7 @@ public class JWBSDetailActivity extends AppCompatActivity {
         mBCFL = (TextView)this.findViewById(R.id.tv_activityHZZL_userTZ);
         mBQZS = (TextView)this.findViewById(R.id.tv_activityHZZL_region);
         mBCBM.setText(mProvidePatientConditionDiseaseRecords.getRecordName());
-        mJZRQ.setText(Util.dateToStr(mProvidePatientConditionDiseaseRecords.getTreatmentDate()));
+        mJZRQ.setText(Util.dateToStrDate(mProvidePatientConditionDiseaseRecords.getTreatmentDate()));
         mBCFL.setText(mProvidePatientConditionDiseaseRecords.getRecordTypeName());
         mBQZS.setText(mProvidePatientConditionDiseaseRecords.getRecordContent());
 
@@ -253,7 +253,8 @@ public class JWBSDetailActivity extends AppCompatActivity {
         protected List<ProvideBasicsImg> doInBackground(Void... voids) {
             List<ProvideBasicsImg> retlist = new ArrayList();
             try {
-                String retstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryBasicImgCond), Constant.SERVICEURL+ INetAddress.QUERY_PATIENTHISTIMG_URL);
+                String querimgstr = new Gson().toJson(queryBasicImgCond);
+                String retstr = HttpNetService.urlConnectionService("jsonDataInfo="+querimgstr, Constant.SERVICEURL+ INetAddress.QUERY_PATIENTHISTIMG_URL);
                 NetRetEntity retEntity = JSON.parseObject(retstr,NetRetEntity.class);
                 if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
                     retlist = JSON.parseArray(retEntity.getResJsonData(),ProvideBasicsImg.class);

@@ -211,11 +211,11 @@ public class OpeaPassWordActivity extends AppCompatActivity {
             Toast.makeText(mContext,"请填写新密码",Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!mOldPassWordEdit.getText().toString().equals(mNewPassWordEdit.getText().toString()))
+        /*if (!mOldPassWordEdit.getText().toString().equals(mNewPassWordEdit.getText().toString()))
         {
             Toast.makeText(mContext,"两次输入的密码不一致",Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
         if (mVCodeEdit.getText().toString() == null || "".equals(mVCodeEdit.getText().toString()))
         {
             Toast.makeText(mContext,"请输入短信验证码",Toast.LENGTH_SHORT).show();
