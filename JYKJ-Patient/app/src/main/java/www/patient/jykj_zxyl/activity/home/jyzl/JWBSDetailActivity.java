@@ -2,14 +2,19 @@ package www.patient.jykj_zxyl.activity.home.jyzl;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -26,16 +31,23 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.gson.Gson;
+import com.liyi.grid.adapter.SimpleAutoGridAdapter;
 import entity.HZIfno;
 import entity.ProvideBasicsImg;
 import entity.mySelf.conditions.QueryBasicImgCond;
 import entity.patientInfo.ProvidePatientConditionDiseaseRecord;
+import indi.liyi.viewer.ImageViewer;
+import indi.liyi.viewer.ViewerStatus;
+import indi.liyi.viewer.listener.OnBrowseStatusListener;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
-import www.patient.jykj_zxyl.adapter.JYZL_GRZLRecycleAdapter;
-import www.patient.jykj_zxyl.adapter.PatientJWBSAdapter;
+import www.patient.jykj_zxyl.adapter.*;
 import www.patient.jykj_zxyl.application.Constant;
+import www.patient.jykj_zxyl.liyi.PhotoLoader;
+import www.patient.jykj_zxyl.liyi.glide.GlideUtil;
 import www.patient.jykj_zxyl.util.INetAddress;
 import www.patient.jykj_zxyl.util.StrUtils;
 import www.patient.jykj_zxyl.util.Util;
@@ -45,7 +57,7 @@ import www.patient.jykj_zxyl.adapter.JYZL_GRZLRecycleAdapter;
 import www.patient.jykj_zxyl.adapter.PatientJWBSAdapter;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.Util;
-
+import com.liyi.grid.*;
 /**
  * 就诊总览==》个人总览==>个人状况==>既往病史==详情
  */
@@ -93,7 +105,10 @@ public class JWBSDetailActivity extends AppCompatActivity {
 
     private LoadImgTask loadImgTask;
 
-
+    private ImageViewer imageViewer;
+    private AutoGridView autoGv;
+    private List<String> imgslist = new ArrayList();
+    private ImgAutogridAdapter imgAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -117,7 +132,8 @@ public class JWBSDetailActivity extends AppCompatActivity {
         mJZRQ.setText(Util.dateToStrDate(mProvidePatientConditionDiseaseRecords.getTreatmentDate()));
         mBCFL.setText(mProvidePatientConditionDiseaseRecords.getRecordTypeName());
         mBQZS.setText(mProvidePatientConditionDiseaseRecords.getRecordContent());
-
+        autoGv = findViewById(R.id.autoGridView);
+        imageViewer = findViewById(R.id.imageViewer);
         mImageView01 = (ImageView)this.findViewById(R.id.image01);
         mImageView02 = (ImageView)this.findViewById(R.id.image02);
         mImageView03 = (ImageView)this.findViewById(R.id.image03);
@@ -236,6 +252,21 @@ public class JWBSDetailActivity extends AppCompatActivity {
     }
 
     /**
+     * 监听返回键
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        boolean b = imageViewer.onKeyDown(keyCode, event);
+        if (b) {
+            return b;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    /**
      * 取消进度条
      */
     public void cacerProgress(){
@@ -266,10 +297,76 @@ public class JWBSDetailActivity extends AppCompatActivity {
             return retlist;
         }
 
+        void changeStatusBarColor(int colorId) {
+            // 5.0及以上
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Window window = getWindow();
+                // After LOLLIPOP not translucent status bar
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                // Then call setStatusBarColor.
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(getResources().getColor(colorId));
+            }
+        }
+
         @Override
         protected void onPostExecute(List<ProvideBasicsImg> provideBasicsImgs) {
-            if(provideBasicsImgs.size()>0){
+            imgslist = new ArrayList();
+            for(int i=0;i<provideBasicsImgs.size();i++){
+                ProvideBasicsImg parimgbean = provideBasicsImgs.get(i);
+                imgslist.add(parimgbean.getImgUrl());
+            }
+            if(imgslist.size()>0){
+                imageViewer.overlayStatusBar(false)
+                        .imageData(imgslist)
+                        .imageLoader(new PhotoLoader());
+
+                imgAdapter = new ImgAutogridAdapter();
+                imgAdapter.setSource(imgslist);
+                imgAdapter.setImageLoader(new ImgAutogridAdapter.ImageLoader() {
+                    @Override
+                    public void onLoadImage(final int position, Object source, final ImageView imageView, int viewType) {
+                        GlideUtil.loadImage(mContext, source, new SimpleTarget<Drawable>() {
+
+                            @Override
+                            public void onResourceReady(Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                imageViewer.getViewData().get(position).setImageWidth(resource.getIntrinsicWidth());
+                                imageViewer.getViewData().get(position).setImageHeight(resource.getIntrinsicHeight());
+                                imageView.setImageDrawable(resource);
+                            }
+
+                            @Override
+                            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                                super.onLoadFailed(errorDrawable);
+                                imageView.setImageDrawable(errorDrawable);
+                            }
+                        });
+                    }
+                });
+            }
+
+            autoGv.setOnItemClickListener(new AutoGridView.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position, View view) {
+                    imageViewer.bindViewGroup(autoGv);
+                    imageViewer.watch(position);
+                }
+            });
+            autoGv.setAdapter(imgAdapter);
+            imageViewer.setOnBrowseStatusListener(new OnBrowseStatusListener() {
+                @Override
+                public void onBrowseStatus(int status) {
+                    if (status == ViewerStatus.STATUS_BEGIN_OPEN) {
+                        changeStatusBarColor(R.color.colorBlack);
+                    } else if (status == ViewerStatus.STATUS_SILENCE) {
+                        changeStatusBarColor(R.color.colorPrimaryDark);
+                    }
+                }
+            });
+            /*if(provideBasicsImgs.size()>0){
                 ProvideBasicsImg imgbean = provideBasicsImgs.get(0);
+
+
                 try {
                     //Glide.with(mContext).load(new URI(imgbean.getImgUrl())).into(mImageView01);
                     Glide.with(mContext).load(imgbean.getImgUrl())
@@ -326,7 +423,7 @@ public class JWBSDetailActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
             cacerProgress();
         }
     }

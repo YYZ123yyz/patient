@@ -17,49 +17,31 @@
 
 package www.patient.jykj_zxyl.util.tencenUtil.common;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.TimeZone;
-import java.util.TreeMap;
-import java.util.UUID;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.*;
+import com.squareup.okhttp.Headers.Builder;
+import www.patient.jykj_zxyl.util.tencenUtil.common.exception.TencentCloudSDKException;
+import www.patient.jykj_zxyl.util.tencenUtil.common.http.HttpConnection;
+import www.patient.jykj_zxyl.util.tencenUtil.common.profile.ClientProfile;
+import www.patient.jykj_zxyl.util.tencenUtil.common.profile.HttpProfile;
 
 import javax.crypto.Mac;
 import javax.net.ssl.SSLContext;
 import javax.xml.bind.DatatypeConverter;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
-import java.lang.Math;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-
-import com.squareup.okhttp.Authenticator;
-import com.squareup.okhttp.Credentials;
-import com.squareup.okhttp.Headers;
-import com.squareup.okhttp.Headers.Builder;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.JsonSyntaxException;
-
-import www.patient.jykj_zxyl.util.tencenUtil.common.exception.TencentCloudSDKException;
-import www.patient.jykj_zxyl.util.tencenUtil.common.http.HttpConnection;
-import www.patient.jykj_zxyl.util.tencenUtil.common.profile.ClientProfile;
-import www.patient.jykj_zxyl.util.tencenUtil.common.profile.HttpProfile;
-import www.patient.jykj_zxyl.util.tencenUtil.common.exception.TencentCloudSDKException;
-import www.patient.jykj_zxyl.util.tencenUtil.common.http.HttpConnection;
-import www.patient.jykj_zxyl.util.tencenUtil.common.profile.ClientProfile;
-import www.patient.jykj_zxyl.util.tencenUtil.common.profile.HttpProfile;
+import java.util.*;
 
 /**
  * 抽象client类

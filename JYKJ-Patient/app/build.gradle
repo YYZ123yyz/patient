@@ -78,7 +78,7 @@ dependencies {
     //    implementation 'com.android.support:support-v4:27.1.1'
     //    implementation files('libs/gson-2.3.1.jar')
     implementation files('libs/okhttp-2.5.0.jar')
-    implementation files('libs/okio-1.6.0.jar')
+    implementation files('libs/okio-1.13.0-sources.jar')
     implementation files('libs/jaxb-api-2.1.9.jar')
     //pay
     //compile(name: 'alipaySdk-15.5.9', ext: 'aar')
@@ -125,10 +125,10 @@ dependencies {
     //implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.3.1'
     //implementation 'com.squareup.okio:okio:1.5.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.4.1'
-    implementation 'com.squareup.okhttp3:okhttp:3.2.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.6.0'
+    implementation "com.github.bumptech.glide:okhttp3-integration:4.8.0"
     configurations{
         implementation.exclude group: 'com.google.zxing'
-        all*.exclude group: 'com.squareup.okio'
         all*.exclude group: 'com.android.support',module: 'support-v13'
     }
     //implementation 'com.google.code.gson:gson:2.8.2'
