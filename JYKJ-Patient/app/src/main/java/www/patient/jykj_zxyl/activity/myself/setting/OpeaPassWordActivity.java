@@ -21,6 +21,7 @@ import java.util.TimerTask;
 
 import entity.hzgl.BindPatientGetVCodeParment;
 import entity.mySelf.OperPassWordParment;
+import entity.mySelf.UpPasswordInfo;
 import entity.mySelf.conditions.QueryPatientSmsCond;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
@@ -191,15 +192,17 @@ public class OpeaPassWordActivity extends AppCompatActivity {
      * 提交
      */
     private void commit() {
-        OperPassWordParment operPassWordParment = new OperPassWordParment();
-        operPassWordParment.setLoginDoctorPosition(mApp.loginDoctorPosition);
-        operPassWordParment.setOperDoctorCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        operPassWordParment.setOperDoctorName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        UpPasswordInfo operPassWordParment = new UpPasswordInfo();
+        operPassWordParment.setLoginPatientPosition(mApp.loginDoctorPosition);
+        operPassWordParment.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        operPassWordParment.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         operPassWordParment.setOldPassWord(mOldPassWordEdit.getText().toString());
         operPassWordParment.setNewPassWord(mNewPassWordEdit.getText().toString());
         operPassWordParment.setBindingSmsVerifyTokenData(bindingSmsVerifyTokenData);
         operPassWordParment.setSendUserLinkPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
         operPassWordParment.setBindingSmsVerifyData(mVCodeEdit.getText().toString());
+        operPassWordParment.setRequestClientType("1");
+
 
         if (mOldPassWordEdit.getText().toString() == null || "".equals(mOldPassWordEdit.getText().toString()))
         {
@@ -228,7 +231,7 @@ public class OpeaPassWordActivity extends AppCompatActivity {
                     //实体转JSON字符串
                     String str = new Gson().toJson(operPassWordParment);
                     //获取用户数据
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+str,Constant.SERVICEURL+"/doctorPersonalSetControlle/operUpdUserPassWord");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+str,Constant.SERVICEURL+"/patientPersonalSetControlle/operUpdUserPassWord");
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
                     if (netRetEntity.getResCode() == 0)
                     {

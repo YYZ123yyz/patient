@@ -181,7 +181,7 @@ public class BindFamilyActivity extends AppCompatActivity {
             if (RegrexUtil.isMobilePhone(onephone)) {
                 hasinputonephone = true;
             }else{
-                Toast.makeText(mContext,"请输入正确的电话号码",Toast.LENGTH_LONG);
+                Toast.makeText(mContext,"请输入正确的电话号码",Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -189,7 +189,7 @@ public class BindFamilyActivity extends AppCompatActivity {
             if (RegrexUtil.isMobilePhone(twopgone)) {
                 hasinputonephone = true;
             }else{
-                Toast.makeText(mContext,"请输入正确的电话号码",Toast.LENGTH_LONG);
+                Toast.makeText(mContext,"请输入正确的电话号码",Toast.LENGTH_SHORT).show();
                 return;
             }
 
