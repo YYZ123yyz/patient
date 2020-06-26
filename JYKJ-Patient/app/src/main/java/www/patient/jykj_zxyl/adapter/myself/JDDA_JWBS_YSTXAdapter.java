@@ -54,7 +54,7 @@ public class JDDA_JWBS_YSTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_YSTXAd
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         viewHolder.mBM.setText(datas.get(position).getRecordName());
-        if(null!=Util.dateToStrDate(datas.get(position).getTreatmentDate())) {
+        if(null!=datas.get(position).getTreatmentDate()) {
             viewHolder.mDate.setText(Util.dateToStrDate(datas.get(position).getTreatmentDate()));
         }
 //        viewHolder.mType.setText(datas.get(position).getRecordTypeName());
