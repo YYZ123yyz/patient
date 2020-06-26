@@ -20,4 +20,7 @@ public class INetAddress {
     public static String QUERY_VERSION_URL = "patientPersonalSetControlle/searchPatientVersionUpdateDescription";//[设置]版本更新说明
     public static String SUB_COMMEND_URL = "patientPersonalSetControlle/operSubmitBasicsSystemFeedback";//[意见反馈]意见反馈内容提交
     public static String QUERY_JWBS_YSTX_DETAIL = "patientHealthRecordsControlle/searchPatientConditionDiseaseRecordResDoctorData";//既往病史详情[医生填写]
+    public static String SUB_ZHLY_CHARACTER = "patientMyOrderControlle/operPatientMyOrderResMessageContent";//我的订单】订单列表-已完成[提交诊后留言-文字部分]
+    public static String SUB_ZHLY_IMG = "patientMyOrderControlle/operPatientMyOrderResMessageImg";//【我的订单】订单列表-已完成[提交诊后留言-图片部分]
+
 }

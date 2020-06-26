@@ -22,6 +22,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.gson.Gson;
+import com.tencent.cos.common.Const;
 import entity.mySelf.MyOrderProcess;
 import entity.mySelf.SubZwlyAllInfo;
 import entity.patientapp.Photo_Info;
@@ -32,6 +34,7 @@ import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.BitmapUtil;
 import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
+import www.patient.jykj_zxyl.util.INetAddress;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -243,7 +246,7 @@ public class LeaveMessageActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
-                String retstr = HttpNetService.urlConnectionService("","");
+                String retstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(subinfo), Constant.SERVICEURL+ INetAddress.SUB_ZHLY_CHARACTER);
             } catch (Exception e) {
                 e.printStackTrace();
             }
