@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.http.SslError;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -69,7 +71,10 @@ public class FragmentYLZX extends Fragment {
      */
     private void initLayout(View view) {
         webView = (WebView)view.findViewById(R.id.webView);
-
+        @SuppressLint("SetJavaScriptEnabled")
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setBlockNetworkImage(false);
         webView.loadUrl("https://jiuyihtn.com/AppAssembly/patientFakeFriends.html");
         webView.setWebViewClient(new WebViewClient() {
             @Override
