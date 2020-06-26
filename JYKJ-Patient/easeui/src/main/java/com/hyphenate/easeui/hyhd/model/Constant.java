@@ -54,7 +54,17 @@ public class Constant extends EaseConstant{
 	 *
 	 * 服务器地址
 	 */
-	public final static String SERVICEURL = "http://114.215.137.171:28080/";
+	public final static String SERVICEURL = "https://www.jiuyihtn.com:38081/";
 
+
+	/**
+	 * 医生头像
+	 */
+    public static String doctorUrl;
+
+	/**
+	 * 患者头像
+	 */
+	public static String patientUrl;
 
 }
