@@ -32,9 +32,9 @@
                 android:layout_height="wrap_content"/>
     </RelativeLayout>
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-              android:textSize="8dp" android:text="患者留言消息"></TextView>
+              android:textSize="8pt" android:text="患者留言消息"></TextView>
     <EditText android:layout_width="match_parent" android:layout_height="60dp" android:layout_marginLeft="10dp" android:lines="5" android:layout_marginRight="10dp"
-    android:hint="请输入你的留言内容（不超过300字）。" android:background="@drawable/bg_lrbs_zsedit"></EditText>
+    android:hint="请输入你的留言内容（不超过300字）。" android:background="@drawable/bg_lrbs_zsedit" android:id="@+id/tv_lemsg_content"></EditText>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
                   android:layout_marginTop="10dp" android:background="@color/writeColor">
 
@@ -79,7 +79,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:text="图片仅本人和咨询医生可见"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="8pt"
                     android:textColor="#ffd31515"
                     android:textSize="13sp"
             />
