@@ -135,11 +135,6 @@ public class FragmentMyOrderAl extends Fragment {
     class   ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            switch (view.getId()) {
-
-
-
-            }
         }
     }
     /**
