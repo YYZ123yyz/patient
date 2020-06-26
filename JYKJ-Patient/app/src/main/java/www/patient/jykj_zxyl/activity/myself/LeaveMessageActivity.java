@@ -23,7 +23,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import entity.mySelf.MyOrderProcess;
+import entity.mySelf.SubZwlyAllInfo;
 import entity.patientapp.Photo_Info;
+import netService.HttpNetService;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.ImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
@@ -234,8 +236,17 @@ public class LeaveMessageActivity extends AppCompatActivity {
     }
 
     class SubDataTask extends AsyncTask<Void,Void,Boolean>{
+        SubZwlyAllInfo subinfo;
+        SubDataTask(SubZwlyAllInfo subinfo){
+            this.subinfo = subinfo;
+        }
         @Override
         protected Boolean doInBackground(Void... voids) {
+            try {
+                String retstr = HttpNetService.urlConnectionService("","");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
     }
