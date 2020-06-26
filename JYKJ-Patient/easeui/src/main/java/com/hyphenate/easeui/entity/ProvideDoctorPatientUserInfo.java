@@ -3,7 +3,7 @@ package com.hyphenate.easeui.entity;
 
 /**
  * 【医生】【患者】共用实体类
- * 
+ *
  * @author JiaQ
  */
 
@@ -34,7 +34,7 @@ public class ProvideDoctorPatientUserInfo implements java.io.Serializable {
 	private String address;//地址
 	private String nation;//民族
 	private String newLoginDate;//最后一次登录日期
-	
+
 	/* 医生私有 */
 	private String hospitalInfoCode;//医院编码
 	private String hospitalInfoName;//医院名称
@@ -47,13 +47,13 @@ public class ProvideDoctorPatientUserInfo implements java.io.Serializable {
 	private String synopsis;//医生个人简介
 	private String goodAtRealm;//医生擅长领域
 	private Integer flagDoctorStatus;//医生认证状态.0:未认证;1:已认证;
-	
+
 	/* 患者私有 */
 	private String userLabelName;//患者标签名称
 	private Integer flagPatientStatus;//患者认证状态.0:未认证;1:已认证;
 
-	private	boolean noRead;						//是否有未读消息
-	private String lastMessage;				//最后一条消息
+	private    boolean noRead;                        //是否有未读消息
+	private String lastMessage;                //最后一条消息
 
 	public String getLastMessage() {
 		return lastMessage;

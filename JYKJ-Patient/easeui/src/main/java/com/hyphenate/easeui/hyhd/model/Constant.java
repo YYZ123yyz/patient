@@ -60,7 +60,7 @@ public class Constant extends EaseConstant{
 	/**
 	 * 医生头像
 	 */
-    public static String doctorUrl;
+	public static String doctorUrl;
 
 	/**
 	 * 患者头像

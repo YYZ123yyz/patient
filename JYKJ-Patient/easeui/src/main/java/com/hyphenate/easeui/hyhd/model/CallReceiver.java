@@ -40,12 +40,12 @@ import java.util.List;
 public class CallReceiver extends BroadcastReceiver{
 
 
-	private                 String                      mNetRetStr;                 //返回字符串
+    private                 String                      mNetRetStr;                 //返回字符串
     private                 Context                     mContext;
     private                 String                      mFrom;
     private                 String                      mType;
     private                 Long                        mFirstTime;                 //第一次时间
-	private 				Handler 					mHandler = new Handler(){
+    private                 Handler                     mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what)
@@ -73,8 +73,8 @@ public class CallReceiver extends BroadcastReceiver{
                         mContext.startActivity(new Intent(mContext, VoiceCallActivity.class).
                                 putExtra("username", mFrom).putExtra("isComingCall", true).putExtra("nickName", stringUserName).
                                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("voiceNum",1000000));
-                        //			MediaSoundUtil mediaSoundUtil = new MediaSoundUtil(context);
-                        //			mediaSoundUtil.playRingSound();
+                        //            MediaSoundUtil mediaSoundUtil = new MediaSoundUtil(context);
+                        //            mediaSoundUtil.playRingSound();
                     }
                     EMLog.d("CallReceiver", "app received a incoming call");
                     break;
@@ -93,48 +93,48 @@ public class CallReceiver extends BroadcastReceiver{
         return sec;
     }
 
-	@Override
-	public void onReceive(Context context, Intent intent) {
-		if(!DemoHelper.getInstance().isLoggedIn())
-		    return;
-		if (mFirstTime != null)
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if(!DemoHelper.getInstance().isLoggedIn())
+            return;
+        if (mFirstTime != null)
         {
             long timeDistance = getDistanceTime(mFirstTime, System.currentTimeMillis());
             if (timeDistance < 3)
                 return;
         }
-		//username
-		String from = intent.getStringExtra("from");
-		//call type
-		String type = intent.getStringExtra("type");
+        //username
+        String from = intent.getStringExtra("from");
+        //call type
+        String type = intent.getStringExtra("type");
         mContext = context;
         mFrom = from;
         mType = type;
-		//通过from获取用户信息
-		getUserInfo(from);
+        //通过from获取用户信息
+        getUserInfo(from);
 
-	}
+    }
 
-	private void getUserInfo(final String userCode){
-		//连接网络，登录
+    private void getUserInfo(final String userCode){
+        //连接网络，登录
 
-		new Thread(){
-			public void run(){
+        new Thread(){
+            public void run(){
 
                 ProvideDoctorPatientUserInfo provideDoctorPatientUserInfo = new ProvideDoctorPatientUserInfo();
                 provideDoctorPatientUserInfo.setUserCodeList(userCode);
-				try {
-					mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideDoctorPatientUserInfo),Constant.SERVICEURL+"patientDoctorCommonDataController/getUserInfoList");
-				} catch (Exception e) {
-					NetRetEntity retEntity = new NetRetEntity();
-					retEntity.setResCode(0);
-					retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
-					mNetRetStr = new Gson().toJson(retEntity);
-					e.printStackTrace();
-				}
-				mHandler.sendEmptyMessage(1);
-			}
-		}.start();
-	}
+                try {
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideDoctorPatientUserInfo),Constant.SERVICEURL+"patientDoctorCommonDataController/getUserInfoList");
+                } catch (Exception e) {
+                    NetRetEntity retEntity = new NetRetEntity();
+                    retEntity.setResCode(0);
+                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    mNetRetStr = new Gson().toJson(retEntity);
+                    e.printStackTrace();
+                }
+                mHandler.sendEmptyMessage(1);
+            }
+        }.start();
+    }
 
 }

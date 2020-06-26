@@ -143,7 +143,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     private View kickedForOfflineLayout;
 
     protected boolean isloading;
-   private EaseChatFragment easeChatFragment;
+    private EaseChatFragment easeChatFragment;
 
     protected boolean haveMoreData = true;
     protected int pagesize = 20;
