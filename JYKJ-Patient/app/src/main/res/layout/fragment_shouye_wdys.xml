@@ -180,25 +180,31 @@
                 android:textSize="6pt" />
         </LinearLayout>
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/writeColor"
+        android:layout_weight="1"
+        android:orientation="vertical">
     <TextView
         android:layout_width="100dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:id="@+id/more"
         android:text="查看更多"
-        android:layout_marginBottom="60dp"
         android:textColor="#ff666666"
         android:background="@drawable/shouye_more"
         android:gravity="center"
         android:textSize="15sp"
         />
-
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_weight="1"
+        android:background="@color/writeColor"
         android:visibility="gone"
         android:id="@+id/noHint">
     <TextView
@@ -221,5 +227,39 @@
         android:gravity="center"
         android:textSize="15sp"
         />
+
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:orientation="horizontal"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/writeColor"
+        android:layout_height="80dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="80dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/pBackColor"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我是有底线的"
+                android:layout_gravity="center_vertical"
+                android:textColor="#ff666666"
+                android:textSize="15sp"
+                />
+            <LinearLayout
+                android:layout_width="80dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/pBackColor"/>
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

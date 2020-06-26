@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:background="@color/pBackColor">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/pBackColor"
+    tools:context=".activity.MainActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -29,6 +31,7 @@
             android:textColor="@color/writeColor"
             android:textSize="10pt" />
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -167,9 +170,55 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             />
+
     </LinearLayout>
-    <com.liyi.grid.AutoGridView
-            android:id="@+id/autoGridView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp"
+            android:id="@+id/image01"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp"
+            android:id="@+id/image02"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp"
+            android:id="@+id/image03"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp"
+            android:id="@+id/image04"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp"
+            android:id="@+id/image05"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="10dp"
+            android:id="@+id/image06"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
 </LinearLayout>

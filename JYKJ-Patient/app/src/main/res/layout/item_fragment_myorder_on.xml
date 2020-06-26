@@ -188,7 +188,7 @@
         android:layout_width="70dp"
         android:layout_height="35dp"
         android:layout_alignParentRight="true"
-        android:text="退款"
+        android:text="处方签"
         android:gravity="center"
         android:layout_marginRight="10dp"
         android:textColor="#ffffff"

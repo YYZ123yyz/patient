@@ -6,39 +6,19 @@
     android:layout_marginTop="10dp"
     android:id="@+id/li_clickLayout"
     android:layout_height="wrap_content">
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/writeColor"
-            android:orientation="horizontal">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/writeColor"
-        android:gravity="center_vertical|left"
+        android:gravity="center_vertical"
         android:text="病程别名：我的第四次就诊"
         android:textSize="9pt"
         android:paddingLeft="10dp"
         android:textColor="@color/tabColor_nomal"
         android:id="@+id/tv_activityPatientJWBS_bm"
         android:layout_gravity="center_vertical"
-        android:layout_weight="1"
         />
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/writeColor"
-                android:gravity="center_vertical|right"
-                android:text="记录人：我的第四次就诊"
-                android:textSize="9pt"
-                android:paddingLeft="10dp"
-                android:textColor="@color/tabColor_nomal"
-                android:id="@+id/tv_record_doctor"
-                android:layout_gravity="center_vertical|right"
-                android:layout_weight="1"
-        />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -66,7 +46,6 @@
             android:layout_marginRight="10dp"
             android:textColor="#6C6C6C"
             android:layout_gravity="center_vertical"
-            android:visibility="gone"
             />
     </LinearLayout>
     <TextView
@@ -74,7 +53,7 @@
         android:layout_height="wrap_content"
         android:background="@color/writeColor"
         android:gravity="center_vertical"
-        android:text="初步臆断"
+        android:text="病情描述："
         android:textSize="8pt"
         android:paddingLeft="10dp"
         android:textColor="#6C6C6C"

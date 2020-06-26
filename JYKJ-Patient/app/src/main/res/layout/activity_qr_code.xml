@@ -76,7 +76,7 @@
             android:layout_marginBottom="30dp">
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="80dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_corner_button"
@@ -91,11 +91,11 @@
                 android:textColor="@color/writeColor"/>
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_corner_button"
-                android:text="分享"
+                android:text="分享医生"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:id="@+id/tv_fx"
@@ -107,17 +107,22 @@
                 android:textColor="@color/writeColor"/>
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_corner_button"
-                android:text="保存"
-                android:gravity="center"
-                android:padding="5dp"
-                android:drawableLeft="@mipmap/icon_save_white"
+                android:text="分享患者"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
                 android:id="@+id/tv_save_img"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:gravity="center"
+                android:drawableLeft="@mipmap/icon_share_white"
                 android:layout_marginLeft="20dp"
+                android:textSize="6pt"
                 android:textColor="@color/writeColor"/>
+
         </LinearLayout>
 
     <LinearLayout
