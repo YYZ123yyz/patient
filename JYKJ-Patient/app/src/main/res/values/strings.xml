@@ -470,4 +470,7 @@
     <string name="service_deadline_time">服务截止时间</string>
     <string name="preserve_service_time">预约服务时间</string>
     <string name="preserve_service_time_zone">预约服务时间段</string>
+    <string name="feedback_tit">反馈意见</string>
+    <string name="question_desp">问题描述</string>
+    <string name="link_style">联系方式</string>
 </resources>
