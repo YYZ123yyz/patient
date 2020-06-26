@@ -34,6 +34,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
+import entity.DoctorInfo.InteractDoctorDetailInfo;
 import entity.basicDate.ProvideViewSysUserPatientInfoAndRegion;
 import entity.shouye.OperScanQrCodeInside;
 import netService.HttpNetService;
@@ -90,6 +91,8 @@ public class QRCodeActivity extends AppCompatActivity {
 
     private             WechatShareManager mShareManager;
 
+    private             ProvideViewSysUserPatientInfoAndRegion  mProvideViewSysUserPatientInfoAndRegion;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,6 +107,33 @@ public class QRCodeActivity extends AppCompatActivity {
         initListener();
         //网络url转bitmao
         getLogoBitMap();
+        getDate();
+    }
+
+    /**
+     * 获取数据
+     */
+    private void getDate() {
+        getProgressBar("请稍候。。。","正在获取数据");
+        ProvideViewSysUserPatientInfoAndRegion interactDoctorDetailInfo = new ProvideViewSysUserPatientInfoAndRegion();
+        interactDoctorDetailInfo.setLoginPatientPosition(mApp.loginDoctorPosition);
+        interactDoctorDetailInfo.setRequestClientType("1");
+        interactDoctorDetailInfo.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        interactDoctorDetailInfo.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        new Thread(){
+            public void run(){
+                try {
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(interactDoctorDetailInfo),www.patient.jykj_zxyl.application.Constant.SERVICEURL+"patientDataControlle/searchPatientIdentificationCode");
+                } catch (Exception e) {
+                    NetRetEntity retEntity = new NetRetEntity();
+                    retEntity.setResCode(0);
+                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    mNetRetStr = new Gson().toJson(retEntity);
+                    e.printStackTrace();
+                }
+                mHandler.sendEmptyMessage(3);
+            }
+        }.start();
     }
 
 
@@ -165,9 +195,34 @@ public class QRCodeActivity extends AppCompatActivity {
                         ewmBitmap = CodeCreator.createQRCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getQrCode(), 200, 200, logoBitmap);
                         ivEwCode.setImageBitmap(ewmBitmap);
                         break;
+
+                    case 3:
+                        cacerProgress();
+                        netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 0)
+                            Toast.makeText(context,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        else
+                        {
+                           mProvideViewSysUserPatientInfoAndRegion = JSON.parseObject(netRetEntity.getResJsonData(),ProvideViewSysUserPatientInfoAndRegion.class);
+                            showDate();
+                        }
+                        break;
                 }
             }
         };
+    }
+
+    /**
+     * 展示数据
+     */
+    private void showDate() {
+        if (mProvideViewSysUserPatientInfoAndRegion.getUserName() != null && !"".equals(mProvideViewSysUserPatientInfoAndRegion.getUserName()))
+            tv_xm.setText(mProvideViewSysUserPatientInfoAndRegion.getUserName());
+            tv_dq.setText(mProvideViewSysUserPatientInfoAndRegion.getShowRegionInfo());
+        if (mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() != null && 0 == mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus())
+            tv_wrz.setText("未认证");
+        else if (mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() != null && 1 == mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus())
+            tv_wrz.setText("已认证");
     }
 
     /**
@@ -271,21 +326,7 @@ public class QRCodeActivity extends AppCompatActivity {
         tv_dq = (TextView)this.findViewById(R.id.tv_dq);
         tv_fx = (TextView)this.findViewById(R.id.tv_fx);
         tv_save_img = (TextView) this.findViewById(R.id.tv_save_img);
-        if (mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName() != null && !"".equals(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName()))
-            tv_xm.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        String dq = "";
-        if (mApp.mProvideViewSysUserPatientInfoAndRegion.getProvinceName() != null && !"".equals(mApp.mProvideViewSysUserPatientInfoAndRegion.getProvinceName()))
-            dq += mApp.mProvideViewSysUserPatientInfoAndRegion.getProvinceName();
-        if (mApp.mProvideViewSysUserPatientInfoAndRegion.getCityName() != null && !"".equals(mApp.mProvideViewSysUserPatientInfoAndRegion.getCityName()))
-            dq += mApp.mProvideViewSysUserPatientInfoAndRegion.getCityName();
-        if (mApp.mProvideViewSysUserPatientInfoAndRegion.getAreaName() != null && !"".equals(mApp.mProvideViewSysUserPatientInfoAndRegion.getAreaName()))
-            dq += mApp.mProvideViewSysUserPatientInfoAndRegion.getAreaName();
-        if (dq != null && !"".equals(dq))
-            tv_dq.setText(dq);
-        if (mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() != null && 0 == mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus())
-            tv_wrz.setText("未认证");
-        else if (mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() != null && 1 == mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus())
-            tv_wrz.setText("已认证");
+
             //        userName = (TextView)this.findViewById(R.id.tv_userName);
 //        userYY = (TextView)this.findViewById(R.id.tv_userYY);
 //        userPhone = (TextView)this.findViewById(R.id.tv_phoneNum);
@@ -301,20 +342,19 @@ public class QRCodeActivity extends AppCompatActivity {
             }
         });
 
+        //分享患者
         tv_save_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean hasSaved = SaveImg.saveImg(ewmBitmap, "心血管健康二维码.jpeg",context);
-                if(hasSaved){
-                    Toast.makeText(context,"已保存至相册^.^",Toast.LENGTH_SHORT).show();
-                }
+                wechatShare(1);
 
             }
         });
+        //分享医生
         tv_fx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                wechatShare();
+                wechatShare(2);
             }
         });
 //        userName.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
@@ -375,7 +415,7 @@ public class QRCodeActivity extends AppCompatActivity {
     }
 
     //医生分享
-    private void wechatShare() {
+    private void wechatShare(final int type) {
 
         final Dialog dialog = new Dialog(context, R.style.BottomDialog);
         View view = LayoutInflater.from(context).inflate(R.layout.bottom_dialog_dynamic, null);
@@ -394,7 +434,16 @@ public class QRCodeActivity extends AppCompatActivity {
         tv2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToShare(SendMessageToWX.Req.WXSceneSession, "123", "456", "789", R.mipmap.logo);
+                //分享患者
+                if (type == 1)
+                    ToShare(SendMessageToWX.Req.WXSceneSession, mProvideViewSysUserPatientInfoAndRegion.getPatientShareTitle(),
+                            mProvideViewSysUserPatientInfoAndRegion.getPatientShareContent(),
+                            mProvideViewSysUserPatientInfoAndRegion.getPatientShareUrl(), R.mipmap.logo);
+                //分享医生
+                if (type == 2)
+                    ToShare(SendMessageToWX.Req.WXSceneSession, mProvideViewSysUserPatientInfoAndRegion.getDoctorShareTitle(),
+                            mProvideViewSysUserPatientInfoAndRegion.getDoctorShareContent(),
+                            mProvideViewSysUserPatientInfoAndRegion.getDoctorShareUrl(), R.mipmap.logo);
                 dialog.dismiss();
             }
         });
@@ -402,7 +451,14 @@ public class QRCodeActivity extends AppCompatActivity {
         tv3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToShare(SendMessageToWX.Req.WXSceneTimeline, "123", "456", "789", R.mipmap.logo);
+                if (type == 1)
+                    ToShare(SendMessageToWX.Req.WXSceneTimeline, mProvideViewSysUserPatientInfoAndRegion.getPatientShareTitle(),
+                            mProvideViewSysUserPatientInfoAndRegion.getPatientShareContent(),
+                            mProvideViewSysUserPatientInfoAndRegion.getPatientShareUrl(), R.mipmap.logo);
+                if (type == 2)
+                    ToShare(SendMessageToWX.Req.WXSceneTimeline, mProvideViewSysUserPatientInfoAndRegion.getDoctorShareTitle(),
+                            mProvideViewSysUserPatientInfoAndRegion.getDoctorShareContent(),
+                            mProvideViewSysUserPatientInfoAndRegion.getDoctorShareUrl(), R.mipmap.logo);
                 dialog.dismiss();
             }
         });

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 
 import java.util.Timer;
@@ -27,6 +28,7 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.ActivityUtil;
+import www.patient.jykj_zxyl.util.PhoneFormatCheckUtils;
 
 /**
  * 手机号登录Activity
@@ -136,16 +138,16 @@ public class WXBindPhoneActivity extends AppCompatActivity {
                                 userInfo.setUserPhone(mPhoneNum.getText().toString());
                                 userInfo.setUserPwd(mPassWordEdit.getText().toString());
                                 mApp.mLoginUserInfo = userInfo;
-                                mApp.mProvideViewSysUserPatientInfoAndRegion = new Gson().fromJson(netRetEntity.getResJsonData(),ProvideViewSysUserPatientInfoAndRegion.class);
+                                mApp.mProvideViewSysUserPatientInfoAndRegion = JSON.parseObject(netRetEntity.getResJsonData(), ProvideViewSysUserPatientInfoAndRegion.class);
                                 mApp.saveUserInfo();
                                 Toast.makeText(mContext, "恭喜，登录成功", Toast.LENGTH_SHORT).show();
                                 //登录IM
                                 mApp.loginIM();
-                                startActivity(new Intent(mContext,MainActivity.class));
                                 for (int i = 0; i < mApp.gActivityList.size(); i++)
                                 {
                                     mApp.gActivityList.get(i).finish();
                                 }
+                                startActivity(new Intent(mContext,MainActivity.class));
                             }
                             else
                             {
@@ -244,11 +246,18 @@ public class WXBindPhoneActivity extends AppCompatActivity {
             Toast.makeText(mContext,"请先输入手机号",Toast.LENGTH_SHORT).show();
             return;
         }
+        //判断手机号格式
+        if (!PhoneFormatCheckUtils.isChinaPhoneLegal(mPhoneNum.getText().toString()))
+        {
+            Toast.makeText(mContext,"手机号格式不正确，请输入正确手机号",Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (mVCode.getText().toString() == null || "".equals(mVCode.getText().toString()))
         {
             Toast.makeText(mContext,"请输入验证码",Toast.LENGTH_SHORT).show();
             return;
         }
+
         ProvideViewSysUserPatientInfoAndRegion provideViewSysUserPatientInfoAndRegion = new ProvideViewSysUserPatientInfoAndRegion();
         provideViewSysUserPatientInfoAndRegion.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideViewSysUserPatientInfoAndRegion.setRequestClientType("1");
@@ -262,7 +271,8 @@ public class WXBindPhoneActivity extends AppCompatActivity {
         new Thread(){
             public void run(){
                 try {
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideViewSysUserPatientInfoAndRegion),Constant.SERVICEURL+"patientLoginControlle/operPatientWechatPhoneRegister");
+                    String string = new Gson().toJson(provideViewSysUserPatientInfoAndRegion);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string,Constant.SERVICEURL+"patientLoginControlle/operPatientWechatPhoneRegister");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
@@ -283,6 +293,12 @@ public class WXBindPhoneActivity extends AppCompatActivity {
         if (mPhoneNum.getText().toString() == null || "".equals(mPhoneNum.getText().toString()))
         {
             Toast.makeText(mContext,"请先输入手机号",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //判断手机号格式
+        if (!PhoneFormatCheckUtils.isChinaPhoneLegal(mPhoneNum.getText().toString()))
+        {
+            Toast.makeText(mContext,"手机号格式不正确，请输入正确手机号",Toast.LENGTH_SHORT).show();
             return;
         }
         ProvideViewSysUserPatientInfoAndRegion provideViewSysUserPatientInfoAndRegion = new ProvideViewSysUserPatientInfoAndRegion();

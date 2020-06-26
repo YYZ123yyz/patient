@@ -85,6 +85,8 @@ public class JYKJApplication extends Application {
     public                      String                          gPayOrderCode;
     public                      List<Activity>                  gPayCloseActivity = new ArrayList<>();          //支付成功之后需要关闭的页面
     public                      String                          gProviceName;                                   //定位获取到的位置信息
+    public                      String                          gGDLocation;                                    //高德定位编码
+    public                       String                         gGDLocationName;                                //高德定位名称
 
     private                     String                              mNetRetStr;                 //返回字符串
 

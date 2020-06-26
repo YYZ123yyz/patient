@@ -43,6 +43,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -102,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
     private String WX_APP_ID = "wx4ccb2ac1c5491336";
     private String WX_APPSecret = "3a56a462937397a324b57b807583108a";
     private RelativeLayout login_forget;
-//    private ReceiveBroadCast receiveBroadCast;
+    private ReceiveBroadCast receiveBroadCast;
 
     private String mOpenID;                 //用户微信ID
 
@@ -110,6 +111,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private IWXAPI api;
     private SharedPreferences sp;
+
+    private TextView tv_yhxy;           //用户协议
+    private TextView tv_yszc;           //隐私政策
 
 
 
@@ -238,6 +242,21 @@ public class LoginActivity extends AppCompatActivity {
         login_forget = findViewById(R.id.rv_forgetPwd);
         login_forget.setOnClickListener(new ButtonClick());
 
+        tv_yhxy = (TextView)this.findViewById(R.id.tv_yhxy);
+        tv_yszc = (TextView)this.findViewById(R.id.tv_yszc);
+        tv_yhxy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this,YHXYWebActivity.class));
+            }
+        });
+
+        tv_yszc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this,YSZCWebActivity.class));
+            }
+        });
 
     }
 
@@ -455,10 +474,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-//        receiveBroadCast = new LoginActivity.ReceiveBroadCast();
-//        IntentFilter filter = new IntentFilter();
-//        filter.addAction("authlogin");
-//        getBaseContext().registerReceiver(receiveBroadCast, filter);
+        receiveBroadCast = new LoginActivity.ReceiveBroadCast();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("authlogin");
+        getBaseContext().registerReceiver(receiveBroadCast, filter);
     }
 
 
@@ -583,7 +602,7 @@ public class LoginActivity extends AppCompatActivity {
                     wxUserInfo.setCountry(jsonObject.getString("country"));
 //                    wxUserInfo.setPrivilege(mApp.loginDoctorPosition);
                     mNetLoginRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(wxUserInfo), Constant.SERVICEURL + "patientLoginControlle/loginPatientAppWechatGrant");
-                    mHandler.sendEmptyMessage(3);
+//                    mHandler.sendEmptyMessage(3);
                 } catch (Exception e) {
                     e.printStackTrace();
                     NetRetEntity netRetEntity = new NetRetEntity();
@@ -604,17 +623,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-//    class ReceiveBroadCast extends BroadcastReceiver {
-//
-//
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            getAccessToken();
-////            Intent intent1 = new Intent(LoginActivity.this, MainActivity.class);
-////            mApp.saveUserInfo();
-////            startActivity(intent1);
-//        }
-//    }
+    class ReceiveBroadCast extends BroadcastReceiver {
+
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            getAccessToken();
+//            Intent intent1 = new Intent(LoginActivity.this, MainActivity.class);
+//            mApp.saveUserInfo();
+//            startActivity(intent1);
+        }
+    }
 
     /**
      * 判断 用户是否安装微信客户端

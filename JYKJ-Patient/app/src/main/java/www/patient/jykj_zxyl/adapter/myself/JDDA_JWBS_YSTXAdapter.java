@@ -11,32 +11,28 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import entity.mySelf.JwbsYstxInfo;
 import entity.patientInfo.ProvidePatientConditionDiseaseRecord;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.myself.RedeemRecordActivity;
-import www.patient.jykj_zxyl.util.DateTimeUtils;
-import www.patient.jykj_zxyl.util.DateUtils;
-import www.patient.jykj_zxyl.util.StrUtils;
 import www.patient.jykj_zxyl.util.Util;
 
 /**
  * 建档档案 == 》 既往病史 ==》 医生填写
  */
 public class JDDA_JWBS_YSTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_YSTXAdapter.ViewHolder> {
-    public          List<JwbsYstxInfo>            datas = new ArrayList<>();
+    public          List<ProvidePatientConditionDiseaseRecord>            datas = new ArrayList<>();
     private         RedeemRecordActivity            mActivity;
     private         OnItemClickListener             mOnItemClickListener;
     private         Context                         mContext;
 
 
-    public JDDA_JWBS_YSTXAdapter(List<JwbsYstxInfo> list, Context context){
+    public JDDA_JWBS_YSTXAdapter(List<ProvidePatientConditionDiseaseRecord> list, Context context){
         mContext = context;
         datas = list;
     }
 
     //重新设置数据
-    public void setDate(List<JwbsYstxInfo> list){
+    public void setDate(List<ProvidePatientConditionDiseaseRecord> list){
         datas = list;
     }
 
@@ -57,18 +53,10 @@ public class JDDA_JWBS_YSTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_YSTXAd
      */
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.mBM.setText(datas.get(position).getMedicalTypeName());
-        viewHolder.tv_record_doctor.setText("记录人："+StrUtils.defaultStr(datas.get(position).getDoctorName()));
-        if(null!=datas.get(position).getCreateDate()) {
-            viewHolder.mDate.setText(DateTimeUtils.formatLongDate(datas.get(position).getCreateDate(),"yyyy-MM-dd HH:mm"));
-
-        }
+        viewHolder.mBM.setText(datas.get(position).getRecordName());
+        viewHolder.mDate.setText(Util.dateToStrDate(datas.get(position).getTreatmentDate()));
 //        viewHolder.mType.setText(datas.get(position).getRecordTypeName());
-        String parcon = StrUtils.defaultStr(datas.get(position).getTreatmentPlanCode());
-        if(parcon.length()==0){
-            parcon = "未填写";
-        }
-        viewHolder.mContent.setText(parcon);
+        viewHolder.mContent.setText(datas.get(position).getRecordContent());
 
         if (mOnItemClickListener != null)
         {
@@ -110,7 +98,7 @@ public class JDDA_JWBS_YSTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_YSTXAd
         public TextView     mDate;                             //时间
         public TextView     mType;                             //类型
         public TextView     mContent;                             //内容
-        public TextView  tv_record_doctor;
+
 
         public ViewHolder(View view){
             super(view);
@@ -119,7 +107,7 @@ public class JDDA_JWBS_YSTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_YSTXAd
             mDate = (TextView)view.findViewById(R.id.tv_activityPatientLaber_createDate);
             mType = (TextView)view.findViewById(R.id.tv_activityPatientLaber_laberName);
             mContent = (TextView)view.findViewById(R.id.tv_activityPatientLaber_content);
-            tv_record_doctor = view.findViewById(R.id.tv_record_doctor);
+
         }
     }
 

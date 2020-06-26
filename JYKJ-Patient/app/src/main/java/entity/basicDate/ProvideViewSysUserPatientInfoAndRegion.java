@@ -39,6 +39,73 @@ public class ProvideViewSysUserPatientInfoAndRegion implements java.io.Serializa
 	private Integer flagPatientStatus;//患者认证状态(0:未认证;1:已认证;)
 	private String newLoginDate;//最后一次登录日期
 
+	private String doctorShareUrl;//分享链接地址（医生）
+	private String doctorShareTitle;//分享标题（医生）
+	private String doctorShareContent;//分享内容（医生）
+
+	private String patientShareUrl;//分享出去链接地址（患者）
+	private String patientShareTitle;//分享标题（医生）
+	private String patientShareContent;//分享内容（医生）
+
+	private String showRegionInfo;//展示地区信息
+
+
+	public String getDoctorShareUrl() {
+		return doctorShareUrl;
+	}
+
+	public void setDoctorShareUrl(String doctorShareUrl) {
+		this.doctorShareUrl = doctorShareUrl;
+	}
+
+	public String getDoctorShareTitle() {
+		return doctorShareTitle;
+	}
+
+	public void setDoctorShareTitle(String doctorShareTitle) {
+		this.doctorShareTitle = doctorShareTitle;
+	}
+
+	public String getDoctorShareContent() {
+		return doctorShareContent;
+	}
+
+	public void setDoctorShareContent(String doctorShareContent) {
+		this.doctorShareContent = doctorShareContent;
+	}
+
+	public String getPatientShareUrl() {
+		return patientShareUrl;
+	}
+
+	public void setPatientShareUrl(String patientShareUrl) {
+		this.patientShareUrl = patientShareUrl;
+	}
+
+	public String getPatientShareTitle() {
+		return patientShareTitle;
+	}
+
+	public void setPatientShareTitle(String patientShareTitle) {
+		this.patientShareTitle = patientShareTitle;
+	}
+
+	public String getPatientShareContent() {
+		return patientShareContent;
+	}
+
+	public void setPatientShareContent(String patientShareContent) {
+		this.patientShareContent = patientShareContent;
+	}
+
+	public String getShowRegionInfo() {
+		return showRegionInfo;
+	}
+
+	public void setShowRegionInfo(String showRegionInfo) {
+		this.showRegionInfo = showRegionInfo;
+	}
+
 	private String loginPatientPosition;
 	private String requestClientType;
 	private String userPhone;

@@ -62,7 +62,7 @@ public class ChatActivity extends AppCompatActivity {
 
         //头像
         doctorUrl = getIntent().getStringExtra("doctorUrl");
-        patientUrl = getIntent().getStringExtra("patientUrl");
+        patientUrl = mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl();
 
 
 
@@ -79,7 +79,7 @@ public class ChatActivity extends AppCompatActivity {
 
         args.putString("doctorUrl", doctorUrl);
         args.putString("userUrl", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
-
+//        args.putString("userName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         args.putInt(EaseConstant.EXTRA_MESSAGE_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_MESSAGE_NUM,0));
         args.putLong(EaseConstant.EXTRA_VOICE_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_VOICE_NUM,0));
         args.putLong(EaseConstant.EXTRA_VEDIO_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_VEDIO_NUM,0));

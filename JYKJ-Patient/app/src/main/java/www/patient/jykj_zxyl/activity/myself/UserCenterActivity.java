@@ -169,7 +169,6 @@ public class UserCenterActivity extends AppCompatActivity {
                         else
                         {
                             mProvideViewSysUserPatientInfoAndRegion = JSON.parseObject(netRetEntity.getResJsonData(),ProvideViewSysUserPatientInfoAndRegion.class);
-                            mApp.mProvideViewSysUserPatientInfoAndRegion = mProvideViewSysUserPatientInfoAndRegion;
                             setLayoutDate();
                         }
 
@@ -425,7 +424,7 @@ public class UserCenterActivity extends AppCompatActivity {
                     upbean.setCity(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getCity()));
                     upbean.setProvince(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getProvince()));
                     upbean.setAddress(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getAddress()));
-                    upbean.setArea(StrUtils.defaultStr(mChoiceRegionID));
+                    upbean.setArea(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getArea()));
                     if (mUserHeadBitmap != null)
                         upbean.setBase64ImgData((URLEncoder.encode("data:image/jpg;base64,"+BitmapUtil.bitmaptoString(mUserHeadBitmap))));
                    String str = new Gson().toJson(upbean);

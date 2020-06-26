@@ -22,7 +22,6 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
-import entity.mySelf.JwbsYstxInfo;
 import entity.mySelf.conditions.QueryHistCond;
 import entity.patientInfo.ProvidePatientConditionDiseaseRecord;
 import netService.HttpNetService;
@@ -64,7 +63,7 @@ public class FragmentJWBS_YSTX extends Fragment{
     private         LinearLayout            mJWBS;                                //选择既往病史
     private         LinearLayout            mBCJL;                                //选择病程记录
     private RelativeLayout mBack;
-    private         List<JwbsYstxInfo> mProvidePatientConditionDiseaseRecords = new ArrayList<>();
+    private         List<ProvidePatientConditionDiseaseRecord> mProvidePatientConditionDiseaseRecords = new ArrayList<>();
 
     private JDDA_JWBS_YSTXAdapter mJDDA_JWBS_YSTXAdapter;
     private int pageno = 1;
@@ -80,7 +79,7 @@ public class FragmentJWBS_YSTX extends Fragment{
         mApp = (JYKJApplication) getActivity().getApplication();
         initLayout(v);
         initHandler();
-        //setData();
+        setData();
         return v;
     }
 
@@ -104,7 +103,7 @@ public class FragmentJWBS_YSTX extends Fragment{
         mJDDA_JWBS_YSTXAdapter.setOnItemClickListener(new JDDA_JWBS_YSTXAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
-                startActivity(new Intent(mContext,JWBSBSXQActivity.class).putExtra("jwbsYstxInfo",mProvidePatientConditionDiseaseRecords.get(position)));
+                startActivity(new Intent(mContext,JWBSBSXQActivity.class));
             }
 
             @Override
@@ -129,14 +128,6 @@ public class FragmentJWBS_YSTX extends Fragment{
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mProvidePatientConditionDiseaseRecords = new ArrayList();
-        mPageNum = 1;
-        pageno = 1;
-        setData();
-    }
 
     private void initHandler() {
         mHandler = new Handler(){
@@ -205,21 +196,21 @@ public class FragmentJWBS_YSTX extends Fragment{
     }*/
 
 
-    class LoadDataTask extends AsyncTask<Void,Void,List<JwbsYstxInfo>> {
+    class LoadDataTask extends AsyncTask<Void,Void,List<ProvidePatientConditionDiseaseRecord>> {
         private QueryHistCond queryCond;
         LoadDataTask(QueryHistCond queryCond){
             this.queryCond = queryCond;
         }
         @Override
-        protected List<JwbsYstxInfo> doInBackground(Void... voids) {
+        protected List<ProvidePatientConditionDiseaseRecord> doInBackground(Void... voids) {
             mLoadDate = false;
-            List<JwbsYstxInfo> retlist = new ArrayList();
+            List<ProvidePatientConditionDiseaseRecord> retlist = new ArrayList();
             try {
                 queryCond.setPageNum(String.valueOf(pageno));
                 String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryCond), Constant.SERVICEURL+ INetAddress.QUERY_PASTHIST_URL);
                 NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
                 if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
-                    retlist = JSON.parseArray(retEntity.getResJsonData(),JwbsYstxInfo.class);
+                    retlist = JSON.parseArray(retEntity.getResJsonData(),ProvidePatientConditionDiseaseRecord.class);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -228,7 +219,7 @@ public class FragmentJWBS_YSTX extends Fragment{
         }
 
         @Override
-        protected void onPostExecute(List<JwbsYstxInfo> providePatientConditionDiseaseRecords) {
+        protected void onPostExecute(List<ProvidePatientConditionDiseaseRecord> providePatientConditionDiseaseRecords) {
             if(providePatientConditionDiseaseRecords.size()>0){
                 mProvidePatientConditionDiseaseRecords.addAll(providePatientConditionDiseaseRecords);
                 mJDDA_JWBS_YSTXAdapter.setDate(mProvidePatientConditionDiseaseRecords);

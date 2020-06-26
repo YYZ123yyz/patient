@@ -147,7 +147,7 @@ public class MyOrderAlRecycleAdapter extends RecyclerView.Adapter<MyOrderAlRecyc
             viewHolder.mClickLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnItemClickListener.onClick(position,view);
+                    mOnItemClickListener.onClick(position);
                 }
             });
 
@@ -155,20 +155,20 @@ public class MyOrderAlRecycleAdapter extends RecyclerView.Adapter<MyOrderAlRecyc
 
                 @Override
                 public boolean onLongClick(View view) {
-                    mOnItemClickListener.onLongClick(position,view);
+                    mOnItemClickListener.onLongClick(position);
                     return false;
                 }
             });
             viewHolder.leave_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onClick(position,v);
+                    mOnItemClickListener.onClick(position);
                 }
             });
             viewHolder.opinion_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onClick(position,v);
+                    mOnItemClickListener.onClick(position);
                 }
             });
             viewHolder.mClickLinearLayout.setTag(parbean);
@@ -213,8 +213,8 @@ public class MyOrderAlRecycleAdapter extends RecyclerView.Adapter<MyOrderAlRecyc
                 treat_style_tool = view.findViewById(R.id.treat_style_tool);
                 service_time_title = view.findViewById(R.id.service_time_title);
                 service_time = view.findViewById(R.id.service_time);
-                leave_btn = view.findViewById(R.id.leave_btn);
-                opinion_btn = view.findViewById(R.id.opinion_btn);
+                leave_btn = view.findViewById(R.id.quest_btn);
+                opinion_btn = view.findViewById(R.id.back_btn);
 
             }
         }
@@ -222,8 +222,8 @@ public class MyOrderAlRecycleAdapter extends RecyclerView.Adapter<MyOrderAlRecyc
 
 
     public interface OnItemClickListener{
-        void onClick(int position,View v);
-        void onLongClick(int position,View v);
+        void onClick(int position);
+        void onLongClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener ){

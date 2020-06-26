@@ -267,6 +267,8 @@ public class FragmentShouYe_HYHD extends Fragment {
                 intent.putExtra("userName",mClickInteractPatient.getPatientUserName());
                 intent.putExtra("doctorUrl",mClickInteractPatient.getPatientUserLogoUrl());
                 intent.putExtra("patientUrl",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+
+                intent.putExtra("operDoctorName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
                 startActivity(intent);
 //                }
             }

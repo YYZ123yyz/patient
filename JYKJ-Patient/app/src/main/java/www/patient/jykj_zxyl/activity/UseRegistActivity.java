@@ -27,6 +27,7 @@ import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.util.PhoneFormatCheckUtils;
 
 /**
  * 用户注册
@@ -52,6 +53,9 @@ public class UseRegistActivity extends AppCompatActivity {
     private                 TimerTask                   mTask;
     private                 int                         mInitVCodeTime = 120;
     private                 Timer                       mTimer;
+
+    private TextView tv_yhxy;           //用户协议
+    private TextView tv_yszc;           //隐私政策
 
     private RelativeLayout mBack;
 
@@ -185,6 +189,22 @@ public class UseRegistActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        tv_yhxy = (TextView)this.findViewById(R.id.tv_yhxy);
+        tv_yszc = (TextView)this.findViewById(R.id.tv_yszc);
+        tv_yhxy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(UseRegistActivity.this,YHXYWebActivity.class));
+            }
+        });
+
+        tv_yszc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(UseRegistActivity.this,YSZCWebActivity.class));
+            }
+        });
     }
 
     /**
@@ -231,6 +251,12 @@ public class UseRegistActivity extends AppCompatActivity {
         if (mPhoneNum.getText().toString() == null || "".equals(mPhoneNum.getText().toString()))
         {
             Toast.makeText(mContext,"请先输入手机号",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //判断手机号格式
+        if (!PhoneFormatCheckUtils.isChinaPhoneLegal(mPhoneNum.getText().toString()))
+        {
+            Toast.makeText(mContext,"手机号格式不正确，请输入正确手机号",Toast.LENGTH_SHORT).show();
             return;
         }
         ProvideViewSysUserPatientInfoAndRegion provideViewSysUserPatientInfoAndRegion = new ProvideViewSysUserPatientInfoAndRegion();
@@ -281,6 +307,12 @@ public class UseRegistActivity extends AppCompatActivity {
         if (mPassWord.getText().toString() == null || "".equals(mPassWord.getText().toString()))
         {
             Toast.makeText(mContext,"请先输入密码",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //判断手机号格式
+        if (!PhoneFormatCheckUtils.isChinaPhoneLegal(mPhoneNum.getText().toString()))
+        {
+            Toast.makeText(mContext,"手机号格式不正确，请输入正确手机号",Toast.LENGTH_SHORT).show();
             return;
         }
 

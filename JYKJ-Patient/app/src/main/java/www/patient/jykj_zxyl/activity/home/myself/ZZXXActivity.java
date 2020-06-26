@@ -504,11 +504,11 @@ public class ZZXXActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             if(aBoolean) {
-                Toast.makeText(mContext, savemsg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, savemsg, Toast.LENGTH_SHORT);
                 finish();
             }
             else
-                Toast.makeText(mContext,savemsg,Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,savemsg,Toast.LENGTH_SHORT);
         }
     }
 

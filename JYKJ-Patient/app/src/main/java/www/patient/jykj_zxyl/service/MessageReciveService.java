@@ -24,6 +24,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.model.EaseAtMessageHelper;
 import com.hyphenate.easeui.model.EaseDingMessageHelper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -214,6 +215,8 @@ public class MessageReciveService extends Service {
 //            remoteViews.setProgressBar(R.id.pBar, 10, progress, false);
 //            remoteViews.setTextViewText(R.id.proNum, progress + "/10");
             notificationManager.notify(20, mBuilder.build());
+
+
 //            notificationManager.cancel(20);
         }
     }

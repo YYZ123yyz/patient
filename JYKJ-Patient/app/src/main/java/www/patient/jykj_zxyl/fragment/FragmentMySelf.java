@@ -19,7 +19,12 @@ import com.bumptech.glide.request.RequestOptions;
 import www.patient.jykj_zxyl.activity.home.BloodLogAcitivity;
 import www.patient.jykj_zxyl.activity.home.myself.JDDAActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
-import www.patient.jykj_zxyl.activity.myself.*;
+import www.patient.jykj_zxyl.activity.myself.BindFamilyActivity;
+import www.patient.jykj_zxyl.activity.myself.MedicationActivity;
+import www.patient.jykj_zxyl.activity.myself.MyOrderActivity;
+import www.patient.jykj_zxyl.activity.myself.MySurplusActivity;
+import www.patient.jykj_zxyl.activity.myself.SettingActivity;
+import www.patient.jykj_zxyl.activity.myself.UserCenterActivity;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.custom.MyselfItemView;
 import www.patient.jykj_zxyl.R;
@@ -97,9 +102,6 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
         gradeBtn = v.findViewById(R.id.gradeBtn);
         iv_fragmentMyself_userHeadImage = (ImageView)v.findViewById(R.id.iv_fragmentMyself_userHeadImage);
         tv_fragmentMySelf_nameText = (TextView)v.findViewById(R.id.tv_fragmentMySelf_nameText);
-    }
-
-    void initdata(){
         try {
             int avatarResId = Integer.parseInt(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
             Glide.with(mContext).load(avatarResId).into(iv_fragmentMyself_userHeadImage);
@@ -112,12 +114,6 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
         }
         if (mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName() != null)
             tv_fragmentMySelf_nameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        initdata();
     }
 
     private void initListener(){
@@ -159,7 +155,7 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(),JDDAActivity.class));
                 break;
             case R.id.myself_recommend://推荐
-                startActivity(new Intent(getActivity(), ShareActivity.class));
+
                 break;
 
 
@@ -184,8 +180,17 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
         }
     }
     void alertWillpub(){
-        AuthorityJQQDDialog mAuthorityJQQDDialog = new AuthorityJQQDDialog(mContext);
-//                mAuthorityDialog.setmProvideViewMyDoctorOrderAndTreatment(provideViewMyDoctorOrderAndTreatment);
-        mAuthorityJQQDDialog.show();
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View diagview = inflater.inflate(R.layout.willupdiag, null);
+        AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
+        builder.setView(diagview);
+        AlertDialog dialog=builder.create();
+        dialog.show();
+        diagview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 }

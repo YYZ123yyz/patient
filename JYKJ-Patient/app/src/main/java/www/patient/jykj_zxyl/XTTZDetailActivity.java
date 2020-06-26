@@ -77,6 +77,9 @@ public class XTTZDetailActivity extends AppCompatActivity {
 
     private ProvideMsgPushReminder  mProvideMsgPushReminder;
     private LinearLayout    ll_back;
+    private JYKJApplication     mApp;
+
+    private             String                              mNetRetStr;                 //返回字符串
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,7 @@ public class XTTZDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.messagedetail_webview);
+        mApp = (JYKJApplication) getApplication();
         ll_back = (LinearLayout)findViewById(R.id.ll_back);
         ll_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,11 +105,37 @@ public class XTTZDetailActivity extends AppCompatActivity {
         wvTest.setWebViewClient(new WebViewClient());//限制在WebView中打开网页，而不用默认浏览器
         wvTest.setWebChromeClient(new WebChromeClient());
         wvTest.loadUrl(mProvideMsgPushReminder.getMsgLookUrl()); //加载本地网页 wvTest.loadData("file:///android_asset/refresh/refresh.html");
+        //设置消息为已读
+        operUpdPatientMsgState();
     }
 
+    /**
+     * 设置消息为已读
+     */
+    private void operUpdPatientMsgState() {
+        ProvideMsgPushReminder provideMsgPushReminder  = new ProvideMsgPushReminder ();
+        provideMsgPushReminder.setLoginPatientPosition(mApp.loginDoctorPosition);
+        provideMsgPushReminder.setRequestClientType("1");
+        provideMsgPushReminder.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        provideMsgPushReminder.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        provideMsgPushReminder.setReminderId(mProvideMsgPushReminder.getReminderId());
 
+        new Thread(){
+            public void run(){
+                try {
+                    String string = new Gson().toJson(provideMsgPushReminder);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, www.patient.jykj_zxyl.application.Constant.SERVICEURL+"msgDataControlle/operUpdPatientMsgState");
+                } catch (Exception e) {
+                    NetRetEntity retEntity = new NetRetEntity();
+                    retEntity.setResCode(0);
+                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    mNetRetStr = new Gson().toJson(retEntity);
+                    e.printStackTrace();
+                }
+            }
+        }.start();
 
-
+    }
 
 
 }

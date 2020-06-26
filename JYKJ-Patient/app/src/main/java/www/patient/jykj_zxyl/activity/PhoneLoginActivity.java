@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +31,7 @@ import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.util.PhoneFormatCheckUtils;
 
 /**
  * 手机号登录Activity
@@ -58,7 +62,11 @@ public class PhoneLoginActivity extends AppCompatActivity {
     private                 Timer                       mTimer;
     private                 String                      mSmsToken;                  //短信验证码token
 
+    private                 RelativeLayout              mBack;
 
+    private TextView tv_yhxy;           //用户协议
+    private TextView tv_yszc;           //隐私政策
+    private String  inputPhoneNum = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,7 +186,15 @@ public class PhoneLoginActivity extends AppCompatActivity {
      * 初始化布局
      */
     private void initLayout() {
+        mBack = (RelativeLayout)this.findViewById(R.id.back);
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         mPhoneNum = (EditText)this.findViewById(R.id.et_activityPhoneLogin_phoneNumEdit);
+
         mVCode = (EditText)this.findViewById(R.id.et_activityPhoneLogin_vCodeEdit);
         mUserRegist = (TextView)this.findViewById(R.id.textView_activityPhoneLogin_userRegistTextView);
         mLogin = (Button)this.findViewById(R.id.bt_activityPhoneLogin_loginBt);
@@ -193,6 +209,23 @@ public class PhoneLoginActivity extends AppCompatActivity {
         mGetVCode.setOnClickListener(new ButtonClick());
         mUserRegist.setOnClickListener(new ButtonClick());
         mLogin.setOnClickListener(new ButtonClick());
+
+        tv_yhxy = (TextView)this.findViewById(R.id.tv_yhxy);
+        tv_yszc = (TextView)this.findViewById(R.id.tv_yszc);
+        tv_yhxy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PhoneLoginActivity.this,YHXYWebActivity.class));
+            }
+        });
+
+        tv_yszc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PhoneLoginActivity.this,YSZCWebActivity.class));
+            }
+        });
+
     }
 
 
@@ -221,6 +254,8 @@ public class PhoneLoginActivity extends AppCompatActivity {
                     startActivity(new Intent(mContext,UseRegistActivity.class));
                     break;
                 case R.id.bt_activityPhoneLogin_loginBt:
+
+
                     userLogin();
                     break;
                 case R.id.iv_activityPhoneLogin_agreeImg:
@@ -251,6 +286,12 @@ public class PhoneLoginActivity extends AppCompatActivity {
         if (mVCode.getText().toString() == null || "".equals(mVCode.getText().toString()))
         {
             Toast.makeText(mContext,"请输入验证码",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //判断手机号格式
+        if (!PhoneFormatCheckUtils.isChinaPhoneLegal(mPhoneNum.getText().toString()))
+        {
+            Toast.makeText(mContext,"手机号格式不正确，请输入正确手机号",Toast.LENGTH_SHORT).show();
             return;
         }
         ProvideViewSysUserPatientInfoAndRegion provideViewSysUserPatientInfoAndRegion = new ProvideViewSysUserPatientInfoAndRegion();
@@ -285,6 +326,12 @@ public class PhoneLoginActivity extends AppCompatActivity {
         if (mPhoneNum.getText().toString() == null || "".equals(mPhoneNum.getText().toString()))
         {
             Toast.makeText(mContext,"请先输入手机号",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //判断手机号格式
+        if (!PhoneFormatCheckUtils.isChinaPhoneLegal(mPhoneNum.getText().toString()))
+        {
+            Toast.makeText(mContext,"手机号格式不正确，请输入正确手机号",Toast.LENGTH_SHORT).show();
             return;
         }
         ProvideViewSysUserPatientInfoAndRegion provideViewSysUserPatientInfoAndRegion = new ProvideViewSysUserPatientInfoAndRegion();

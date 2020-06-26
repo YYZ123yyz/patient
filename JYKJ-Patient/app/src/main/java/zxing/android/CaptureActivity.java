@@ -1,6 +1,7 @@
 package zxing.android;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
@@ -8,6 +9,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.AppCompatImageView;
@@ -21,16 +23,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
 import com.google.zxing.Result;
 
 
 import java.io.IOException;
 
+import entity.SYSParmentEntity;
+import entity.shouye.OperScanQrCodeInside;
+import entity.shouye.ProvidePatientConditionTakingRecord;
 import entity.shouye.ProvideViewDoctorExpertRecommend;
+import netService.HttpNetService;
+import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.QRCodeActivity;
 import www.patient.jykj_zxyl.activity.home.patient.ZJXQ_ZJBDActivity;
 import www.patient.jykj_zxyl.activity.hyhd.BindDoctorFriend;
+import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
 import zxing.bean.ZxingConfig;
 import zxing.camera.CameraManager;
@@ -67,8 +77,11 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
     private ImageView ivAdd;
     private MoreFeaturesPopupWindow mPopupWindow;
     private TextView tvMyCode;
-
-
+    private JYKJApplication mApp;
+    public ProgressDialog mDialogProgress = null;
+    private             String                              mNetRetStr;                 //返回字符串
+    private             Handler                             mHandler;
+    private             String                              mDoctorQRCode;              //医生二维码
     public ViewfinderView getViewfinderView() {
         return viewfinderView;
     }
@@ -118,10 +131,12 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
 
 
         initView();
-
+        initHandler();
         hasSurface = false;
-
+        mApp = (JYKJApplication) getApplication();
         inactivityTimer = new InactivityTimer(this);
+//        getSerciceName("JY0100YS200111180041689EXB");
+//        mDoctorQRCode = "JY0100YS200111180041689EXB";
 //        beepManager = new BeepManager(this);
 //        beepManager.setPlayBeep(config.isPlayBeep());
 //        beepManager.setVibrate(config.isShake());
@@ -130,6 +145,36 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
     }
 
 
+    private void initHandler() {
+        mHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what)
+                {
+                    case 0:
+                        cacerProgress();
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 0)
+                            Toast.makeText(CaptureActivity.this,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        else
+                        {
+                            String string = netRetEntity.getResMsg();
+                            System.out.println(string);
+                            startActivity(new Intent(CaptureActivity.this,ZJXQ_ZJBDActivity.class)
+                                    .putExtra("doctorQRCode",mDoctorQRCode)
+                            .putExtra("url",string));
+                            CaptureActivity.this.finish();
+                        }
+
+                        break;
+                    case 1:
+
+                        break;
+                }
+            }
+        };
+    }
     private void initView() {
         previewView = (SurfaceView) findViewById(R.id.preview_view);
         previewView.setOnClickListener(this);
@@ -218,13 +263,44 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
 //        Intent intent = getIntent();
 //        intent.putExtra(Constant.CODED_CONTENT, rawResult.getText());
 //        setResult(RESULT_OK, intent);
-        ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend = new ProvideViewDoctorExpertRecommend();
-        provideViewDoctorExpertRecommend.setDoctorCode(rawResult.getText());
-        provideViewDoctorExpertRecommend.setUserName(rawResult.getText());
-        startActivity(new Intent(this,ZJXQ_ZJBDActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommend));
-        this.finish();
+//        ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend = new ProvideViewDoctorExpertRecommend();
+//        provideViewDoctorExpertRecommend.setDoctorCode(rawResult.getText());
+//        provideViewDoctorExpertRecommend.setUserName(rawResult.getText());
+//        startActivity(new Intent(this,ZJXQ_ZJBDActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommend));
+//        this.finish();
+        mDoctorQRCode = rawResult.getText();
+        //调用接口获取服务名称
+        getSerciceName(rawResult.getText());
 
+    }
 
+    /**
+     * 调接口获取返回服务接口名称
+     */
+    private void getSerciceName(String qrCode) {
+        getProgressBar("请稍候","正在获取数据。。。");
+        SYSParmentEntity sYSParmentEntity = new SYSParmentEntity();
+        sYSParmentEntity.setLoginUserPosition(mApp.loginDoctorPosition);
+        sYSParmentEntity.setRequestClientType("1");
+        sYSParmentEntity.setUserUseType("6");
+        sYSParmentEntity.setOperUserCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        sYSParmentEntity.setOperUserName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        sYSParmentEntity.setScanQrCode(qrCode);
+        new Thread(){
+            public void run(){
+                try {
+                    String string = new Gson().toJson(sYSParmentEntity);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, www.patient.jykj_zxyl.application.Constant.SERVICEURL+"patientDataControlle/operScanQrCodeInside");
+                } catch (Exception e) {
+                    NetRetEntity retEntity = new NetRetEntity();
+                    retEntity.setResCode(0);
+                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    mNetRetStr = new Gson().toJson(retEntity);
+                    e.printStackTrace();
+                }
+                mHandler.sendEmptyMessage(0);
+            }
+        }.start();
     }
 
 
@@ -389,6 +465,29 @@ public class CaptureActivity extends AppCompatActivity implements SurfaceHolder.
                 }
             }).run();
 
+        }
+    }
+
+    /**
+     * 获取进度条
+     */
+
+    public void getProgressBar(String title, String progressPrompt) {
+        if (mDialogProgress == null) {
+            mDialogProgress = new ProgressDialog(CaptureActivity.this);
+        }
+        mDialogProgress.setTitle(title);
+        mDialogProgress.setMessage(progressPrompt);
+        mDialogProgress.setCancelable(false);
+        mDialogProgress.show();
+    }
+
+    /**
+     * 取消进度条
+     */
+    public void cacerProgress() {
+        if (mDialogProgress != null) {
+            mDialogProgress.dismiss();
         }
     }
 

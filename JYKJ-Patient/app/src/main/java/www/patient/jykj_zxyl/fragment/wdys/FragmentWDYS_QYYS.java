@@ -143,8 +143,10 @@ public class FragmentWDYS_QYYS extends Fragment {
                 intent.setClass(mContext,ChatActivity.class);
                 intent.putExtra("userCode",provideViewMyDoctorSignings.get(position).getDoctorCode());
                 intent.putExtra("userName",provideViewMyDoctorSignings.get(position).getUserName());
+                intent.putExtra("doctorUrl",provideViewMyDoctorSignings.get(position).getUserLogoUrl());
 //                intent.putExtra("chatType","twjz");
 
+                intent.putExtra("operDoctorName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
                 intent.putExtra("loginDoctorPosition",mApp.loginDoctorPosition);
                 intent.putExtra("operDoctorCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
                 intent.putExtra("operDoctorName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());

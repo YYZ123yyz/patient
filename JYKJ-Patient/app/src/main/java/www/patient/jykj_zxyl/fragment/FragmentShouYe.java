@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entity.OperUpdPatientConditionTakingMedicineStateParement;
+import entity.ProvideMsgPushReminder;
 import entity.ProvidePatientBindingMyDoctorInfo;
 import entity.shouye.OperScanQrCodeInside;
 import entity.shouye.ProvidePatientConditionBloodPressureRecord;
@@ -100,6 +101,10 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     private             Context                             mContext;
     private MainActivity mActivity;
     private             String                              mNetRetStr;                 //返回字符串
+
+    private             String                              mMessageNetRetStr;                 //未读消息返回字符串
+
+
     private             String                              mNetRetFYStr;                 //返回服药
     private             Handler                             mHandler;
     private             JYKJApplication                     mApp;
@@ -148,6 +153,8 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
     private AMapLocationClient locationClient = null;
     private AMapLocationClientOption locationOption = null;
+
+    private         int                 clickState;             //点击的服用状态
 
 
 
@@ -199,6 +206,8 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     private                 LinearLayout            li_jqqd;                            //
 
 
+    private                 TextView                tv_wasfy;                       //未按时服用提示
+    private                 TextView                tv_yasfy;                       //已按时服用提示
 
 
 
@@ -231,6 +240,26 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
      * 获取消息
      */
     private void getNewMessage() {
+        ProvideMsgPushReminder provideMsgPushReminder = new ProvideMsgPushReminder();
+        provideMsgPushReminder.setLoginPatientPosition(mApp.loginDoctorPosition);
+        provideMsgPushReminder.setRequestClientType("1");
+        provideMsgPushReminder.setSearchPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+
+        new Thread(){
+            public void run(){
+                try {
+                    String string = new Gson().toJson(provideMsgPushReminder);
+                    mMessageNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"/msgDataControlle/searchPatientMsgPushReminderResDataNum");
+                } catch (Exception e) {
+                    NetRetEntity retEntity = new NetRetEntity();
+                    retEntity.setResCode(0);
+                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    mMessageNetRetStr = new Gson().toJson(retEntity);
+                    e.printStackTrace();
+                }
+                mHandler.sendEmptyMessage(100);
+            }
+        }.start();
     }
 
     @Override
@@ -239,7 +268,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 //        getProgressBar("请稍候","正在加载数据。。。");
         //获取最近一次血压数据
         searchPatientStateResBloodPressureNewData();
-        initData();
+        getNewMessage();
     }
 
     /**
@@ -339,15 +368,61 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                         break;
 
                     case 5:
-                        netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
                         cacerProgress();
-                        //获取最近一次血压数据
-                        searchPatientStateResBloodPressureNewData();
+//                        netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
+//                        Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+//                        cacerProgress();
+//                        //获取最近一次血压数据
+//                        searchPatientStateResBloodPressureNewData();
+                        showFYView();
                         break;
+
+                    case 100:
+                        netRetEntity = JSON.parseObject(mMessageNetRetStr,NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 1)
+                        {
+                            ProvideMsgPushReminder provideMsgPushReminder  = JSON.parseObject(netRetEntity.getResJsonData(),ProvideMsgPushReminder.class);
+                            if (provideMsgPushReminder.getUnreadMsgNum() == 0)
+                                mNewMessageLayout.setVisibility(View.GONE);
+                            else
+                            {
+                                mNewMessageLayout.setVisibility(View.VISIBLE);
+                                mNewMessage.setText("您有"+provideMsgPushReminder.getUnreadMsgNum()+"条未读消息");
+                            }
+
+                        }
+                        else
+                        {
+                            mNewMessageLayout.setVisibility(View.GONE);
+                        }
+                        break;
+
+
                 }
             }
         };
+    }
+
+    /**
+     * 服药操作后
+     */
+    private void showFYView() {
+        if (clickState == 3)
+        {
+            //已服用
+            mYFY.setVisibility(View.GONE);
+            mWFY.setVisibility(View.GONE);
+            tv_wasfy.setVisibility(View.GONE);
+            tv_yasfy.setVisibility(View.VISIBLE);
+        }
+        if (clickState == 1)
+        {
+            //未服用
+            mYFY.setVisibility(View.GONE);
+            mWFY.setVisibility(View.GONE);
+            tv_wasfy.setVisibility(View.VISIBLE);
+            tv_yasfy.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -462,6 +537,11 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
 
     private void initView(View view){
+
+        tv_yasfy = (TextView)view.findViewById(R.id.tv_yasfy);
+        tv_wasfy = (TextView)view.findViewById(R.id.tv_wasfy);
+
+
         mYFY = (TextView)view.findViewById(R.id.yfy_button);
         mWFY = (TextView)view.findViewById(R.id.wfy_button);
         mKSWYS = (LinearLayout)view.findViewById(R.id.kswys);
@@ -487,6 +567,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 //调接口已服用
+                clickState = 3;
                 operUpdPatientConditionTakingMedicineState(3);
             }
         });
@@ -495,6 +576,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
             public void onClick(View view) {
                 //调接口未服用
                 operUpdPatientConditionTakingMedicineState(1);
+                clickState = 1;
             }
         });
 
@@ -525,6 +607,16 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         mYPYL2 = (TextView)view.findViewById(R.id.ypyl2);
 
         mHeard = (CircleImageView)view.findViewById(R.id.iv_userhead);
+        try {
+            int avatarResId = Integer.parseInt(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+            Glide.with(mContext).load(avatarResId).into(mHeard);
+        } catch (Exception e) {
+            //use default avatar
+            Glide.with(mContext).load(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl())
+                    .apply(RequestOptions.placeholderOf(R.mipmap.nhtx)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(mHeard);
+        }
 //        mYPTX2 = (LinearLayout)view.findViewById(R.id.yytx2);
         mQrCode = view.findViewById(R.id.ll_qr_code);
 //        mNews = view.findViewById(R.id.ll_news);
@@ -537,12 +629,18 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 //        mMyClinic = view.findViewById(R.id.ll_wdzs);
 //
         mUserNameText = (TextView)view.findViewById(R.id.tv_fragmentShouYe_userNameText);
+        mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
 
 //        mMyPatient = view.findViewById(R.id.ll_wdhz);
-//        mNewMessage = (TextView)view.findViewById(R.id.tv_fragmentShouYe_NewMessage);
-//        mNewMessageLayout = (LinearLayout) view.findViewById(R.id.li_fragmentShouYe_newMessage);
+        mNewMessage = (TextView)view.findViewById(R.id.tv_fragmentShouYe_NewMessage);
+        mNewMessageLayout = (LinearLayout) view.findViewById(R.id.li_fragmentShouYe_newMessage);
         llQuickApplication = (LinearLayout)view.findViewById(R.id.ll_quick_application);
-
+        mNewMessageLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mApp.gMainActivity.setViewPageIndex(1,1);
+            }
+        });
 //        mQrCode = view.findViewById(R.id.ll_qr_code);
 //        mNews = view.findViewById(R.id.ll_news);
 //        mDoctorUnion = view.findViewById(R.id.ll_doctor_union);
@@ -603,19 +701,8 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         feeling_layout = view.findViewById(R.id.feeling_layout);
     }
 
-    void initData(){
-        try {
-            int avatarResId = Integer.parseInt(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
-            Glide.with(mContext).load(avatarResId).into(mHeard);
-        } catch (Exception e) {
-            //use default avatar
-            Glide.with(mContext).load(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl())
-                    .apply(RequestOptions.placeholderOf(R.mipmap.nhtx)
-                            .diskCacheStrategy(DiskCacheStrategy.ALL))
-                    .into(mHeard);
-        }
-        mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-    }
+
+
 
     private void initListener(){
         mBloodEntry.setOnClickListener(this);
@@ -726,9 +813,18 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     }
 
     void alertWillpub(){
-        AuthorityJQQDDialog mAuthorityJQQDDialog = new AuthorityJQQDDialog(mContext);
-//                mAuthorityDialog.setmProvideViewMyDoctorOrderAndTreatment(provideViewMyDoctorOrderAndTreatment);
-        mAuthorityJQQDDialog.show();
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View diagview = inflater.inflate(R.layout.willupdiag, null);
+        AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
+        builder.setView(diagview);
+        AlertDialog dialog=builder.create();
+        dialog.show();
+        diagview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
     /**
      * 扫一扫
@@ -951,7 +1047,6 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                     sb.append("纬    度    : " + location.getLatitude() + "\n");
                     sb.append("精    度    : " + location.getAccuracy() + "米" + "\n");
                     sb.append("提供者    : " + location.getProvider() + "\n");
-
                     sb.append("速    度    : " + location.getSpeed() + "米/秒" + "\n");
                     sb.append("角    度    : " + location.getBearing() + "\n");
                     // 获取当前提供定位服务的卫星个数
@@ -968,6 +1063,8 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                     sb.append("兴趣点    : " + location.getPoiName() + "\n");
                     //定位完成的时间
                     mApp.gProviceName = location.getProvince();
+                    mApp.gGDLocation = areaCode;
+                    mApp.gGDLocationName = location.getDistrict();
                     mUserTitleText.setText(location.getProvince()+location.getCity());
                 } else {
                     //定位失败

@@ -513,6 +513,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 跳转到消息中心页面
+     * @param i
+     */
+    public void setViewPageIndex(int i,int childFragmentIndex) {
+        mViewPage.setCurrentItem(i);
+        if (childFragmentIndex != 0)
+            mFragmentYHHD.setViewPagerIndex(childFragmentIndex);
+    }
+
 
     class   ButtonClick implements View.OnClickListener {
         @Override

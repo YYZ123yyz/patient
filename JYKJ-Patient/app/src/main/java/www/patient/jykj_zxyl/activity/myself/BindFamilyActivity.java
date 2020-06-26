@@ -178,18 +178,18 @@ public class BindFamilyActivity extends AppCompatActivity {
         String onephone = String.valueOf(tv_activityUserCenter_userNameText.getText());
         String twopgone = String.valueOf(tv_activityUserCenter_userNikeNameText.getText());
         if(!TextUtils.isEmpty(onephone)) {
-            if (RegrexUtil.isMobilePhone(onephone)) {
+            if (RegrexUtil.isMobilePhone(onephone) || RegrexUtil.isLinePhone(onephone)) {
                 hasinputonephone = true;
             }else{
-                Toast.makeText(mContext,"请输入正确的电话号码",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,"请输入正确的电话号码",Toast.LENGTH_SHORT);
                 return;
             }
         }
         if(!TextUtils.isEmpty(twopgone)) {
-            if (RegrexUtil.isMobilePhone(twopgone)) {
+            if (RegrexUtil.isMobilePhone(twopgone) || RegrexUtil.isLinePhone(twopgone)) {
                 hasinputonephone = true;
             }else{
-                Toast.makeText(mContext,"请输入正确的电话号码",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,"请输入正确的电话号码",Toast.LENGTH_SHORT);
                 return;
             }
 
@@ -205,7 +205,7 @@ public class BindFamilyActivity extends AppCompatActivity {
             maintainFamilyTask = new MaintainFamilyTask(upbean);
             maintainFamilyTask.execute();
         }else{
-            Toast.makeText(mContext,"请输入亲友电话",Toast.LENGTH_LONG);
+            Toast.makeText(mContext,"请输入亲友电话",Toast.LENGTH_SHORT);
             return;
         }
     }

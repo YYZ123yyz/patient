@@ -41,12 +41,21 @@ public class UnionNewsAdapter extends RecyclerView.Adapter<UnionNewsAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         System.out.println(mDate.get(position).getMsgContent());
+        if(mDate.get(position).getFlagMsgRead() == 0)
+        {
+            holder.mMessageType.setTextColor(mContext.getResources().getColor(R.color.textColor_hztltabyj));
+            holder.msgOperName.setTextColor(mContext.getResources().getColor(R.color.textColor_hztltabyj));
+            holder.mMessageDatet.setTextColor(mContext.getResources().getColor(R.color.textColor_hztltabyj));
+        }
+        else if (mDate.get(position).getFlagMsgRead() == 1)
+        {
+            holder.mMessageType.setTextColor(mContext.getResources().getColor(R.color.textColor_vt));
+            holder.msgOperName.setTextColor(mContext.getResources().getColor(R.color.tabColor_nomal));
+            holder.mMessageDatet.setTextColor(mContext.getResources().getColor(R.color.textColor_vt));
+        }
         holder.mMessageType.setText(mDate.get(position).getMsgOperName());
         holder.msgOperName.setText(mDate.get(position).getMsgTitleName());
-//        if (mDate.get(position).getMsgCreateDate() == null )
-//            holder.mMessageDatet.setText("未设置");
-//        else
-            holder.mMessageDatet.setText(mDate.get(position).getSendMsgDate());
+        holder.mMessageDatet.setText(mDate.get(position).getSendMsgDate());
 
         if (mOnItemClickListener != null)
         {

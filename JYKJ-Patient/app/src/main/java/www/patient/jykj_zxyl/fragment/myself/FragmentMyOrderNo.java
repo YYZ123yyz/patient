@@ -1,15 +1,14 @@
 package www.patient.jykj_zxyl.fragment.myself;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.*;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +17,8 @@ import android.widget.AbsListView;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import entity.HZIfno;
@@ -37,8 +34,6 @@ import www.patient.jykj_zxyl.adapter.RMJXRecycleAdapter;
 import www.patient.jykj_zxyl.adapter.myself.MyOrderNoRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.custom.OnRecyclerItemClickListener;
-import www.patient.jykj_zxyl.custom.SwipeRecyclerView;
 import www.patient.jykj_zxyl.util.IConstant;
 import www.patient.jykj_zxyl.util.INetAddress;
 import android.widget.AbsListView.OnScrollListener;
@@ -53,7 +48,7 @@ public class FragmentMyOrderNo extends Fragment{
     private MyOrderActivity mActivity;
     private             JYKJApplication                     mApp;
 
-    private             SwipeRecyclerView                        mRMJXRecycleView;              //热门精选列表
+    private             RecyclerView                        mRMJXRecycleView;              //热门精选列表
     private             LinearLayoutManager                 layoutManager;
     private MyOrderNoRecycleAdapter mAdapter;       //适配器
     private             List<ProvideInteractOrderInfo>                        mHZEntyties = new ArrayList<>();            //所有数据
@@ -62,7 +57,6 @@ public class FragmentMyOrderNo extends Fragment{
     private int lastVisibleIndex = 0;
     private LoadDataTask loadDataTask = null;
     private boolean mLoadDate = true;
-    private ItemTouchHelper mItemTouchHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,7 +77,7 @@ public class FragmentMyOrderNo extends Fragment{
      * 初始化界面
      */
     private void initLayout(View view) {
-        mRMJXRecycleView = (SwipeRecyclerView) view.findViewById(R.id.rv_no);
+        mRMJXRecycleView = (RecyclerView) view.findViewById(R.id.rv_no);
         //创建默认的线性LayoutManager
         layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayout.VERTICAL);
@@ -93,7 +87,7 @@ public class FragmentMyOrderNo extends Fragment{
         //创建并设置Adapter
         mAdapter = new MyOrderNoRecycleAdapter(mHZEntyties,mContext,mActivity);
         mRMJXRecycleView.setAdapter(mAdapter);
-        /*mAdapter.setOnItemClickListener(new MyOrderNoRecycleAdapter.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new MyOrderNoRecycleAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
                 Intent intent = new Intent();
@@ -105,8 +99,8 @@ public class FragmentMyOrderNo extends Fragment{
             public void onLongClick(int position) {
 
             }
-        });*/
-        initRecycleView();
+        });
+
         mRMJXRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -124,125 +118,6 @@ public class FragmentMyOrderNo extends Fragment{
         });
     }
 
-    void initRecycleView(){
-        mRMJXRecycleView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRMJXRecycleView) {
-            @Override
-            public void onItemClick(RecyclerView.ViewHolder vh) {
-                //Toast.makeText(mContext, datas.get(vh.getLayoutPosition()).getTitle(), Toast.LENGTH_SHORT).show();
-                /*Intent intent = new Intent();
-                intent.setClass(mContext,YLZXWebActivity.class);
-                startActivity(intent);*/
-            }
-
-            @Override
-            public void onItemLongClick(RecyclerView.ViewHolder vh) {
-                //判断被拖拽的是否是前两个，如果不是则执行拖拽
-                if (vh.getLayoutPosition() != 0 && vh.getLayoutPosition() != 1) {
-                    mItemTouchHelper.startDrag(vh);
-
-                    //获取系统震动服务
-                    Vibrator vib = (Vibrator) mActivity.getSystemService(Service.VIBRATOR_SERVICE);//震动70毫秒
-                    vib.vibrate(70);
-
-                }
-            }
-        });
-        mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
-
-            /**
-             * 是否处理滑动事件 以及拖拽和滑动的方向 如果是列表类型的RecyclerView的只存在UP和DOWN，如果是网格类RecyclerView则还应该多有LEFT和RIGHT
-             * @param recyclerView
-             * @param viewHolder
-             * @return
-             */
-            @Override
-            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
-                    final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN |
-                            ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
-                    final int swipeFlags = 0;
-                    return makeMovementFlags(dragFlags, swipeFlags);
-                } else {
-                    final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-                    final int swipeFlags = 0;
-//                    final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
-                    return makeMovementFlags(dragFlags, swipeFlags);
-                }
-            }
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                //得到当拖拽的viewHolder的Position
-                int fromPosition = viewHolder.getAdapterPosition();
-                //拿到当前拖拽到的item的viewHolder
-                int toPosition = target.getAdapterPosition();
-                if (fromPosition < toPosition) {
-                    for (int i = fromPosition; i < toPosition; i++) {
-                        Collections.swap(mHZEntyties, i, i + 1);
-                    }
-                } else {
-                    for (int i = fromPosition; i > toPosition; i--) {
-                        Collections.swap(mHZEntyties, i, i - 1);
-                    }
-                }
-                mAdapter.notifyItemMoved(fromPosition, toPosition);
-                return true;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-//                int position = viewHolder.getAdapterPosition();
-//                myAdapter.notifyItemRemoved(position);
-//                datas.remove(position);
-            }
-
-            /**
-             * 重写拖拽可用
-             * @return
-             */
-            @Override
-            public boolean isLongPressDragEnabled() {
-                return false;
-            }
-
-            /**
-             * 长按选中Item的时候开始调用
-             *
-             * @param viewHolder
-             * @param actionState
-             */
-            @Override
-            public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
-                if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
-                    viewHolder.itemView.setBackgroundColor(Color.LTGRAY);
-                }
-                super.onSelectedChanged(viewHolder, actionState);
-            }
-
-            /**
-             * 手指松开的时候还原
-             * @param recyclerView
-             * @param viewHolder
-             */
-            @Override
-            public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                super.clearView(recyclerView, viewHolder);
-                viewHolder.itemView.setBackgroundColor(0);
-            }
-        });
-
-        mItemTouchHelper.attachToRecyclerView(mRMJXRecycleView);
-
-        mRMJXRecycleView.setRightClickListener(new SwipeRecyclerView.OnRightClickListener() {
-            @Override
-            public void onRightClick(int position, String id) {
-                mHZEntyties.remove(position);
-//                myAdapter.notifyItemRemoved(position);
-                mAdapter.notifyDataSetChanged();
-                //Toast.makeText(mContext, " position = " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     private void initHandler() {
         mHandler = new Handler(){

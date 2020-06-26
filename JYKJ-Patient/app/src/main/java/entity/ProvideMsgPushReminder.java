@@ -18,9 +18,9 @@ public class ProvideMsgPushReminder implements java.io.Serializable {
 	private String senderUserName;//发送人姓名
 	private String receiverUserCode;//接收人编码
 	private String receiverUserName;//接收人姓名
-	private Integer msgType;//消息类型.4000101患者就诊;4000102诊后留言;4000103添加患者;4000104联盟消息;4000105医患圈消息;4000106紧急提醒;4000107患者签约;4000108系统消息
+	private Integer msgType;//消息类型.
 	private Integer msgOper;//消息操作
-	private Integer msgTimeInterval;//消息轮询时间间隔.单位:分钟.[使用消息推送(Eg.信鸽)方式时不需要]
+	private Integer msgTimeInterval;//消息轮询时间间隔.单位:分钟
 	private String msgContent;//消息内容
 	private Integer flagMsgRead;//消息是否已读.0:未读;1:已读;
 	private Integer flagMsgTop;//是否置顶消息.即首页中提醒.0:否;1:是;
@@ -36,12 +36,40 @@ public class ProvideMsgPushReminder implements java.io.Serializable {
 	private String msgTypeName;//消息类型.
 	private String msgOperName;//消息操作.
 
+	private int unreadMsgNum;//【未读】消息数量
+
+	public int getUnreadMsgNum() {
+		return unreadMsgNum;
+	}
+
+	public void setUnreadMsgNum(int unreadMsgNum) {
+		this.unreadMsgNum = unreadMsgNum;
+	}
 
 	private	String rowNum;
 	private	String pageNum;
 	private	String loginPatientPosition;
 	private	String requestClientType;
 	private	String searchPatientCode;
+
+	private	String operPatientCode;
+	private	String operPatientName;
+
+	public String getOperPatientCode() {
+		return operPatientCode;
+	}
+
+	public void setOperPatientCode(String operPatientCode) {
+		this.operPatientCode = operPatientCode;
+	}
+
+	public String getOperPatientName() {
+		return operPatientName;
+	}
+
+	public void setOperPatientName(String operPatientName) {
+		this.operPatientName = operPatientName;
+	}
 
 	public Integer getReminderId() {
 		return reminderId;

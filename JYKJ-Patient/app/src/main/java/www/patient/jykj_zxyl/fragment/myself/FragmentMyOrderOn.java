@@ -28,7 +28,6 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.MainActivity;
 import www.patient.jykj_zxyl.activity.home.OrderMessage_OrderPayActivity;
 import www.patient.jykj_zxyl.activity.myself.MyOrderActivity;
-import www.patient.jykj_zxyl.activity.myself.WithdrawActivity;
 import www.patient.jykj_zxyl.activity.ylzx.YLZXWebActivity;
 import www.patient.jykj_zxyl.adapter.RMJXRecycleAdapter;
 import www.patient.jykj_zxyl.adapter.myself.MyOrderOnRecycleAdapter;
@@ -55,7 +54,7 @@ public class FragmentMyOrderOn extends Fragment {
     private             List<MyOrderProcess>                        mHZEntyties = new ArrayList<>();            //所有数据
     private int mPagenum = 1;
     private LoadDataTask loadDataTask;
-    boolean mLoadDate = true;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,22 +83,19 @@ public class FragmentMyOrderOn extends Fragment {
         //创建并设置Adapter
         mAdapter = new MyOrderOnRecycleAdapter(mHZEntyties,mContext,mActivity);
         mRMJXRecycleView.setAdapter(mAdapter);
-
         mAdapter.setOnItemClickListener(new MyOrderOnRecycleAdapter.OnItemClickListener() {
             @Override
-            public void onClick(int position,View parview) {
+            public void onClick(int position) {
                 Intent intent = new Intent();
-                MyOrderProcess parbean = mHZEntyties.get(position);
+                View parview = getView();
                 switch (parview.getId()){
                     case R.id.item_fragmentYLZX_rmjxLayout:
+                        MyOrderProcess parbean = (MyOrderProcess)getView().getTag();
                         ProvideInteractOrderInfo parorder = new ProvideInteractOrderInfo();
                         parorder.setOrderCode(parbean.getOrderCode());
                         startActivity(new Intent(mActivity, OrderMessage_OrderPayActivity.class).putExtra("provideInteractOrderInfo",parorder));
                         break;
                     case  R.id.back_btn:
-                        ProvideInteractOrderInfo parbackorder = new ProvideInteractOrderInfo();
-                        parbackorder.setOrderCode(parbean.getOrderCode());
-                        startActivity(new Intent(mActivity, WithdrawActivity.class).putExtra("provideInteractOrderInfo",parbackorder));
                         break;
                 }
 
@@ -108,24 +104,8 @@ public class FragmentMyOrderOn extends Fragment {
             }
 
             @Override
-            public void onLongClick(int position,View view) {
+            public void onLongClick(int position) {
 
-            }
-        });
-
-        mRMJXRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (mLoadDate) {
-                        int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
-                        if (lastVisiblePosition >= layoutManager.getItemCount() - 1) {
-                            mPagenum++;
-                            setData();
-                        }
-                    }
-                }
             }
         });
     }
@@ -164,8 +144,7 @@ public class FragmentMyOrderOn extends Fragment {
         querycond.setLoginPatientPosition(mApp.loginDoctorPosition);
         querycond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         querycond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        querycond.setPageNum(String.valueOf(mPagenum));
-        querycond.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
+        querycond.setPageNum(String.valueOf(IConstant.PGAE_SIZE));
         querycond.setRequestClientType("1");
         loadDataTask = new LoadDataTask(querycond);
         loadDataTask.execute();
@@ -178,7 +157,6 @@ public class FragmentMyOrderOn extends Fragment {
         }
         @Override
         protected List<MyOrderProcess> doInBackground(Void... voids) {
-            mLoadDate = false;
             List<MyOrderProcess> retlist = new ArrayList();
             try {
                 querycond.setPageNum(String.valueOf(mPagenum));
@@ -204,7 +182,6 @@ public class FragmentMyOrderOn extends Fragment {
                     mPagenum = mPagenum - 1;
                 }
             }
-            mLoadDate = true;
         }
     }
 

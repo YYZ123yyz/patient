@@ -54,9 +54,7 @@ public class JDDA_JWBS_BRTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_BRTXAd
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         viewHolder.mBM.setText(datas.get(position).getRecordName());
-        if(null!=datas.get(position).getTreatmentDate()) {
-            viewHolder.mDate.setText(Util.dateToStrDate(datas.get(position).getTreatmentDate()));
-        }
+        viewHolder.mDate.setText(Util.dateToStrDate(datas.get(position).getTreatmentDate()));
 //        viewHolder.mType.setText(datas.get(position).getRecordTypeName());
         viewHolder.mContent.setText(datas.get(position).getRecordContent());
 

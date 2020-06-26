@@ -14,6 +14,52 @@ public class ProvideBasicsRegion implements java.io.Serializable {
 	private String region_parent_id;//地区父id.[省、自治区、直辖市为:-1]
 	private Integer region_level;//地区级别 1-省、自治区、直辖市 2-地级市、地区、自治州、盟 3-市辖区、县级市、县
 
+	private String loginPatientPosition;
+	private String requestClientType;
+	private String operPatientCode;
+	private String operPatientName;
+	private String regionCode;
+
+	public String getLoginPatientPosition() {
+		return loginPatientPosition;
+	}
+
+	public void setLoginPatientPosition(String loginPatientPosition) {
+		this.loginPatientPosition = loginPatientPosition;
+	}
+
+	public String getRequestClientType() {
+		return requestClientType;
+	}
+
+	public void setRequestClientType(String requestClientType) {
+		this.requestClientType = requestClientType;
+	}
+
+	public String getOperPatientCode() {
+		return operPatientCode;
+	}
+
+	public void setOperPatientCode(String operPatientCode) {
+		this.operPatientCode = operPatientCode;
+	}
+
+	public String getOperPatientName() {
+		return operPatientName;
+	}
+
+	public void setOperPatientName(String operPatientName) {
+		this.operPatientName = operPatientName;
+	}
+
+	public String getRegionCode() {
+		return regionCode;
+	}
+
+	public void setRegionCode(String regionCode) {
+		this.regionCode = regionCode;
+	}
+
 	public Integer getBasicsRegionId() {
 		return basicsRegionId;
 	}

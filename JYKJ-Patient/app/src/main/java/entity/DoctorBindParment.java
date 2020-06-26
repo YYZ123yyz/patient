@@ -11,6 +11,25 @@ public class DoctorBindParment {
     private             String                  bindingDoctorName;
     private             String                  bindingApplyInfo;
 
+    private             String                  doctorQrCode;
+    private             String                  applyReason;
+
+    public String getDoctorQrCode() {
+        return doctorQrCode;
+    }
+
+    public void setDoctorQrCode(String doctorQrCode) {
+        this.doctorQrCode = doctorQrCode;
+    }
+
+    public String getApplyReason() {
+        return applyReason;
+    }
+
+    public void setApplyReason(String applyReason) {
+        this.applyReason = applyReason;
+    }
+
     public String getLoginPatientPosition() {
         return loginPatientPosition;
     }

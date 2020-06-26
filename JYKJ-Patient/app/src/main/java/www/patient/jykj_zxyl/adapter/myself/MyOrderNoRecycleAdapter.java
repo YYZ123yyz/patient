@@ -1,7 +1,6 @@
 package www.patient.jykj_zxyl.adapter.myself;
 
 import android.content.Context;
-import android.content.Entity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,12 +16,10 @@ import entity.mySelf.ProvideInteractOrderInfo;
 import entity.wdzs.ProvideInteractPatientInterrogation;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.MainActivity;
-import www.patient.jykj_zxyl.activity.home.OrderMessage_OrderPayActivity;
 import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WZXXOrderActivity;
 import www.patient.jykj_zxyl.activity.myself.MyOrderActivity;
 import www.patient.jykj_zxyl.util.DateUtils;
-import www.patient.jykj_zxyl.util.StrUtils;
 
 /**
  * 我的订单未完成
@@ -101,17 +98,10 @@ public class MyOrderNoRecycleAdapter extends RecyclerView.Adapter<MyOrderNoRecyc
         viewHolder.pay_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                entity.ProvideInteractOrderInfo provideInteractOrderInfo = new entity.ProvideInteractOrderInfo();
-                //mProvideInteractPatientInterrogation.setDoctorCode(parbean.getDoctorCode());
-                //mProvideInteractPatientInterrogation.setDoctorName(parbean.getDoctorName());
-                provideInteractOrderInfo.setOrderCode(parbean.getOrderCode());
-                //mProvideInteractPatientInterrogation.setIProvideInteractOrderInfo
-                /*Intent parintent = new Intent(mContext, WZXXOrderActivity.class);
-                String parorderid = parbean.getOrderCode();
-                String parodertype = StrUtils.defaultStr(parbean.getTreatmentType());
-                parintent.putExtra("provideInteractPatientInterrogation",mProvideInteractPatientInterrogation).putExtra("orderID",parorderid).putExtra("orderType",parodertype);
-                mContext.startActivity(parintent);*/
-                mContext.startActivity(new Intent(mActivity, OrderMessage_OrderPayActivity.class).putExtra("provideInteractOrderInfo",provideInteractOrderInfo));
+                ProvideInteractPatientInterrogation mProvideInteractPatientInterrogation = new ProvideInteractPatientInterrogation();
+                mProvideInteractPatientInterrogation.setDoctorCode(parbean.getDoctorCode());
+                mProvideInteractPatientInterrogation.setDoctorName(parbean.getDoctorName());
+                mContext.startActivity(new Intent(mContext, WZXXOrderActivity.class).putExtra("provideInteractPatientInterrogation",mProvideInteractPatientInterrogation).putExtra("orderID",parbean.getOrderCode()).putExtra("orderType",parbean.getTreatmentType()));
             }
         });
         viewHolder.find_doc_btn.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +124,6 @@ public class MyOrderNoRecycleAdapter extends RecyclerView.Adapter<MyOrderNoRecyc
     //自定义的ViewHolder，持有每个Item的的所有界面元素
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        public LinearLayout ll_item;
         public LinearLayout mClickLinearLayout;                     //整个布局，用来监听点击事件
         public TextView mSuType;                                //类型
         public TextView price;                                  //金额
@@ -145,7 +134,6 @@ public class MyOrderNoRecycleAdapter extends RecyclerView.Adapter<MyOrderNoRecyc
 
         public ViewHolder(View view){
             super(view);
-            ll_item = view.findViewById(R.id.ll_item);
             mClickLinearLayout = (LinearLayout) view.findViewById(R.id.item_fragmentYLZX_rmjxLayout);
             mDate = (TextView)view.findViewById(R.id.order_date);
             mSuType = (TextView)view.findViewById(R.id.treat_type);

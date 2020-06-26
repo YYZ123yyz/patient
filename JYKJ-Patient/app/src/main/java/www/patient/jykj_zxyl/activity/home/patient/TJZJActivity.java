@@ -159,9 +159,36 @@ public class TJZJActivity extends AppCompatActivity {
         getBasicDate(50001);
         getBasicDate(50003);
         Map<Integer,List<ProvideBasicsDomain>> gBasicDate = mApp.gBasicDate;
-        //通过定位获取地区编码
-        getDate();
+        //通过定位地区编码获取系统定位编码
+        searchBasicsRegionByRegionCode();
+//        getDate();
 
+    }
+
+    /**
+     * 根据[行政地区编号]获取[地区主键编号]
+     */
+    private void searchBasicsRegionByRegionCode() {
+        new Thread() {
+            public void run() {
+//                //提交数据
+                try {
+                    ProvideBasicsRegion provideBasicsRegion = new ProvideBasicsRegion();
+                    provideBasicsRegion.setLoginPatientPosition(mApp.loginDoctorPosition);
+                    provideBasicsRegion.setRequestClientType("1");
+                    provideBasicsRegion.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                    provideBasicsRegion.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                    provideBasicsRegion.setRegionCode(mApp.gGDLocation);
+                    String str = new Gson().toJson(provideBasicsRegion);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + str, Constant.SERVICEURL + "patientDataControlle/searchBasicsRegionByRegionCode");
+                } catch (Exception e) {
+                    NetRetEntity retEntity = new NetRetEntity();
+                    retEntity.setResCode(0);
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
+                }
+                mHandler.sendEmptyMessage(50);
+            }
+        }.start();
     }
 
     /**
@@ -264,6 +291,31 @@ public class TJZJActivity extends AppCompatActivity {
                             mYSZCtAdapter.setDate(mProvideBasicsDominYSZC);
                         }
                         break;
+
+                    case 50:
+                        if (mNetRetStr == null || "".equals(mNetRetStr))
+                        {
+                            cacerProgress();
+                            Toast.makeText(mContext,"网络故障",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 0)
+                        {
+                           Toast.makeText(mContext,"定位失败，请手动选择区域",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            ProvideBasicsRegion provideBasicsRegion = JSON.parseObject(netRetEntity.getResJsonData(),ProvideBasicsRegion.class);
+//                            if(provideBasicsRegion.getRegion_level() == 1)
+//                                provideViewDoctorExpertRecommend.setSearchProvince(provideBasicsRegion.getRegion_id());
+//                            if(provideBasicsRegion.getRegion_level() == 2)
+                            provideViewDoctorExpertRecommend.setSearchArea(provideBasicsRegion.getRegion_id());
+//                            if(provideBasicsRegion.getRegion_level() == 3)
+//                                provideViewDoctorExpertRecommend.setSearchArea(provideBasicsRegion.getRegion_id());
+                            getDate();
+                        }
+                        break;
                 }
             }
         };
@@ -328,6 +380,7 @@ public class TJZJActivity extends AppCompatActivity {
 
         mChoiceRegion = (LinearLayout)this.findViewById(R.id.li_activityJoinDoctorsUnion_choiceRegionText);
         mChoiceRegionText = (TextView)this.findViewById(R.id.tv_activityJoinDoctorsUnion_choiceRegionText);
+        mChoiceRegionText.setText(mApp.gGDLocationName);
         mChoiceRegion.setOnClickListener(new ButtonClick());
 
         mChoiceHospital = (LinearLayout)this.findViewById(R.id.li_activityJoinDoctorsUnion_choiceHospitalLayout);

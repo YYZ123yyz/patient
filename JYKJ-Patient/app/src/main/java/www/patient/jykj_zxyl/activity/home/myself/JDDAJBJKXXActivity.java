@@ -701,7 +701,7 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            Toast.makeText(mContext,submsg,Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext,submsg,Toast.LENGTH_SHORT);
             if(aBoolean){
                 finish();
             }

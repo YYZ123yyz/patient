@@ -75,15 +75,23 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         String result = "";
         switch (baseResp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
-                String code = ((SendAuth.Resp) baseResp).code;
-                SharedPreferences WxSp = getApplicationContext().getSharedPreferences(PrefParams.spName, Context.MODE_PRIVATE);
-                SharedPreferences.Editor WxSpEditor = WxSp.edit();
-                WxSpEditor.putString(PrefParams.CODE,code);
-                WxSpEditor.apply();
-                Intent intent = new Intent();
-                intent.setAction("authlogin");
-                WXEntryActivity.this.sendBroadcast(intent);
-                finish();
+                //微信登录
+                if (baseResp.getType() == 1)
+                {
+                    String code = ((SendAuth.Resp) baseResp).code;
+                    SharedPreferences WxSp = getApplicationContext().getSharedPreferences(PrefParams.spName, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor WxSpEditor = WxSp.edit();
+                    WxSpEditor.putString(PrefParams.CODE,code);
+                    WxSpEditor.apply();
+                    Intent intent = new Intent();
+                    intent.setAction("authlogin");
+                    WXEntryActivity.this.sendBroadcast(intent);
+                    finish();
+                }
+                if (baseResp.getType() == 2)
+                {
+                    finish();
+                }
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 result = "发送取消";

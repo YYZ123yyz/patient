@@ -75,8 +75,18 @@ public class FragmentShouYe_XTTZ extends Fragment {
         mApp = (JYKJApplication) getActivity().getApplication();
         initLayout(v);
         initHandler();
-        getMessageInfo();
+
         return v;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mList.clear();
+        mPageNum = 1;
+        mRowNum = 10;
+        getMessageInfo();
     }
 
     /**

@@ -12,7 +12,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import android.widget.TextView;
-import www.patient.jykj_zxyl.activity.myself.setting.*;
+import www.patient.jykj_zxyl.activity.myself.setting.AboutActivity;
+import www.patient.jykj_zxyl.activity.myself.setting.OpeaPassWordActivity;
+import www.patient.jykj_zxyl.activity.myself.setting.ServiceHotlineActivity;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.LoginActivity;
 import www.patient.jykj_zxyl.activity.myself.setting.AboutActivity;
@@ -33,8 +35,6 @@ public class SettingActivity extends AppCompatActivity {
     private                 JYKJApplication             mApp;
     private                 LinearLayout                mAboutLayout;                   //关于我们
     private                 LinearLayout                mServiceHolting;                //客服热线
-    private   LinearLayout upver_layout;
-    private LinearLayout feedback_layout;
     private                 LinearLayout                mOperPassWord;                  //修改密码
     private LinearLayout clear_app_cache;//清除缓存
     private TextView cache_size;
@@ -76,12 +76,6 @@ public class SettingActivity extends AppCompatActivity {
 
         version_name = findViewById(R.id.version_name);
         cache_size = findViewById(R.id.cache_size);
-
-        feedback_layout = findViewById(R.id.feedback_layout);
-        feedback_layout.setOnClickListener(new ButtonClick());
-        upver_layout = findViewById(R.id.upver_layout);
-        upver_layout.setOnClickListener(new ButtonClick());
-        findViewById(R.id.back).setOnClickListener(new ButtonClick());
     }
 
 
@@ -118,24 +112,10 @@ public class SettingActivity extends AppCompatActivity {
                                     //按下确定键后的事件
                                     MyUtil.cleanExternalCache(mContext);
                                     MyUtil.cleanInternalCache(mContext);
-                                    try {
-                                        cache_size.setText(MyUtil.getAllCacheSize(mContext));
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                    //Intent theint = new Intent(SettingActivity.this,LoginActivity.class);
-                                    //SettingActivity.this.startActivity(theint);
+                                    Intent theint = new Intent(SettingActivity.this,LoginActivity.class);
+                                    SettingActivity.this.startActivity(theint);
                                 }
                             }).setNegativeButton("取消",null).show();
-                    break;
-                case R.id.feedback_layout:
-                    startActivity(new Intent(SettingActivity.this, FeedbackActvity.class));
-                    break;
-                case R.id.upver_layout:
-                    startActivity(new Intent(SettingActivity.this, UpdateVersionShowActivity.class));
-                    break;
-                case R.id.back:
-                    finish();
                     break;
             }
         }

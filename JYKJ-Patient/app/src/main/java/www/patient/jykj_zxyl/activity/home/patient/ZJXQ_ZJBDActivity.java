@@ -1,7 +1,9 @@
 package www.patient.jykj_zxyl.activity.home.patient;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,6 +44,9 @@ public class ZJXQ_ZJBDActivity extends AppCompatActivity {
     private         EditText                    bdsq;
     private         TextView                    tj;
 
+    private         String                      mUrl;                   //url
+    private         String                      mDoctorQRCode;          //医生二维码
+
     private         ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend;
 
     private void initView() {
@@ -63,6 +68,8 @@ public class ZJXQ_ZJBDActivity extends AppCompatActivity {
         mActivity = this;
         mApp = (JYKJApplication) getApplication();
         provideViewDoctorExpertRecommend = (ProvideViewDoctorExpertRecommend)getIntent().getSerializableExtra("provideViewDoctorExpertRecommend");
+        mUrl = getIntent().getStringExtra("url");
+        mDoctorQRCode = getIntent().getStringExtra("doctorQRCode");
         initView();
         initHandler();
     }
@@ -79,6 +86,7 @@ public class ZJXQ_ZJBDActivity extends AppCompatActivity {
                         cacerProgress();
                         NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
                         Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        ZJXQ_ZJBDActivity.this.finish();
                         break;
 
                 }
@@ -120,7 +128,10 @@ public class ZJXQ_ZJBDActivity extends AppCompatActivity {
                     finish();
                     break;
                 case R.id.tj:
-                    commit();
+                    if (mUrl == null || "".equals(mUrl))
+                        commit();
+                    else
+                        commitQRCode();
                     break;
 
 
@@ -129,7 +140,35 @@ public class ZJXQ_ZJBDActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * 扫码绑定
+     */
+    private void commitQRCode() {
+        DoctorBindParment doctorBindParment = new DoctorBindParment();
+        doctorBindParment.setLoginPatientPosition(mApp.loginDoctorPosition);
+        doctorBindParment.setRequestClientType("1");
+        doctorBindParment.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        doctorBindParment.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        doctorBindParment.setDoctorQrCode(mDoctorQRCode);
+        doctorBindParment.setApplyReason(bdsq.getText().toString());
+        new Thread(){
+            public void run(){
+                try {
 
+                    String string = new Gson().toJson(doctorBindParment);
+                    String url = Constant.SERVICEURL+mUrl;
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, url);
+                } catch (Exception e) {
+                    NetRetEntity retEntity = new NetRetEntity();
+                    retEntity.setResCode(0);
+                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    mNetRetStr = new Gson().toJson(retEntity);
+                    e.printStackTrace();
+                }
+                mHandler.sendEmptyMessage(0);
+            }
+        }.start();
+    }
 
     /**
      * 绑定

@@ -53,7 +53,7 @@ import www.patient.jykj_zxyl.util.Util;
 
 
 /**
- * 医患互动fragment
+ * 消息中心fragment
  * Created by admin on 2016/6/1.
  */
 public class FragmentYHHD extends Fragment {
@@ -102,7 +102,6 @@ public class FragmentYHHD extends Fragment {
     private List<String> mTitles;
 
     private FragmentShouYe_HYHD mFragmentShouYe_HYHD;
-
 
 
 
@@ -385,6 +384,14 @@ public class FragmentYHHD extends Fragment {
     public void getYHHDMessage() {
         if (mFragmentShouYe_HYHD != null)
             mFragmentShouYe_HYHD.getMessageList();
+    }
+
+    /**
+     * 设置fragment下标
+     * @param childFragmentIndex
+     */
+    public void setViewPagerIndex(int childFragmentIndex) {
+        pager.setCurrentItem(childFragmentIndex);
     }
 
 

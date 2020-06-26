@@ -150,7 +150,7 @@ public class MyOrderOnRecycleAdapter extends RecyclerView.Adapter<MyOrderOnRecyc
             viewHolder.mClickLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnItemClickListener.onClick(position,view);
+                    mOnItemClickListener.onClick(position);
                 }
             });
 
@@ -158,17 +158,16 @@ public class MyOrderOnRecycleAdapter extends RecyclerView.Adapter<MyOrderOnRecyc
 
                 @Override
                 public boolean onLongClick(View view) {
-                    mOnItemClickListener.onLongClick(position,view);
+                    mOnItemClickListener.onLongClick(position);
                     return false;
                 }
             });
             viewHolder.back_btn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onClick(position,v);
+                    mOnItemClickListener.onClick(position);
                 }
             });
-            viewHolder.back_btn.setTag(parbean);
             viewHolder.mClickLinearLayout.setTag(parbean);
         }
 
@@ -219,8 +218,8 @@ public class MyOrderOnRecycleAdapter extends RecyclerView.Adapter<MyOrderOnRecyc
 
 
     public interface OnItemClickListener{
-        void onClick(int position,View view);
-        void onLongClick(int position,View view);
+        void onClick(int position);
+        void onLongClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener ){

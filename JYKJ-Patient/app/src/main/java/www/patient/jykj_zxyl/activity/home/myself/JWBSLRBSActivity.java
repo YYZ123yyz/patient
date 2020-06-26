@@ -456,7 +456,7 @@ public class JWBSLRBSActivity extends AppCompatActivity {
             if(aBoolean){
 
             }else{
-                Toast.makeText(mContext,repmsg,Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,repmsg,Toast.LENGTH_SHORT);
             }
             opeimgcount = opeimgcount+1;
             if(opeimgcount>=hasimgcount){
@@ -562,7 +562,7 @@ public class JWBSLRBSActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            Toast.makeText(mContext,submsg,Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext,submsg,Toast.LENGTH_SHORT);
             if(aBoolean){
                 finish();
             }
