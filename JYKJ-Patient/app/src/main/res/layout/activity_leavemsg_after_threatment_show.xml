@@ -25,36 +25,35 @@
         </LinearLayout>
         <TextView
                 android:text="诊后留言"
-                android:textSize="10pt"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:textColor="@color/writeColor"
                 android:layout_height="wrap_content"/>
     </RelativeLayout>
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/gray_normal"
-              android:textSize="8dp" android:text="患者留言消息"></TextView>
+              android:text="患者留言消息"></TextView>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp"
                   android:layout_marginRight="10dp" android:background="@color/writeColor" android:orientation="horizontal">
-        <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:textSize="8dp"
+        <TextView android:layout_width="80dp" android:layout_height="wrap_content"
                   android:text="图文就诊" android:id="@+id/tv_zhly_treatment_type"></TextView>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp"
-                  android:textSize="8dp" android:text="2020_04-10 08:00" android:id="@+id/tv_zhly_date"></TextView>
+                  android:text="2020_04-10 08:00" android:id="@+id/tv_zhly_date"></TextView>
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp"
                   android:layout_marginRight="10dp" android:background="@color/writeColor" android:orientation="horizontal">
-        <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:textSize="8dp"
+        <TextView android:layout_width="80dp" android:layout_height="wrap_content"
                   android:text="联系电话"></TextView>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp"
-                  android:textSize="8dp" android:text="16584932149" android:id="@+id/tv_zhly_linkphone"></TextView>
+                  android:text="16584932149" android:id="@+id/tv_zhly_linkphone"></TextView>
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
                   android:background="@color/writeColor" android:layout_marginTop="10dp">
-        <TextView android:layout_width="match_parent" android:layout_height="50dp" android:lines="5" android:textSize="8dp"
+        <TextView android:layout_width="match_parent" android:layout_height="50dp" android:lines="5"
                   android:text="张医生，您好。我把之前的检查结果给您看看，麻烦您帮我看看有什么问题吗？谢谢您。" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:id="@+id/tv_zhly_content"></TextView>
     </LinearLayout>
 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp"
               android:orientation="vertical">
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="8dp" android:text="留言图片（检查、检验单等）">
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="留言图片（检查、检验单等）">
 
     </TextView>
 </LinearLayout>
@@ -63,22 +62,22 @@
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp"
                   android:background="@color/writeColor" android:orientation="vertical">
 <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@color/btn_gray_normal"
-          android:paddingStart="3dp" android:textColor="@color/gray_normal" android:textSize="8dp" android:text="医生回复"></TextView>
+          android:paddingStart="3dp" android:textColor="@color/gray_normal" android:text="医生回复"></TextView>
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:padding="2dp">
-            <TextView android:layout_width="50dp" android:layout_height="wrap_content" android:text="回复医生：" android:textSize="8dp"></TextView>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="刘医生" android:textSize="8dp" android:id="@+id/tv_zhly_replydoctor"></TextView>
+            <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="回复医生：" ></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="刘医生" android:id="@+id/tv_zhly_replydoctor"></TextView>
         </LinearLayout>
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:padding="2dp">
-            <TextView android:layout_width="50dp" android:layout_height="wrap_content" android:text="回复日期：" android:textSize="8dp"></TextView>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2020/06/10 8:00:00" android:textSize="8dp" android:id="@+id/tv_zhly_replydate"></TextView>
+            <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="回复日期：" ></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2020/06/10 8:00:00" android:id="@+id/tv_zhly_replydate"></TextView>
         </LinearLayout>
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:padding="2dp">
-            <TextView android:layout_width="50dp" android:layout_height="wrap_content" android:text="消息类型：" android:textSize="8dp"></TextView>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="重大紧急" android:textSize="8dp" android:textColor="@color/color_red" android:id="@+id/tv_zhly_replytype"></TextView>
+            <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="消息类型：" ></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="重大紧急" android:textColor="@color/color_red" android:id="@+id/tv_zhly_replytype"></TextView>
         </LinearLayout>
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:padding="2dp">
             <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:lines="5" android:textColor="@color/btn_gray_normal"
-                      android:text="您好，我已经看过你的检查报告了，没什么问题，恢复得挺好的，以后多锻炼，祝健康。" android:textSize="8dp" android:id="@+id/tv_zhly_replycontent"></TextView>
+                      android:text="您好，我已经看过你的检查报告了，没什么问题，恢复得挺好的，以后多锻炼，祝健康。" android:id="@+id/tv_zhly_replycontent"></TextView>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

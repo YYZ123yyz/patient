@@ -25,14 +25,13 @@
         </LinearLayout>
         <TextView
                 android:text="诊后留言"
-                android:textSize="10pt"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:textColor="@color/writeColor"
                 android:layout_height="wrap_content"/>
     </RelativeLayout>
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-              android:textSize="8pt" android:text="患者留言消息"></TextView>
+              android:text="患者留言消息"></TextView>
     <EditText android:layout_width="match_parent" android:layout_height="60dp" android:layout_marginLeft="10dp" android:lines="5" android:layout_marginRight="10dp"
     android:hint="请输入你的留言内容（不超过300字）。" android:background="@drawable/bg_lrbs_zsedit" android:id="@+id/tv_lemsg_content"></EditText>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
@@ -48,7 +47,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="上传凭证"
-                    android:textSize="8pt"
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/tabColor_nomal"
                     android:layout_gravity="center_vertical"
@@ -67,7 +65,6 @@
                     android:layout_marginRight="10dp"
                     android:text="可上传的检查资料、病例照片、医院化验单、报告单、处方单等\n（图片最多不超过5张）"
                     android:textColor="#ff999999"
-                    android:textSize="7pt"
             />
             <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
@@ -79,9 +76,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:text="图片仅本人和咨询医生可见"
-                    android:layout_marginTop="8pt"
                     android:textColor="#ffd31515"
-                    android:textSize="13sp"
             />
             <TextView
                     android:layout_width="match_parent"

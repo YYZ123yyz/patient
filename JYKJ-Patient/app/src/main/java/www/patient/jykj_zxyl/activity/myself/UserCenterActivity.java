@@ -84,7 +84,7 @@ public class UserCenterActivity extends AppCompatActivity {
     private                 LinearLayout                mUserHeadLayout;                //用户头像
     private                 LinearLayout                mChoiceSexLayout;           //选择性别布局
     private                 LinearLayout                mChoiceBirthLayout;             //选择生日布局
-//    private                 TextView                    mUserSexText;                   //用户性别
+    //    private                 TextView                    mUserSexText;                   //用户性别
     private                 TextView                    mUserBirthDayText;              //用户生日
 
     private                 LinearLayout                mChoiceRegionLayout;            //选择区域布局
@@ -99,7 +99,7 @@ public class UserCenterActivity extends AppCompatActivity {
     private                 List<ProvideHospitalInfo>   mProvideHospitalInfos = new ArrayList<>();              //获取到的医院列表
     private                 String[]                    mProvideHospitalNameInfos;                              //医院对应的名称列表
 
-//    private                 LinearLayout                mChoiceDepartmentLayout;                                  //选择一级科室布局
+    //    private                 LinearLayout                mChoiceDepartmentLayout;                                  //选择一级科室布局
 //    private                 TextView                    mChoiceDepartmentText;                                    //选择二级科室
 //
 //    private                 LinearLayout                mChoiceDepartmentSecondLayout;                              //选择二级科室布局
@@ -115,7 +115,7 @@ public class UserCenterActivity extends AppCompatActivity {
 
     private                 EditText                    mUserNameText;                                                  //用户名
 
-//    private                 TextView                    mUserTitleName;                                                 //医生职称
+    //    private                 TextView                    mUserTitleName;                                                 //医生职称
 //    private                 EditText                    mAddressEdit;                                                   //通讯地址
 //    private                 EditText                    mEmalEdit;                                                      //邮箱
     private                 EditText                    mSynopsisEdit;                                                      //个人简介
@@ -136,7 +136,7 @@ public class UserCenterActivity extends AppCompatActivity {
     private                 ProvideViewSysUserPatientInfoAndRegion  mProvideViewSysUserPatientInfoAndRegion;
 
 
-//    private                 ProvideViewSysUserDoctorInfoAndHospital  mProvideViewSysUserDoctorInfoAndHospital = new ProvideViewSysUserDoctorInfoAndHospital();  //医生信息
+    //    private                 ProvideViewSysUserDoctorInfoAndHospital  mProvideViewSysUserDoctorInfoAndHospital = new ProvideViewSysUserDoctorInfoAndHospital();  //医生信息
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,6 +169,7 @@ public class UserCenterActivity extends AppCompatActivity {
                         else
                         {
                             mProvideViewSysUserPatientInfoAndRegion = JSON.parseObject(netRetEntity.getResJsonData(),ProvideViewSysUserPatientInfoAndRegion.class);
+                            mApp.mProvideViewSysUserPatientInfoAndRegion = mProvideViewSysUserPatientInfoAndRegion;
                             setLayoutDate();
                         }
 
@@ -424,11 +425,11 @@ public class UserCenterActivity extends AppCompatActivity {
                     upbean.setCity(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getCity()));
                     upbean.setProvince(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getProvince()));
                     upbean.setAddress(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getAddress()));
-                    upbean.setArea(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getArea()));
+                    upbean.setArea(StrUtils.defaultStr(mChoiceRegionID));
                     if (mUserHeadBitmap != null)
                         upbean.setBase64ImgData((URLEncoder.encode("data:image/jpg;base64,"+BitmapUtil.bitmaptoString(mUserHeadBitmap))));
-                   String str = new Gson().toJson(upbean);
-                   mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+str,Constant.SERVICEURL+"patientPersonalSetControlle/operUserPatientInfo");
+                    String str = new Gson().toJson(upbean);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+str,Constant.SERVICEURL+"patientPersonalSetControlle/operUserPatientInfo");
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
                     if (netRetEntity.getResCode() == 1) {
                         isupsuccess = true;
@@ -463,7 +464,7 @@ public class UserCenterActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                    mHandler.sendEmptyMessage(3);
+                mHandler.sendEmptyMessage(3);
 
             }
         }.start();
@@ -814,7 +815,7 @@ public class UserCenterActivity extends AppCompatActivity {
 //        new Thread(){
 //            public void run(){
 //                try {
-                    //获取医院数据,判断区域级别
+        //获取医院数据,判断区域级别
 //                    if (mProvideViewSysUserDoctorInfoAndHospital.getArea() != null && !"".equals(mProvideViewSysUserDoctorInfoAndHospital.getArea()))
 //                    {
 //                        mChoiceRegionLevel = 3;

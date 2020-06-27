@@ -21,6 +21,7 @@ import java.util.TimerTask;
 
 import entity.hzgl.BindPatientGetVCodeParment;
 import entity.mySelf.OperPassWordParment;
+import entity.mySelf.UpPasswordInfo;
 import entity.mySelf.conditions.QueryPatientSmsCond;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
@@ -50,7 +51,7 @@ public class OpeaPassWordActivity extends AppCompatActivity {
 
     private                 TextView                    mgetVCodeText;                      //获取验证码
     private                 String                      bindingSmsVerifyTokenData;          //绑定所需短信验证Token值
-    private                 String                      bindingSmsVerifyData;               	//绑定短信验证码
+    private                 String                      bindingSmsVerifyData;                   //绑定短信验证码
     private                 int                             mTime = 60;
 
     private                 EditText                    mVCodeEdit;                         //短信验证码
@@ -191,15 +192,17 @@ public class OpeaPassWordActivity extends AppCompatActivity {
      * 提交
      */
     private void commit() {
-        OperPassWordParment operPassWordParment = new OperPassWordParment();
-        operPassWordParment.setLoginDoctorPosition(mApp.loginDoctorPosition);
-        operPassWordParment.setOperDoctorCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        operPassWordParment.setOperDoctorName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        UpPasswordInfo operPassWordParment = new UpPasswordInfo();
+        operPassWordParment.setLoginPatientPosition(mApp.loginDoctorPosition);
+        operPassWordParment.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        operPassWordParment.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         operPassWordParment.setOldPassWord(mOldPassWordEdit.getText().toString());
         operPassWordParment.setNewPassWord(mNewPassWordEdit.getText().toString());
         operPassWordParment.setBindingSmsVerifyTokenData(bindingSmsVerifyTokenData);
         operPassWordParment.setSendUserLinkPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
         operPassWordParment.setBindingSmsVerifyData(mVCodeEdit.getText().toString());
+        operPassWordParment.setRequestClientType("1");
+
 
         if (mOldPassWordEdit.getText().toString() == null || "".equals(mOldPassWordEdit.getText().toString()))
         {
@@ -211,11 +214,11 @@ public class OpeaPassWordActivity extends AppCompatActivity {
             Toast.makeText(mContext,"请填写新密码",Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!mOldPassWordEdit.getText().toString().equals(mNewPassWordEdit.getText().toString()))
+        /*if (!mOldPassWordEdit.getText().toString().equals(mNewPassWordEdit.getText().toString()))
         {
             Toast.makeText(mContext,"两次输入的密码不一致",Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
         if (mVCodeEdit.getText().toString() == null || "".equals(mVCodeEdit.getText().toString()))
         {
             Toast.makeText(mContext,"请输入短信验证码",Toast.LENGTH_SHORT).show();
@@ -228,7 +231,7 @@ public class OpeaPassWordActivity extends AppCompatActivity {
                     //实体转JSON字符串
                     String str = new Gson().toJson(operPassWordParment);
                     //获取用户数据
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+str,Constant.SERVICEURL+"/doctorPersonalSetControlle/operUpdUserPassWord");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+str,Constant.SERVICEURL+"/patientPersonalSetControlle/operUpdUserPassWord");
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
                     if (netRetEntity.getResCode() == 0)
                     {
@@ -279,13 +282,19 @@ public class OpeaPassWordActivity extends AppCompatActivity {
                     String str = new Gson().toJson(quersmscond);
                     mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + str, Constant.SERVICEURL + "patientPersonalSetControlle/getUserPassWordSmsVerify");
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
-                    if (1!=netRetEntity.getResCode()) {
+                    if (1==netRetEntity.getResCode()) {
+                       /* NetRetEntity retEntity = new NetRetEntity();
+                        retEntity.setResCode(0);
+                        retEntity.setResMsg("获取失败：" + netRetEntity.getResMsg());*/
+                        mNetRetStr = new Gson().toJson(netRetEntity);
+                        mHandler.sendEmptyMessage(3);
+                        return;
+                    }else{
                         NetRetEntity retEntity = new NetRetEntity();
                         retEntity.setResCode(0);
                         retEntity.setResMsg("获取失败：" + netRetEntity.getResMsg());
                         mNetRetStr = new Gson().toJson(retEntity);
                         mHandler.sendEmptyMessage(3);
-                        return;
                     }
 
                 } catch (Exception e) {
@@ -294,7 +303,6 @@ public class OpeaPassWordActivity extends AppCompatActivity {
                     retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     mHandler.sendEmptyMessage(3);
-                    return;
                 }
 
                 mHandler.sendEmptyMessage(3);

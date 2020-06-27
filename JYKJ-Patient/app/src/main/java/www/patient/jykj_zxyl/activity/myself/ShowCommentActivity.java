@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import entity.mySelf.CommentInfo;
@@ -53,5 +54,11 @@ public class ShowCommentActivity extends AppCompatActivity {
         }else if(null!=mComment.getCommentType() && 3==mComment.getCommentType()){
             weak_comment.setChecked(true);
         }
+        findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }
