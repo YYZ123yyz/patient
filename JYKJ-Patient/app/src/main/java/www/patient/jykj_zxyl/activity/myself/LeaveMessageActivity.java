@@ -26,10 +26,8 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.tencent.cos.common.Const;
-import entity.mySelf.MyOrderProcess;
-import entity.mySelf.SubPatientImg;
-import entity.mySelf.SubZhlyImgInfo;
-import entity.mySelf.SubZwlyAllInfo;
+import entity.mySelf.*;
+import entity.mySelf.conditions.QueryZhlyImgCond;
 import entity.patientapp.Photo_Info;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
@@ -63,14 +61,16 @@ public class LeaveMessageActivity extends AppCompatActivity {
     private int opeimgcount = 0;
     private int hasimgcount = 0;
     public                  ProgressDialog              mDialogProgress =null;
+    private ZhlyDetailInfo paramDetailInfo;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        paramDetailInfo = (ZhlyDetailInfo)getIntent().getSerializableExtra("zhlyinfo");
+        parabean = (MyOrderProcess)getIntent().getSerializableExtra("orderInfo");
         mActivity = LeaveMessageActivity.this;
         mContext = getApplicationContext();
         mApp = (JYKJApplication)getApplication();
         initDir();
-        parabean = (MyOrderProcess)getIntent().getSerializableExtra("orderInfo");
         setContentView(R.layout.activity_leavmsg_after_threat);
         sub_leavemsg = findViewById(R.id.sub_leavemsg);
         tv_lemsg_content = findViewById(R.id.tv_lemsg_content);
@@ -155,6 +155,21 @@ public class LeaveMessageActivity extends AppCompatActivity {
 
             }
         });
+        loadIimgs();
+    }
+
+    void loadIimgs(){
+        if(StrUtils.defaultStr(paramDetailInfo.getImgCode()).length()>0){
+            QueryZhlyImgCond imgcond = new QueryZhlyImgCond();
+            imgcond.setImgCode(paramDetailInfo.getImgCode());
+            imgcond.setLoginPatientPosition(mApp.loginDoctorPosition);
+            imgcond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+            imgcond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+            imgcond.setOrderCode(parabean.getOrderCode());
+            imgcond.setRequestClientType("1");
+            LoadImgTask imgTask = new LoadImgTask(imgcond);
+            imgTask.execute();
+        }
     }
 
     /**
@@ -168,6 +183,15 @@ public class LeaveMessageActivity extends AppCompatActivity {
             tempDir.mkdirs();// 创建目录
         }
         mTempFile = new File(tempDir, BitmapUtil.getPhotoFileName());// 生成临时文件
+    }
+
+    /**
+     * 取消进度条
+     */
+    public void cacerProgress(){
+        if (mDialogProgress != null) {
+            mDialogProgress.dismiss();
+        }
     }
 
     @Override
@@ -267,10 +291,18 @@ public class LeaveMessageActivity extends AppCompatActivity {
         getProgressBar("数据提交","正在提交，请稍后...");
         mImageCode = MyId.createUUID();
         SubZwlyAllInfo subbean = new SubZwlyAllInfo();
-        subbean.setImgCode(mImageCode);
+        if(StrUtils.defaultStr(paramDetailInfo.getImgCode()).length()>0){
+            subbean.setImgCode(paramDetailInfo.getImgCode());
+        }else{
+            subbean.setImgCode(mImageCode);
+        }
         subbean.setLoginPatientPosition(mApp.loginDoctorPosition);
         subbean.setMessageContent(msgcontent);
-        subbean.setMessageId("0");
+        if(paramDetailInfo.getMessageId()>0){
+            subbean.setMessageId(StrUtils.defaultStr(paramDetailInfo.getMessageId()));
+        }else{
+            subbean.setMessageId("0");
+        }
         subbean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         subbean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         subbean.setOrderCode(parabean.getOrderCode());
@@ -298,6 +330,41 @@ public class LeaveMessageActivity extends AppCompatActivity {
                 subimg.setOrderCode(parabean.getOrderCode());
                 subImgTask = new SubImgTask(subimg);
                 subImgTask.execute();
+            }
+        }
+    }
+
+    class LoadImgTask extends AsyncTask<Void,Void,List<ZhlyImgInfo>>{
+        QueryZhlyImgCond queryCond;
+        LoadImgTask(QueryZhlyImgCond queryCond){
+            this.queryCond = queryCond;
+        }
+        @Override
+        protected List<ZhlyImgInfo> doInBackground(Void... voids) {
+            List<ZhlyImgInfo> retimgs = new ArrayList();
+            try{
+                String retstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryCond),Constant.SERVICEURL+INetAddress.QUERY_ZHLY_IMG_INFO);
+                NetRetEntity retEntity = JSON.parseObject(retstr,NetRetEntity.class);
+                if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
+                    retimgs = JSON.parseArray(retstr,ZhlyImgInfo.class);
+                }
+            }catch (Exception ex){
+
+            }
+            return retimgs;
+        }
+
+        @Override
+        protected void onPostExecute(List<ZhlyImgInfo> zhlyImgInfos) {
+            if(zhlyImgInfos.size()>0){
+                for(int i=0;i<zhlyImgInfos.size();i++){
+                    ZhlyImgInfo theimg = zhlyImgInfos.get(i);
+                    Photo_Info photo_info = new Photo_Info();
+                    photo_info.setPhotoUrl(theimg.getImgUrl());
+                    mPhotoInfos.add(photo_info);
+                }
+                mImageViewRecycleAdapter.setDate(mPhotoInfos);
+                mImageViewRecycleAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -366,6 +433,7 @@ public class LeaveMessageActivity extends AppCompatActivity {
                 }
                 finish();
             }
+            cacerProgress();
         }
     }
 }

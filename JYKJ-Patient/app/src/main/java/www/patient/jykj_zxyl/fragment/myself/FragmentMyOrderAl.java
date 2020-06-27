@@ -21,8 +21,12 @@ import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import entity.HZIfno;
 import entity.ProvideInteractOrderInfo;
+import entity.mySelf.CommentInfo;
 import entity.mySelf.MyOrderProcess;
+import entity.mySelf.ZhlyDetailInfo;
+import entity.mySelf.conditions.QueryCommentCond;
 import entity.mySelf.conditions.QueryContactCondPage;
+import entity.mySelf.conditions.QueryZhlyInfoCond;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
@@ -31,7 +35,7 @@ import www.patient.jykj_zxyl.activity.home.OrderMessage_OrderPayActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJL_ZHLYActivity;
 import www.patient.jykj_zxyl.activity.home.twjz.TWJZ_JZJLActivity;
 import www.patient.jykj_zxyl.activity.home.wdzs.ProvideViewInteractOrderTreatmentAndPatientInterrogation;
-import www.patient.jykj_zxyl.activity.myself.MyOrderActivity;
+import www.patient.jykj_zxyl.activity.myself.*;
 import www.patient.jykj_zxyl.activity.ylzx.YLZXWebActivity;
 import www.patient.jykj_zxyl.adapter.RMJXRecycleAdapter;
 import www.patient.jykj_zxyl.adapter.myself.MyOrderAlRecycleAdapter;
@@ -100,12 +104,19 @@ public class FragmentMyOrderAl extends Fragment {
                         startActivity(new Intent(mActivity, TWJZ_JZJLActivity.class).putExtra("wzxx",parorder));
                         break;
                     case  R.id.leave_btn:
-                        MyOrderProcess leavebean = (MyOrderProcess)getView().getTag();
+                        /*MyOrderProcess leavebean = (MyOrderProcess)getView().getTag();
                         ProvideInteractOrderInfo leaveorder = new ProvideInteractOrderInfo();
                         leaveorder.setOrderCode(leavebean.getOrderCode());
-                        startActivity(new Intent(mContext, WDYS_JZJL_ZHLYActivity.class).putExtra("provideInteractOrderInfo",leaveorder));
+                        startActivity(new Intent(mContext, WDYS_JZJL_ZHLYActivity.class).putExtra("provideInteractOrderInfo",leaveorder));*/
+
+                        MyOrderProcess leavebean = mHZEntyties.get(position);
+                        LoadZhlyDataTask detailtask = new LoadZhlyDataTask(leavebean);
+                        detailtask.execute();
                         break;
                     case  R.id.opinion_btn:
+                        MyOrderProcess commbean = mHZEntyties.get(position);
+                        LoadCommentTask commentTask = new LoadCommentTask(commbean);
+                        commentTask.execute();
                         break;
                 }
             }
@@ -184,6 +195,91 @@ public class FragmentMyOrderAl extends Fragment {
                 if(mPagenum>1){
                     mPagenum = mPagenum - 1;
                 }
+            }
+        }
+    }
+
+    class LoadZhlyDataTask extends AsyncTask<Void,Void, ZhlyDetailInfo>{
+        MyOrderProcess orderInfo;
+        LoadZhlyDataTask(MyOrderProcess orderInfo){
+            this.orderInfo = orderInfo;
+        }
+
+        @Override
+        protected ZhlyDetailInfo doInBackground(Void... voids) {
+            ZhlyDetailInfo retdetail = new ZhlyDetailInfo();
+            try{
+                QueryZhlyInfoCond queCond = new QueryZhlyInfoCond();
+                queCond.setLoginPatientPosition(mApp.loginDoctorPosition);
+                queCond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                queCond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                queCond.setOrderCode(orderInfo.getOrderCode());
+                queCond.setRequestClientType("1");
+                String retstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queCond),Constant.SERVICEURL+INetAddress.QUERY_ZHLY_CHARACTER_INFO);
+                NetRetEntity retEntity = JSON.parseObject(retstr,NetRetEntity.class);
+                if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
+                    retdetail = JSON.parseObject(retEntity.getResJsonData(),ZhlyDetailInfo.class);
+                }
+            }catch (Exception ex){
+
+            }
+            return retdetail;
+        }
+
+        @Override
+        protected void onPostExecute(ZhlyDetailInfo zhlyDetailInfo) {
+            if(null==zhlyDetailInfo.getFlagReplyState() || 1==zhlyDetailInfo.getFlagReplyState() || 0==zhlyDetailInfo.getFlagReplyState()){
+                Intent maintainintent = new Intent(mActivity, LeaveMessageActivity.class);
+                maintainintent.putExtra("orderInfo",orderInfo);
+                maintainintent.putExtra("zhlyinfo",zhlyDetailInfo);
+                mActivity.startActivity(maintainintent);
+            }else if(2==zhlyDetailInfo.getFlagReplyState() || 3==zhlyDetailInfo.getFlagReplyState()){
+                Intent showintent = new Intent(mActivity, LeaveMessageShowActivity.class);
+                showintent.putExtra("orderInfo",orderInfo);
+                showintent.putExtra("zhlyinfo",zhlyDetailInfo);
+                mActivity.startActivity(showintent);
+            }
+        }
+    }
+
+    class LoadCommentTask extends AsyncTask<Void,Void, CommentInfo>{
+        MyOrderProcess orderInfo;
+        LoadCommentTask(MyOrderProcess orderInfo){
+            this.orderInfo = orderInfo;
+        }
+
+        @Override
+        protected CommentInfo doInBackground(Void... voids) {
+            CommentInfo retbean = null;
+            try{
+                QueryCommentCond queryCond = new QueryCommentCond();
+                queryCond.setLoginPatientPosition(mApp.loginDoctorPosition);
+                queryCond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                queryCond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                queryCond.setOrderCode(orderInfo.getOrderCode());
+                queryCond.setRequestClientType("1");
+                String retstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryCond),Constant.SERVICEURL+INetAddress.QUERY_COMMENT);
+                NetRetEntity retEntity = JSON.parseObject(retstr,NetRetEntity.class);
+                if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>0){
+                    retbean = JSON.parseObject(retEntity.getResJsonData(),CommentInfo.class);
+                }
+            }catch (Exception ex){
+
+            }
+            return retbean;
+        }
+
+        @Override
+        protected void onPostExecute(CommentInfo commentInfo) {
+            if(null!=commentInfo){
+                Intent showint = new Intent(mActivity, ShowCommentActivity.class);
+                showint.putExtra("orderinfo",orderInfo);
+                showint.putExtra("commentinfo",commentInfo);
+                mActivity.startActivity(showint);
+            }else{
+                Intent addint = new Intent(mActivity, CommentActivity.class);
+                addint.putExtra("orderinfo",orderInfo);
+                mActivity.startActivity(addint);
             }
         }
     }

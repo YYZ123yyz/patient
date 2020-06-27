@@ -1,6 +1,5 @@
 package www.patient.jykj_zxyl.adapter.myself;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +15,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.liyi.grid.AutoGridView;
 import entity.mySelf.ZhlyDetailInfo;
 import entity.mySelf.ZhlyImgInfo;
-import entity.mySelf.ZhlyReplyInfo;
 import indi.liyi.viewer.ImageViewer;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.myself.LeaveMessageShowActivity;
@@ -32,16 +30,20 @@ import java.util.List;
 public class ZhlyShowAdapter extends RecyclerView.Adapter<ZhlyShowAdapter.ViewHolder>{
     private List<ZhlyDetailInfo> detaildatas = new ArrayList();
     private List<ZhlyImgInfo> imgdatas = new ArrayList();
-    private List<ZhlyReplyInfo> repdatas = new ArrayList();
     private LeaveMessageShowActivity parcontext;
     private ImageViewer imageViewer;
-    public ZhlyShowAdapter(LeaveMessageShowActivity parcontext, List<ZhlyDetailInfo> detaildatas, List<ZhlyImgInfo> imgdatas, List<ZhlyReplyInfo> repdatas, ImageViewer imageViewer){
+    public ZhlyShowAdapter(LeaveMessageShowActivity parcontext, List<ZhlyDetailInfo> detaildatas, List<ZhlyImgInfo> imgdatas, ImageViewer imageViewer){
         this.parcontext = parcontext;
         this.detaildatas = detaildatas;
         this.imgdatas = imgdatas;
-        this.repdatas = repdatas;
         this.imageViewer = imageViewer;
     }
+
+    public void setDatas(List<ZhlyDetailInfo> detaildatas,List<ZhlyImgInfo> imgdatas){
+        this.detaildatas = detaildatas;
+        this.imgdatas = imgdatas;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -52,22 +54,18 @@ public class ZhlyShowAdapter extends RecyclerView.Adapter<ZhlyShowAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ZhlyDetailInfo detailInfo = detaildatas.get(position);
-        ZhlyReplyInfo replyInfo = null;
-        if(repdatas.size()>0){
-            replyInfo = repdatas.get(position);
-        }
         holder.tv_zhly_treatment_type.setText(StrUtils.defaultStr(detailInfo.getTreatmentTypeName()));
         if(null!=detailInfo.getMessageDate()) {
             holder.tv_zhly_date.setText(DateUtils.fomrDateSeflFormat(detailInfo.getMessageDate(),"yyyy-MM-dd HH:mm"));
         }
         holder.tv_zhly_linkphone.setText(StrUtils.defaultStr(detailInfo.getPatientLinkPhone()));
         holder.tv_zhly_content.setText(StrUtils.defaultStr(detailInfo.getMessageContent()));
-        if(null!=replyInfo) {
-            if(null!=replyInfo.getCommentDate()) {
-                holder.tv_zhly_replydoctor.setText(DateUtils.fomrDateSeflFormat(replyInfo.getCommentDate(),"yyyy-MM-dd HH:mm"));
-            }
-            //holder.tv_zhly_replytype.setText(replyInfo.getCommentType());
+        holder.tv_zhly_replydoctor.setText(StrUtils.defaultStr(detailInfo.getDoctorName()));
+        if(null!=detailInfo.getReplyDate()) {
+            holder.tv_zhly_replydate.setText(DateUtils.fomrDateSeflFormat(detailInfo.getReplyDate(),"yyyy-MM-dd HH:mm"));
         }
+        holder.tv_zhly_replytype.setText(StrUtils.defaultStr(detailInfo.getFlagReplyTypeName()));
+        holder.tv_zhly_replycontent.setText(StrUtils.defaultStr(detailInfo.getReplyContent()));
         ImgAutogridAdapter imgAdapter = new ImgAutogridAdapter();
         List<String> imgsarr = new ArrayList();
         for(int i=0;i<imgdatas.size();i++){

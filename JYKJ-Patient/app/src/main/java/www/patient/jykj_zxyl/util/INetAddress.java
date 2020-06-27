@@ -22,5 +22,8 @@ public class INetAddress {
     public static String QUERY_JWBS_YSTX_DETAIL = "patientHealthRecordsControlle/searchPatientConditionDiseaseRecordResDoctorData";//既往病史详情[医生填写]
     public static String SUB_ZHLY_CHARACTER = "patientMyOrderControlle/operPatientMyOrderResMessageContent";//我的订单】订单列表-已完成[提交诊后留言-文字部分]
     public static String SUB_ZHLY_IMG = "patientMyOrderControlle/operPatientMyOrderResMessageImg";//【我的订单】订单列表-已完成[提交诊后留言-图片部分]
-
+    public static String QUERY_ZHLY_CHARACTER_INFO = "patientMyOrderControlle/searchPatientMyOrderResMessageContent";//【我的订单】订单列表-已完成[获取诊后留言-文字部分]
+    public static String QUERY_ZHLY_IMG_INFO = "patientMyOrderControlle/searchPatientMyOrderResMessageImg";//【我的订单】订单列表-已完成[获取诊后留言-图片部分]
+    public static String QUERY_COMMENT = "patientMyOrderControlle/searchPatientMyOrderResComment";//【我的订单】订单列表-已完成[获取评价数据]
+    public static String SUB_COMMENT = "patientMyOrderControlle/operPatientMyOrderResComment";//【我的订单】订单列表-已完成[提交评论数据]
 }

@@ -34,16 +34,16 @@
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp"
                   android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:padding="2dp">
         <TextView android:layout_width="60dp" android:layout_height="wrap_content" android:textSize="8dp" android:text="订单编号："></TextView>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="16845151132149"></TextView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="16845151132149" android:id="@+id/comm_order_code"></TextView>
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp"
                   android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:padding="2dp">
-        <TextView android:layout_width="60dp" android:layout_height="wrap_content" android:textSize="8dp" android:text="图文就诊："></TextView>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2020-04-10 08:00"></TextView>
+        <TextView android:layout_width="60dp" android:layout_height="wrap_content" android:textSize="8dp" android:text="图文就诊：" android:id="@+id/comm_treat_type"></TextView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2020-04-10 08:00" android:id="@+id/comm_treat_date"></TextView>
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp"
                   android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:padding="5dp">
-        <EditText android:layout_width="match_parent" android:layout_height="60dp" android:lines="5" android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
+        <EditText android:layout_width="match_parent" android:layout_height="60dp" android:lines="5" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:id="@+id/comm_content"
         android:hint="请填写您对本次服务的评价，可以帮助更多人">
         </EditText>
     </LinearLayout>
@@ -72,7 +72,6 @@
                 android:textOff="@null"/>
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:layout_marginTop="10dp" android:orientation="vertical">
-        <android.support.v7.widget.RecyclerView android:layout_width="match_parent" android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"

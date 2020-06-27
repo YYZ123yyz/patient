@@ -96,6 +96,7 @@
         <activity android:name=".activity.myself.LeaveMessageActivity"/>
         <activity android:name=".activity.myself.LeaveMessageShowActivity"/>
         <activity android:name=".activity.myself.WithdrawActivity"/>
+        <activity android:name=".activity.myself.ShowCommentActivity"/>
         <!--设置 == > 关于我们-->
         <activity android:name=".activity.myself.setting.AboutActivity"/>
 

@@ -4,30 +4,41 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ZhlyDetailInfo implements Serializable {
-    private String flagReplyState;
-    private String flagReplyType;
+    private String doctorName;
+    private Integer flagReplyState;
+    private Integer flagReplyType;
     private String flagReplyTypeName;
     private String imgCode;
     private String messageContent;
     private Date messageDate;
     private Integer messageId;
     private String patientLinkPhone;
+    private String replyContent;
+    private Date replyDate;
     private Integer treatmentType;
     private String treatmentTypeName;
 
-    public String getFlagReplyState() {
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
+    }
+
+    public Integer getFlagReplyState() {
         return flagReplyState;
     }
 
-    public void setFlagReplyState(String flagReplyState) {
+    public void setFlagReplyState(Integer flagReplyState) {
         this.flagReplyState = flagReplyState;
     }
 
-    public String getFlagReplyType() {
+    public Integer getFlagReplyType() {
         return flagReplyType;
     }
 
-    public void setFlagReplyType(String flagReplyType) {
+    public void setFlagReplyType(Integer flagReplyType) {
         this.flagReplyType = flagReplyType;
     }
 
@@ -77,6 +88,22 @@ public class ZhlyDetailInfo implements Serializable {
 
     public void setPatientLinkPhone(String patientLinkPhone) {
         this.patientLinkPhone = patientLinkPhone;
+    }
+
+    public String getReplyContent() {
+        return replyContent;
+    }
+
+    public void setReplyContent(String replyContent) {
+        this.replyContent = replyContent;
+    }
+
+    public Date getReplyDate() {
+        return replyDate;
+    }
+
+    public void setReplyDate(Date replyDate) {
+        this.replyDate = replyDate;
     }
 
     public Integer getTreatmentType() {

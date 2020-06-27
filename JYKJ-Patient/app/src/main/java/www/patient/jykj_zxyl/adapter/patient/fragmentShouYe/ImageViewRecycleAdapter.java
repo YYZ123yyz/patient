@@ -9,10 +9,14 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import entity.patientapp.Photo_Info;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.BitmapUtil;
+import www.patient.jykj_zxyl.util.StrUtils;
 
 
 public class ImageViewRecycleAdapter extends RecyclerView.Adapter<ImageViewRecycleAdapter.ViewHolder> {
@@ -50,6 +54,11 @@ public class ImageViewRecycleAdapter extends RecyclerView.Adapter<ImageViewRecyc
             {
                 viewHolder.mImageView.setImageBitmap(BitmapUtil.stringtoBitmap(datas.get(position).getPhoto()));
                 Log.i("执行","执行:"+position);
+            }else if(StrUtils.defaultStr(datas.get(position).getPhotoUrl()).length()>0){
+                Glide.with(viewHolder.mImageView.getContext()).load(datas.get(position).getPhotoUrl())
+                        .apply(RequestOptions.placeholderOf(com.hyphenate.easeui.R.mipmap.docter_heard)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL))
+                        .into(viewHolder.mImageView);
             }
             if (mOnItemClickListener != null)
             {
