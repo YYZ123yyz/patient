@@ -213,8 +213,8 @@ public class MyOrderAlRecycleAdapter extends RecyclerView.Adapter<MyOrderAlRecyc
                 treat_style_tool = view.findViewById(R.id.treat_style_tool);
                 service_time_title = view.findViewById(R.id.service_time_title);
                 service_time = view.findViewById(R.id.service_time);
-                leave_btn = view.findViewById(R.id.quest_btn);
-                opinion_btn = view.findViewById(R.id.back_btn);
+                leave_btn = view.findViewById(R.id.leave_btn);
+                opinion_btn = view.findViewById(R.id.opinion_btn);
 
             }
         }

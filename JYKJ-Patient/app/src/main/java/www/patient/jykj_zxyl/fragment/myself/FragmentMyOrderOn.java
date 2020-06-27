@@ -144,7 +144,8 @@ public class FragmentMyOrderOn extends Fragment {
         querycond.setLoginPatientPosition(mApp.loginDoctorPosition);
         querycond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         querycond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        querycond.setPageNum(String.valueOf(IConstant.PGAE_SIZE));
+        querycond.setPageNum(String.valueOf(mPagenum));
+        querycond.setRowNum(String.valueOf(IConstant.PGAE_SIZE));
         querycond.setRequestClientType("1");
         loadDataTask = new LoadDataTask(querycond);
         loadDataTask.execute();

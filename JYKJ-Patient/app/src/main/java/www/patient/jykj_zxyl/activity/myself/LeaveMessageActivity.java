@@ -1,6 +1,7 @@
 package www.patient.jykj_zxyl.activity.myself;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,22 +23,25 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.tencent.cos.common.Const;
 import entity.mySelf.MyOrderProcess;
+import entity.mySelf.SubPatientImg;
+import entity.mySelf.SubZhlyImgInfo;
 import entity.mySelf.SubZwlyAllInfo;
 import entity.patientapp.Photo_Info;
 import netService.HttpNetService;
+import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.ImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.util.BitmapUtil;
-import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
-import www.patient.jykj_zxyl.util.INetAddress;
+import www.patient.jykj_zxyl.util.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +57,12 @@ public class LeaveMessageActivity extends AppCompatActivity {
     private TextView sub_leavemsg;
     private EditText tv_lemsg_content;
     private File mTempFile;              //声明一个拍照结果的临时文件
+    private SubDataTask subDataTask;
+    private SubImgTask subImgTask;
+    private String mImageCode;
+    private int opeimgcount = 0;
+    private int hasimgcount = 0;
+    public                  ProgressDialog              mDialogProgress =null;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -234,12 +244,67 @@ public class LeaveMessageActivity extends AppCompatActivity {
         }
     }
 
-    void subData(){
+    /**
+     *   获取进度条
+     */
 
+    public void getProgressBar(String title,String progressPrompt){
+        if (mDialogProgress == null) {
+            mDialogProgress = new ProgressDialog(this);
+        }
+        mDialogProgress.setTitle(title);
+        mDialogProgress.setMessage(progressPrompt);
+        mDialogProgress.setCancelable(false);
+        mDialogProgress.show();
+    }
+
+    void subData(){
+        String msgcontent = StrUtils.defaultStr(tv_lemsg_content.getText());
+        if(msgcontent.length()==0){
+            Toast.makeText(mContext,"请输入留言内容",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        getProgressBar("数据提交","正在提交，请稍后...");
+        mImageCode = MyId.createUUID();
+        SubZwlyAllInfo subbean = new SubZwlyAllInfo();
+        subbean.setImgCode(mImageCode);
+        subbean.setLoginPatientPosition(mApp.loginDoctorPosition);
+        subbean.setMessageContent(msgcontent);
+        subbean.setMessageId("0");
+        subbean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        subbean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        subbean.setOrderCode(parabean.getOrderCode());
+        subbean.setPatientLinkPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserPhone());
+        subbean.setRequestClientType("1");
+        subbean.setTreatmentType(StrUtils.defaultStr(parabean.getTreatmentType()));
+        subDataTask = new SubDataTask(subbean);
+        subDataTask.execute();
+        for(int j=0;j<mPhotoInfos.size();j++){
+            Photo_Info parphoto = mPhotoInfos.get(j);
+            if(null!=parphoto.getPhoto()){
+                hasimgcount =  hasimgcount + 1;
+            }
+        }
+        for(int j=0;j<mPhotoInfos.size();j++){
+            Photo_Info parphoto = mPhotoInfos.get(j);
+            if(null!=parphoto.getPhoto()){
+                SubZhlyImgInfo subimg = new SubZhlyImgInfo();
+                subimg.setLoginPatientPosition(mApp.loginDoctorPosition);
+                subimg.setImgBase64Data(URLEncoder.encode("data:image/jpg;base64,"+parphoto.getPhoto()));
+                subimg.setRequestClientType("1");
+                subimg.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                subimg.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                subimg.setImgCode(mImageCode);
+                subimg.setOrderCode(parabean.getOrderCode());
+                subImgTask = new SubImgTask(subimg);
+                subImgTask.execute();
+            }
+        }
     }
 
     class SubDataTask extends AsyncTask<Void,Void,Boolean>{
         SubZwlyAllInfo subinfo;
+        String errmsg = "";
         SubDataTask(SubZwlyAllInfo subinfo){
             this.subinfo = subinfo;
         }
@@ -247,10 +312,60 @@ public class LeaveMessageActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... voids) {
             try {
                 String retstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(subinfo), Constant.SERVICEURL+ INetAddress.SUB_ZHLY_CHARACTER);
+                NetRetEntity retEntity = JSON.parseObject(retstr,NetRetEntity.class);
+                if(1==retEntity.getResCode()){
+                    return true;
+                }else {
+                    errmsg = retEntity.getResMsg();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
+                errmsg = "提交异常";
             }
-            return null;
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if(!aBoolean){
+                Toast.makeText(mContext,errmsg,Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    class SubImgTask extends AsyncTask<Void,Void,Boolean>{
+        SubZhlyImgInfo imgInfo;
+        String errmsg = "";
+        SubImgTask(SubZhlyImgInfo imgInfo){
+            this.imgInfo = imgInfo;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try{
+                String retstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(imgInfo),Constant.SERVICEURL+INetAddress.SUB_ZHLY_IMG);
+                NetRetEntity retEntity = JSON.parseObject(retstr,NetRetEntity.class);
+                if(1==retEntity.getResCode()){
+                    return true;
+                }else{
+                    errmsg = retEntity.getResMsg();
+                }
+            }catch (Exception ex){
+                ex.printStackTrace();
+                errmsg = "提交异常";
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            opeimgcount = opeimgcount+1;
+            if(opeimgcount>=hasimgcount){
+                if(!aBoolean){
+                    Toast.makeText(mContext,errmsg,Toast.LENGTH_SHORT).show();
+                }
+                finish();
+            }
         }
     }
 }

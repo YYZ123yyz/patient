@@ -353,6 +353,7 @@ public class JWBSLRBSActivity extends AppCompatActivity {
     }
 
     void savedata(){
+        getProgressBar("数据提交","正在提交，请稍后...");
         SubPatientHistInfo subinfo = new SubPatientHistInfo();
         subinfo.setLoginPatientPosition(mApp.loginDoctorPosition);
         subinfo.setRequestClientType("1");
@@ -456,7 +457,7 @@ public class JWBSLRBSActivity extends AppCompatActivity {
             if(aBoolean){
 
             }else{
-                Toast.makeText(mContext,repmsg,Toast.LENGTH_SHORT);
+                Toast.makeText(mContext,repmsg,Toast.LENGTH_SHORT).show();
             }
             opeimgcount = opeimgcount+1;
             if(opeimgcount>=hasimgcount){
