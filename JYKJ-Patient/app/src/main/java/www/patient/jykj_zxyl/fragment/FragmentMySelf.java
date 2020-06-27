@@ -19,12 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import www.patient.jykj_zxyl.activity.home.BloodLogAcitivity;
 import www.patient.jykj_zxyl.activity.home.myself.JDDAActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
-import www.patient.jykj_zxyl.activity.myself.BindFamilyActivity;
-import www.patient.jykj_zxyl.activity.myself.MedicationActivity;
-import www.patient.jykj_zxyl.activity.myself.MyOrderActivity;
-import www.patient.jykj_zxyl.activity.myself.MySurplusActivity;
-import www.patient.jykj_zxyl.activity.myself.SettingActivity;
-import www.patient.jykj_zxyl.activity.myself.UserCenterActivity;
+import www.patient.jykj_zxyl.activity.myself.*;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.custom.MyselfItemView;
 import www.patient.jykj_zxyl.R;
@@ -155,9 +150,8 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(),JDDAActivity.class));
                 break;
             case R.id.myself_recommend://推荐
-
+                startActivity(new Intent(getActivity(), ShareActivity.class));
                 break;
-
 
             case R.id.myself_blood://血压
                 startActivity(new Intent(getActivity(), BloodLogAcitivity.class));

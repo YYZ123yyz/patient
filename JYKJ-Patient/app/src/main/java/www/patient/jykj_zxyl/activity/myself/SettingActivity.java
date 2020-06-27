@@ -12,9 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import android.widget.TextView;
-import www.patient.jykj_zxyl.activity.myself.setting.AboutActivity;
-import www.patient.jykj_zxyl.activity.myself.setting.OpeaPassWordActivity;
-import www.patient.jykj_zxyl.activity.myself.setting.ServiceHotlineActivity;
+import www.patient.jykj_zxyl.activity.myself.setting.*;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.LoginActivity;
 import www.patient.jykj_zxyl.activity.myself.setting.AboutActivity;
@@ -76,6 +74,10 @@ public class SettingActivity extends AppCompatActivity {
 
         version_name = findViewById(R.id.version_name);
         cache_size = findViewById(R.id.cache_size);
+
+        findViewById(R.id.upver_layout).setOnClickListener(new ButtonClick());
+        findViewById(R.id.feedback_layout).setOnClickListener(new ButtonClick());
+        findViewById(R.id.back).setOnClickListener(new ButtonClick());
     }
 
 
@@ -104,6 +106,12 @@ public class SettingActivity extends AppCompatActivity {
                 case R.id.li_activitySetting_operPassWord:
                     startActivity(new Intent(SettingActivity.this,OpeaPassWordActivity.class));
                     break;
+                case R.id.feedback_layout:
+                    startActivity(new Intent(SettingActivity.this, FeedbackActvity.class));
+                    break;
+                case R.id.upver_layout:
+                    startActivity(new Intent(SettingActivity.this, UpdateVersionShowActivity.class));
+                    break;
                 case R.id.clear_app_cache:
                     new AlertDialog.Builder(mContext).setTitle("确认清楚缓存")
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -121,6 +129,9 @@ public class SettingActivity extends AppCompatActivity {
                                     //SettingActivity.this.startActivity(theint);
                                 }
                             }).setNegativeButton("取消",null).show();
+                    break;
+                case R.id.back:
+                    finish();
                     break;
             }
         }

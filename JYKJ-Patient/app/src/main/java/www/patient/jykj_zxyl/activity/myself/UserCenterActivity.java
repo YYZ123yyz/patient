@@ -50,6 +50,8 @@ import entity.basicDate.ProvideHospitalInfo;
 import entity.basicDate.ProvideViewSysUserPatientInfoAndRegion;
 import entity.mySelf.ProvideViewSysUserDoctorInfoAndHospital;
 import entity.mySelf.UpProvideViewSysUserPatientInfoAndRegion;
+import entity.mySelf.UserResultInfo;
+import entity.mySelf.conditions.QueryUserCond;
 import entity.user.UserInfo;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
@@ -433,6 +435,16 @@ public class UserCenterActivity extends AppCompatActivity {
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
                     if (netRetEntity.getResCode() == 1) {
                         isupsuccess = true;
+                        mApp.mProvideViewSysUserPatientInfoAndRegion.setUserName(mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                        mApp.mProvideViewSysUserPatientInfoAndRegion.setUserNameAlias(mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias());
+                        upbean.setGender(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getGender()));
+                        if(null!=mProvideViewSysUserPatientInfoAndRegion.getBirthday()) {
+                            mApp.mProvideViewSysUserPatientInfoAndRegion.setBirthday(mProvideViewSysUserPatientInfoAndRegion.getBirthday());
+                        }
+                        mApp.mProvideViewSysUserPatientInfoAndRegion.setCity(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getCity()));
+                        mApp.mProvideViewSysUserPatientInfoAndRegion.setProvince(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getProvince()));
+                        mApp.mProvideViewSysUserPatientInfoAndRegion.setAddress(StrUtils.defaultStr(mProvideViewSysUserPatientInfoAndRegion.getAddress()));
+                        mApp.mProvideViewSysUserPatientInfoAndRegion.setArea(StrUtils.defaultStr(mChoiceRegionID));
                        /* NetRetEntity retEntity = new NetRetEntity();
                         retEntity.setResCode(0);
                         retEntity.setResMsg("获取提交失败："+netRetEntity.getResMsg());*/
@@ -449,13 +461,27 @@ public class UserCenterActivity extends AppCompatActivity {
                 }
                 //重新登录，刷新用户信息
                 if(isupsuccess) {
-                    UserInfo userInfo = new UserInfo();
+                    //String[] userids = new String[]{StrUtils.defaultStr(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientId())};
+                    QueryUserCond quecond = new QueryUserCond();
+                    quecond.setUserCodeList(mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                    /*UserInfo userInfo = new UserInfo();
                     userInfo.setLoginPatientPosition(mApp.loginDoctorPosition);
                     userInfo.setRequestClientType("1");
                     userInfo.setUserPhone(mApp.mLoginUserInfo.getUserPhone());
-                    userInfo.setUserPwd(mApp.mLoginUserInfo.getUserPwd());
+                    userInfo.setUserPwd(mApp.mLoginUserInfo.getUserPwd());*/
                     try {
-                        mNetLoginRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(userInfo), Constant.SERVICEURL + "patientLoginControlle/loginPatientAppPwdLogin");
+                        mNetLoginRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(quecond), Constant.SERVICEURL + "patientDoctorCommonDataController/getUserInfoList");
+                        NetRetEntity retEntity = JSON.parseObject(mNetLoginRetStr,NetRetEntity.class);
+                        if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
+                            List<UserResultInfo> retlist = JSON.parseArray(retEntity.getResJsonData(),UserResultInfo.class);
+                            UserResultInfo onebean = retlist.get(0);
+                            mApp.mProvideViewSysUserPatientInfoAndRegion.setUserLogoUrl(onebean.getUserLogoUrl());
+                            mApp.mProvideViewSysUserPatientInfoAndRegion.setQrCode(onebean.getQrCode());
+                            NetRetEntity retentone = new NetRetEntity();
+                            retentone.setResCode(1);
+                            retentone.setResJsonData(new Gson().toJson( mApp.mProvideViewSysUserPatientInfoAndRegion));
+                            mNetLoginRetStr = new Gson().toJson(retentone);
+                        }
                     } catch (Exception e) {
                         NetRetEntity retEntity = new NetRetEntity();
                         retEntity.setResCode(0);

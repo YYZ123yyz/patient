@@ -1,184 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/pBackColor"
-    tools:context=".activity.myself.MyAccountActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="@color/pBackColor"
+              tools:context=".activity.myself.SettingActivity">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/groabColor"
-        >
+            android:id="@+id/back"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/groabColor"
+    >
         <ImageView
-            android:layout_width="10dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:src="@mipmap/arrow_left"/>
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/arrow_left"/>
         <TextView
-            android:text="设置"
-            android:textSize="10pt"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:textColor="@color/writeColor"
-            android:layout_height="wrap_content"/>
+                android:text="设置"
+                android:textSize="10pt"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:textColor="@color/writeColor"
+                android:layout_height="wrap_content"/>
     </RelativeLayout>
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/writeColor"
-        android:layout_marginTop="15dp"
-        android:id="@+id/li_activitySetting_operPassWord"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/writeColor"
+            android:layout_marginTop="15dp"
+            android:id="@+id/li_activitySetting_operPassWord"
+            android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="修改密码"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:textSize="8pt"
-            android:textColor="@color/textColor_vo"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="修改密码"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:textSize="8pt"
+                android:textColor="@color/textColor_vo"/>
 
         <ImageView
-            android:layout_width="12dp"
-            android:layout_height="18dp"
-            android:layout_marginRight="15dp"
-            android:src="@mipmap/fragmentmyself_jt_r"
-            android:layout_gravity="center_vertical"
-            />
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="15dp"
+                android:src="@mipmap/fragmentmyself_jt_r"
+                android:layout_gravity="center_vertical"
+        />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/writeColor"
-        android:layout_marginTop="1dp"
-        android:id="@+id/li_activitySetting_aboutLayout"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/writeColor"
+            android:layout_marginTop="1dp"
+            android:id="@+id/li_activitySetting_aboutLayout"
+            android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="关于我们"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:textSize="8pt"
-            android:textColor="@color/textColor_vo"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关于我们"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:textSize="8pt"
+                android:textColor="@color/textColor_vo"/>
 
         <ImageView
-            android:layout_width="12dp"
-            android:layout_height="18dp"
-            android:layout_marginRight="15dp"
-            android:src="@mipmap/fragmentmyself_jt_r"
-            android:layout_gravity="center_vertical"
-            />
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="15dp"
+                android:src="@mipmap/fragmentmyself_jt_r"
+                android:layout_gravity="center_vertical"
+        />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/writeColor"
-        android:id="@+id/li_activitySetting_serviceHolting"
-        android:layout_marginTop="1dp"
-        android:visibility="gone"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/writeColor"
+            android:id="@+id/li_activitySetting_serviceHolting"
+            android:layout_marginTop="1dp"
+            android:visibility="gone"
+            android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="客服热线"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:textSize="8pt"
-            android:textColor="@color/textColor_vo"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="客服热线"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:textSize="8pt"
+                android:textColor="@color/textColor_vo"/>
 
         <ImageView
-            android:layout_width="12dp"
-            android:layout_height="18dp"
-            android:layout_marginRight="15dp"
-            android:src="@mipmap/fragmentmyself_jt_r"
-            android:layout_gravity="center_vertical"
-            />
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="15dp"
+                android:src="@mipmap/fragmentmyself_jt_r"
+                android:layout_gravity="center_vertical"
+        />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/writeColor"
-        android:layout_marginTop="1dp"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/writeColor"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal" android:id="@+id/feedback_layout">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="意见反馈"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:textSize="8pt"
-            android:textColor="@color/textColor_vo"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="意见反馈"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:textSize="8pt"
+                android:textColor="@color/textColor_vo"/>
 
         <ImageView
-            android:layout_width="12dp"
-            android:layout_height="18dp"
-            android:layout_marginRight="15dp"
-            android:src="@mipmap/fragmentmyself_jt_r"
-            android:layout_gravity="center_vertical"
-            />
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="15dp"
+                android:src="@mipmap/fragmentmyself_jt_r"
+                android:layout_gravity="center_vertical"
+        />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/writeColor"
-        android:layout_marginTop="1dp"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/writeColor"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal" android:id="@+id/upver_layout">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="版本更新说明"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:textSize="8pt"
-            android:textColor="@color/textColor_vo"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="版本更新说明"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:textSize="8pt"
+                android:textColor="@color/textColor_vo"/>
 
         <ImageView
-            android:layout_width="12dp"
-            android:layout_height="18dp"
-            android:layout_marginRight="15dp"
-            android:src="@mipmap/fragmentmyself_jt_r"
-            android:layout_gravity="center_vertical"
-            />
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="15dp"
+                android:src="@mipmap/fragmentmyself_jt_r"
+                android:layout_gravity="center_vertical"
+        />
     </LinearLayout>
 
     <LinearLayout
             android:id="@+id/clear_app_cache"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/writeColor"
-        android:layout_marginTop="1dp"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/writeColor"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="清除缓存"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:textSize="8pt"
-            android:textColor="@color/textColor_vo"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="清除缓存"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:textSize="8pt"
+                android:textColor="@color/textColor_vo"/>
         <TextView
                 android:id="@+id/cache_size"
                 android:layout_width="wrap_content"
@@ -189,30 +190,30 @@
                 android:textSize="8pt"
                 android:textColor="@color/textColor_vo"/>
         <ImageView
-            android:layout_width="12dp"
-            android:layout_height="18dp"
-            android:layout_marginRight="15dp"
-            android:src="@mipmap/fragmentmyself_jt_r"
-            android:layout_gravity="center_vertical"
-            />
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="15dp"
+                android:src="@mipmap/fragmentmyself_jt_r"
+                android:layout_gravity="center_vertical"
+        />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/writeColor"
-        android:layout_marginTop="1dp"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/writeColor"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="当前版本"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:textSize="8pt"
-            android:textColor="@color/textColor_vo"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当前版本"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:textSize="8pt"
+                android:textColor="@color/textColor_vo"/>
         <TextView
                 android:id="@+id/version_name"
                 android:layout_width="wrap_content"
@@ -224,30 +225,30 @@
                 android:textColor="@color/textColor_vo"/>
 
         <ImageView
-            android:layout_width="12dp"
-            android:layout_height="18dp"
-            android:layout_marginRight="15dp"
-            android:src="@mipmap/fragmentmyself_jt_r"
-            android:layout_gravity="center_vertical"
-            />
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="15dp"
+                android:src="@mipmap/fragmentmyself_jt_r"
+                android:layout_gravity="center_vertical"
+        />
     </LinearLayout>
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/writeColor">
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:text="退出登录"
-        android:layout_marginTop="60dp"
-        android:id="@+id/bt_activityMySelfSetting_exitButton"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="80dp"
-        android:textSize="8pt"
-        android:background="@drawable/bg_tcdl"
-        android:textColor="@color/writeColor"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/writeColor">
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:text="退出登录"
+                android:layout_marginTop="60dp"
+                android:id="@+id/bt_activityMySelfSetting_exitButton"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="80dp"
+                android:textSize="8pt"
+                android:background="@drawable/bg_tcdl"
+                android:textColor="@color/writeColor"/>
     </LinearLayout>
 </LinearLayout>
