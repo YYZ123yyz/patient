@@ -43,16 +43,16 @@
                     android:src="@mipmap/doctor_head" />
 
                 <TextView
-                    android:id="@+id/tv_fragmentMySelf_nameText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/iv_fragmentMyself_userHeadImage"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="未设置"
-                    android:textColor="@color/writeColor"
-                    android:textSize="10pt" />
+                        android:id="@+id/tv_fragmentMySelf_nameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/iv_fragmentMyself_userHeadImage"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="未设置"
+                        android:textColor="@color/writeColor"
+                        android:textSize="10pt"/>
             </RelativeLayout>
 
             <LinearLayout

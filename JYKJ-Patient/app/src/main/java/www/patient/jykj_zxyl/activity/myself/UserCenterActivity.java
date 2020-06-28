@@ -186,6 +186,7 @@ public class UserCenterActivity extends AppCompatActivity {
                                 Toast.makeText(mContext, "操作成功", Toast.LENGTH_SHORT).show();
                                 //登录IM
                                 mApp.loginIM();
+                                finish();
                             }
                             else
                             {

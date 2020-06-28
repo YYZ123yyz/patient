@@ -181,7 +181,7 @@ public class BindFamilyActivity extends AppCompatActivity {
             if (RegrexUtil.isMobilePhone(onephone) || RegrexUtil.isLinePhone(onephone)) {
                 hasinputonephone = true;
             }else{
-                Toast.makeText(mContext,"请输入正确的电话号码",Toast.LENGTH_SHORT);
+                Toast.makeText(mContext,"请输入正确的电话号码",Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -189,7 +189,7 @@ public class BindFamilyActivity extends AppCompatActivity {
             if (RegrexUtil.isMobilePhone(twopgone) || RegrexUtil.isLinePhone(twopgone)) {
                 hasinputonephone = true;
             }else{
-                Toast.makeText(mContext,"请输入正确的电话号码",Toast.LENGTH_SHORT);
+                Toast.makeText(mContext,"请输入正确的电话号码",Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -205,7 +205,7 @@ public class BindFamilyActivity extends AppCompatActivity {
             maintainFamilyTask = new MaintainFamilyTask(upbean);
             maintainFamilyTask.execute();
         }else{
-            Toast.makeText(mContext,"请输入亲友电话",Toast.LENGTH_SHORT);
+            Toast.makeText(mContext,"请输入亲友电话",Toast.LENGTH_SHORT).show();
             return;
         }
     }
@@ -300,10 +300,10 @@ public class BindFamilyActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             if(aBoolean){
-                Toast.makeText(mContext,repmsg,Toast.LENGTH_SHORT);
+                Toast.makeText(mContext,repmsg,Toast.LENGTH_SHORT).show();
                 finish();
             }else {
-                Toast.makeText(mContext,repmsg,Toast.LENGTH_SHORT);
+                Toast.makeText(mContext,repmsg,Toast.LENGTH_SHORT).show();
             }
         }
     }

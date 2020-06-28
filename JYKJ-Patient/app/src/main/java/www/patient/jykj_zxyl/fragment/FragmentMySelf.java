@@ -97,18 +97,6 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
         gradeBtn = v.findViewById(R.id.gradeBtn);
         iv_fragmentMyself_userHeadImage = (ImageView)v.findViewById(R.id.iv_fragmentMyself_userHeadImage);
         tv_fragmentMySelf_nameText = (TextView)v.findViewById(R.id.tv_fragmentMySelf_nameText);
-        try {
-            int avatarResId = Integer.parseInt(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
-            Glide.with(mContext).load(avatarResId).into(iv_fragmentMyself_userHeadImage);
-        } catch (Exception e) {
-            //use default avatar
-            Glide.with(mContext).load(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl())
-                    .apply(RequestOptions.placeholderOf(com.hyphenate.easeui.R.mipmap.docter_heard)
-                            .diskCacheStrategy(DiskCacheStrategy.ALL))
-                    .into(iv_fragmentMyself_userHeadImage);
-        }
-        if (mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName() != null)
-            tv_fragmentMySelf_nameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
     }
 
     private void initListener(){
@@ -127,6 +115,28 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
         gradeBtn.setOnClickListener(this);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            int avatarResId = Integer.parseInt(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+            Glide.with(mContext).load(avatarResId).into(iv_fragmentMyself_userHeadImage);
+        } catch (Exception e) {
+            //use default avatar
+            Glide.with(mContext).load(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl())
+                    .apply(RequestOptions.placeholderOf(com.hyphenate.easeui.R.mipmap.docter_heard)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(iv_fragmentMyself_userHeadImage);
+        }
+        if(null!= mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() && 1==mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus()){
+            if(null!=mApp.mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias()){
+                tv_fragmentMySelf_nameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias());
+            }
+        }else {
+            if (mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName() != null)
+                tv_fragmentMySelf_nameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        }
+    }
 
     @Override
     public void onClick(View view) {
