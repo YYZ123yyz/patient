@@ -52,9 +52,7 @@ import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import rx.functions.Action1;
 import www.patient.jykj_zxyl.activity.MainActivity;
-import www.patient.jykj_zxyl.activity.home.BloodMonitorActivity;
-import www.patient.jykj_zxyl.activity.home.NewsActivity;
-import www.patient.jykj_zxyl.activity.home.QRCodeActivity;
+import www.patient.jykj_zxyl.activity.home.*;
 import www.patient.jykj_zxyl.activity.home.patient.BloodEntryActivity;
 import www.patient.jykj_zxyl.activity.home.patient.ZJXQ_ZJBDActivity;
 import www.patient.jykj_zxyl.activity.hyhd.BindDoctorFriend;
@@ -810,10 +808,13 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                 alertWillpub();
                 break;
             case R.id.live_layout:
-                Intent goliveintent = new Intent(mContext, LivePlayerActivity.class);
+                /*Intent goliveintent = new Intent(mContext, LivePlayerActivity.class);
                 goliveintent.putExtra("TITLE","医生直播间");
                 goliveintent.putExtra("TYPE", LivePlayerActivity.ACTIVITY_TYPE_LIVE_PLAY);
+                startActivity(goliveintent);*/
+                Intent goliveintent = new Intent(mContext, MyLiveRoomActivity.class);
                 startActivity(goliveintent);
+
                 break;
         }
     }

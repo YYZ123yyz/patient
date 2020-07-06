@@ -56,4 +56,6 @@
     <color name="color_blue">#1976D2</color>
     <color name="color_green">#388E3C</color>
     <color name="colorBlack">#000000</color>
+    <color name="tv2">#FF6600</color>
+    <color name="btn_red">#D63F41</color>
 </resources>

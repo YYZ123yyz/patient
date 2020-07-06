@@ -1,114 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:ignore="MissingDefaultResource">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:ignore="MissingDefaultResource">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/groabColor">
-        <LinearLayout
-            android:id="@+id/ll_back"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true">
-            <ImageView
+            android:id="@+id/live_rl"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/groabColor">
+
+        <ImageView
                 android:id="@+id/iv_back_left"
                 android:layout_width="10dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="15dp"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
                 android:src="@mipmap/arrow_left" />
 
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="我的直播间"
+                android:textColor="@color/writeColor"
+                android:textSize="10pt" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+            android:layout_below="@+id/live_rl"
+            android:id="@+id/lin_banner"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <com.youth.banner.Banner
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:id="@+id/live_banner"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"></com.youth.banner.Banner>
+        <LinearLayout
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:id="@+id/room_forecast"
+                    android:text="直播预报"
+                    android:textColor="@color/tabColor_nomal"
+                    android:drawableTop="@mipmap/forecast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:id="@+id/room_Hit"
+                    android:text="正在热播"
+                    android:textColor="@color/tabColor_nomal"
+                    android:drawableTop="@mipmap/hit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:id="@+id/room_Lecture"
+                    android:text="专题讲座"
+                    android:textColor="@color/tabColor_nomal"
+                    android:drawableTop="@mipmap/lecture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
         </LinearLayout>
 
-        <TextView
+
+    </LinearLayout>
+
+    <TextView
+            android:layout_below="@+id/lin_banner"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="17sp"
+            android:textColor="@color/tabColor_nomal"
+            android:id="@+id/room_text"
+            android:text="直播预报"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="我的直播"
-            android:textColor="@color/writeColor"
-            android:textSize="10pt" />
+            android:layout_height="wrap_content"/>
 
-    </RelativeLayout>
-
-    <RelativeLayout
+    <!--<com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:layout_below="@+id/room_text"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/room_recy"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/writeColor">
+        android:layout_height="match_parent"/>-->
+    <android.support.v4.view.ViewPager
+            android:id="@+id/roompager"
+            android:layout_below="@+id/room_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_video"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:src="@mipmap/icon_video_live" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/iv_video"
-            android:text="视频直播"
-            android:textColor="@color/blackColor" />
-
-        <ImageView
-            android:id="@+id/iv_arrow_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:src="@mipmap/roww_right" />
-
-
-
-    </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginLeft="60dp"
-        android:background="@color/hintTextColor" />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1px"
-        android:background="@color/writeColor">
-
-        <ImageView
-            android:id="@+id/iv_voice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:src="@mipmap/icon_voice_live" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/iv_voice"
-            android:text="语音直播"
-            android:textColor="@color/blackColor" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:src="@mipmap/roww_right" />
-
-    </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginLeft="60dp"
-        android:background="@color/hintTextColor" />
-
-
-</LinearLayout>
+    </android.support.v4.view.ViewPager>
+</RelativeLayout>

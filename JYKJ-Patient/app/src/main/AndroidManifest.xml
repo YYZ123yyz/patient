@@ -459,6 +459,10 @@
         </activity>
         <activity android:name=".activity.hyhd.LivePlayerActivity"
                   android:screenOrientation="portrait"/>
+        <activity android:name=".activity.hyhd.NewLivePlayerActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".activity.liveroom.LiveroomDetailActivity"
+                  android:screenOrientation="portrait"/>
         <activity android:name=".activity.hyhd.QRCodeScanActivity"
                   android:screenOrientation="portrait"/>
         <activity android:name=".activity.hyhd.TCVideoPreviewActivity"
