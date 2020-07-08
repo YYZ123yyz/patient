@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
 import entity.liveroom.PreLiveInfo;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.util.StrUtils;
@@ -31,11 +32,11 @@ public class PreLiveAdapter extends RecyclerView.Adapter<PreLiveAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         PreLiveInfo parinfo = datas.get(i);
-        viewHolder.pre_live_catalog.setText("类目:"+ StrUtils.defaultStr(parinfo.getBroadcastTypeName()));
+        viewHolder.pre_live_catalog.setText("类目:"+ StrUtils.defaultStr(parinfo.getClassName()));
         viewHolder.pre_live_desc.setText(StrUtils.defaultStr(parinfo.getKeywordsName()));
         viewHolder.pre_live_price.setText(StrUtils.defaultStr(parinfo.getExtendBroadcastPriceShow()));
         viewHolder.pre_live_title.setText(StrUtils.defaultStr(parinfo.getBroadcastTitle()));
-        viewHolder.pre_watch_num.setText(StrUtils.defaultStr(parinfo.getExtendBroadcastFollowNum()));
+        viewHolder.pre_watch_num.setText("想看人数："+StrUtils.defaultStr(parinfo.getExtendBroadcastFollowNum()));
         viewHolder.pre_live_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -49,6 +50,9 @@ public class PreLiveAdapter extends RecyclerView.Adapter<PreLiveAdapter.ViewHold
                 return false;
             }
         });
+        if(StrUtils.defaultStr(parinfo.getBroadcastCoverImgUrl()).length()>0){
+            Glide.with(viewHolder.pre_live_btn.getContext()).load(parinfo.getBroadcastCoverImgUrl()).into(viewHolder.pre_live_btn);
+        }
     }
 
     @Override
