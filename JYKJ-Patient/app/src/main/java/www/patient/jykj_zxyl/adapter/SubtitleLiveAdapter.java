@@ -33,7 +33,7 @@ public class SubtitleLiveAdapter extends RecyclerView.Adapter<SubtitleLiveAdapte
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         SubjectLiveInfo parinfo = datas.get(i);
         viewHolder.subject_live_catalog.setText("类目:"+ StrUtils.defaultStr(parinfo.getClassName()));
-        viewHolder.subject_live_desc.setText(StrUtils.defaultStr(parinfo.getKeywordsName()));
+        viewHolder.subject_live_desc.setText(StrUtils.defaultStr(parinfo.getAttrName()));
         viewHolder.subject_live_price.setText(StrUtils.defaultStr(parinfo.getExtendBroadcastPriceShow()));
         viewHolder.subject_live_title.setText(StrUtils.defaultStr(parinfo.getBroadcastTitle()));
         viewHolder.subject_watch_num.setText("想看人数："+StrUtils.defaultStr(parinfo.getExtendBroadcastViewsNum()));

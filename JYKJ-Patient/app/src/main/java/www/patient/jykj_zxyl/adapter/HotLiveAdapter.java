@@ -33,7 +33,7 @@ public class HotLiveAdapter extends RecyclerView.Adapter<HotLiveAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         HotLiveInfo parinfo = datas.get(i);
         viewHolder.live_catalog.setText("类目:"+ StrUtils.defaultStr(parinfo.getClassName()));
-        viewHolder.live_desc.setText(StrUtils.defaultStr(parinfo.getKeywordsName()));
+        viewHolder.live_desc.setText(StrUtils.defaultStr(parinfo.getAttrName()));
         viewHolder.live_price.setText(StrUtils.defaultStr(parinfo.getExtendBroadcastPriceShow()));
         viewHolder.live_title.setText(StrUtils.defaultStr(parinfo.getBroadcastTitle()));
         viewHolder.watch_num.setText("想看人数："+StrUtils.defaultStr(parinfo.getExtendBroadcastWatchNum()));
