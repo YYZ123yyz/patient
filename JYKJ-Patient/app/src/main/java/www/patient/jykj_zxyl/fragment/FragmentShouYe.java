@@ -52,9 +52,7 @@ import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import rx.functions.Action1;
 import www.patient.jykj_zxyl.activity.MainActivity;
-import www.patient.jykj_zxyl.activity.home.BloodMonitorActivity;
-import www.patient.jykj_zxyl.activity.home.NewsActivity;
-import www.patient.jykj_zxyl.activity.home.QRCodeActivity;
+import www.patient.jykj_zxyl.activity.home.*;
 import www.patient.jykj_zxyl.activity.home.patient.BloodEntryActivity;
 import www.patient.jykj_zxyl.activity.home.patient.ZJXQ_ZJBDActivity;
 import www.patient.jykj_zxyl.activity.hyhd.BindDoctorFriend;
@@ -967,11 +965,11 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
     /**
      * 默认的定位参数
-     *
-     * @author hongming.wang
      * @since 2.8.0
+     * @author hongming.wang
+     *
      */
-    private AMapLocationClientOption getDefaultOption() {
+    private AMapLocationClientOption getDefaultOption(){
         AMapLocationClientOption mOption = new AMapLocationClientOption();
         mOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);//可选，设置定位模式，可选的模式有高精度、仅设备、仅网络。默认为高精度模式
         mOption.setGpsFirst(false);//可选，设置是否gps优先，只在高精度模式下有效。默认关闭
@@ -998,7 +996,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
                 StringBuffer sb = new StringBuffer();
                 //errCode等于0代表定位成功，其他的为定位失败，具体的可以参照官网定位错误码说明
-                if (location.getErrorCode() == 0) {
+                if(location.getErrorCode() == 0){
                     sb.append("定位成功" + "\n");
                     sb.append("定位类型: " + location.getLocationType() + "\n");
                     sb.append("经    度    : " + location.getLongitude() + "\n");
@@ -1023,7 +1021,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                     mApp.gProviceName = location.getProvince();
                     mApp.gGDLocation = areaCode;
                     mApp.gGDLocationName = location.getDistrict();
-                    mUserTitleText.setText(location.getProvince() + location.getCity());
+                    mUserTitleText.setText(location.getProvince()+location.getCity());
                 } else {
                     //定位失败
                     mUserTitleText.setText("定位失败");
@@ -1052,13 +1050,12 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
     /**
      * 获取GPS状态的字符串
-     *
      * @param statusCode GPS状态码
      * @return
      */
-    private String getGPSStatusString(int statusCode) {
+    private String getGPSStatusString(int statusCode){
         String str = "";
-        switch (statusCode) {
+        switch (statusCode){
             case AMapLocationQualityReport.GPS_STATUS_OK:
                 str = "GPS状态正常";
                 break;
@@ -1077,7 +1074,6 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         }
         return str;
     }
-
     // 根据控件的选择，重新设置定位参数
     private void resetOption() {
         // 设置是否需要显示地址信息
@@ -1097,11 +1093,11 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         locationOption.setSensorEnable(false);
         //设置是否开启wifi扫描，如果设置为false时同时会停止主动刷新，停止以后完全依赖于系统刷新，定位位置可能存在误差
         int strInterval = 1000;
-        if (!TextUtils.isEmpty(strInterval + "")) {
-            try {
+        if (!TextUtils.isEmpty(strInterval+"")) {
+            try{
                 // 设置发送定位请求的时间间隔,最小值为1000，如果小于1000，按照1000算
                 locationOption.setInterval(Long.valueOf(strInterval));
-            } catch (Throwable e) {
+            }catch(Throwable e){
                 e.printStackTrace();
             }
         }
@@ -1120,10 +1116,11 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     /**
      * 开始定位
      *
-     * @author hongming.wang
      * @since 2.8.0
+     * @author hongming.wang
+     *
      */
-    private void startLocation() {
+    private void startLocation(){
         //根据控件的选择，重新设置定位参数
         resetOption();
         // 设置定位参数
@@ -1135,10 +1132,11 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     /**
      * 停止定位
      *
-     * @author hongming.wang
      * @since 2.8.0
+     * @author hongming.wang
+     *
      */
-    private void stopLocation() {
+    private void stopLocation(){
         // 停止定位
         locationClient.stopLocation();
     }
@@ -1146,10 +1144,11 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     /**
      * 销毁定位
      *
-     * @author hongming.wang
      * @since 2.8.0
+     * @author hongming.wang
+     *
      */
-    private void destroyLocation() {
+    private void destroyLocation(){
         if (null != locationClient) {
             /**
              * 如果AMapLocationClient是在当前Activity实例化的，
