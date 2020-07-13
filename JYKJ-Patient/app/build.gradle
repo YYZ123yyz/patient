@@ -50,15 +50,20 @@ android {
     }
 
     signingConfigs{
-        debug{  //这里配置的就是debug的签名配置了
-            storeFile file("E:\\tmpwork\\git\\androidwork\\JYKJcode\\JYKJ-Patient\\app\\src\\main\\xianjiuyipatient.jsk")   //这个文件是我的,改成你自己的release签名文件
-//            storeFile file("E:\\tmpwork\\git\\androidwork\\JYKJcode\\JYKJ-Patient\\app\\src\\main\\yyz.jks")
-            storePassword "jiuyihtnpatient"   //密码改成自己的
-            keyAlias "xianjiuyipatient"              //再改成你自己的
-            keyPassword "jiuyihealthpatient"     //再改成你自己的
-//            storePassword "JYKJ123456"   //密码改成自己的
-//            keyAlias "JYKJ"              //再改成你自己的
-//            keyPassword "JYKJ123456"     //再改成你自己的
+
+        debug {
+            keyAlias 'xianjiuyipatient'
+            keyPassword 'jiuyihealthpatient'
+            storeFile file("../xianjiuyipatient.jks")
+            storePassword 'jiuyihtnpatient'
+        }
+
+        release {
+            keyAlias 'xianjiuyipatient'
+            keyPassword 'jiuyihealthpatient'
+            storeFile file("../xianjiuyipatient.jks")
+            storePassword 'jiuyihtnpatient'
+            v2SigningEnabled false
         }
     }
 
@@ -114,6 +119,8 @@ dependencies {
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
     api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     implementation files('libs/AMap_Location_V5.0.0_20200609.jar')
+    //Banner轮播图
+    implementation 'com.youth.banner:banner:1.4.10'
     //工具库
     //implementation 'com.blankj:utilcode:1.25.9'
     //implementation 'com.orhanobut:logger:2.2.0'
