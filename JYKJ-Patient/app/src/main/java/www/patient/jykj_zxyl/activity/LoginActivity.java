@@ -150,6 +150,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @SuppressLint("HandlerLeak")
