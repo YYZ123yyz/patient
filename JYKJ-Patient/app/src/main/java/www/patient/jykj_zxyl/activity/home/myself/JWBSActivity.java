@@ -35,6 +35,7 @@ import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.fragment.myself.jwbs.FragmentJWBS_BRTX;
 import www.patient.jykj_zxyl.fragment.myself.jwbs.FragmentJWBS_YSTX;
+import www.patient.jykj_zxyl.util.MyViewPager;
 
 /**
  * 个人中心==》建档档案==》==>既往病史
@@ -42,35 +43,35 @@ import www.patient.jykj_zxyl.fragment.myself.jwbs.FragmentJWBS_YSTX;
 public class JWBSActivity extends AppCompatActivity {
 
 
-    private         Context                 mContext;
+    private Context mContext;
     private JWBSActivity mActivity;
-    private         Handler                 mHandler;
-    private         JYKJApplication         mApp;
-    private         RecyclerView            mRecycleView;
+    private Handler mHandler;
+    private JYKJApplication mApp;
+    private RecyclerView mRecycleView;
 
-    private         LinearLayoutManager     layoutManager;
+    private LinearLayoutManager layoutManager;
     private JYZL_GRZLRecycleAdapter mJYZL_GRZLRecycleAdapter;      //适配器
-    private         List<HZIfno>            mHZEntyties = new ArrayList<>();            //所有数据
-    private         LinearLayout            mJBXX;                                  //基本信息
-    private         String                  mPatientCode;                       //患者code
+    private List<HZIfno> mHZEntyties = new ArrayList<>();            //所有数据
+    private LinearLayout mJBXX;                                  //基本信息
+    private String mPatientCode;                       //患者code
 
-    public                  ProgressDialog              mDialogProgress =null;
-    private                 String                      mNetRetStr;                 //获取返回字符串
+    public ProgressDialog mDialogProgress = null;
+    private String mNetRetStr;                 //获取返回字符串
 
     private PatientLaberAdapter mPatientLaberAdapter;
     private List<ProvidePatientLabel> mProvidePatientLabel = new ArrayList<>();
 
-    private         LinearLayout            li_back;
+    private LinearLayout li_back;
 
-    private                 ViewPager               pager;
-    private                 FragmentAdapter         fragmentAdapter;
-    private                 List<Fragment>          fragmentList;
-    private                 TabLayout               tabLayout;
-    private                 List<String>            mTitles;
+    private MyViewPager pager;
+    private FragmentAdapter fragmentAdapter;
+    private List<Fragment> fragmentList;
+    private TabLayout tabLayout;
+    private List<String> mTitles;
 
-    private                 FragmentJWBS_BRTX       mFragmentJWBS_BRTX;
-    private                 FragmentJWBS_YSTX mFragmentJWBS_YSTX;
-
+    private FragmentJWBS_BRTX mFragmentJWBS_BRTX;
+    private FragmentJWBS_YSTX mFragmentJWBS_YSTX;
+    private boolean noScroll = false;
     /**
      * 初始化布局
      */
@@ -78,11 +79,11 @@ public class JWBSActivity extends AppCompatActivity {
         li_back = (LinearLayout) this.findViewById(R.id.li_back);
         li_back.setOnClickListener(new ButtonClick());
 
-        pager= (ViewPager) this.findViewById(R.id.page);
-        tabLayout= (TabLayout) this.findViewById(R.id.tab_layout);
+        pager = this.findViewById(R.id.page);
+        tabLayout = (TabLayout) this.findViewById(R.id.tab_layout);
 
-        fragmentList=new ArrayList<>();
-        mTitles=new ArrayList<>();
+        fragmentList = new ArrayList<>();
+        mTitles = new ArrayList<>();
         mTitles.add("本人填写");
         mTitles.add("医生填写");
 
@@ -92,14 +93,15 @@ public class JWBSActivity extends AppCompatActivity {
         fragmentList.add(mFragmentJWBS_BRTX);
         fragmentList.add(mFragmentJWBS_YSTX);
 
-        fragmentAdapter=new FragmentAdapter(this.getSupportFragmentManager(),fragmentList,mTitles);
+        fragmentAdapter = new FragmentAdapter(this.getSupportFragmentManager(), fragmentList, mTitles);
         pager.setAdapter(fragmentAdapter);
+        pager.setScrollble(false);
         tabLayout.setupWithViewPager(pager);//与ViewPage建立关系
 
     }
 
 
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -110,7 +112,6 @@ public class JWBSActivity extends AppCompatActivity {
             }
         }
     }
-
 
 
     @Override
@@ -126,11 +127,10 @@ public class JWBSActivity extends AppCompatActivity {
     }
 
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case 0:
                         cacerProgress();
                         break;
@@ -144,7 +144,6 @@ public class JWBSActivity extends AppCompatActivity {
             }
         };
     }
-
 
 
     /**
@@ -200,16 +199,11 @@ public class JWBSActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(this);
         }
@@ -222,7 +216,7 @@ public class JWBSActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }

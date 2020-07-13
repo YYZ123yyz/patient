@@ -70,45 +70,43 @@ import www.patient.jykj_zxyl.util.Util;
  */
 public class WZXXActivity extends AppCompatActivity {
 
-    private                 Context                 mContext;
-    private                 WZXXActivity            mActivity;
-    private                 Handler                 mHandler;
-    private                 JYKJApplication         mApp;
+    private Context mContext;
+    private WZXXActivity mActivity;
+    private Handler mHandler;
+    private JYKJApplication mApp;
 
-    public                  ProgressDialog              mDialogProgress =null;
-    private             String                              mNetRetStr;                 //返回字符串
-    private             String                              mAddNetRetStr;                 //返回字符串
-    private             String                              mGetImgNetRetStr;                 //获取图片返回字符串
-    private         TextView                mJZLX;                         //就诊类型
-    private         TextView                mYSXM;                         //医生姓名
-    private         TextView                mHZXM;                         //患者姓名
-    private         TextView                mHZSJ;                         //患者手机
-    private         TextView                mXB;                         //性别
-    private         TextView                mNL;                         //年龄
-    private         TextView                mYCRQ;                         //最早发现高血压异常日期
-    private         TextView                mJZHZ;                         //家族内是否有其他高血压患者
-    private         TextView                mSSY;                         //收缩压
-    private         TextView                mSZY;                         //舒张压
-    private         TextView                mXL;                         //心率
+    public ProgressDialog mDialogProgress = null;
+    private String mNetRetStr;                 //返回字符串
+    private String mAddNetRetStr;                 //返回字符串
+    private String mGetImgNetRetStr;                 //获取图片返回字符串
+    private TextView mJZLX;                         //就诊类型
+    private TextView mYSXM;                         //医生姓名
+    private TextView mHZXM;                         //患者姓名
+    private TextView mHZSJ;                         //患者手机
+    private TextView mXB;                         //性别
+    private TextView mNL;                         //年龄
+    private TextView mYCRQ;                         //最早发现高血压异常日期
+    private TextView mJZHZ;                         //家族内是否有其他高血压患者
+    private TextView mSSY;                         //收缩压
+    private TextView mSZY;                         //舒张压
+    private TextView mXL;                         //心率
 
-    private         TextView                mCLYQ;                        //测量仪器
+    private TextView mCLYQ;                        //测量仪器
 
-    private         TextView                mCLFF;                          //测量方法
-    private         TextView                mGXYBS;                          //高血压病史
-    private         TextView                mBQZS;                          //病情自述
+    private TextView mCLFF;                          //测量方法
+    private TextView mGXYBS;                          //高血压病史
+    private TextView mBQZS;                          //病情自述
 
-    private         RecyclerView mImageRecycleView;
-    private         FullyGridLayoutManager mGridLayoutManager;
+    private RecyclerView mImageRecycleView;
+    private FullyGridLayoutManager mGridLayoutManager;
     private WZZXImageViewRecycleAdapter mAdapter;
 
 
-
-    private                 LinearLayout                mYSurplus;                  //我的余额
-    private                 RecyclerView                mPBRecycleView;             //排班列表
-    private                 LinearLayoutManager                 layoutManager;
+    private LinearLayout mYSurplus;                  //我的余额
+    private RecyclerView mPBRecycleView;             //排班列表
+    private LinearLayoutManager layoutManager;
     private DoctorPBRecycleAdapter mMyPBRecycleAdapter;       //适配器
-    private                 List<ProvideDoctorSetSchedulingPatient>                mPbInfos = new ArrayList<>();
-
+    private List<ProvideDoctorSetSchedulingPatient> mPbInfos = new ArrayList<>();
 
 
     private ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend;                          //专家信息
@@ -116,23 +114,23 @@ public class WZXXActivity extends AppCompatActivity {
     private List<ProvideBasicsImg> mProvideBasicsImg = new ArrayList<>();
     private LinearLayout mBack;
 
-    private     String                      mOperaType;                                 //类型，1：图文就诊
-    private         String                  mOrderNum;                                  //订单号
-    private         ProvideDoctorSetScheduling provideDoctorSetScheduling = new ProvideDoctorSetScheduling();
+    private String mOperaType;                                 //类型，1：图文就诊
+    private String mOrderNum;                                  //订单号
+    private ProvideDoctorSetScheduling provideDoctorSetScheduling = new ProvideDoctorSetScheduling();
 
-    private                 ProvideDoctorSetScheduling      mProvideDoctorSetScheduling = new ProvideDoctorSetScheduling();
-    private                 List<ProvideDoctorSetSchedulingInfoGroupDate> mProvideDoctorSetSchedulingInfoGroupDate = new ArrayList<>();
+    private ProvideDoctorSetScheduling mProvideDoctorSetScheduling = new ProvideDoctorSetScheduling();
+    private List<ProvideDoctorSetSchedulingInfoGroupDate> mProvideDoctorSetSchedulingInfoGroupDate = new ArrayList<>();
 
     private ImageViewRecycleAdapter mImageViewRecycleAdapter;
-    private         List<Photo_Info>            mPhotoInfos = new ArrayList<>();
+    private List<Photo_Info> mPhotoInfos = new ArrayList<>();
 
-    private             File                    mTempFile;              //声明一个拍照结果的临时文件
-    private             TextView                mCommit;                    //提交
+    private File mTempFile;              //声明一个拍照结果的临时文件
+    private TextView mCommit;                    //提交
 
-    private             ProvideInteractPatientInterrogation mProvideInteractPatientInterrogation = new ProvideInteractPatientInterrogation();               //提交的问诊资料
-    private             ProvideDoctorSetSchedulingInfoGroupDate provideDoctorSetSchedulingInfoGroupDate;
+    private ProvideInteractPatientInterrogation mProvideInteractPatientInterrogation = new ProvideInteractPatientInterrogation();               //提交的问诊资料
+    private ProvideDoctorSetSchedulingInfoGroupDate provideDoctorSetSchedulingInfoGroupDate;
 
-    private             ProvideInteractPatientInterrogationParment          mProvideInteractPatientInterrogationParment = new ProvideInteractPatientInterrogationParment();
+    private ProvideInteractPatientInterrogationParment mProvideInteractPatientInterrogationParment = new ProvideInteractPatientInterrogationParment();
 
     private void setLayoutDate() {
 
@@ -155,9 +153,9 @@ public class WZXXActivity extends AppCompatActivity {
             mJZHZ.setText("否");
         if (mProvideInteractPatientInterrogationParment.getFlagFamilyHtn() == 1)
             mJZHZ.setText("是");
-        mSSY.setText(mProvideInteractPatientInterrogationParment.getHighPressureNum()+"");
-        mSZY.setText(mProvideInteractPatientInterrogationParment.getLowPressureNum()+"");
-        mXL.setText(mProvideInteractPatientInterrogationParment.getHeartRateNum()+"");
+        mSSY.setText(mProvideInteractPatientInterrogationParment.getHighPressureNum() + "");
+        mSZY.setText(mProvideInteractPatientInterrogationParment.getLowPressureNum() + "");
+        mXL.setText(mProvideInteractPatientInterrogationParment.getHeartRateNum() + "");
         mCLYQ.setText(mProvideInteractPatientInterrogationParment.getMeasureInstrumentName());
         mCLFF.setText(mProvideInteractPatientInterrogationParment.getMeasureModeName());
         mGXYBS.setText(mProvideInteractPatientInterrogationParment.getHtnHistory());
@@ -181,22 +179,22 @@ public class WZXXActivity extends AppCompatActivity {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             int mYear = year;
-            int mMonth = monthOfYear+1;
+            int mMonth = monthOfYear + 1;
             int mDay = dayOfMonth;
             String month = "";
             String day = "";
 //            TextView date_textview = (TextView) findViewById(R.id.changebirth_textview);
             String days;
             if (mMonth < 10)
-                month = "0"+mMonth;
+                month = "0" + mMonth;
             else
-                month = mMonth+"";
+                month = mMonth + "";
             if (mDay < 10)
-                day = "0"+mDay;
+                day = "0" + mDay;
             else
-                day = mDay+"";
-            mYCRQ.setText(mYear+"-"+month+"-"+day);
-            mProvideInteractPatientInterrogationParment.setBloodPressureAbnormalDate(mYear+"-"+month+"-"+day);
+                day = mDay + "";
+            mYCRQ.setText(mYear + "-" + month + "-" + day);
+            mProvideInteractPatientInterrogationParment.setBloodPressureAbnormalDate(mYear + "-" + month + "-" + day);
             System.out.println();
         }
     };
@@ -206,8 +204,7 @@ public class WZXXActivity extends AppCompatActivity {
      */
     private void showCLFSDialog() {
         String[] items = new String[mApp.gBasicDate.get(10007).size()];
-        for (int i = 0; i < mApp.gBasicDate.get(10007).size(); i++)
-        {
+        for (int i = 0; i < mApp.gBasicDate.get(10007).size(); i++) {
             items[i] = mApp.gBasicDate.get(10007).get(i).getAttrName();
         }
         android.app.AlertDialog.Builder builder3 = new android.app.AlertDialog.Builder(this);// 自定义对话框
@@ -231,8 +228,7 @@ public class WZXXActivity extends AppCompatActivity {
      */
     private void showCLYQDialog() {
         String[] items = new String[mApp.gBasicDate.get(10006).size()];
-        for (int i = 0; i < mApp.gBasicDate.get(10006).size(); i++)
-        {
+        for (int i = 0; i < mApp.gBasicDate.get(10006).size(); i++) {
             items[i] = mApp.gBasicDate.get(10006).get(i).getAttrName();
         }
         android.app.AlertDialog.Builder builder3 = new android.app.AlertDialog.Builder(this);// 自定义对话框
@@ -255,7 +251,7 @@ public class WZXXActivity extends AppCompatActivity {
      * 家族内是否有高血压病史
      */
     private void showDoctorTitleDialog() {
-        String[] doctorTitleName = new String[]{"否","是"};// 家族内是否有高血压病史
+        String[] doctorTitleName = new String[]{"否", "是"};// 家族内是否有高血压病史
         android.app.AlertDialog.Builder builder3 = new android.app.AlertDialog.Builder(this);// 自定义对话框
         builder3.setSingleChoiceItems(doctorTitleName, 0, new DialogInterface.OnClickListener() {// 2默认的选中
 
@@ -274,7 +270,7 @@ public class WZXXActivity extends AppCompatActivity {
      * 家族内是否有高血压病史
      */
     private void showChoiceNLDialog() {
-        String[] doctorTitleName = new String[]{"男","女"};// 家族内是否有高血压病史
+        String[] doctorTitleName = new String[]{"男", "女"};// 家族内是否有高血压病史
         android.app.AlertDialog.Builder builder3 = new android.app.AlertDialog.Builder(this);// 自定义对话框
         builder3.setSingleChoiceItems(doctorTitleName, 0, new DialogInterface.OnClickListener() {// 2默认的选中
 
@@ -282,7 +278,7 @@ public class WZXXActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {// which是被选中的位置
                 // showToast(which+"");
                 mXB.setText(doctorTitleName[which]);
-                mProvideInteractPatientInterrogationParment.setGender(which+1);
+                mProvideInteractPatientInterrogationParment.setGender(which + 1);
                 dialog.dismiss();// 随便点击一个item消失对话框，不用点击确认取消
             }
         });
@@ -293,7 +289,7 @@ public class WZXXActivity extends AppCompatActivity {
     /**
      * 下一步
      */
-    private void commit(){
+    private void commit() {
 //        mProvideInteractPatientInterrogation = new ProvideInteractPatientInterrogation();
         ProvideInteractPatientInterrogation provideInteractPatientInterrogation = mProvideInteractPatientInterrogation;
         mProvideInteractPatientInterrogationParment.setLoginPatientPosition(mApp.loginDoctorPosition);
@@ -302,14 +298,12 @@ public class WZXXActivity extends AppCompatActivity {
         mProvideInteractPatientInterrogationParment.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         mProvideInteractPatientInterrogationParment.setOrderCode(mOrderNum);
         mProvideInteractPatientInterrogationParment.setFlagHtnHistory("0");
-        if (mProvideInteractPatientInterrogationParment.getGender() == null || mProvideInteractPatientInterrogationParment.getGender() == 0)
-        {
-            Toast.makeText(mContext,"请选择性别",Toast.LENGTH_SHORT).show();
+        if (mProvideInteractPatientInterrogationParment.getGender() == null || mProvideInteractPatientInterrogationParment.getGender() == 0) {
+            Toast.makeText(mContext, "请选择性别", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (mProvideInteractPatientInterrogationParment.getOrderCode() == null || "".equals(mProvideInteractPatientInterrogationParment.getOrderCode()))
-        {
-            Toast.makeText(mContext,"订单号获取失败，请稍后重试",Toast.LENGTH_SHORT).show();
+        if (mProvideInteractPatientInterrogationParment.getOrderCode() == null || "".equals(mProvideInteractPatientInterrogationParment.getOrderCode())) {
+            Toast.makeText(mContext, "订单号获取失败，请稍后重试", Toast.LENGTH_SHORT).show();
             return;
         }
         mProvideInteractPatientInterrogationParment.setTreatmentType(Integer.valueOf(mOperaType));
@@ -325,75 +319,63 @@ public class WZXXActivity extends AppCompatActivity {
         mProvideInteractPatientInterrogationParment.setPatientLinkPhone(mHZSJ.getText().toString());
 //        mProvideInteractPatientInterrogation.setGender(mApp.mProvideViewSysUserPatientInfoAndRegion.getGender());
         mProvideInteractPatientInterrogationParment.setHtnHistory(mGXYBS.getText().toString());
-        if (mSZY.getText().toString() == null || "".equals(mSZY.getText().toString()))
-        {
-            Toast.makeText(mContext,"请填写舒张压",Toast.LENGTH_SHORT).show();
+        if (mSZY.getText().toString() == null || "".equals(mSZY.getText().toString())) {
+            Toast.makeText(mContext, "请填写舒张压", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (mSSY.getText().toString() == null || "".equals(mSSY.getText().toString()))
-        {
-            Toast.makeText(mContext,"请填写收缩压",Toast.LENGTH_SHORT).show();
+        if (mSSY.getText().toString() == null || "".equals(mSSY.getText().toString())) {
+            Toast.makeText(mContext, "请填写收缩压", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (mXL.getText().toString() == null || "".equals(mXL.getText().toString()))
-        {
-            Toast.makeText(mContext,"请填写心率",Toast.LENGTH_SHORT).show();
+        if (mXL.getText().toString() == null || "".equals(mXL.getText().toString())) {
+            Toast.makeText(mContext, "请填写心率", Toast.LENGTH_SHORT).show();
             return;
         }
         mProvideInteractPatientInterrogationParment.setHighPressureNum(Integer.valueOf(mSZY.getText().toString()));
-        if (mProvideInteractPatientInterrogationParment.getHighPressureNum() == null || "".equals(mProvideInteractPatientInterrogationParment.getHighPressureNum()))
-        {
-            Toast.makeText(mContext,"请填写舒张压",Toast.LENGTH_SHORT).show();
+        if (mProvideInteractPatientInterrogationParment.getHighPressureNum() == null || "".equals(mProvideInteractPatientInterrogationParment.getHighPressureNum())) {
+            Toast.makeText(mContext, "请填写舒张压", Toast.LENGTH_SHORT).show();
             return;
         }
         mProvideInteractPatientInterrogationParment.setLowPressureNum(Integer.valueOf(mSSY.getText().toString()));
-        if (mProvideInteractPatientInterrogationParment.getLowPressureNum() == null || "".equals(mProvideInteractPatientInterrogationParment.getLowPressureNum()))
-        {
-            Toast.makeText(mContext,"请填写收缩压",Toast.LENGTH_SHORT).show();
+        if (mProvideInteractPatientInterrogationParment.getLowPressureNum() == null || "".equals(mProvideInteractPatientInterrogationParment.getLowPressureNum())) {
+            Toast.makeText(mContext, "请填写收缩压", Toast.LENGTH_SHORT).show();
             return;
         }
         mProvideInteractPatientInterrogationParment.setHeartRateNum(Integer.valueOf(mXL.getText().toString()));
-        if (mProvideInteractPatientInterrogationParment.getHeartRateNum() == null || "".equals(mProvideInteractPatientInterrogationParment.getHeartRateNum()))
-        {
-            Toast.makeText(mContext,"请填写心率",Toast.LENGTH_SHORT).show();
+        if (mProvideInteractPatientInterrogationParment.getHeartRateNum() == null || "".equals(mProvideInteractPatientInterrogationParment.getHeartRateNum())) {
+            Toast.makeText(mContext, "请填写心率", Toast.LENGTH_SHORT).show();
             return;
         }
         mProvideInteractPatientInterrogationParment.setStateOfIllness(mBQZS.getText().toString());
-        if (mProvideInteractPatientInterrogationParment.getStateOfIllness() == null || "".equals(mProvideInteractPatientInterrogationParment.getStateOfIllness()))
-        {
-            Toast.makeText(mContext,"请填写病情自述",Toast.LENGTH_SHORT).show();
+//        if (mProvideInteractPatientInterrogationParment.getStateOfIllness() == null || "".equals(mProvideInteractPatientInterrogationParment.getStateOfIllness())) {
+//            Toast.makeText(mContext, "请填写病情自述", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+        if (mProvideInteractPatientInterrogationParment.getBloodPressureAbnormalDate() == null || "".equals(mProvideInteractPatientInterrogationParment.getBloodPressureAbnormalDate())) {
+            Toast.makeText(mContext, "请选择最早发现异常日期", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (mProvideInteractPatientInterrogationParment.getBloodPressureAbnormalDate() == null || "".equals(mProvideInteractPatientInterrogationParment.getBloodPressureAbnormalDate()))
-        {
-            Toast.makeText(mContext,"请选择最早发现异常日期",Toast.LENGTH_SHORT).show();
+        if (mProvideInteractPatientInterrogationParment.getFlagFamilyHtn() == null || "".equals(mProvideInteractPatientInterrogationParment.getFlagFamilyHtn())) {
+            Toast.makeText(mContext, "请选择家族内是否有高血压患者", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (mProvideInteractPatientInterrogationParment.getFlagFamilyHtn() == null || "".equals(mProvideInteractPatientInterrogationParment.getFlagFamilyHtn()))
-        {
-            Toast.makeText(mContext,"请选择家族内是否有高血压患者",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (mNL.getText().toString() == null || "".equals(mNL.getText().toString()))
-        {
-            Toast.makeText(mContext,"请填写年龄",Toast.LENGTH_SHORT).show();
+        if (mNL.getText().toString() == null || "".equals(mNL.getText().toString())) {
+            Toast.makeText(mContext, "请填写年龄", Toast.LENGTH_SHORT).show();
             return;
         }
         mProvideInteractPatientInterrogationParment.setBirthday(mNL.getText().toString());
-        if (mProvideInteractPatientInterrogationParment.getMeasureInstrument() == null || "".equals(mProvideInteractPatientInterrogationParment.getMeasureInstrument()))
-        {
-            Toast.makeText(mContext,"请选择测量仪器",Toast.LENGTH_SHORT).show();
+        if (mProvideInteractPatientInterrogationParment.getMeasureInstrument() == null || "".equals(mProvideInteractPatientInterrogationParment.getMeasureInstrument())) {
+            Toast.makeText(mContext, "请选择测量仪器", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (mProvideInteractPatientInterrogationParment.getMeasureMode() == null || "".equals(mProvideInteractPatientInterrogationParment.getMeasureMode()))
-        {
-            Toast.makeText(mContext,"请选择方法",Toast.LENGTH_SHORT).show();
+        if (mProvideInteractPatientInterrogationParment.getMeasureMode() == null || "".equals(mProvideInteractPatientInterrogationParment.getMeasureMode())) {
+            Toast.makeText(mContext, "请选择方法", Toast.LENGTH_SHORT).show();
             return;
         }
 
         //生成图片编码
         mProvideInteractPatientInterrogationParment.setImgCode(UUID.randomUUID().toString());
-        getProgressBar("请稍候","正在提交数据");
+        getProgressBar("请稍候", "正在提交数据");
         new Thread() {
             public void run() {
 //                //提交数据
@@ -408,22 +390,18 @@ public class WZXXActivity extends AppCompatActivity {
                         mAddNetRetStr = new Gson().toJson(retEntity);
                         mHandler.sendEmptyMessage(10);
                         return;
-                    }
-                    else
-                    {
+                    } else {
                         //判断是否有图片
-                        if (mPhotoInfos.size() > 1)
-                        {
+                        if (mPhotoInfos.size() > 1) {
                             //上传图片
-                            for (int i = 1; i < mPhotoInfos.size(); i++)
-                            {
+                            for (int i = 1; i < mPhotoInfos.size(); i++) {
                                 UpLoadImgParment upLoadImgParment = new UpLoadImgParment();
                                 upLoadImgParment.setLoginPatientPosition(mApp.loginDoctorPosition);
                                 upLoadImgParment.setRequestClientType("1");
                                 upLoadImgParment.setOrderCode(mOrderNum);
                                 upLoadImgParment.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
                                 upLoadImgParment.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-                                upLoadImgParment.setImgBase64Data("data:image/jpg;base64,"+mPhotoInfos.get(i).getPhoto());
+                                upLoadImgParment.setImgBase64Data("data:image/jpg;base64," + mPhotoInfos.get(i).getPhoto());
                                 upLoadImgParment.setImgCode(mProvideInteractPatientInterrogationParment.getImgCode());
                                 //上传图片
                                 str = new Gson().toJson(upLoadImgParment);
@@ -463,8 +441,8 @@ public class WZXXActivity extends AppCompatActivity {
      * 初始化布局
      */
     private void initLayout() {
-        mBack = (LinearLayout)this.findViewById(R.id.iv_back_left);
-        mCommit = (TextView)this.findViewById(R.id.tv_commit);
+        mBack = (LinearLayout) this.findViewById(R.id.iv_back_left);
+        mCommit = (TextView) this.findViewById(R.id.tv_commit);
         mCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -478,9 +456,8 @@ public class WZXXActivity extends AppCompatActivity {
                 finish();
             }
         });
-        mJZLX = (TextView)this.findViewById(R.id.tv_activityHZZL_userYW);
-        switch (Integer.valueOf(mOperaType))
-        {
+        mJZLX = (TextView) this.findViewById(R.id.tv_activityHZZL_userYW);
+        switch (Integer.valueOf(mOperaType)) {
             case 1:
                 mJZLX.setText("图文就诊");
                 break;
@@ -497,7 +474,7 @@ public class WZXXActivity extends AppCompatActivity {
                 mJZLX.setText("签约就诊");
                 break;
         }
-        mYSXM = (TextView)this.findViewById(R.id.tv_activityHZZL_userTZ);
+        mYSXM = (TextView) this.findViewById(R.id.tv_activityHZZL_userTZ);
         mYSXM.setText(provideViewDoctorExpertRecommend.getUserName());
         mProvideInteractPatientInterrogation.setDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
         mProvideInteractPatientInterrogation.setDoctorName(provideViewDoctorExpertRecommend.getUserName());
@@ -508,10 +485,10 @@ public class WZXXActivity extends AppCompatActivity {
 //        mHZXM = (TextView)this.findViewById(R.id.tv_activityHZZL_userSFXY);
 //        mHZXM.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
 
-        mHZSJ = (TextView)this.findViewById(R.id.tv_activityHZZL_userSFXJ);
+        mHZSJ = (TextView) this.findViewById(R.id.tv_activityHZZL_userSFXJ);
         mHZSJ.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
 
-        mXB = (TextView)this.findViewById(R.id.tv_activityHZZL_userSFAY);
+        mXB = (TextView) this.findViewById(R.id.tv_activityHZZL_userSFAY);
         mXB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -524,42 +501,42 @@ public class WZXXActivity extends AppCompatActivity {
             mXB.setText("女");
         else
             mXB.setText("未设置");
-        mNL = (TextView)this.findViewById(R.id.tv_activityHZZL_userAuthState);
+        mNL = (TextView) this.findViewById(R.id.tv_activityHZZL_userAuthState);
 //        mNL.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getBirthday());
 
-        mYCRQ = (TextView)this.findViewById(R.id.tv_activityHZZL_MZ);
+        mYCRQ = (TextView) this.findViewById(R.id.tv_activityHZZL_MZ);
         mYCRQ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showBirthDayChoiceDialog();
             }
         });
-        mJZHZ = (TextView)this.findViewById(R.id.tv_activityHZZL_userName);
+        mJZHZ = (TextView) this.findViewById(R.id.tv_activityHZZL_userName);
         mJZHZ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDoctorTitleDialog();
             }
         });
-        mSSY = (TextView)this.findViewById(R.id.tv_activityHZZL_sex);
-        mSZY = (TextView)this.findViewById(R.id.tv_activityHZZL_szy);
-        mXL = (TextView)this.findViewById(R.id.tv_activityHZZL_xl);
-        mCLYQ = (TextView)this.findViewById(R.id.tv_activityHZZL_clyq);
+        mSSY = (TextView) this.findViewById(R.id.tv_activityHZZL_sex);
+        mSZY = (TextView) this.findViewById(R.id.tv_activityHZZL_szy);
+        mXL = (TextView) this.findViewById(R.id.tv_activityHZZL_xl);
+        mCLYQ = (TextView) this.findViewById(R.id.tv_activityHZZL_clyq);
         mCLYQ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showCLYQDialog();
             }
         });
-        mCLFF = (TextView)this.findViewById(R.id.tv_activityHZZL_clfs);
+        mCLFF = (TextView) this.findViewById(R.id.tv_activityHZZL_clfs);
         mCLFF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showCLFSDialog();
             }
         });
-        mGXYBS = (TextView)this.findViewById(R.id.tv_activityHZZL_BirthDay);
-        mBQZS = (TextView)this.findViewById(R.id.tv_activityHZZL_idCardNum);
+        mGXYBS = (TextView) this.findViewById(R.id.tv_activityHZZL_BirthDay);
+        mBQZS = (TextView) this.findViewById(R.id.tv_activityHZZL_idCardNum);
 
 //        mPBRecycleView = (RecyclerView) this.findViewById(R.id.rv_imageView);
 //        //创建默认的线性LayoutManager
@@ -585,9 +562,9 @@ public class WZXXActivity extends AppCompatActivity {
 //            }
 //        });
 
-        mImageRecycleView = (RecyclerView)this.findViewById(R.id.rv_activityPublish_Image);
+        mImageRecycleView = (RecyclerView) this.findViewById(R.id.rv_activityPublish_Image);
         //创建默认的线性LayoutManager
-        mGridLayoutManager = new FullyGridLayoutManager(mContext,3);
+        mGridLayoutManager = new FullyGridLayoutManager(mContext, 3);
         mGridLayoutManager.setOrientation(LinearLayout.VERTICAL);
         mImageRecycleView.setLayoutManager(mGridLayoutManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
@@ -596,26 +573,23 @@ public class WZXXActivity extends AppCompatActivity {
         final Photo_Info photo_info = new Photo_Info();
         photo_info.setPhotoID("ADDPHOTO");
         mPhotoInfos.add(photo_info);
-        mImageViewRecycleAdapter = new ImageViewRecycleAdapter(mPhotoInfos,mApp);
+        mImageViewRecycleAdapter = new ImageViewRecycleAdapter(mPhotoInfos, mApp);
         mImageRecycleView.setAdapter(mImageViewRecycleAdapter);
         //点击
         mImageViewRecycleAdapter.setOnItemClickListener(new ImageViewRecycleAdapter.OnItemClickListener() {
             @Override
             public void onClick(final int position) {
-                if (mPhotoInfos.size() >= 4)
-                {
-                    Toast.makeText(mContext,"照片不超过三张",Toast.LENGTH_SHORT).show();
+                if (mPhotoInfos.size() >= 4) {
+                    Toast.makeText(mContext, "照片不超过三张", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if ("ADDPHOTO".equals(mPhotoInfos.get(position).getPhotoID()))
-                {
-                    String[] items = {"拍照","从相册选择"};
-                    Dialog dialog=new AlertDialog.Builder(mContext)
+                if ("ADDPHOTO".equals(mPhotoInfos.get(position).getPhotoID())) {
+                    String[] items = {"拍照", "从相册选择"};
+                    Dialog dialog = new AlertDialog.Builder(mContext)
                             .setItems(items, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    switch (i)
-                                    {
+                                    switch (i) {
                                         case 0:
                                             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
                                             StrictMode.setVmPolicy(builder.build());
@@ -633,17 +607,14 @@ public class WZXXActivity extends AppCompatActivity {
                                     }
                                 }
                             }).show();
-                }
-                else
-                {
-                    Dialog dialog=new AlertDialog.Builder(mContext)
+                } else {
+                    Dialog dialog = new AlertDialog.Builder(mContext)
                             .setMessage("删除该照片")
                             .setPositiveButton("是", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     mPhotoInfos.remove(position);
-                                    if (mPhotoInfos.size() == 0)
-                                    {
+                                    if (mPhotoInfos.size() == 0) {
                                         Photo_Info photo_info1 = new Photo_Info();
                                         photo_info1.setPhotoID("ADDPHOTO");
                                         mPhotoInfos.add(photo_info1);
@@ -675,8 +646,8 @@ public class WZXXActivity extends AppCompatActivity {
     private void initDir() {
         // 声明目录
         File tempDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                +"/_tempphoto");
-        if(!tempDir.exists()){
+                + "/_tempphoto");
+        if (!tempDir.exists()) {
             tempDir.mkdirs();// 创建目录
         }
         mTempFile = new File(tempDir, BitmapUtil.getPhotoFileName());// 生成临时文件
@@ -699,9 +670,9 @@ public class WZXXActivity extends AppCompatActivity {
         initHandler();
         getData();
         if (mApp.gBasicDate.get(10006) == null)
-            Util.getBasicDate(10006,mApp);
+            Util.getBasicDate(10006, mApp);
         if (mApp.gBasicDate.get(10007) == null)
-            Util.getBasicDate(10007,mApp);
+            Util.getBasicDate(10007, mApp);
     }
 
 
@@ -718,14 +689,14 @@ public class WZXXActivity extends AppCompatActivity {
                     && data != null) {
 
                 final Uri uri = data.getData();//返回相册图片的Uri
-                BitmapUtil.startPhotoZoom(mActivity,uri, 450);
+                BitmapUtil.startPhotoZoom(mActivity, uri, 450);
             }
 
             // 处理拍照返回
             if (requestCode == Constant.SELECT_PIC_BY_TACK_PHOTO
                     && resultCode == RESULT_OK) {// 拍照成功 RESULT_OK= -1
                 // 剪裁图片
-                BitmapUtil.startPhotoZoom(mActivity,Uri.fromFile(mTempFile), 450);
+                BitmapUtil.startPhotoZoom(mActivity, Uri.fromFile(mTempFile), 450);
             }
             // 接收剪裁回来的结果
             if (requestCode == Constant.REQUEST_PHOTO_CUT
@@ -733,9 +704,8 @@ public class WZXXActivity extends AppCompatActivity {
                 //让剪裁结果显示到图片框
                 setPicToView(data);
             }
-        }catch (Exception e)
-        {
-            Log.i("yi","yichahahaha");
+        } catch (Exception e) {
+            Log.i("yi", "yichahahaha");
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -744,16 +714,13 @@ public class WZXXActivity extends AppCompatActivity {
         Bitmap photo;
         try {
             Uri u = data.getData();
-            if (u != null)
-            {
+            if (u != null) {
                 photo = BitmapFactory.decodeStream(getContentResolver().openInputStream(data.getData()));//将imageUri对象的图片加载到内存
-            }
-            else
-            {
+            } else {
                 System.out.println("进来了");
                 photo = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "test.jpg"))));//将imageUri对象的图片加载到内存
             }
-            System.out.println("图片："+photo);
+            System.out.println("图片：" + photo);
             Photo_Info photo_info = new Photo_Info();
             photo_info.setPhoto(BitmapUtil.bitmaptoString(photo));
             mPhotoInfos.add(photo_info);
@@ -767,22 +734,18 @@ public class WZXXActivity extends AppCompatActivity {
 
 
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case 0:
 
-                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 0)
-                        {
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 0) {
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
                             cacerProgress();
-                        }
-                        else
-                        {
+                        } else {
 
                             mOrderNum = netRetEntity.getResJsonData();
                             getInteractPatientInterrogationResNewest();
@@ -790,10 +753,9 @@ public class WZXXActivity extends AppCompatActivity {
 
                         break;
                     case 1:
-                        netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 1)
-                        {
-                            mProvideInteractPatientInterrogation = JSON.parseObject(netRetEntity.getResJsonData(),ProvideInteractPatientInterrogation.class);
+                        netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 1) {
+                            mProvideInteractPatientInterrogation = JSON.parseObject(netRetEntity.getResJsonData(), ProvideInteractPatientInterrogation.class);
                             mProvideInteractPatientInterrogationParment.setInterrogationId(mProvideInteractPatientInterrogation.getInterrogationId());
                             mProvideInteractPatientInterrogationParment.setOrderCode(mProvideInteractPatientInterrogation.getOrderCode());
                             mProvideInteractPatientInterrogationParment.setTreatmentType(mProvideInteractPatientInterrogation.getTreatmentType());
@@ -806,7 +768,7 @@ public class WZXXActivity extends AppCompatActivity {
                             mProvideInteractPatientInterrogationParment.setGender(mProvideInteractPatientInterrogation.getGender());
                             mProvideInteractPatientInterrogationParment.setBirthday(mProvideInteractPatientInterrogation.getBirthday());
                             Date date = mProvideInteractPatientInterrogation.getBloodPressureAbnormalDate();
-                            if(mProvideInteractPatientInterrogation.getBloodPressureAbnormalDate() != null)
+                            if (mProvideInteractPatientInterrogation.getBloodPressureAbnormalDate() != null)
                                 mProvideInteractPatientInterrogationParment.setBloodPressureAbnormalDate(Util.dateToStrDate(mProvideInteractPatientInterrogation.getBloodPressureAbnormalDate()));
                             mProvideInteractPatientInterrogationParment.setHtnHistory(mProvideInteractPatientInterrogation.getHtnHistory());
                             mProvideInteractPatientInterrogationParment.setFlagFamilyHtn(mProvideInteractPatientInterrogation.getFlagFamilyHtn());
@@ -824,9 +786,7 @@ public class WZXXActivity extends AppCompatActivity {
                             //设置数据
                             setLayoutDate();
 
-                        }
-                        else
-                        {
+                        } else {
 
                         }
                         cacerProgress();
@@ -834,10 +794,9 @@ public class WZXXActivity extends AppCompatActivity {
 
                     case 2:
                         cacerProgress();
-                        netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 1)
-                        {
-                            mProvideDoctorSetSchedulingInfoGroupDate = JSON.parseArray(netRetEntity.getResJsonData(),ProvideDoctorSetSchedulingInfoGroupDate.class);
+                        netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 1) {
+                            mProvideDoctorSetSchedulingInfoGroupDate = JSON.parseArray(netRetEntity.getResJsonData(), ProvideDoctorSetSchedulingInfoGroupDate.class);
                             //设置数据
 //                            setPBDate();
                         }
@@ -851,14 +810,14 @@ public class WZXXActivity extends AppCompatActivity {
                         mProvideInteractPatientInterrogationParment.setDoctorName(provideViewDoctorExpertRecommend.getUserName());
                         provideViewDoctorExpertRecommend.setLinkPhone(mProvideInteractPatientInterrogationParment.getPatientLinkPhone());
                         cacerProgress();
-                        netRetEntity = JSON.parseObject(mAddNetRetStr,NetRetEntity.class);
-                        Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        netRetEntity = JSON.parseObject(mAddNetRetStr, NetRetEntity.class);
+                        Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
                         if (netRetEntity.getResCode() == 1)
-                            startActivity(new Intent(mContext,WZXXOrderActivity.class).putExtra("provideInteractPatientInterrogation",mProvideInteractPatientInterrogation)
-                                    .putExtra("orderID",mOrderNum)
-                                    .putExtra("orderType",mOperaType)
-                                    .putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommend)
-                            .putExtra("provideDoctorSetSchedulingInfoGroupDate",provideDoctorSetSchedulingInfoGroupDate));
+                            startActivity(new Intent(mContext, WZXXOrderActivity.class).putExtra("provideInteractPatientInterrogation", mProvideInteractPatientInterrogation)
+                                    .putExtra("orderID", mOrderNum)
+                                    .putExtra("orderType", mOperaType)
+                                    .putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend)
+                                    .putExtra("provideDoctorSetSchedulingInfoGroupDate", provideDoctorSetSchedulingInfoGroupDate));
                         break;
                 }
             }
@@ -1088,19 +1047,17 @@ public class WZXXActivity extends AppCompatActivity {
 //            mPbInfos.add(provideDoctorSetSchedulingPatient);
 //        }
 
-        for (int i = 0 ; i < mProvideDoctorSetSchedulingInfoGroupDate.size();i++)
-        {
+        for (int i = 0; i < mProvideDoctorSetSchedulingInfoGroupDate.size(); i++) {
             if (mProvideDoctorSetSchedulingInfoGroupDate.get(i).getGroupTimeList() == null)
                 continue;
-            for (int j = 0; j < mProvideDoctorSetSchedulingInfoGroupDate.get(i).getGroupTimeList().size(); j++)
-            {
+            for (int j = 0; j < mProvideDoctorSetSchedulingInfoGroupDate.get(i).getGroupTimeList().size(); j++) {
                 ProvideDoctorSetSchedulingPatient provideDoctorSetSchedulingPatient = new ProvideDoctorSetSchedulingPatient();
                 provideDoctorSetSchedulingPatient.setChoice(false);
 //                provideDoctorSetSchedulingPatient.setDate(7);
 //                provideDoctorSetSchedulingPatient.setGradation(3);
                 provideDoctorSetSchedulingPatient.setSourceNum(mProvideDoctorSetScheduling.getSundayNightSourceNum());
                 provideDoctorSetSchedulingPatient.setText(mProvideDoctorSetSchedulingInfoGroupDate.get(i).getWorkDateName()
-                        +mProvideDoctorSetSchedulingInfoGroupDate.get(i).getGroupTimeList().get(j).getDayTimeSlot());
+                        + mProvideDoctorSetSchedulingInfoGroupDate.get(i).getGroupTimeList().get(j).getDayTimeSlot());
                 mPbInfos.add(provideDoctorSetSchedulingPatient);
             }
         }
@@ -1118,17 +1075,17 @@ public class WZXXActivity extends AppCompatActivity {
         provideDoctorSetScheduling.setSearchDoctorCode(provideViewDoctorExpertRecommend.getPatientCode());
         provideDoctorSetScheduling.setSearchDoctorName(provideViewDoctorExpertRecommend.getUserName());
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideDoctorSetScheduling);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string,Constant.SERVICEURL+"patientInteractDataControlle/getInteractPatientInterrogationResDoctorSchedulingInfo");
-                    String string01 = Constant.SERVICEURL+"msgDataControlle/searchMsgPushReminderAllCount";
-                    System.out.println(string+string01);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "patientInteractDataControlle/getInteractPatientInterrogationResDoctorSchedulingInfo");
+                    String string01 = Constant.SERVICEURL + "msgDataControlle/searchMsgPushReminderAllCount";
+                    System.out.println(string + string01);
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -1142,26 +1099,32 @@ public class WZXXActivity extends AppCompatActivity {
      * 获取
      */
     private void getData() {
-        getProgressBar("请稍候","正在获取数据。。。");
+        getProgressBar("请稍候", "正在获取数据。。。");
         GetInteractOrderCodeGenerate getInteractOrderCodeGenerate = new GetInteractOrderCodeGenerate();
         getInteractOrderCodeGenerate.setLoginPatientPosition(mApp.loginDoctorPosition);
         getInteractOrderCodeGenerate.setRequestClientType("1");
         getInteractOrderCodeGenerate.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        Log.e("tag", "getData: "+mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode() );
         getInteractOrderCodeGenerate.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        Log.e("tag", "getData: "+mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName() );
         getInteractOrderCodeGenerate.setUserLinkPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
-        getInteractOrderCodeGenerate.setOrderTreatmentType(mOperaType);
+        Log.e("tag", "getData: "+mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone() );
 
-        new Thread(){
-            public void run(){
+        getInteractOrderCodeGenerate.setOrderTreatmentType(mOperaType);
+        Log.e("tag", "getData: "+mOperaType.toString());
+
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(getInteractOrderCodeGenerate);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string,Constant.SERVICEURL+"patientInteractDataControlle/getInteractOrderCodeGenerate");
-                    String string01 = Constant.SERVICEURL+"msgDataControlle/searchMsgPushReminderAllCount";
-                    System.out.println(string+string01);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "patientInteractDataControlle/getInteractOrderCodeGenerate");
+                    String string01 = Constant.SERVICEURL + "msgDataControlle/searchMsgPushReminderAllCount";
+                    System.out.println(string + string01);
+                    Log.e("tag", "专家详情 "+mNetRetStr );
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -1181,17 +1144,17 @@ public class WZXXActivity extends AppCompatActivity {
 //        provideBasicsImg.setOrderCode(getInteractOrderCodeGenerate.getOrderCode());
         provideInteractPatientInterrogation.setRequestClientType(mOperaType);
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideInteractPatientInterrogation);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string,Constant.SERVICEURL+"patientInteractDataControlle/getInteractPatientInterrogationResNewest");
-                    String string01 = Constant.SERVICEURL+"msgDataControlle/searchMsgPushReminderAllCount";
-                    System.out.println(string+string01);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "patientInteractDataControlle/getInteractPatientInterrogationResNewest");
+                    String string01 = Constant.SERVICEURL + "msgDataControlle/searchMsgPushReminderAllCount";
+                    System.out.println(string + string01);
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mGetImgNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -1201,10 +1164,10 @@ public class WZXXActivity extends AppCompatActivity {
     }
 
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(mContext);
         }
@@ -1217,7 +1180,7 @@ public class WZXXActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }

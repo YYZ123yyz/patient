@@ -48,7 +48,9 @@ import entity.mySelf.conditions.QueryContactCond;
 import entity.mySelf.conditions.UpContactBean;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
+
 import org.w3c.dom.Text;
+
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
@@ -59,19 +61,18 @@ import www.patient.jykj_zxyl.util.*;
  */
 public class BindFamilyActivity extends AppCompatActivity {
 
-    private                 Context                     mContext;
+    private Context mContext;
     private BindFamilyActivity mActivity;
-    public                  ProgressDialog              mDialogProgress =null;
+    public ProgressDialog mDialogProgress = null;
 
-    private                 JYKJApplication             mApp;
+    private JYKJApplication mApp;
 
-    private                 String                      mNetRetStr;                 //返回字符串
+    private String mNetRetStr;                 //返回字符串
 
 
+    private Handler mHandler;
 
-    private                 Handler                     mHandler;
-
-    private RelativeLayout          ri_back;
+    private RelativeLayout ri_back;
     private EditText tv_activityUserCenter_userNameText;
     private EditText tv_activityUserCenter_userNikeNameText;
     private QueryFamilyTask queryFamilyTask;
@@ -94,7 +95,7 @@ public class BindFamilyActivity extends AppCompatActivity {
         loadContacts();
     }
 
-    void loadContacts(){
+    void loadContacts() {
         QueryContactCond querycond = new QueryContactCond();
         querycond.setLoginPatientPosition(mApp.loginDoctorPosition);
         querycond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
@@ -112,7 +113,7 @@ public class BindFamilyActivity extends AppCompatActivity {
                 switch (msg.what) {
                     case 0:
                         cacerProgress();
-                        NetRetEntity retEntity = new Gson().fromJson(mNetRetStr,NetRetEntity.class);
+                        NetRetEntity retEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
                         break;
                     case 1:
                         cacerProgress();
@@ -122,13 +123,12 @@ public class BindFamilyActivity extends AppCompatActivity {
 
                     case 4:
                         cacerProgress();
-                        retEntity = new Gson().fromJson(mNetRetStr,NetRetEntity.class);
+                        retEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
                         break;
                 }
             }
         };
     }
-
 
 
     /**
@@ -142,7 +142,7 @@ public class BindFamilyActivity extends AppCompatActivity {
      * 初始化布局
      */
     private void initLayout() {
-        ri_back = (RelativeLayout)this.findViewById(R.id.ri_back);
+        ri_back = (RelativeLayout) this.findViewById(R.id.ri_back);
         tv_activityUserCenter_userNikeNameText = findViewById(R.id.tv_activityUserCenter_userNikeNameText);
         tv_activityUserCenter_userNameText = findViewById(R.id.tv_activityUserCenter_userNameText);
         ri_back.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +160,7 @@ public class BindFamilyActivity extends AppCompatActivity {
     /**
      * 点击事件
      */
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -173,28 +173,28 @@ public class BindFamilyActivity extends AppCompatActivity {
     }
 
 
-    void commit(){
+    void commit() {
         boolean hasinputonephone = false;
         String onephone = String.valueOf(tv_activityUserCenter_userNameText.getText());
         String twopgone = String.valueOf(tv_activityUserCenter_userNikeNameText.getText());
-        if(!TextUtils.isEmpty(onephone)) {
+        if (!TextUtils.isEmpty(onephone)) {
             if (RegrexUtil.isMobilePhone(onephone) || RegrexUtil.isLinePhone(onephone)) {
                 hasinputonephone = true;
-            }else{
-                Toast.makeText(mContext,"请输入正确的电话号码",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(mContext, "请输入正确的电话号码", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
-        if(!TextUtils.isEmpty(twopgone)) {
+        if (!TextUtils.isEmpty(twopgone)) {
             if (RegrexUtil.isMobilePhone(twopgone) || RegrexUtil.isLinePhone(twopgone)) {
                 hasinputonephone = true;
-            }else{
-                Toast.makeText(mContext,"请输入正确的电话号码",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(mContext, "请输入正确的电话号码", Toast.LENGTH_SHORT).show();
                 return;
             }
 
         }
-        if(hasinputonephone){
+        if (hasinputonephone) {
             UpContactBean upbean = new UpContactBean();
             upbean.setContactsId(opetype);
             upbean.setContactsPhone1(onephone);
@@ -204,17 +204,17 @@ public class BindFamilyActivity extends AppCompatActivity {
             upbean.setRequestClientType("1");
             maintainFamilyTask = new MaintainFamilyTask(upbean);
             maintainFamilyTask.execute();
-        }else{
-            Toast.makeText(mContext,"请输入亲友电话",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(mContext, "请输入亲友电话", Toast.LENGTH_SHORT).show();
             return;
         }
     }
 
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(mContext);
         }
@@ -227,27 +227,29 @@ public class BindFamilyActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }
     }
 
 
-    class QueryFamilyTask extends AsyncTask<Void,Void, ProvidePatientUrgentContacts>{
+    class QueryFamilyTask extends AsyncTask<Void, Void, ProvidePatientUrgentContacts> {
         QueryContactCond querycond;
-        QueryFamilyTask(QueryContactCond querycond){
+
+        QueryFamilyTask(QueryContactCond querycond) {
             this.querycond = querycond;
         }
+
         @Override
         protected ProvidePatientUrgentContacts doInBackground(Void... voids) {
             ProvidePatientUrgentContacts retbean = null;
             try {
-                String queFaimlys = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(querycond),Constant.SERVICEURL+ INetAddress.QUERY_CONTACT_URL);
-                if(!TextUtils.isEmpty(queFaimlys)){
-                    NetRetEntity retnetbean = JSON.parseObject(queFaimlys,NetRetEntity.class);
-                    if(1==retnetbean.getResCode() && StrUtils.defaultStr(retnetbean.getResJsonData()).length()>3){
-                        retbean = JSON.parseObject(retnetbean.getResJsonData(),ProvidePatientUrgentContacts.class);
+                String queFaimlys = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(querycond), Constant.SERVICEURL + INetAddress.QUERY_CONTACT_URL);
+                if (!TextUtils.isEmpty(queFaimlys)) {
+                    NetRetEntity retnetbean = JSON.parseObject(queFaimlys, NetRetEntity.class);
+                    if (1 == retnetbean.getResCode() && StrUtils.defaultStr(retnetbean.getResJsonData()).length() > 3) {
+                        retbean = JSON.parseObject(retnetbean.getResJsonData(), ProvidePatientUrgentContacts.class);
                     }
                 }
             } catch (Exception e) {
@@ -259,7 +261,7 @@ public class BindFamilyActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ProvidePatientUrgentContacts providePatientUrgentContacts) {
-            if(null!=providePatientUrgentContacts){
+            if (null != providePatientUrgentContacts) {
                 opetype = "1";
                 tv_activityUserCenter_userNameText.setText(providePatientUrgentContacts.getContactsPhone1());
                 tv_activityUserCenter_userNikeNameText.setText(providePatientUrgentContacts.getContactsPhone2());
@@ -268,23 +270,25 @@ public class BindFamilyActivity extends AppCompatActivity {
         }
     }
 
-    class MaintainFamilyTask extends AsyncTask<Void,Void,Boolean>{
+    class MaintainFamilyTask extends AsyncTask<Void, Void, Boolean> {
         UpContactBean upcondbean;
         String repmsg = "";
-        MaintainFamilyTask(UpContactBean upcondbean){
+
+        MaintainFamilyTask(UpContactBean upcondbean) {
             this.upcondbean = upcondbean;
         }
+
         @Override
         protected Boolean doInBackground(Void... voids) {
             Boolean retbool = false;
             try {
                 String transtr = new Gson().toJson(upcondbean);
-                String retmaintaincontstr = HttpNetService.urlConnectionService("jsonDataInfo="+transtr,Constant.SERVICEURL+INetAddress.MATAIN_CONTACT_URL);
-                NetRetEntity retnetbean = JSON.parseObject(retmaintaincontstr,NetRetEntity.class);
-                if(null!=retnetbean && 1==retnetbean.getResCode()){
+                String retmaintaincontstr = HttpNetService.urlConnectionService("jsonDataInfo=" + transtr, Constant.SERVICEURL + INetAddress.MATAIN_CONTACT_URL);
+                NetRetEntity retnetbean = JSON.parseObject(retmaintaincontstr, NetRetEntity.class);
+                if (null != retnetbean && 1 == retnetbean.getResCode()) {
                     repmsg = "保存成功";
                     retbool = true;
-                }else{
+                } else {
                     repmsg = retnetbean.getResMsg();
                     retbool = false;
                 }
@@ -299,11 +303,11 @@ public class BindFamilyActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            if(aBoolean){
-                Toast.makeText(mContext,repmsg,Toast.LENGTH_SHORT).show();
+            if (aBoolean) {
+                Toast.makeText(mContext, repmsg, Toast.LENGTH_SHORT).show();
                 finish();
-            }else {
-                Toast.makeText(mContext,repmsg,Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(mContext, repmsg, Toast.LENGTH_SHORT).show();
             }
         }
     }

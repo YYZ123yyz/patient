@@ -33,29 +33,27 @@ import www.patient.jykj_zxyl.util.ActivityUtil;
  */
 public class MyOrderActivity extends AppCompatActivity {
 
-    private                 Context                     mContext;
+    private Context mContext;
     private MyOrderActivity mActivity;
-    public                  ProgressDialog              mDialogProgress =null;
+    public ProgressDialog mDialogProgress = null;
 
-    private                 JYKJApplication             mApp;
+    private JYKJApplication mApp;
 
-    private                 String                      mNetRetStr;                 //返回字符串
+    private String mNetRetStr;                 //返回字符串
 
 
+    private Handler mHandler;
 
-    private                 Handler                     mHandler;
+    private RelativeLayout ri_back;
 
-    private RelativeLayout          ri_back;
-
-    private                 ViewPager                   pager;
+    private ViewPager pager;
     private FragmentAdapter fragmentAdapter;
     private List<Fragment> fragmentList;
-    private                 TabLayout                   tabLayout;
-    private                 List<String>                mTitles;
+    private TabLayout tabLayout;
+    private List<String> mTitles;
 
 
-
-//    private                 ProvideViewSysUserDoctorInfoAndHospital  mProvideViewSysUserDoctorInfoAndHospital = new ProvideViewSysUserDoctorInfoAndHospital();  //医生信息
+    //    private                 ProvideViewSysUserDoctorInfoAndHospital  mProvideViewSysUserDoctorInfoAndHospital = new ProvideViewSysUserDoctorInfoAndHospital();  //医生信息
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +76,7 @@ public class MyOrderActivity extends AppCompatActivity {
                 switch (msg.what) {
                     case 0:
                         cacerProgress();
-                        NetRetEntity retEntity = new Gson().fromJson(mNetRetStr,NetRetEntity.class);
+                        NetRetEntity retEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
                         break;
                     case 1:
                         cacerProgress();
@@ -88,13 +86,12 @@ public class MyOrderActivity extends AppCompatActivity {
 
                     case 4:
                         cacerProgress();
-                        retEntity = new Gson().fromJson(mNetRetStr,NetRetEntity.class);
+                        retEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
                         break;
                 }
             }
         };
     }
-
 
 
     /**
@@ -108,7 +105,7 @@ public class MyOrderActivity extends AppCompatActivity {
      * 初始化布局
      */
     private void initLayout() {
-        ri_back = (RelativeLayout)this.findViewById(R.id.ri_back);
+        ri_back = (RelativeLayout) this.findViewById(R.id.ri_back);
         ri_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,11 +113,11 @@ public class MyOrderActivity extends AppCompatActivity {
             }
         });
 
-        pager= (ViewPager) this.findViewById(R.id.page);
-        tabLayout= (TabLayout) this.findViewById(R.id.tab_layout);
+        pager = (ViewPager) this.findViewById(R.id.page);
+        tabLayout = (TabLayout) this.findViewById(R.id.tab_layout);
 
-        fragmentList=new ArrayList<>();
-        mTitles=new ArrayList<>();
+        fragmentList = new ArrayList<>();
+        mTitles = new ArrayList<>();
         mTitles.add("未完成");
         mTitles.add("进行中");
         mTitles.add("已完成");
@@ -128,7 +125,7 @@ public class MyOrderActivity extends AppCompatActivity {
         fragmentList.add(new FragmentMyOrderOn());
         fragmentList.add(new FragmentMyOrderAl());
 
-        fragmentAdapter=new FragmentAdapter(mActivity.getSupportFragmentManager(),fragmentList,mTitles);
+        fragmentAdapter = new FragmentAdapter(mActivity.getSupportFragmentManager(), fragmentList, mTitles);
         pager.setAdapter(fragmentAdapter);
         tabLayout.setupWithViewPager(pager);//与ViewPage建立关系
     }
@@ -137,7 +134,7 @@ public class MyOrderActivity extends AppCompatActivity {
     /**
      * 点击事件
      */
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -150,12 +147,11 @@ public class MyOrderActivity extends AppCompatActivity {
     }
 
 
-
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(mContext);
         }
@@ -168,13 +164,11 @@ public class MyOrderActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }
     }
-
-
 
 
 }

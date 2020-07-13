@@ -9,9 +9,12 @@ import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -88,6 +91,28 @@ public class FragmentYLZX extends Fragment {
                 super.onReceivedSslError(view, handler, error);
             }
         });
+        final DisplayMetrics dm = new DisplayMetrics();
+        WindowManager manager = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+        manager.getDefaultDisplay().getMetrics(dm);
+        webView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        int point = (int) event.getX();
+                        if (point > 0 && point < 50 || point > dm.widthPixels - 50 && point < dm.widthPixels) {
+                            webView.requestDisallowInterceptTouchEvent(false);
+                        } else {
+                            webView.requestDisallowInterceptTouchEvent(true);
+                        }
+                        break;
+                }
+
+                return false;
+            }
+        });
+
+
     }
 
 

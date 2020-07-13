@@ -85,53 +85,53 @@ public class CommentActivity extends AppCompatActivity {
         pub_comment = findViewById(R.id.pub_comment);
         findViewById(R.id.back).setOnClickListener(new ButtonClick());
         pub_comment.setOnClickListener(new ButtonClick());
-        good_comment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    goodcheck = true;
-                    middlecheck = false;
-                    weakcheck = false;
-                    weak_comment.setChecked(false);
-                    middle_comment.setChecked(false);
-                }else{
-                    goodcheck = false;
-                }
-            }
-        });
-
-        middle_comment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    goodcheck = false;
-                    middlecheck = true;
-                    weakcheck = false;
-                    weak_comment.setChecked(false);
-                    good_comment.setChecked(false);
-                }else{
-                    middlecheck = false;
-                }
-            }
-        });
-
-        weak_comment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    goodcheck = false;
-                    middlecheck = false;
-                    weakcheck = true;
-                    middle_comment.setChecked(false);
-                    good_comment.setChecked(false);
-                }else{
-                    weakcheck = false;
-                }
-            }
-        });
+//        good_comment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+//
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if(isChecked){
+//                    goodcheck = true;
+//                    middlecheck = false;
+//                    weakcheck = false;
+//                    weak_comment.setChecked(false);
+//                    middle_comment.setChecked(false);
+//                }else{
+//                    goodcheck = false;
+//                }
+//            }
+//        });
+//
+//        middle_comment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+//
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if(isChecked){
+//                    goodcheck = false;
+//                    middlecheck = true;
+//                    weakcheck = false;
+//                    weak_comment.setChecked(false);
+//                    good_comment.setChecked(false);
+//                }else{
+//                    middlecheck = false;
+//                }
+//            }
+//        });
+//
+//        weak_comment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+//
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if(isChecked){
+//                    goodcheck = false;
+//                    middlecheck = false;
+//                    weakcheck = true;
+//                    middle_comment.setChecked(false);
+//                    good_comment.setChecked(false);
+//                }else{
+//                    weakcheck = false;
+//                }
+//            }
+//        });
     }
 
 

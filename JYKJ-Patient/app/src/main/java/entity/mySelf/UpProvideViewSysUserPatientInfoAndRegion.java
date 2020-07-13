@@ -22,6 +22,15 @@ public class UpProvideViewSysUserPatientInfoAndRegion implements java.io.Seriali
 	private String area;//用户所在区(县)
 	private String address;//地址
 	private String base64ImgData;//民族
+    private String userLogoUrl;
+
+	public String getUserLogoUrl() {
+		return userLogoUrl;
+	}
+
+	public void setUserLogoUrl(String userLogoUrl) {
+		this.userLogoUrl = userLogoUrl;
+	}
 
 	public String getLoginPatientPosition() {
 		return loginPatientPosition;

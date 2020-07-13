@@ -49,6 +49,15 @@ public class ProvideViewSysUserPatientInfoAndRegion implements java.io.Serializa
 
 	private String showRegionInfo;//展示地区信息
 
+	private String userCode;
+
+	public String getUserCode() {
+		return userCode;
+	}
+
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
+	}
 
 	public String getDoctorShareUrl() {
 		return doctorShareUrl;

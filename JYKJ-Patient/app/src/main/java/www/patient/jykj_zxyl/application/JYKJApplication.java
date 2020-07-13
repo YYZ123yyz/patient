@@ -331,6 +331,39 @@ public class JYKJApplication extends Application {
     }
 
 
+    /**
+     * 退出登录
+     */
+    public  void LoginOut(final Activity activity) {
+        EMClient.getInstance().logout(true, new EMCallBack() {
+
+            @Override
+            public void onSuccess() {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e("tag", "run: "+"您已退出登录!" );
+                    }
+                });
+            }
+
+            @Override
+            public void onProgress(int progress, String status) {
+            }
+
+            @Override
+            public void onError(int code, final String message) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }
+        });
+    }
+
+
 
     //清空数据
     public void cleanPersistence() {

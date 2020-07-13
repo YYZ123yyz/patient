@@ -17,6 +17,7 @@ import www.patient.jykj_zxyl.activity.home.DoctorsUnionActivity;
 import www.patient.jykj_zxyl.activity.home.MyClinicActivity;
 import www.patient.jykj_zxyl.activity.home.MyPatientActivity;
 import www.patient.jykj_zxyl.activity.home.NewsActivity;
+import www.patient.jykj_zxyl.activity.home.QRCodeActivity;
 import www.patient.jykj_zxyl.activity.home.myself.JDDAActivity;
 import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
@@ -36,6 +37,7 @@ public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClick
     private View mPopView;
     private TextView tvSys;
     private TextView tvYqth;
+     private LinearLayout       tv_bzfk;
     private TextView tvTjhz;
     private LinearLayout tvWdzs;
     private LinearLayout tvWdxx;
@@ -55,6 +57,7 @@ public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClick
         tvTjhz.setOnClickListener(this);
         tvWdzs.setOnClickListener(this);
         tvWdxx.setOnClickListener(this);
+        tv_bzfk.setOnClickListener(this);
 //        tvCjlm.setOnClickListener(this);
 
     }
@@ -67,6 +70,7 @@ public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClick
         tvTjhz = mPopView.findViewById(R.id.tv_tjhz);
         tvWdzs = mPopView.findViewById(R.id.tv_wdzs);
         tvWdxx = mPopView.findViewById(R.id.tv_wdxx);
+        tv_bzfk = mPopView.findViewById(R.id.tv_bzfk);
 
     }
 
@@ -147,6 +151,15 @@ public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClick
 //            case R.id.tv_cjlm:
 //                mContext.startActivity(new Intent(mContext,DoctorsUnionActivity.class));
 //                break;
+            case  R.id.tv_bzfk:
+                intent = new Intent(mContext, QRCodeActivity.class);
+                if (fragmentShouYe != null)
+                    fragmentShouYe.startActivity(intent);
+                if (mMedicationSettingsActivity != null)
+                    mMedicationSettingsActivity.startActivity(intent);
+                if (mMedicationRecordActivity != null)
+                    mMedicationRecordActivity.startActivity(intent);
+                break;
         }
     }
 

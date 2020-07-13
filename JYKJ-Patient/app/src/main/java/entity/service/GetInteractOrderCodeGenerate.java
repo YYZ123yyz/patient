@@ -2,12 +2,12 @@ package entity.service;
 
 public class GetInteractOrderCodeGenerate {
 
-    private                 String                      loginPatientPosition;
-    private                 String                      requestClientType;
-    private                 String                      operPatientCode;
-    private                 String                      operPatientName;
-    private                 String                      userLinkPhone;
-    private                 String                      orderTreatmentType;
+    private String loginPatientPosition;
+    private String requestClientType;
+    private String operPatientCode;
+    private String operPatientName;
+    private String userLinkPhone;
+    private String orderTreatmentType;
 
     public String getLoginPatientPosition() {
         return loginPatientPosition;

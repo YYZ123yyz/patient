@@ -62,45 +62,43 @@ import www.patient.jykj_zxyl.util.Util;
  */
 public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
 
-    private                 Context                 mContext;
+    private Context mContext;
     private WDYS_JZJL_WZZLActivity mActivity;
-    private                 Handler                 mHandler;
-    private                 JYKJApplication         mApp;
+    private Handler mHandler;
+    private JYKJApplication mApp;
 
-    public                  ProgressDialog              mDialogProgress =null;
-    private             String                              mNetRetStr;                 //返回字符串
-    private             String                              mAddNetRetStr;                 //返回字符串
-    private             String                              mGetImgNetRetStr;                 //获取图片返回字符串
-    private         TextView                mJZLX;                         //就诊类型
-    private         TextView                mYSXM;                         //医生姓名
-    private         TextView                mHZXM;                         //患者姓名
-    private         TextView                mHZSJ;                         //患者手机
-    private         TextView                mXB;                         //性别
-    private         TextView                mNL;                         //年龄
-    private         TextView                mYCRQ;                         //最早发现高血压异常日期
-    private         TextView                mJZHZ;                         //家族内是否有其他高血压患者
-    private         TextView                mSSY;                         //收缩压
-    private         TextView                mSZY;                         //舒张压
-    private         TextView                mXL;                         //心率
+    public ProgressDialog mDialogProgress = null;
+    private String mNetRetStr;                 //返回字符串
+    private String mAddNetRetStr;                 //返回字符串
+    private String mGetImgNetRetStr;                 //获取图片返回字符串
+    private TextView mJZLX;                         //就诊类型
+    private TextView mYSXM;                         //医生姓名
+    private TextView mHZXM;                         //患者姓名
+    private TextView mHZSJ;                         //患者手机
+    private TextView mXB;                         //性别
+    private TextView mNL;                         //年龄
+    private TextView mYCRQ;                         //最早发现高血压异常日期
+    private TextView mJZHZ;                         //家族内是否有其他高血压患者
+    private TextView mSSY;                         //收缩压
+    private TextView mSZY;                         //舒张压
+    private TextView mXL;                         //心率
 
-    private         TextView                mCLYQ;                        //测量仪器
+    private TextView mCLYQ;                        //测量仪器
 
-    private         TextView                mCLFF;                          //测量方法
-    private         TextView                mGXYBS;                          //高血压病史
-    private         TextView                mBQZS;                          //病情自述
+    private TextView mCLFF;                          //测量方法
+    private TextView mGXYBS;                          //高血压病史
+    private TextView mBQZS;                          //病情自述
 
-    private         RecyclerView mImageRecycleView;
-    private         FullyGridLayoutManager mGridLayoutManager;
+    private RecyclerView mImageRecycleView;
+    private FullyGridLayoutManager mGridLayoutManager;
     private JZJL_WZZLImageViewRecycleAdapter mAdapter;
 
 
-
-    private                 LinearLayout                mYSurplus;                  //我的余额
-    private                 RecyclerView                mPBRecycleView;             //排班列表
-    private                 LinearLayoutManager                 layoutManager;
+    private LinearLayout mYSurplus;                  //我的余额
+    private RecyclerView mPBRecycleView;             //排班列表
+    private LinearLayoutManager layoutManager;
     private DoctorPBRecycleAdapter mMyPBRecycleAdapter;       //适配器
-    private                 List<ProvideDoctorSetSchedulingPatient>                mPbInfos = new ArrayList<>();
-
+    private List<ProvideDoctorSetSchedulingPatient> mPbInfos = new ArrayList<>();
 
 
     private ProvideInteractOrderInfo mProvideInteractOrderInfo;                          //订单信息
@@ -108,17 +106,16 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
     private List<ProvideBasicsImg> mProvideBasicsImg = new ArrayList<>();
     private LinearLayout mBack;
 
-    private         ProvideDoctorSetScheduling provideDoctorSetScheduling = new ProvideDoctorSetScheduling();
+    private ProvideDoctorSetScheduling provideDoctorSetScheduling = new ProvideDoctorSetScheduling();
 
-    private                 ProvideDoctorSetScheduling      mProvideDoctorSetScheduling = new ProvideDoctorSetScheduling();
+    private ProvideDoctorSetScheduling mProvideDoctorSetScheduling = new ProvideDoctorSetScheduling();
 
 
     private JZJL_WZZLImageViewRecycleAdapter mImageViewRecycleAdapter;
-    private         List<Photo_Info>            mPhotoInfos = new ArrayList<>();
+    private List<Photo_Info> mPhotoInfos = new ArrayList<>();
 
-    private             File                    mTempFile;              //声明一个拍照结果的临时文件
-    private             TextView                mCommit;                    //提交
-
+    private File mTempFile;              //声明一个拍照结果的临时文件
+    private TextView mCommit;                    //提交
 
 
     private void setLayoutDate() {
@@ -145,18 +142,16 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
             mJZHZ.setText("否");
         if (mProvideInteractPatientInterrogation.getFlagFamilyHtn() == 1)
             mJZHZ.setText("是");
-        mSSY.setText(mProvideInteractPatientInterrogation.getHighPressureNum()+"");
-        mSZY.setText(mProvideInteractPatientInterrogation.getLowPressureNum()+"");
-        mXL.setText(mProvideInteractPatientInterrogation.getHeartRateNum()+"");
+        mSSY.setText(mProvideInteractPatientInterrogation.getHighPressureNum() + "");
+        mSZY.setText(mProvideInteractPatientInterrogation.getLowPressureNum() + "");
+        mXL.setText(mProvideInteractPatientInterrogation.getHeartRateNum() + "");
         mCLYQ.setText(mProvideInteractPatientInterrogation.getMeasureInstrumentName());
         mCLFF.setText(mProvideInteractPatientInterrogation.getMeasureModeName());
         mGXYBS.setText(mProvideInteractPatientInterrogation.getHtnHistory());
         mBQZS.setText(mProvideInteractPatientInterrogation.getStateOfIllness());
 
-        if (mProvideInteractPatientInterrogation.getTreatmentType() != null)
-        {
-            switch (Integer.valueOf(mProvideInteractPatientInterrogation.getTreatmentType()))
-            {
+        if (mProvideInteractPatientInterrogation.getTreatmentType() != null) {
+            switch (Integer.valueOf(mProvideInteractPatientInterrogation.getTreatmentType())) {
                 case 1:
                     mJZLX.setText("图文就诊");
                     break;
@@ -173,23 +168,19 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
                     mJZLX.setText("签约就诊");
                     break;
             }
-        }
-        else
-        {
+        } else {
             mJZLX.setText("未设置");
         }
 
     }
 
 
-
-
     /**
      * 初始化布局
      */
     private void initLayout() {
-        mBack = (LinearLayout)this.findViewById(R.id.iv_back_left);
-        mCommit = (TextView)this.findViewById(R.id.tv_commit);
+        mBack = (LinearLayout) this.findViewById(R.id.iv_back_left);
+        mCommit = (TextView) this.findViewById(R.id.tv_commit);
 //        mCommit.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -203,19 +194,19 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
                 finish();
             }
         });
-        mJZLX = (TextView)this.findViewById(R.id.tv_activityHZZL_userYW);
+        mJZLX = (TextView) this.findViewById(R.id.tv_activityHZZL_userYW);
 
 //        mYSXM = (TextView)this.findViewById(R.id.tv_activityHZZL_userTZ);
 //        mYSXM.setText(provideViewDoctorExpertRecommend.getUserName());
 //        mProvideInteractPatientInterrogation.setDoctorCode(provideViewDoctorExpertRecommend.getPatientCode());
 //        mProvideInteractPatientInterrogation.setDoctorName(provideViewDoctorExpertRecommend.getUserName());
-        mHZXM = (TextView)this.findViewById(R.id.tv_activityHZZL_userTZ);
+        mHZXM = (TextView) this.findViewById(R.id.tv_activityHZZL_userTZ);
         mHZXM.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
 
-        mHZSJ = (TextView)this.findViewById(R.id.tv_activityHZZL_userSFXJ);
+        mHZSJ = (TextView) this.findViewById(R.id.tv_activityHZZL_userSFXJ);
         mHZSJ.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
 
-        mXB = (TextView)this.findViewById(R.id.tv_activityHZZL_userSFAY);
+        mXB = (TextView) this.findViewById(R.id.tv_activityHZZL_userSFAY);
 
         if (mApp.mProvideViewSysUserPatientInfoAndRegion.getGender() == 1)
             mXB.setText("男");
@@ -223,27 +214,27 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
             mXB.setText("女");
         else
             mXB.setText("未设置");
-        mNL = (TextView)this.findViewById(R.id.tv_activityHZZL_userAuthState);
+        mNL = (TextView) this.findViewById(R.id.tv_activityHZZL_userAuthState);
 //        mNL.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getBirthday());
 
-        mYCRQ = (TextView)this.findViewById(R.id.tv_activityHZZL_MZ);
+        mYCRQ = (TextView) this.findViewById(R.id.tv_activityHZZL_MZ);
 
-        mJZHZ = (TextView)this.findViewById(R.id.tv_activityHZZL_userName);
+        mJZHZ = (TextView) this.findViewById(R.id.tv_activityHZZL_userName);
 
-        mSSY = (TextView)this.findViewById(R.id.tv_activityHZZL_sex);
-        mSZY = (TextView)this.findViewById(R.id.tv_activityHZZL_szy);
-        mXL = (TextView)this.findViewById(R.id.tv_activityHZZL_xl);
-        mCLYQ = (TextView)this.findViewById(R.id.tv_activityHZZL_clyq);
+        mSSY = (TextView) this.findViewById(R.id.tv_activityHZZL_sex);
+        mSZY = (TextView) this.findViewById(R.id.tv_activityHZZL_szy);
+        mXL = (TextView) this.findViewById(R.id.tv_activityHZZL_xl);
+        mCLYQ = (TextView) this.findViewById(R.id.tv_activityHZZL_clyq);
 
-        mCLFF = (TextView)this.findViewById(R.id.tv_activityHZZL_clfs);
+        mCLFF = (TextView) this.findViewById(R.id.tv_activityHZZL_clfs);
 
-        mGXYBS = (TextView)this.findViewById(R.id.tv_activityHZZL_BirthDay);
-        mBQZS = (TextView)this.findViewById(R.id.tv_activityHZZL_idCardNum);
+        mGXYBS = (TextView) this.findViewById(R.id.tv_activityHZZL_BirthDay);
+        mBQZS = (TextView) this.findViewById(R.id.tv_activityHZZL_idCardNum);
 
 
-        mImageRecycleView = (RecyclerView)this.findViewById(R.id.rv_activityPublish_Image);
+        mImageRecycleView = (RecyclerView) this.findViewById(R.id.rv_activityPublish_Image);
         //创建默认的线性LayoutManager
-        mGridLayoutManager = new FullyGridLayoutManager(mContext,3);
+        mGridLayoutManager = new FullyGridLayoutManager(mContext, 3);
         mGridLayoutManager.setOrientation(LinearLayout.VERTICAL);
         mImageRecycleView.setLayoutManager(mGridLayoutManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
@@ -252,7 +243,7 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
 //        final Photo_Info photo_info = new Photo_Info();
 //        photo_info.setPhotoID("ADDPHOTO");
 //        mPhotoInfos.add(photo_info);
-        mAdapter = new JZJL_WZZLImageViewRecycleAdapter(mProvideBasicsImg,mApp);
+        mAdapter = new JZJL_WZZLImageViewRecycleAdapter(mProvideBasicsImg, mApp);
         mImageRecycleView.setAdapter(mAdapter);
 //        //点击
 //        mImageViewRecycleAdapter.setOnItemClickListener(new ImageViewRecycleAdapter.OnItemClickListener() {
@@ -331,8 +322,8 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
     private void initDir() {
         // 声明目录
         File tempDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                +"/_tempphoto");
-        if(!tempDir.exists()){
+                + "/_tempphoto");
+        if (!tempDir.exists()) {
             tempDir.mkdirs();// 创建目录
         }
         mTempFile = new File(tempDir, BitmapUtil.getPhotoFileName());// 生成临时文件
@@ -417,25 +408,20 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
 
 
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case 0:
                         cacerProgress();
-                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 0)
-                        {
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 0) {
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
                             cacerProgress();
-                        }
-                        else
-                        {
-                            mProvideInteractPatientInterrogation = JSON.parseObject(netRetEntity.getResJsonData(),ProvideInteractPatientInterrogation.class);
-                            if (mProvideInteractPatientInterrogation != null)
-                            {
+                        } else {
+                            mProvideInteractPatientInterrogation = JSON.parseObject(netRetEntity.getResJsonData(), ProvideInteractPatientInterrogation.class);
+                            if (mProvideInteractPatientInterrogation != null) {
                                 //设置数据
                                 setLayoutDate();
                                 //获取就诊图片
@@ -447,19 +433,15 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
                         break;
                     case 1:
                         cacerProgress();
-                        netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 1)
-                        {
-                            mProvideBasicsImg = JSON.parseArray(netRetEntity.getResJsonData(),ProvideBasicsImg.class);
-                            if (mProvideBasicsImg != null)
-                            {
+                        netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 1) {
+                            mProvideBasicsImg = JSON.parseArray(netRetEntity.getResJsonData(), ProvideBasicsImg.class);
+                            if (mProvideBasicsImg != null) {
                                 mAdapter.setDate(mProvideBasicsImg);
                                 mAdapter.notifyDataSetChanged();
                             }
 
-                        }
-                        else
-                        {
+                        } else {
 
                         }
                         break;
@@ -481,17 +463,17 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
         provideBasicsImg.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         provideBasicsImg.setOrderCode(mProvideInteractOrderInfo.getOrderCode());
         provideBasicsImg.setImgCode(mProvideInteractPatientInterrogation.getImgCode());
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideBasicsImg);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string,Constant.SERVICEURL+"PatientMyDoctorControlle/searchIndexMyDoctorNotSigningResInterrogationImg");
-                    String string01 = Constant.SERVICEURL+"msgDataControlle/searchMsgPushReminderAllCount";
-                    System.out.println(string+string01);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "PatientMyDoctorControlle/searchIndexMyDoctorNotSigningResInterrogationImg");
+                    String string01 = Constant.SERVICEURL + "msgDataControlle/searchMsgPushReminderAllCount";
+                    System.out.println(string + string01);
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -505,7 +487,7 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
      * 获取
      */
     private void getData() {
-        getProgressBar("请稍候","正在获取数据。。。");
+        getProgressBar("请稍候", "正在获取数据。。。");
         ProvideInteractPatientInterrogation provideInteractPatientInterrogation = new ProvideInteractPatientInterrogation();
         provideInteractPatientInterrogation.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideInteractPatientInterrogation.setRequestClientType("1");
@@ -513,17 +495,17 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
         provideInteractPatientInterrogation.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         provideInteractPatientInterrogation.setOrderCode(mProvideInteractOrderInfo.getOrderCode());
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideInteractPatientInterrogation);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string,Constant.SERVICEURL+"PatientMyDoctorControlle/searchIndexMyDoctorNotSigningResInterrogationText");
-                    String string01 = Constant.SERVICEURL+"msgDataControlle/searchMsgPushReminderAllCount";
-                    System.out.println(string+string01);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "PatientMyDoctorControlle/searchIndexMyDoctorNotSigningResInterrogationText");
+                    String string01 = Constant.SERVICEURL + "msgDataControlle/searchMsgPushReminderAllCount";
+                    System.out.println(string + string01);
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -533,12 +515,11 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
     }
 
 
-
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(mContext);
         }
@@ -551,7 +532,7 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }
