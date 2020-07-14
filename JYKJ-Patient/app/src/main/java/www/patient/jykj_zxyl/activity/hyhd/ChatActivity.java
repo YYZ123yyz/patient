@@ -38,7 +38,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private                 String                      doctorUrl;
     private                 String                      patientUrl;
-
+    private String doctorType;//医生类型
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,7 @@ public class ChatActivity extends AppCompatActivity {
         mApp = (JYKJApplication) getApplication();
         ActivityUtil.setStatusBar(mActivity);
         String chatType = getIntent().getStringExtra("chatType");
+        doctorType=getIntent().getStringExtra("doctorType");
 //        initLayout();
         //new出EaseChatFragment或其子类的实例
         EaseChatFragment chatFragment = new EaseChatFragment();
@@ -84,6 +85,7 @@ public class ChatActivity extends AppCompatActivity {
         args.putLong(EaseConstant.EXTRA_VOICE_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_VOICE_NUM,0));
         args.putLong(EaseConstant.EXTRA_VEDIO_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_VEDIO_NUM,0));
         args.putString("chatType",chatType);
+        args.putString("doctorType",doctorType);
         chatFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().add(R.id.container, chatFragment).commit();
     }

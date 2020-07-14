@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.application;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -56,58 +57,57 @@ import www.patient.jykj_zxyl.util.HttpUtils;
 
 public class JYKJApplication extends Application {
 
-    public                     boolean                          gRefreshDate = false;                   //客户管理中是否需要刷新行政区划数据
-    public                     Map<Integer,List<ProvideBasicsDomain>> gBasicDate = new HashMap<>();    //基础数据
-    public                      List<Activity>                  gActivityList = new ArrayList();
-    public                      Context                         gContext;
-    public                      ImageLoader                         imageLoader = ImageLoader.getInstance();
-    public                      DisplayImageOptions                 mImageOptions;		                                        // DisplayImageOptions是用于设置图片显示的类
+    public boolean gRefreshDate = false;                   //客户管理中是否需要刷新行政区划数据
+    public Map<Integer, List<ProvideBasicsDomain>> gBasicDate = new HashMap<>();    //基础数据
+    public List<Activity> gActivityList = new ArrayList();
+    public static Context gContext;
+    public ImageLoader imageLoader = ImageLoader.getInstance();
+    public DisplayImageOptions mImageOptions;                                                // DisplayImageOptions是用于设置图片显示的类
 
-    public                      SharedPreferences_DataSave      m_persist;					                            //数据存储
+    public SharedPreferences_DataSave m_persist;                                                //数据存储
 
-    public                      UserInfo                        mLoginUserInfo;                         //登录需要的用户信息
-    public                      ProvideViewSysUserPatientInfoAndRegion mProvideViewSysUserPatientInfoAndRegion;       //登录成功后服务端返回的真实用户信息
+    public UserInfo mLoginUserInfo;                         //登录需要的用户信息
+    public ProvideViewSysUserPatientInfoAndRegion mProvideViewSysUserPatientInfoAndRegion;       //登录成功后服务端返回的真实用户信息
 
-    public                     List<ProvideBasicsRegion>       gRegionList = new ArrayList<>();                    //所有区域数据
-    public                     List<ProvideBasicsRegion>       gRegionProvideList = new ArrayList<>();            //省级区域数据
-    public                     List<ProvideBasicsRegion>       gRegionCityList = new ArrayList<>();                //市级区域数据
-    public                     List<ProvideBasicsRegion>       gRegionDistList = new ArrayList<>();                //区县级区域数据
+    public List<ProvideBasicsRegion> gRegionList = new ArrayList<>();                    //所有区域数据
+    public List<ProvideBasicsRegion> gRegionProvideList = new ArrayList<>();            //省级区域数据
+    public List<ProvideBasicsRegion> gRegionCityList = new ArrayList<>();                //市级区域数据
+    public List<ProvideBasicsRegion> gRegionDistList = new ArrayList<>();                //区县级区域数据
 
-    public                     String                          loginDoctorPosition = "20.154455^23.41548512";       //用户所处的经纬度
+    public String loginDoctorPosition = "108.93425^34.23053";       //用户所处的经纬度
 
-    public                      boolean                         isUpdateReviewUnion = false;                        //加入联盟审核信息是否更新，默认否
+    public boolean isUpdateReviewUnion = false;                        //加入联盟审核信息是否更新，默认否
     public MainActivity gMainActivity;
-    public                      boolean                         gNetConnectionHX;
-    public                      boolean                         gNetWorkTextView = false;                       //是否显示网络状态
-    public                      ProvideUnionDoctorOrg           unionSettionChoiceOrg;                          //医生联盟，设置联盟成员联盟层级
-    public                      Integer                         mMsgTimeInterval = 5;                               //轮询新消息时间，初始设置5分钟
-    public                      String                          gBitMapString;                                  //身份证拍照bitmap
-    public                      String                          gPayOrderCode;
-    public                      List<Activity>                  gPayCloseActivity = new ArrayList<>();          //支付成功之后需要关闭的页面
-    public                      String                          gProviceName;                                   //定位获取到的位置信息
-    public                      String                          gGDLocation;                                    //高德定位编码
-    public                       String                         gGDLocationName;                                //高德定位名称
+    public boolean gNetConnectionHX;
+    public boolean gNetWorkTextView = false;                       //是否显示网络状态
+    public ProvideUnionDoctorOrg unionSettionChoiceOrg;                          //医生联盟，设置联盟成员联盟层级
+    public Integer mMsgTimeInterval = 5;                               //轮询新消息时间，初始设置5分钟
+    public String gBitMapString;                                  //身份证拍照bitmap
+    public String gPayOrderCode;
+    public List<Activity> gPayCloseActivity = new ArrayList<>();          //支付成功之后需要关闭的页面
+    public String gProviceName;                                   //定位获取到的位置信息
+    public String gGDLocation;                                    //高德定位编码
+    public String gGDLocationName;                                //高德定位名称
 
-    private                     String                              mNetRetStr;                 //返回字符串
-
-
-    private                     List<ProvideDoctorPatientUserInfo> mProvideDoctorPatientUserInfo = new ArrayList<>();
-
-    public                      int                         gNewMessageNum = 0;                                  //新消息数量
-    public                      int                         gMessageNum = 10;                //可发送的消息数量
-    public                      long                        gVoiceTime = 20;                 //可拨打语音消息时长（单位：秒）
-    public                      long                        gVedioTime = 30;                 //可拨打视频消息时长（单位：秒）
+    private String mNetRetStr;                 //返回字符串
 
 
-    public                  List<ProvideBasicsDomain>                 gProvideBasicsDomainJGBJ = new ArrayList<>();             //机构背景
-    public                  List<ProvideBasicsDomain>                 gProvideBasicsDomainYSZC = new ArrayList<>();                                 //医生职称
+    private List<ProvideDoctorPatientUserInfo> mProvideDoctorPatientUserInfo = new ArrayList<>();
 
-    public                      String                      hxErrorMessage;
-//    public BDLocationListener myListener = new MyLocationListener();
+    public int gNewMessageNum = 0;                                  //新消息数量
+    public int gMessageNum = 10;                //可发送的消息数量
+    public long gVoiceTime = 20;                 //可拨打语音消息时长（单位：秒）
+    public long gVedioTime = 30;                 //可拨打视频消息时长（单位：秒）
+
+
+    public List<ProvideBasicsDomain> gProvideBasicsDomainJGBJ = new ArrayList<>();             //机构背景
+    public List<ProvideBasicsDomain> gProvideBasicsDomainYSZC = new ArrayList<>();                                 //医生职称
+
+    public String hxErrorMessage;
+    //    public BDLocationListener myListener = new MyLocationListener();
     public LocationClient mLocationClient = null;
 
-    private                     MainActivity               mainActivity;
-
+    private MainActivity mainActivity;
     /**
      * 异地登录环信
      */
@@ -182,20 +182,19 @@ public class JYKJApplication extends Application {
 //        }
 //    }
 
-    public                      Handler                         gHandler = new Handler(){
+    @SuppressLint("HandlerLeak")
+    public Handler gHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what)
-            {
+            switch (msg.what) {
                 case 1:
                     if (mProvideViewSysUserPatientInfoAndRegion.getPatientCode() == null)
                         mProvideViewSysUserPatientInfoAndRegion.setPatientCode("");
                     if (mProvideViewSysUserPatientInfoAndRegion.getUserPwd() == null)
                         mProvideViewSysUserPatientInfoAndRegion.setUserPwd("");
                     String userAccountHuanxin = mProvideViewSysUserPatientInfoAndRegion.getPatientCode();
-                    System.out.println("患者编码"+mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-                    System.out.println("患者密码"+mProvideViewSysUserPatientInfoAndRegion.getQrCode());
-
+                    System.out.println("患者编码" + mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                    System.out.println("患者密码" + mProvideViewSysUserPatientInfoAndRegion.getQrCode());
 
 
                     EMClient.getInstance().login(userAccountHuanxin, mProvideViewSysUserPatientInfoAndRegion.getQrCode(), new EMCallBack() {
@@ -241,18 +240,17 @@ public class JYKJApplication extends Application {
     };
 
 
-
-    public void loginIM(){
-        new Thread(){
-            public void run(){
+    public void loginIM() {
+        new Thread() {
+            public void run() {
                 //注册
                 try {
-                    EMClient.getInstance().createAccount(mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mProvideViewSysUserPatientInfoAndRegion.getQrCode());
+                    EMClient.getInstance().createAccount(mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mProvideViewSysUserPatientInfoAndRegion.getQrCode());
                     gHandler.sendEmptyMessage(1);
                 } catch (HyphenateException e) {
                     e.printStackTrace();
                     gHandler.sendEmptyMessage(1);
-                    System.out.println("~~~~~~~注册失败~~~~~~~~"+e.getDescription());
+                    System.out.println("~~~~~~~注册失败~~~~~~~~" + e.getDescription());
                 }
             }
         }.start();
@@ -282,13 +280,13 @@ public class JYKJApplication extends Application {
 
         // 使用DisplayImageOptions.Builder()创建DisplayImageOptions
         mImageOptions = new DisplayImageOptions.Builder()
-                .showStubImage(R.mipmap.hztx)			        // 设置图片下载期间显示的图片
-                .showImageForEmptyUri(R.mipmap.hztx)	         // 设置图片Uri为空或是错误的时候显示的图片
-                .showImageOnFail(R.mipmap.hztx)		        // 设置图片加载或解码过程中发生错误显示的图片
-                .cacheInMemory(true)						// 设置下载的图片是否缓存在内存中
-                .cacheOnDisc(true)							// 设置下载的图片是否缓存在SD卡中
-                .displayer(new RoundedBitmapDisplayer(0))	// 设置成圆角图片
-                .build();									// 创建配置过得DisplayImageOption对象
+                .showStubImage(R.mipmap.hztx)                    // 设置图片下载期间显示的图片
+                .showImageForEmptyUri(R.mipmap.hztx)             // 设置图片Uri为空或是错误的时候显示的图片
+                .showImageOnFail(R.mipmap.hztx)                // 设置图片加载或解码过程中发生错误显示的图片
+                .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中
+                .cacheOnDisc(true)                            // 设置下载的图片是否缓存在SD卡中
+                .displayer(new RoundedBitmapDisplayer(0))    // 设置成圆角图片
+                .build();                                    // 创建配置过得DisplayImageOption对象
         saveIMNumInfo();
         getIMNumInfo();
 
@@ -296,14 +294,18 @@ public class JYKJApplication extends Application {
 
     }
 
+    public static Context getConText(){
+        return gContext;
+    }
+
     /**
      * 保存用户信息
      */
     public void saveUserInfo() {
         //数据存储,以json字符串的格式保存
-        m_persist 	= new SharedPreferences_DataSave(this, "JYKJDOCTER");
-        m_persist.putString("loginUserInfo",new Gson().toJson(mLoginUserInfo));
-        m_persist.putString("viewSysUserDoctorInfoAndHospital",new Gson().toJson(mProvideViewSysUserPatientInfoAndRegion));
+        m_persist = new SharedPreferences_DataSave(this, "JYKJDOCTER");
+        m_persist.putString("loginUserInfo", new Gson().toJson(mLoginUserInfo));
+        m_persist.putString("viewSysUserDoctorInfoAndHospital", new Gson().toJson(mProvideViewSysUserPatientInfoAndRegion));
         m_persist.commit();
     }
 
@@ -312,18 +314,19 @@ public class JYKJApplication extends Application {
      */
     public void saveIMNumInfo() {
         //数据存储,以json字符串的格式保存
-        m_persist 	= new SharedPreferences_DataSave(this, "JYKJDOCTER");
-        m_persist.putInt("messageNum",gMessageNum);
-        m_persist.putLong("voiceTime",gVoiceTime);
-        m_persist.putLong("vedioTime",gVedioTime);
+        m_persist = new SharedPreferences_DataSave(this, "JYKJDOCTER");
+        m_persist.putInt("messageNum", gMessageNum);
+        m_persist.putLong("voiceTime", gVoiceTime);
+        m_persist.putLong("vedioTime", gVedioTime);
         m_persist.commit();
     }
+
     //获取图文音视频通话限制信息
     public void getIMNumInfo() {
-        m_persist 	= new SharedPreferences_DataSave(this, "JYKJDOCTER");
-        gMessageNum 			    = m_persist.getInt("messageNum",0);
-        gVoiceTime 			    = m_persist.getLong("voiceTime",0);
-        gVedioTime 			    = m_persist.getLong("vedioTime",0);
+        m_persist = new SharedPreferences_DataSave(this, "JYKJDOCTER");
+        gMessageNum = m_persist.getInt("messageNum", 0);
+        gVoiceTime = m_persist.getLong("voiceTime", 0);
+        gVedioTime = m_persist.getLong("vedioTime", 0);
         System.out.println(gMessageNum);
         System.out.println(gVoiceTime);
         System.out.println(gVedioTime);
@@ -334,7 +337,7 @@ public class JYKJApplication extends Application {
     /**
      * 退出登录
      */
-    public  void LoginOut(final Activity activity) {
+    public void LoginOut(final Activity activity) {
         EMClient.getInstance().logout(true, new EMCallBack() {
 
             @Override
@@ -342,7 +345,7 @@ public class JYKJApplication extends Application {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.e("tag", "run: "+"您已退出登录!" );
+                        Log.e("tag", "run: " + "您已退出登录!");
                     }
                 });
             }
@@ -364,10 +367,9 @@ public class JYKJApplication extends Application {
     }
 
 
-
     //清空数据
     public void cleanPersistence() {
-        m_persist 	= new SharedPreferences_DataSave(this, "JYKJDOCTER");
+        m_persist = new SharedPreferences_DataSave(this, "JYKJDOCTER");
         m_persist.remove("loginUserInfo");
         m_persist.remove("viewSysUserDoctorInfoAndHospital");
         mLoginUserInfo.setUserPhone("");
@@ -377,14 +379,13 @@ public class JYKJApplication extends Application {
 
     //获取缓存数据
     public void getPersistence() {
-        m_persist 	= new SharedPreferences_DataSave(this, "JYKJDOCTER");
-        String userInfoLogin 			    = m_persist.getString("loginUserInfo","");
-        String userInfoSuLogin 			    = m_persist.getString("viewSysUserDoctorInfoAndHospital","");
-        mLoginUserInfo = new Gson().fromJson(userInfoLogin,UserInfo.class);
+        m_persist = new SharedPreferences_DataSave(this, "JYKJDOCTER");
+        String userInfoLogin = m_persist.getString("loginUserInfo", "");
+        String userInfoSuLogin = m_persist.getString("viewSysUserDoctorInfoAndHospital", "");
+        mLoginUserInfo = new Gson().fromJson(userInfoLogin, UserInfo.class);
         try {
             mProvideViewSysUserPatientInfoAndRegion = new Gson().fromJson(userInfoSuLogin, ProvideViewSysUserPatientInfoAndRegion.class);
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
         System.out.println(mProvideViewSysUserPatientInfoAndRegion);
@@ -393,6 +394,7 @@ public class JYKJApplication extends Application {
 
     /**
      * 初始化ImageLoader
+     *
      * @param context
      */
     public static void initImageLoader(Context context) {
@@ -470,7 +472,7 @@ public class JYKJApplication extends Application {
      * 定位
      */
     private void startLocate() {
-       //定位服务的客户端。宿主程序在客户端声明此类，并调用，目前只支持在主线程中启动
+        //定位服务的客户端。宿主程序在客户端声明此类，并调用，目前只支持在主线程中启动
         LocationClient locationClient = new LocationClient(getApplicationContext());
 //声明LocationClient类实例并配置定位参数
         LocationClientOption locationOption = new LocationClientOption();
@@ -506,7 +508,7 @@ public class JYKJApplication extends Application {
 //设置打开自动回调位置模式，该开关打开后，期间只要定位SDK检测到位置变化就会主动回调给开发者，该模式下开发者无需再关心定位间隔是多少，定位SDK本身发现位置变化就会及时回调给开发者
         locationOption.setOpenAutoNotifyMode();
 //设置打开自动回调位置模式，该开关打开后，期间只要定位SDK检测到位置变化就会主动回调给开发者
-        locationOption.setOpenAutoNotifyMode(3000,1, LocationClientOption.LOC_SENSITIVITY_HIGHT);
+        locationOption.setOpenAutoNotifyMode(3000, 1, LocationClientOption.LOC_SENSITIVITY_HIGHT);
 //需将配置好的LocationClientOption对象，通过setLocOption方法传递给LocationClient对象使用
         locationClient.setLocOption(locationOption);
 //开始定位
@@ -514,19 +516,18 @@ public class JYKJApplication extends Application {
     }
 
 
-
     public static boolean isApplicationBroughtToBackground(final Context context) {
         //创建activity管理对象
         ActivityManager activityManager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
 
         //取出RunningTask栈
-        List<ActivityManager.RunningTaskInfo> list =activityManager.getRunningTasks(1);
+        List<ActivityManager.RunningTaskInfo> list = activityManager.getRunningTasks(1);
         //判断是否为空
-        if (!list.isEmpty()){
+        if (!list.isEmpty()) {
             //取出运行在栈顶的任务进程
             ComponentName componentName = list.get(0).topActivity;
             //判断任务进程的包名是否和想要判断的程序包名相同
-            if (componentName.getPackageName().equals(context.getPackageName())){
+            if (componentName.getPackageName().equals(context.getPackageName())) {
                 //相同则说明你该程序运行在前台，则返回ture
                 return true;
             }

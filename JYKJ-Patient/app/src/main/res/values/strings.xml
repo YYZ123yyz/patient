@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">心血管健康</string>
     <string name="camera_permission_required">本功能需要相机权限！</string>
     <string name="action_settings" translatable="false">Settings</string>
         <!--<string name="app_name">环信DEMO</string>-->

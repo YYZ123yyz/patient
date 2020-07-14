@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity.home.patient;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -375,6 +376,7 @@ public class ZJXQActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override
@@ -496,6 +498,11 @@ public class ZJXQActivity extends AppCompatActivity {
         mDialogProgress.setTitle(title);
         mDialogProgress.setMessage(progressPrompt);
         mDialogProgress.setCancelable(false);
+        if (mDialogProgress.isShowing()) {
+            return;
+        } else {
+            mDialogProgress.show();
+        }
         mDialogProgress.show();
     }
 
@@ -694,9 +701,15 @@ public class ZJXQActivity extends AppCompatActivity {
         new Thread() {
             public void run() {
                 try {
-                    String string = new Gson().toJson(provideViewDoctorExpertRecommend);
-                    String urlStr = Constant.SERVICEURL + "patientSearchDoctorControlle/searchIndexExpertRecommendDoctorMoreShow";
-//                    mNetRetStr = HttpNetService.getUpgradeInfo("jsonDataInfo="+string, urlStr);
+                    HashMap<String,Object> params=new HashMap<>();
+                    params.put("rowNum",mRowNum);
+                    params.put("pageNum",mNumPage);
+                    params.put("loginPatientPosition",mApp.loginDoctorPosition);
+                    params.put("requestClientType","1");
+                    params.put("operPatientCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                    params.put("operPatientName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                    params.put("searchDoctorCode",provideViewDoctorExpertRecommend.getDoctorCode());
+                    String string = new Gson().toJson(params);
                     mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "patientSearchDoctorControlle/searchIndexExpertRecommendDoctorDetailShow");
                     Log.e("tag", "专家详情 "+mNetRetStr );
                 } catch (Exception e) {

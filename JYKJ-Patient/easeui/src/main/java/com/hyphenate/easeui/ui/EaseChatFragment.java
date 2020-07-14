@@ -1,5 +1,6 @@
 package com.hyphenate.easeui.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ClipboardManager;
@@ -182,6 +183,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     private String operDoctorCode;
     private String operDoctorName;
     private String orderCode;
+    private String doctorType;//是否是签约医生
 
     public UpdMyClinicDetailByOrderTreatmentLimitNum updMyClinicDetailByOrderTreatmentLimitNum;
     private String userName;
@@ -215,7 +217,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         operDoctorCode = fragmentArgs.getString("operDoctorCode", "");
         operDoctorName = fragmentArgs.getString("operDoctorName", "");
         orderCode = fragmentArgs.getString("orderCode", "");
-
+        doctorType= fragmentArgs.getString("doctorType","");
         Constant.doctorUrl = fragmentArgs.getString("doctorUrl");
         Constant.patientUrl = fragmentArgs.getString("userUrl");
 
@@ -225,12 +227,24 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         toChatUsernameName = fragmentArgs.getString(EaseConstant.EXTRA_USER_NAME);
 
         mChatType = fragmentArgs.getString("chatType");
-        itemStrings = new int[]{R.string.attach_take_pic, R.string.attach_picture,
-                R.string.attach_voice_call, R.string.attach_video, R.string.attach_file};
-        itemdrawables = new int[]{R.mipmap.hyhd_pz, R.mipmap.hyhd_tp,
-                R.mipmap.hyhd_yy, R.mipmap.hyhd_sp, R.mipmap.hyhd_wj};
-        itemIds = new int[]{ITEM_TAKE_PICTURE, ITEM_PICTURE, ITEM_CALL, ITEM_VIDEO, ITEM_WJ};
-//        if ("twjz".equals(mChatType)) {
+
+
+        if (doctorType.equals(EaseConstant.CONTTRACTED_DOCTOR)) {
+            itemStrings = new int[]{R.string.attach_take_pic, R.string.attach_picture,
+                    R.string.attach_voice_call, R.string.attach_video, R.string.attach_file};
+            itemdrawables = new int[]{R.mipmap.hyhd_pz, R.mipmap.hyhd_tp,
+                    R.mipmap.hyhd_yy, R.mipmap.hyhd_sp, R.mipmap.hyhd_wj};
+            itemIds = new int[]{ITEM_TAKE_PICTURE, ITEM_PICTURE, ITEM_CALL, ITEM_VIDEO, ITEM_WJ};
+        }else if(doctorType.equals(EaseConstant.NON_CONTRACTED_DOCTOR)){
+            itemStrings = new int[]{R.string.attach_take_pic, R.string.attach_picture,
+                   R.string.attach_file};
+            itemdrawables = new int[]{R.mipmap.hyhd_pz, R.mipmap.hyhd_tp,
+                     R.mipmap.hyhd_wj};
+            itemIds = new int[]{ITEM_TAKE_PICTURE, ITEM_PICTURE, ITEM_WJ};
+        }
+
+
+        //        if ("twjz".equals(mChatType)) {
 //            itemStrings = new int[]{R.string.attach_take_pic, R.string.attach_picture};
 //            itemdrawables = new int[]{R.mipmap.hyhd_pz, R.mipmap.hyhd_tp};
 //            itemIds = new int[]{ITEM_TAKE_PICTURE, ITEM_PICTURE};
@@ -260,6 +274,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     /**
      * init view
      */
+    @SuppressLint("HandlerLeak")
     protected void initView() {
         // hold to record voice
         //noinspection ConstantConditions

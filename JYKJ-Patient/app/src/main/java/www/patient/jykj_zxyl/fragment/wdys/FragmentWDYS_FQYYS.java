@@ -177,7 +177,8 @@ public class FragmentWDYS_FQYYS extends Fragment {
                 intent.setClass(mContext,ChatActivity.class);
                 intent.putExtra("userCode",providePatientBindingMyDoctorInfos.get(position).getDoctorCode());
                 intent.putExtra("userName",providePatientBindingMyDoctorInfos.get(position).getUserName());
-//                intent.putExtra("chatType","twjz");
+                intent.putExtra("doctorType",EaseConstant.NON_CONTRACTED_DOCTOR);
+                //                intent.putExtra("chatType","twjz");
                 intent.putExtra("doctorUrl",providePatientBindingMyDoctorInfos.get(position).getUserLogoUrl());
 
                 intent.putExtra("loginDoctorPosition",mApp.loginDoctorPosition);

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.meg7.widget.CircleImageView;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
@@ -134,7 +135,7 @@ public class MessageInfoRecycleAdapter extends RecyclerView.Adapter<MessageInfoR
 
         public static class ViewHolder extends RecyclerView.ViewHolder{
             public LinearLayout mClickLinearLayout;                     //整个布局，用来监听点击事件
-            public ImageView    mImageView;                             // 头像
+            public CircleImageView    mImageView;                             // 头像
             public TextView     mUserName;
             public TextView     mSSY;
             public TextView     mMessage;
@@ -147,7 +148,7 @@ public class MessageInfoRecycleAdapter extends RecyclerView.Adapter<MessageInfoR
                 mSSY = (TextView)view.findViewById(R.id.tv_itemMessageAdapter_userSSYText);
                 mDate = (TextView)view.findViewById(R.id.tv_itemMessageAdapter_userDateText);
                 mMessage = (TextView)view.findViewById(R.id.tv_itemMessageAdapter_userMessageText);
-                mImageView = (ImageView)view.findViewById(R.id.iv_itemMessageAdapter_head);
+                mImageView = (CircleImageView)view.findViewById(R.id.iv_itemMessageAdapter_head);
             }
         }
 

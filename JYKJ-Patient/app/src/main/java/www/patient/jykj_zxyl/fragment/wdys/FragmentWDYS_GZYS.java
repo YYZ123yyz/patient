@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.fragment.wdys;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -234,6 +235,7 @@ public class FragmentWDYS_GZYS extends Fragment {
     }
 
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override

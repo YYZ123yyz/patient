@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.fragment.wdys;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -153,6 +154,8 @@ public class FragmentWDYS_QYYS extends Fragment {
                 intent.putExtra(EaseConstant.EXTRA_MESSAGE_NUM, provideViewMyDoctorSignings.get(position).getLimitImgText());           //消息数量
                 intent.putExtra(EaseConstant.EXTRA_VOICE_NUM, provideViewMyDoctorSignings.get(position).getLimitAudio());           //音频时长（单位：秒）
                 intent.putExtra(EaseConstant.EXTRA_VEDIO_NUM, provideViewMyDoctorSignings.get(position).getLimitVideo());           //视频时长（单位：秒）
+                intent.putExtra("doctorType",EaseConstant.CONTTRACTED_DOCTOR);
+
                 startActivity(intent);
 //                startActivity(new Intent(mContext,ZJXQActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommendList.get(position)));
             }
@@ -224,6 +227,7 @@ public class FragmentWDYS_QYYS extends Fragment {
         }.start();
     }
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override

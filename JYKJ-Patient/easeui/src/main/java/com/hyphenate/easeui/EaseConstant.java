@@ -39,4 +39,9 @@ public class EaseConstant {
     public static final String EXTRA_MESSAGE_NUM = "messageNum";
     public static final String EXTRA_VOICE_NUM = "voiceNum";
     public static final String EXTRA_VEDIO_NUM = "vedioNum";
+
+    //签约医生
+    public static final String CONTTRACTED_DOCTOR="contract_doctor";
+    //非签约医生
+    public static final String NON_CONTRACTED_DOCTOR="non_contracted_doctor";
 }

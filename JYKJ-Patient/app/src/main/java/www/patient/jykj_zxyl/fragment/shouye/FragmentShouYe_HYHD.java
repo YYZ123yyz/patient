@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.fragment.shouye;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -330,6 +331,7 @@ public class FragmentShouYe_HYHD extends Fragment {
             getMessageList();
     }
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override

@@ -41,7 +41,7 @@ public class ProvidePatientBindingMyDoctorInfo implements java.io.Serializable {
 	public void setFlagTreatmentState(Integer flagTreatmentState) {
 		this.flagTreatmentState = flagTreatmentState;
 	}
-
+	private Integer flagSigning;//是否签约.1:已签约;0:未签约;
 	private Integer doctorId;//医生编号
 	private String doctorCode;//医生编码
 	private String linkPhone;//手机号
@@ -133,6 +133,14 @@ public class ProvidePatientBindingMyDoctorInfo implements java.io.Serializable {
 
 	public void setLoginUserPosition(String loginUserPosition) {
 		this.loginUserPosition = loginUserPosition;
+	}
+
+	public Integer getFlagSigning() {
+		return flagSigning;
+	}
+
+	public void setFlagSigning(Integer flagSigning) {
+		this.flagSigning = flagSigning;
 	}
 
 	public String getSearchName() {
