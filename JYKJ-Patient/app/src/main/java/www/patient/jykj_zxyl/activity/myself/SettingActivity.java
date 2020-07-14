@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import android.widget.TextView;
+
 import www.patient.jykj_zxyl.activity.myself.setting.*;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.LoginActivity;
@@ -27,16 +28,17 @@ import www.patient.jykj_zxyl.util.MyUtil;
  */
 public class SettingActivity extends AppCompatActivity {
 
-    private                 Context                     mContext;
+    private Context mContext;
     private SettingActivity mActivity;
-    private                 Button                      mExitButton;                    //退出当前账号
-    private                 JYKJApplication             mApp;
-    private                 LinearLayout                mAboutLayout;                   //关于我们
-    private                 LinearLayout                mServiceHolting;                //客服热线
-    private                 LinearLayout                mOperPassWord;                  //修改密码
+    private Button mExitButton;                    //退出当前账号
+    private JYKJApplication mApp;
+    private LinearLayout mAboutLayout;                   //关于我们
+    private LinearLayout mServiceHolting;                //客服热线
+    private LinearLayout mOperPassWord;                  //修改密码
     private LinearLayout clear_app_cache;//清除缓存
     private TextView cache_size;
     private TextView version_name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,21 +54,20 @@ public class SettingActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * 初始化布局
      */
     private void initLayout() {
-        mExitButton = (Button)this.findViewById(R.id.bt_activityMySelfSetting_exitButton);
+        mExitButton = (Button) this.findViewById(R.id.bt_activityMySelfSetting_exitButton);
         mExitButton.setOnClickListener(new ButtonClick());
 
-        mAboutLayout = (LinearLayout)this.findViewById(R.id.li_activitySetting_aboutLayout);
+        mAboutLayout = (LinearLayout) this.findViewById(R.id.li_activitySetting_aboutLayout);
         mAboutLayout.setOnClickListener(new ButtonClick());
 
-        mServiceHolting = (LinearLayout)this.findViewById(R.id.li_activitySetting_serviceHolting);
+        mServiceHolting = (LinearLayout) this.findViewById(R.id.li_activitySetting_serviceHolting);
         mServiceHolting.setOnClickListener(new ButtonClick());
 
-        mOperPassWord = (LinearLayout)this.findViewById(R.id.li_activitySetting_operPassWord);
+        mOperPassWord = (LinearLayout) this.findViewById(R.id.li_activitySetting_operPassWord);
         mOperPassWord.setOnClickListener(new ButtonClick());
 
         clear_app_cache = findViewById(R.id.clear_app_cache);
@@ -84,27 +85,24 @@ public class SettingActivity extends AppCompatActivity {
     /**
      * 点击事件
      */
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.bt_activityMySelfSetting_exitButton:
                     //清除缓存
                     mApp.cleanPersistence();
-                    startActivity(new Intent(SettingActivity.this,LoginActivity.class));
-                    for (int i = 0; i < mApp.gActivityList.size(); i++)
-                    {
-                        mApp.gActivityList.get(i).finish();
-                    }
+                    mApp.LoginOut(mActivity);
+                    startActivity(new Intent(SettingActivity.this, LoginActivity.class));
                     break;
                 case R.id.li_activitySetting_aboutLayout:
-                    startActivity(new Intent(SettingActivity.this,AboutActivity.class));
+                    startActivity(new Intent(SettingActivity.this, AboutActivity.class));
                     break;
                 case R.id.li_activitySetting_serviceHolting:
-                    startActivity(new Intent(SettingActivity.this,ServiceHotlineActivity.class));
+                    startActivity(new Intent(SettingActivity.this, ServiceHotlineActivity.class));
                     break;
                 case R.id.li_activitySetting_operPassWord:
-                    startActivity(new Intent(SettingActivity.this,OpeaPassWordActivity.class));
+                    startActivity(new Intent(SettingActivity.this, OpeaPassWordActivity.class));
                     break;
                 case R.id.feedback_layout:
                     startActivity(new Intent(SettingActivity.this, FeedbackActvity.class));
@@ -128,7 +126,7 @@ public class SettingActivity extends AppCompatActivity {
                                     //Intent theint = new Intent(SettingActivity.this,LoginActivity.class);
                                     //SettingActivity.this.startActivity(theint);
                                 }
-                            }).setNegativeButton("取消",null).show();
+                            }).setNegativeButton("取消", null).show();
                     break;
                 case R.id.back:
                     finish();
@@ -144,11 +142,10 @@ public class SettingActivity extends AppCompatActivity {
         try {
             cache_size.setText(MyUtil.getAllCacheSize(mContext));
             version_name.setText(MyUtil.getAppVersionName(mContext));
-        }catch (Exception ex){
+        } catch (Exception ex) {
 
         }
     }
-
 
 
 }

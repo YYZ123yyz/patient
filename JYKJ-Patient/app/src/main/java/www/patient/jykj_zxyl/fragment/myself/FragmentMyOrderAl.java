@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
+
 import entity.HZIfno;
 import entity.ProvideInteractOrderInfo;
 import entity.mySelf.CommentInfo;
@@ -51,15 +53,15 @@ import www.patient.jykj_zxyl.util.StrUtils;
  * Created by admin on 2016/6/1.
  */
 public class FragmentMyOrderAl extends Fragment {
-    private             Context                             mContext;
-    private             Handler                             mHandler;
+    private Context mContext;
+    private Handler mHandler;
     private MyOrderActivity mActivity;
-    private             JYKJApplication                     mApp;
+    private JYKJApplication mApp;
 
-    private             RecyclerView                        mRMJXRecycleView;              //订单列表
-    private             LinearLayoutManager                 layoutManager;
+    private RecyclerView mRMJXRecycleView;              //订单列表
+    private LinearLayoutManager layoutManager;
     private MyOrderAlRecycleAdapter mAdapter;       //适配器
-    private             List<MyOrderProcess>                        mHZEntyties = new ArrayList<>();            //所有数据
+    private List<MyOrderProcess> mHZEntyties = new ArrayList<>();            //所有数据
 
     private int mPagenum = 1;
     private LoadDataTask loadDataTask;
@@ -90,19 +92,19 @@ public class FragmentMyOrderAl extends Fragment {
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRMJXRecycleView.setHasFixedSize(true);
         //创建并设置Adapter
-        mAdapter = new MyOrderAlRecycleAdapter(mHZEntyties,mContext,mActivity);
+        mAdapter = new MyOrderAlRecycleAdapter(mHZEntyties, mContext, mActivity);
         mRMJXRecycleView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new MyOrderAlRecycleAdapter.OnItemClickListener() {
             @Override
-            public void onClick(int position,View parview) {
-                switch (parview.getId()){
+            public void onClick(int position, View parview) {
+                switch (parview.getId()) {
                     case R.id.item_fragmentYLZX_rmjxLayout:
-                        MyOrderProcess parbean = (MyOrderProcess)getView().getTag();
+                        MyOrderProcess parbean = (MyOrderProcess) getView().getTag();
                         ProvideViewInteractOrderTreatmentAndPatientInterrogation parorder = new ProvideViewInteractOrderTreatmentAndPatientInterrogation();
                         parorder.setOrderCode(parbean.getOrderCode());
-                        startActivity(new Intent(mActivity, TWJZ_JZJLActivity.class).putExtra("wzxx",parorder));
+                        startActivity(new Intent(mActivity, TWJZ_JZJLActivity.class).putExtra("wzxx", parorder));
                         break;
-                    case  R.id.leave_btn:
+                    case R.id.leave_btn:
                         /*MyOrderProcess leavebean = (MyOrderProcess)getView().getTag();
                         ProvideInteractOrderInfo leaveorder = new ProvideInteractOrderInfo();
                         leaveorder.setOrderCode(leavebean.getOrderCode());
@@ -112,7 +114,7 @@ public class FragmentMyOrderAl extends Fragment {
                         LoadZhlyDataTask detailtask = new LoadZhlyDataTask(leavebean);
                         detailtask.execute();
                         break;
-                    case  R.id.opinion_btn:
+                    case R.id.opinion_btn:
                         MyOrderProcess commbean = mHZEntyties.get(position);
                         LoadCommentTask commentTask = new LoadCommentTask(commbean);
                         commentTask.execute();
@@ -121,7 +123,7 @@ public class FragmentMyOrderAl extends Fragment {
             }
 
             @Override
-            public void onLongClick(int position,View view) {
+            public void onLongClick(int position, View view) {
 
             }
         });
@@ -129,26 +131,26 @@ public class FragmentMyOrderAl extends Fragment {
 
 
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case 1:
-                      break;
+                        break;
                 }
             }
         };
     }
 
 
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
         }
     }
+
     /**
-      * 设置数据
+     * 设置数据
      */
     private void setData() {
         QueryContactCondPage querycond = new QueryContactCondPage();
@@ -163,20 +165,22 @@ public class FragmentMyOrderAl extends Fragment {
         loadDataTask.execute();
     }
 
-    class LoadDataTask extends AsyncTask<Void,Void,List<MyOrderProcess>> {
+    class LoadDataTask extends AsyncTask<Void, Void, List<MyOrderProcess>> {
         QueryContactCondPage querycond;
-        LoadDataTask(QueryContactCondPage querycond){
+
+        LoadDataTask(QueryContactCondPage querycond) {
             this.querycond = querycond;
         }
+
         @Override
         protected List<MyOrderProcess> doInBackground(Void... voids) {
             List<MyOrderProcess> retlist = new ArrayList();
             try {
                 querycond.setPageNum(String.valueOf(mPagenum));
-                String netstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(querycond), Constant.SERVICEURL+ INetAddress.QUERY_MYORDER_FINISH_URL);
-                NetRetEntity retEntity = JSON.parseObject(netstr,NetRetEntity.class);
-                if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
-                    retlist = JSON.parseArray(retEntity.getResJsonData(),MyOrderProcess.class);
+                String netstr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(querycond), Constant.SERVICEURL + INetAddress.QUERY_MYORDER_FINISH_URL);
+                NetRetEntity retEntity = JSON.parseObject(netstr, NetRetEntity.class);
+                if (1 == retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length() > 3) {
+                    retlist = JSON.parseArray(retEntity.getResJsonData(), MyOrderProcess.class);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -186,40 +190,41 @@ public class FragmentMyOrderAl extends Fragment {
 
         @Override
         protected void onPostExecute(List<MyOrderProcess> myOrderProcesses) {
-            if(myOrderProcesses.size()>0){
+            if (myOrderProcesses.size() > 0) {
                 mHZEntyties.addAll(myOrderProcesses);
                 mAdapter.setDate(mHZEntyties);
                 mAdapter.notifyDataSetChanged();
-            }else{
-                if(mPagenum>1){
+            } else {
+                if (mPagenum > 1) {
                     mPagenum = mPagenum - 1;
                 }
             }
         }
     }
 
-    class LoadZhlyDataTask extends AsyncTask<Void,Void, ZhlyDetailInfo>{
+    class LoadZhlyDataTask extends AsyncTask<Void, Void, ZhlyDetailInfo> {
         MyOrderProcess orderInfo;
-        LoadZhlyDataTask(MyOrderProcess orderInfo){
+
+        LoadZhlyDataTask(MyOrderProcess orderInfo) {
             this.orderInfo = orderInfo;
         }
 
         @Override
         protected ZhlyDetailInfo doInBackground(Void... voids) {
             ZhlyDetailInfo retdetail = new ZhlyDetailInfo();
-            try{
+            try {
                 QueryZhlyInfoCond queCond = new QueryZhlyInfoCond();
                 queCond.setLoginPatientPosition(mApp.loginDoctorPosition);
                 queCond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
                 queCond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
                 queCond.setOrderCode(orderInfo.getOrderCode());
                 queCond.setRequestClientType("1");
-                String retstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queCond),Constant.SERVICEURL+INetAddress.QUERY_ZHLY_CHARACTER_INFO);
-                NetRetEntity retEntity = JSON.parseObject(retstr,NetRetEntity.class);
-                if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
-                    retdetail = JSON.parseObject(retEntity.getResJsonData(),ZhlyDetailInfo.class);
+                String retstr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(queCond), Constant.SERVICEURL + INetAddress.QUERY_ZHLY_CHARACTER_INFO);
+                NetRetEntity retEntity = JSON.parseObject(retstr, NetRetEntity.class);
+                if (1 == retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length() > 3) {
+                    retdetail = JSON.parseObject(retEntity.getResJsonData(), ZhlyDetailInfo.class);
                 }
-            }catch (Exception ex){
+            } catch (Exception ex) {
 
             }
             return retdetail;
@@ -227,42 +232,43 @@ public class FragmentMyOrderAl extends Fragment {
 
         @Override
         protected void onPostExecute(ZhlyDetailInfo zhlyDetailInfo) {
-            if(null==zhlyDetailInfo.getFlagReplyState() || 1==zhlyDetailInfo.getFlagReplyState() || 0==zhlyDetailInfo.getFlagReplyState()){
+            if (null == zhlyDetailInfo.getFlagReplyState() || 1 == zhlyDetailInfo.getFlagReplyState() || 0 == zhlyDetailInfo.getFlagReplyState()) {
                 Intent maintainintent = new Intent(mActivity, LeaveMessageActivity.class);
-                maintainintent.putExtra("orderInfo",orderInfo);
-                maintainintent.putExtra("zhlyinfo",zhlyDetailInfo);
+                maintainintent.putExtra("orderInfo", orderInfo);
+                maintainintent.putExtra("zhlyinfo", zhlyDetailInfo);
                 mActivity.startActivity(maintainintent);
-            }else if(2==zhlyDetailInfo.getFlagReplyState() || 3==zhlyDetailInfo.getFlagReplyState()){
+            } else if (2 == zhlyDetailInfo.getFlagReplyState() || 3 == zhlyDetailInfo.getFlagReplyState()) {
                 Intent showintent = new Intent(mActivity, LeaveMessageShowActivity.class);
-                showintent.putExtra("orderInfo",orderInfo);
-                showintent.putExtra("zhlyinfo",zhlyDetailInfo);
+                showintent.putExtra("orderInfo", orderInfo);
+                showintent.putExtra("zhlyinfo", zhlyDetailInfo);
                 mActivity.startActivity(showintent);
             }
         }
     }
 
-    class LoadCommentTask extends AsyncTask<Void,Void, CommentInfo>{
+    class LoadCommentTask extends AsyncTask<Void, Void, CommentInfo> {
         MyOrderProcess orderInfo;
-        LoadCommentTask(MyOrderProcess orderInfo){
+
+        LoadCommentTask(MyOrderProcess orderInfo) {
             this.orderInfo = orderInfo;
         }
 
         @Override
         protected CommentInfo doInBackground(Void... voids) {
             CommentInfo retbean = null;
-            try{
+            try {
                 QueryCommentCond queryCond = new QueryCommentCond();
                 queryCond.setLoginPatientPosition(mApp.loginDoctorPosition);
                 queryCond.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
                 queryCond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
                 queryCond.setOrderCode(orderInfo.getOrderCode());
                 queryCond.setRequestClientType("1");
-                String retstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryCond),Constant.SERVICEURL+INetAddress.QUERY_COMMENT);
-                NetRetEntity retEntity = JSON.parseObject(retstr,NetRetEntity.class);
-                if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>0){
-                    retbean = JSON.parseObject(retEntity.getResJsonData(),CommentInfo.class);
+                String retstr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(queryCond), Constant.SERVICEURL + INetAddress.QUERY_COMMENT);
+                NetRetEntity retEntity = JSON.parseObject(retstr, NetRetEntity.class);
+                if (1 == retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length() > 0) {
+                    retbean = JSON.parseObject(retEntity.getResJsonData(), CommentInfo.class);
                 }
-            }catch (Exception ex){
+            } catch (Exception ex) {
 
             }
             return retbean;
@@ -270,14 +276,14 @@ public class FragmentMyOrderAl extends Fragment {
 
         @Override
         protected void onPostExecute(CommentInfo commentInfo) {
-            if(null!=commentInfo){
+            if (null != commentInfo) {
                 Intent showint = new Intent(mActivity, ShowCommentActivity.class);
-                showint.putExtra("orderinfo",orderInfo);
-                showint.putExtra("commentinfo",commentInfo);
+                showint.putExtra("orderinfo", orderInfo);
+                showint.putExtra("commentinfo", commentInfo);
                 mActivity.startActivity(showint);
-            }else{
+            } else {
                 Intent addint = new Intent(mActivity, CommentActivity.class);
-                addint.putExtra("orderinfo",orderInfo);
+                addint.putExtra("orderinfo", orderInfo);
                 mActivity.startActivity(addint);
             }
         }

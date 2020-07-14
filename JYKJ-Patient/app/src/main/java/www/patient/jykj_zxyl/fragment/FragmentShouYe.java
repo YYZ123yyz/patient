@@ -96,53 +96,52 @@ import static com.superrtc.ContextUtils.getApplicationContext;
  * Created by admin on 2016/6/1.
  */
 public class FragmentShouYe extends Fragment implements View.OnClickListener {
-    private             Context                             mContext;
+    private Context mContext;
     private MainActivity mActivity;
-    private             String                              mNetRetStr;                 //返回字符串
+    private String mNetRetStr;                 //返回字符串
 
-    private             String                              mMessageNetRetStr;                 //未读消息返回字符串
+    private String mMessageNetRetStr;                 //未读消息返回字符串
 
 
-    private             String                              mNetRetFYStr;                 //返回服药
-    private             Handler                             mHandler;
-    private             JYKJApplication                     mApp;
+    private String mNetRetFYStr;                 //返回服药
+    private Handler mHandler;
+    private JYKJApplication mApp;
     private LinearLayout mQrCode;
     private LinearLayout mNews;
     private LinearLayout mDoctorUnion;
     private LinearLayout mYQTH;//邀请同行
     private LinearLayout mMyComments;//我的评价
     private LinearLayout mMyLiveRoom;//我的直播间
-//    private LinearLayout mAddPatient;                   //添加患者
+    //    private LinearLayout mAddPatient;                   //添加患者
     private LinearLayout mScan;      //扫一扫
     private LinearLayout mMyClinic;//我的诊所
     private LinearLayout mMyPatient;
     public static final int REQUEST_CODE_SCAN = 0x123;
 
     private CircleImageView mHeard;                       //患者头像
-    private TextView  mUserNameText;                //用户名
-    private TextView  mUserTitleText;               //医生职称
+    private TextView mUserNameText;                //用户名
+    private TextView mUserTitleText;               //医生职称
 
-    private TextView  mNewMessage;                  //新消息提醒
-    private LinearLayout    mNewMessageLayout;          //新消息提醒
+    private TextView mNewMessage;                  //新消息提醒
+    private LinearLayout mNewMessageLayout;          //新消息提醒
     private LinearLayout llQuickApplication;//快应用
     private MoreFeaturesPopupWindow mPopupWindow;
 
 
-
-    private             FragmentShouYe                      mFragment;
+    private FragmentShouYe mFragment;
 
     public ProgressDialog mDialogProgress = null;
 
-    private             String                              qrCode;                         //需要绑定的二维码
+    private String qrCode;                         //需要绑定的二维码
 
-    private             List<ProvideViewDoctorExpertRecommend> provideViewDoctorExpertRecommendList = new ArrayList<>();            //获取到的专家数据
-    private             ProvidePatientConditionBloodPressureRecord  mProvidePatientConditionBloodPressureRecord;     //获取到的血压数据
-    private             List<ProvidePatientConditionTakingRecord>   mProvidePatientConditionTakingRecords;     //获取到的服药数据
-    private             TextView                            mXYValueText;                       //血压值
-    private             TextView                            mXLValueText;                       //心率值
-    private             TextView                            mUpdateDate;                        //更新时间
-    private             LinearLayout                            mXLTX;                              //心率
-    private             LinearLayout                        mFYTX;                              //服药提醒
+    private List<ProvideViewDoctorExpertRecommend> provideViewDoctorExpertRecommendList = new ArrayList<>();            //获取到的专家数据
+    private ProvidePatientConditionBloodPressureRecord mProvidePatientConditionBloodPressureRecord;     //获取到的血压数据
+    private List<ProvidePatientConditionTakingRecord> mProvidePatientConditionTakingRecords;     //获取到的服药数据
+    private TextView mXYValueText;                       //血压值
+    private TextView mXLValueText;                       //心率值
+    private TextView mUpdateDate;                        //更新时间
+    private LinearLayout mXLTX;                              //心率
+    private LinearLayout mFYTX;                              //服药提醒
 
     private FragmentShouYe_WDYS mFragmentShouYe_WDYS;               //我的诊所
     private FragmentShouYe_ZJTJ mFragmentShouYe_ZJTJ;               //专家推荐
@@ -152,63 +151,58 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     private AMapLocationClient locationClient = null;
     private AMapLocationClientOption locationOption = null;
 
-    private         int                 clickState;             //点击的服用状态
-
-
+    private int clickState;             //点击的服用状态
 
 
     /**
      * 血压录入
      */
-    private TextView    mBloodEntry;
+    private TextView mBloodEntry;
     /**
      * 血压记录
      */
     private LinearLayout llBloodRecord;
 
-    private             LinearLayout                    mCSHAll;                            //初始化整个布局
-    private             LinearLayout                    mCSHXY;                             //初始化血压
-    private             LinearLayout                    mCSHYY;                             //初始化用药
+    private LinearLayout mCSHAll;                            //初始化整个布局
+    private LinearLayout mCSHXY;                             //初始化血压
+    private LinearLayout mCSHYY;                             //初始化用药
 
-    private             LinearLayout                    mXYTX;                              //血压提醒
-    private             LinearLayout                    mYYTX;                              //用药提醒
+    private LinearLayout mXYTX;                              //血压提醒
+    private LinearLayout mYYTX;                              //用药提醒
 
-    private  LinearLayout live_layout;
-    private  LinearLayout  kswys;
+    private LinearLayout live_layout;
+    private LinearLayout kswys;
     private LinearLayout diet_layout;
     private LinearLayout port_layout;
     private LinearLayout sweem_layout;
     private LinearLayout feeling_layout;
-    private             TextView                        mYPMC1;                             //药品名称1
-    private             TextView                        mYPMC2;                             //药品名称2
-    private             TextView                        mYPYL1;                             //药品用量1
-    private             TextView                        mYPYL2;                             //药品用量2
+    private TextView mYPMC1;                             //药品名称1
+    private TextView mYPMC2;                             //药品名称2
+    private TextView mYPYL1;                             //药品用量1
+    private TextView mYPYL2;                             //药品用量2
 
-    private             LinearLayout                    mYPTX2;                             //药品提醒2
+    private LinearLayout mYPTX2;                             //药品提醒2
 
 
-    private                 ViewPager               pager;
+    private ViewPager pager;
     private FragmentAdapter fragmentAdapter;
-    private                 List<Fragment>          fragmentList;
-    private                 TabLayout               tabLayout;
-    private                 List<String>            mTitles;
+    private List<Fragment> fragmentList;
+    private TabLayout tabLayout;
+    private List<String> mTitles;
 
-    private                 View                    mView;
+    private View mView;
 
-    private                 TextView                mYFY;                           //已服用
-    private                 TextView                mWFY;                           //未服用
-    private                 TextView                mYYDate;                        //用药时间
+    private TextView mYFY;                           //已服用
+    private TextView mWFY;                           //未服用
+    private TextView mYYDate;                        //用药时间
 
-    private                 LinearLayout            mKSWYS;                         //快速问医生
+    private LinearLayout mKSWYS;                         //快速问医生
 
-    private                 LinearLayout            li_jqqd;                            //
-
-
-    private                 TextView                tv_wasfy;                       //未按时服用提示
-    private                 TextView                tv_yasfy;                       //已按时服用提示
+    private LinearLayout li_jqqd;                            //
 
 
-
+    private TextView tv_wasfy;                       //未按时服用提示
+    private TextView tv_yasfy;                       //已按时服用提示
 
 
     @Override
@@ -243,15 +237,15 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         provideMsgPushReminder.setRequestClientType("1");
         provideMsgPushReminder.setSearchPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideMsgPushReminder);
-                    mMessageNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"/msgDataControlle/searchPatientMsgPushReminderResDataNum");
+                    mMessageNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "/msgDataControlle/searchPatientMsgPushReminderResDataNum");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mMessageNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -265,9 +259,9 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         super.onResume();
 //        getProgressBar("请稍候","正在加载数据。。。");
         //获取最近一次血压数据
-        if(null!=mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() && 1==mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus()){
+        if (null != mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() && 1 == mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus()) {
             mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias());
-        }else{
+        } else {
             mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         }
 
@@ -295,20 +289,20 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         providePatientConditionBloodPressureRecord.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         providePatientConditionBloodPressureRecord.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(providePatientConditionBloodPressureRecord);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"/PatientConditionControlle/searchPatientStateResBloodPressureNewData");
-                    NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "/PatientConditionControlle/searchPatientStateResBloodPressureNewData");
+                    NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
                     if (netRetEntity.getResCode() == 1)
-                        mProvidePatientConditionBloodPressureRecord = JSON.parseObject(netRetEntity.getResJsonData(),ProvidePatientConditionBloodPressureRecord.class);
+                        mProvidePatientConditionBloodPressureRecord = JSON.parseObject(netRetEntity.getResJsonData(), ProvidePatientConditionBloodPressureRecord.class);
                     //获取最近一次服药数据
                     searchPatientStateResTakingMedicineRecordNewDataUnexecuted();
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -326,15 +320,15 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         providePatientConditionTakingRecord.setRequestClientType("1");
         providePatientConditionTakingRecord.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         providePatientConditionTakingRecord.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(providePatientConditionTakingRecord);
-                    mNetRetFYStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"/PatientConditionControlle/searchPatientStateResTakingMedicineRecordNewDataUnexecuted");
+                    mNetRetFYStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "/PatientConditionControlle/searchPatientStateResTakingMedicineRecordNewDataUnexecuted");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetFYStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -344,25 +338,19 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     }
 
 
-
-
-
-
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case 0:
 
-                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
                         if (netRetEntity.getResCode() == 0)
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
-                        else
-                        {
-                            provideViewDoctorExpertRecommendList = JSON.parseArray(netRetEntity.getResJsonData(),ProvideViewDoctorExpertRecommend.class);
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                        else {
+                            provideViewDoctorExpertRecommendList = JSON.parseArray(netRetEntity.getResJsonData(), ProvideViewDoctorExpertRecommend.class);
                         }
 
                         break;
@@ -371,11 +359,9 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                         break;
                     case 2:
                         cacerProgress();
-                        netRetEntity = JSON.parseObject(mNetRetFYStr,NetRetEntity.class);
-
-                        if (netRetEntity.getResCode() == 1)
-                        {
-                            mProvidePatientConditionTakingRecords = JSON.parseArray(netRetEntity.getResJsonData(),ProvidePatientConditionTakingRecord.class);
+                        netRetEntity = JSON.parseObject(mNetRetFYStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 1) {
+                            mProvidePatientConditionTakingRecords = JSON.parseArray(netRetEntity.getResJsonData(), ProvidePatientConditionTakingRecord.class);
                         }
                         showRecord();
 
@@ -392,21 +378,17 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                         break;
 
                     case 100:
-                        netRetEntity = JSON.parseObject(mMessageNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 1)
-                        {
-                            ProvideMsgPushReminder provideMsgPushReminder  = JSON.parseObject(netRetEntity.getResJsonData(),ProvideMsgPushReminder.class);
+                        netRetEntity = JSON.parseObject(mMessageNetRetStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 1) {
+                            ProvideMsgPushReminder provideMsgPushReminder = JSON.parseObject(netRetEntity.getResJsonData(), ProvideMsgPushReminder.class);
                             if (provideMsgPushReminder.getUnreadMsgNum() == 0)
                                 mNewMessageLayout.setVisibility(View.GONE);
-                            else
-                            {
+                            else {
                                 mNewMessageLayout.setVisibility(View.VISIBLE);
-                                mNewMessage.setText("您有"+provideMsgPushReminder.getUnreadMsgNum()+"条未读消息");
+                                mNewMessage.setText("您有" + provideMsgPushReminder.getUnreadMsgNum() + "条未读消息");
                             }
 
-                        }
-                        else
-                        {
+                        } else {
                             mNewMessageLayout.setVisibility(View.GONE);
                         }
                         break;
@@ -421,16 +403,14 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
      * 服药操作后
      */
     private void showFYView() {
-        if (clickState == 3)
-        {
+        if (clickState == 3) {
             //已服用
             mYFY.setVisibility(View.GONE);
             mWFY.setVisibility(View.GONE);
             tv_wasfy.setVisibility(View.GONE);
             tv_yasfy.setVisibility(View.VISIBLE);
         }
-        if (clickState == 1)
-        {
+        if (clickState == 1) {
             //未服用
             mYFY.setVisibility(View.GONE);
             mWFY.setVisibility(View.GONE);
@@ -450,15 +430,15 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         providePatientBindingMyDoctorInfo.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         providePatientBindingMyDoctorInfo.setShowNum("4");
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(providePatientBindingMyDoctorInfo);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, www.patient.jykj_zxyl.application.Constant.SERVICEURL+"PatientMyDoctorControlle/searchIndexMyDoctorShow");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, www.patient.jykj_zxyl.application.Constant.SERVICEURL + "PatientMyDoctorControlle/searchIndexMyDoctorShow");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -473,73 +453,59 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
      */
     private void showRecord() {
         //判断血压和服药数据
-        if (mProvidePatientConditionBloodPressureRecord == null || mProvidePatientConditionTakingRecords == null || mProvidePatientConditionTakingRecords.size() == 0)
-        {
+        if (mProvidePatientConditionBloodPressureRecord == null || mProvidePatientConditionTakingRecords == null || mProvidePatientConditionTakingRecords.size() == 0) {
             //如果
             mCSHAll.setVisibility(View.VISIBLE);
-            if (mProvidePatientConditionBloodPressureRecord == null)
-            {
+            if (mProvidePatientConditionBloodPressureRecord == null) {
                 mCSHXY.setVisibility(View.VISIBLE);
                 mXYTX.setVisibility(View.GONE);
-            }
-
-            else
-            {
+            } else {
                 mCSHXY.setVisibility(View.GONE);
                 mXYTX.setVisibility(View.VISIBLE);
-                mXYValueText.setText(mProvidePatientConditionBloodPressureRecord.getHighPressureNum()+"/"+mProvidePatientConditionBloodPressureRecord.getLowPressureNum());
-                mXLValueText.setText(mProvidePatientConditionBloodPressureRecord.getHeartRateNum()+"");
+                mXYValueText.setText(mProvidePatientConditionBloodPressureRecord.getHighPressureNum() + "/" + mProvidePatientConditionBloodPressureRecord.getLowPressureNum());
+                mXLValueText.setText(mProvidePatientConditionBloodPressureRecord.getHeartRateNum() + "");
                 mUpdateDate.setText(Util.dateToStrTime(mProvidePatientConditionBloodPressureRecord.getRecordTime()));
             }
-            if (mProvidePatientConditionTakingRecords == null || mProvidePatientConditionTakingRecords.size() == 0)
-            {
+            if (mProvidePatientConditionTakingRecords == null || mProvidePatientConditionTakingRecords.size() == 0) {
                 mCSHYY.setVisibility(View.VISIBLE);
                 mYYTX.setVisibility(View.GONE);
-            }
-            else
-            {
+            } else {
                 mCSHYY.setVisibility(View.GONE);
                 mYYTX.setVisibility(View.VISIBLE);
             }
 
-        }
-        else
-        {
+        } else {
             mCSHAll.setVisibility(View.GONE);
         }
 
 
-        if (mProvidePatientConditionTakingRecords != null && mProvidePatientConditionTakingRecords.size() > 0)
-        {
+        if (mProvidePatientConditionTakingRecords != null && mProvidePatientConditionTakingRecords.size() > 0) {
             mYYTX.setVisibility(View.VISIBLE);
             mYPMC1.setVisibility(View.VISIBLE);
             mYPYL1.setVisibility(View.VISIBLE);
             mYPMC1.setText(mProvidePatientConditionTakingRecords.get(0).getDrugName());
             if (mProvidePatientConditionTakingRecords.get(0).getUseNum() == null)
-                mYPYL1.setText(mProvidePatientConditionTakingRecords.get(0).getUseNum()+"/未设置");
-           else if (mProvidePatientConditionTakingRecords.get(0).getUseUnit() == null)
-                mYPYL1.setText("未设置/"+mProvidePatientConditionTakingRecords.get(0).getUseUnit());
+                mYPYL1.setText(mProvidePatientConditionTakingRecords.get(0).getUseNum() + "/未设置");
+            else if (mProvidePatientConditionTakingRecords.get(0).getUseUnit() == null)
+                mYPYL1.setText("未设置/" + mProvidePatientConditionTakingRecords.get(0).getUseUnit());
             else
-                mYPYL1.setText(mProvidePatientConditionTakingRecords.get(0).getUseNum()+"/"+mProvidePatientConditionTakingRecords.get(0).getUseUnit());
+                mYPYL1.setText(mProvidePatientConditionTakingRecords.get(0).getUseNum() + "/" + mProvidePatientConditionTakingRecords.get(0).getUseUnit());
             if (mProvidePatientConditionTakingRecords.get(0).getTakingMedicineTime() != null)
-                mYYDate.setText("时间："+Util.dateToStrTime(mProvidePatientConditionTakingRecords.get(0).getTakingMedicineTime()));
+                mYYDate.setText("时间：" + Util.dateToStrTime(mProvidePatientConditionTakingRecords.get(0).getTakingMedicineTime()));
             else
                 mYYDate.setText("未设置");
         }
-        if (mProvidePatientConditionTakingRecords != null && mProvidePatientConditionTakingRecords.size() > 1)
-        {
+        if (mProvidePatientConditionTakingRecords != null && mProvidePatientConditionTakingRecords.size() > 1) {
             mYYTX.setVisibility(View.VISIBLE);
             mYPMC2.setVisibility(View.VISIBLE);
             mYPYL2.setVisibility(View.VISIBLE);
             mYPMC2.setText(mProvidePatientConditionTakingRecords.get(1).getDrugName());
-            mYPYL2.setText(mProvidePatientConditionTakingRecords.get(1).getUseNum()+"/"+mProvidePatientConditionTakingRecords.get(1).getUseUnit());
+            mYPYL2.setText(mProvidePatientConditionTakingRecords.get(1).getUseNum() + "/" + mProvidePatientConditionTakingRecords.get(1).getUseUnit());
             if (mProvidePatientConditionTakingRecords.get(1).getTakingMedicineTime() != null)
-                mYYDate.setText("时间："+Util.dateToStrTime(mProvidePatientConditionTakingRecords.get(1).getTakingMedicineTime()));
+                mYYDate.setText("时间：" + Util.dateToStrTime(mProvidePatientConditionTakingRecords.get(1).getTakingMedicineTime()));
             else
                 mYYDate.setText("未设置");
-        }
-        else
-        {
+        } else {
             mYPMC2.setVisibility(View.GONE);
             mYPYL2.setVisibility(View.GONE);
         }
@@ -548,17 +514,15 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     }
 
 
+    private void initView(View view) {
+
+        tv_yasfy = (TextView) view.findViewById(R.id.tv_yasfy);
+        tv_wasfy = (TextView) view.findViewById(R.id.tv_wasfy);
 
 
-    private void initView(View view){
-
-        tv_yasfy = (TextView)view.findViewById(R.id.tv_yasfy);
-        tv_wasfy = (TextView)view.findViewById(R.id.tv_wasfy);
-
-
-        mYFY = (TextView)view.findViewById(R.id.yfy_button);
-        mWFY = (TextView)view.findViewById(R.id.wfy_button);
-        mKSWYS = (LinearLayout)view.findViewById(R.id.kswys);
+        mYFY = (TextView) view.findViewById(R.id.yfy_button);
+        mWFY = (TextView) view.findViewById(R.id.wfy_button);
+        mKSWYS = (LinearLayout) view.findViewById(R.id.kswys);
         mKSWYS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -567,7 +531,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                 mAuthorityJQQDDialog.show();
             }
         });
-        li_jqqd = (LinearLayout)view.findViewById(R.id.li_jqqd);
+        li_jqqd = (LinearLayout) view.findViewById(R.id.li_jqqd);
         li_jqqd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -576,7 +540,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                 mAuthorityJQQDDialog.show();
             }
         });
-        mYYDate = (TextView)view.findViewById(R.id.yytxDate);
+        mYYDate = (TextView) view.findViewById(R.id.yytxDate);
         mYFY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -597,30 +561,30 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         mBloodEntry = view.findViewById(R.id.tv_blood_entry);
         llBloodRecord = view.findViewById(R.id.ll_blood_record);
 
-        mCSHAll = (LinearLayout)view.findViewById(R.id.csh_all);
-        mCSHXY = (LinearLayout)view.findViewById(R.id.csh_xy);
+        mCSHAll = (LinearLayout) view.findViewById(R.id.csh_all);
+        mCSHXY = (LinearLayout) view.findViewById(R.id.csh_xy);
         mCSHXY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mContext,BloodEntryActivity.class));
+                startActivity(new Intent(mContext, BloodEntryActivity.class));
             }
         });
-        mCSHYY = (LinearLayout)view.findViewById(R.id.csh_yy);
+        mCSHYY = (LinearLayout) view.findViewById(R.id.csh_yy);
         mCSHYY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), MedicationSettingsActivity.class));
             }
         });
-        mXYTX = (LinearLayout)view.findViewById(R.id.xytx);
-        mYYTX = (LinearLayout)view.findViewById(R.id.yytx);
+        mXYTX = (LinearLayout) view.findViewById(R.id.xytx);
+        mYYTX = (LinearLayout) view.findViewById(R.id.yytx);
 
-        mYPMC1 = (TextView)view.findViewById(R.id.ypmc1);
-        mYPMC2 = (TextView)view.findViewById(R.id.ypmc2);
-        mYPYL1 = (TextView)view.findViewById(R.id.ypyl1);
-        mYPYL2 = (TextView)view.findViewById(R.id.ypyl2);
+        mYPMC1 = (TextView) view.findViewById(R.id.ypmc1);
+        mYPMC2 = (TextView) view.findViewById(R.id.ypmc2);
+        mYPYL1 = (TextView) view.findViewById(R.id.ypyl1);
+        mYPYL2 = (TextView) view.findViewById(R.id.ypyl2);
 
-        mHeard = (CircleImageView)view.findViewById(R.id.iv_userhead);
+        mHeard = (CircleImageView) view.findViewById(R.id.iv_userhead);
 //        mYPTX2 = (LinearLayout)view.findViewById(R.id.yytx2);
         mQrCode = view.findViewById(R.id.ll_qr_code);
 //        mNews = view.findViewById(R.id.ll_news);
@@ -632,16 +596,16 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         mScan = view.findViewById(R.id.ll_sys);
 //        mMyClinic = view.findViewById(R.id.ll_wdzs);
 //
-        mUserNameText = (TextView)view.findViewById(R.id.tv_fragmentShouYe_userNameText);
+        mUserNameText = (TextView) view.findViewById(R.id.tv_fragmentShouYe_userNameText);
 
 //        mMyPatient = view.findViewById(R.id.ll_wdhz);
-        mNewMessage = (TextView)view.findViewById(R.id.tv_fragmentShouYe_NewMessage);
+        mNewMessage = (TextView) view.findViewById(R.id.tv_fragmentShouYe_NewMessage);
         mNewMessageLayout = (LinearLayout) view.findViewById(R.id.li_fragmentShouYe_newMessage);
-        llQuickApplication = (LinearLayout)view.findViewById(R.id.ll_quick_application);
+        llQuickApplication = (LinearLayout) view.findViewById(R.id.ll_quick_application);
         mNewMessageLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mApp.gMainActivity.setViewPageIndex(1,1);
+                mApp.gMainActivity.setViewPageIndex(1, 1);
             }
         });
 //        mQrCode = view.findViewById(R.id.ll_qr_code);
@@ -655,7 +619,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 //
 //        mUserNameText = (TextView)view.findViewById(R.id.tv_fragmentShouYe_userNameText);
 //        mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        mUserTitleText = (TextView)view.findViewById(R.id.tv_fragmentShouYe_userTitleText);
+        mUserTitleText = (TextView) view.findViewById(R.id.tv_fragmentShouYe_userTitleText);
 //        if (mApp.mProvideViewSysUserPatientInfoAndRegion.getProvinceName() != null && !"".equals(mApp.mProvideViewSysUserPatientInfoAndRegion.getProvinceName()))
 //            mUserTitleText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getProvinceName());
 //        mMyPatient = view.findViewById(R.id.ll_wdhz);
@@ -663,24 +627,24 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 //        mNewMessageLayout = (LinearLayout) view.findViewById(R.id.li_fragmentShouYe_newMessage);
 //        llQuickApplication = (LinearLayout)view.findViewById(R.id.ll_quick_application);
 
-        mXYValueText = (TextView)view.findViewById(R.id.xy_value);
-        mXLValueText = (TextView)view.findViewById(R.id.xl_value);
-        mUpdateDate = (TextView)view.findViewById(R.id.updateDate);
+        mXYValueText = (TextView) view.findViewById(R.id.xy_value);
+        mXLValueText = (TextView) view.findViewById(R.id.xl_value);
+        mUpdateDate = (TextView) view.findViewById(R.id.updateDate);
 
-        mXLTX = (LinearLayout)view.findViewById(R.id.xvtx);
+        mXLTX = (LinearLayout) view.findViewById(R.id.xvtx);
         mXLTX.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
-        mFYTX = (LinearLayout)view.findViewById(R.id.fytx);
+        mFYTX = (LinearLayout) view.findViewById(R.id.fytx);
 
-        pager= (ViewPager) view.findViewById(R.id.page);
-        tabLayout= (TabLayout) view.findViewById(R.id.tab_layout);
+        pager = (ViewPager) view.findViewById(R.id.page);
+        tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
 
-        fragmentList=new ArrayList<>();
-        mTitles=new ArrayList<>();
+        fragmentList = new ArrayList<>();
+        mTitles = new ArrayList<>();
         mTitles.add("我的医生");
         mTitles.add("专家推荐");
         mTitles.add("医疗资讯");
@@ -693,7 +657,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         fragmentList.add(mFragmentShouYe_ZJTJ);
         fragmentList.add(mFragmentShouYe_YLZX);
 
-        fragmentAdapter=new FragmentAdapter(getChildFragmentManager(),fragmentList,mTitles);
+        fragmentAdapter = new FragmentAdapter(getChildFragmentManager(), fragmentList, mTitles);
         pager.setAdapter(fragmentAdapter);
         tabLayout.setupWithViewPager(pager);//与ViewPage建立关系
         live_layout = view.findViewById(R.id.live_layout);
@@ -705,10 +669,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     }
 
 
-
-
-
-    private void initListener(){
+    private void initListener() {
         mBloodEntry.setOnClickListener(this);
         llBloodRecord.setOnClickListener(this);
         mQrCode.setOnClickListener(this);
@@ -736,9 +697,9 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_blood_entry:
-                startActivity(new Intent(getActivity(),BloodEntryActivity.class));
+                startActivity(new Intent(getActivity(), BloodEntryActivity.class));
                 break;
             case R.id.ll_blood_record:
                 startActivity(new Intent(getActivity(), BloodMonitorActivity.class));
@@ -748,10 +709,10 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.ll_qr_code:
-                startActivity(new Intent(getActivity(),QRCodeActivity.class));
+                startActivity(new Intent(getActivity(), QRCodeActivity.class));
                 break;
             case R.id.fytx:
-                startActivity(new Intent(getActivity(),MedicationRecordActivity.class));
+                startActivity(new Intent(getActivity(), MedicationRecordActivity.class));
                 break;
 //            case R.id.ll_news:
 //                startActivity(new Intent(getActivity(),NewsActivity.class).putExtra("newMessage",mActivity.mProvideMsgPushReminderCount));
@@ -788,8 +749,8 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
             case R.id.ll_quick_application:
                 mPopupWindow = new MoreFeaturesPopupWindow(mActivity);
                 mPopupWindow.setSouYeFragment(mFragment);
-                if(mPopupWindow!=null&&!mPopupWindow.isShowing()){
-                    mPopupWindow.showAsDropDown(llQuickApplication,0,0);
+                if (mPopupWindow != null && !mPopupWindow.isShowing()) {
+                    mPopupWindow.showAsDropDown(llQuickApplication, 0, 0);
                 }
                 break;
             case R.id.kswys:
@@ -808,36 +769,34 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                 alertWillpub();
                 break;
             case R.id.live_layout:
-                /*Intent goliveintent = new Intent(mContext, LivePlayerActivity.class);
-                goliveintent.putExtra("TITLE","医生直播间");
+                Intent goliveintent = new Intent(mContext, LivePlayerActivity.class);
+                goliveintent.putExtra("TITLE", "医生直播间");
                 goliveintent.putExtra("TYPE", LivePlayerActivity.ACTIVITY_TYPE_LIVE_PLAY);
-                startActivity(goliveintent);*/
-                Intent goliveintent = new Intent(mContext, MyLiveRoomActivity.class);
                 startActivity(goliveintent);
-
                 break;
         }
     }
 
-    void alertWillpub(){
+    void alertWillpub() {
         AuthorityJQQDDialog mAuthorityJQQDDialog = new AuthorityJQQDDialog(mContext);
 //                mAuthorityDialog.setmProvideViewMyDoctorOrderAndTreatment(provideViewMyDoctorOrderAndTreatment);
         mAuthorityJQQDDialog.show();
     }
+
     /**
      * 扫一扫
      */
-    private void scan(){
+    private void scan() {
         RxPermissions.getInstance(getActivity())
-                .request(Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE)
+                .request(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
                 .subscribe(new Action1<Boolean>() {
                     @Override
                     public void call(Boolean aBoolean) {
-                        if(aBoolean){//允许权限，6.0以下默认true
+                        if (aBoolean) {//允许权限，6.0以下默认true
                             Intent intent = new Intent(getActivity(), CaptureActivity.class);
                             startActivityForResult(intent, REQUEST_CODE_SCAN);
-                        }else{
-                            Toast.makeText(getActivity(),"获取权限失败",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "获取权限失败", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -847,13 +806,12 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK)
-        {
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
             // 扫描二维码/条码回传
             ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend = new ProvideViewDoctorExpertRecommend();
             provideViewDoctorExpertRecommend.setDoctorCode(data.getStringExtra("codedContent"));
             provideViewDoctorExpertRecommend.setUserName(data.getStringExtra("codedContent"));
-            startActivity(new Intent(mContext,ZJXQ_ZJBDActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommend));
+            startActivity(new Intent(mContext, ZJXQ_ZJBDActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend));
         }
 
 //        Intent intent.putExtra(zxing.common.Constant.CODED_CONTENT, rawResult.getText());
@@ -862,28 +820,29 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
     /**
      * 服药打卡
+     *
      * @param i
      */
     private void operUpdPatientConditionTakingMedicineState(int i) {
-        getProgressBar("请稍候","正在处理");
+        getProgressBar("请稍候", "正在处理");
         OperUpdPatientConditionTakingMedicineStateParement operUpdPatientConditionTakingMedicineStateParement = new OperUpdPatientConditionTakingMedicineStateParement();
         operUpdPatientConditionTakingMedicineStateParement.setLoginPatientPosition(mApp.loginDoctorPosition);
         operUpdPatientConditionTakingMedicineStateParement.setRequestClientType("1");
         operUpdPatientConditionTakingMedicineStateParement.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         operUpdPatientConditionTakingMedicineStateParement.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        operUpdPatientConditionTakingMedicineStateParement.setTakingRecordId(mProvidePatientConditionTakingRecords.get(0).getTakingRecordId()+"");
+        operUpdPatientConditionTakingMedicineStateParement.setTakingRecordId(mProvidePatientConditionTakingRecords.get(0).getTakingRecordId() + "");
         operUpdPatientConditionTakingMedicineStateParement.setPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        operUpdPatientConditionTakingMedicineStateParement.setFlagTakingMedicine(i+"");
+        operUpdPatientConditionTakingMedicineStateParement.setFlagTakingMedicine(i + "");
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(operUpdPatientConditionTakingMedicineStateParement);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, www.patient.jykj_zxyl.application.Constant.SERVICEURL+"PatientConditionControlle/operUpdPatientConditionTakingMedicineState");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, www.patient.jykj_zxyl.application.Constant.SERVICEURL + "PatientConditionControlle/operUpdPatientConditionTakingMedicineState");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -893,7 +852,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     }
 
     private void operScanQrCodeInside(String content) {
-        getProgressBar("请稍候","正在处理");
+        getProgressBar("请稍候", "正在处理");
         OperScanQrCodeInside operScanQrCodeInside = new OperScanQrCodeInside();
         operScanQrCodeInside.setLoginDoctorPosition(mApp.loginDoctorPosition);
         operScanQrCodeInside.setUserUseType("5");
@@ -901,15 +860,15 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         operScanQrCodeInside.setOperUserName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         operScanQrCodeInside.setScanQrCode(content);
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(operScanQrCodeInside);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, www.patient.jykj_zxyl.application.Constant.SERVICEURL+"doctorDataControlle/operScanQrCodeInside");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, www.patient.jykj_zxyl.application.Constant.SERVICEURL + "doctorDataControlle/operScanQrCodeInside");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -921,8 +880,8 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     /**
      * 医生好友绑定
      */
-    private void bindDoctorFriend(String url,String reason,String qrCode) {
-        getProgressBar("请稍候","正在处理");
+    private void bindDoctorFriend(String url, String reason, String qrCode) {
+        getProgressBar("请稍候", "正在处理");
         BindDoctorFriend bindDoctorFriend = new BindDoctorFriend();
         bindDoctorFriend.setLoginDoctorPosition(mApp.loginDoctorPosition);
         bindDoctorFriend.setBindingDoctorQrCode(qrCode);
@@ -930,16 +889,16 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         bindDoctorFriend.setOperDoctorName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         bindDoctorFriend.setApplyReason(reason);
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(bindDoctorFriend);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, www.patient.jykj_zxyl.application.Constant.SERVICEURL+"/"+url);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, www.patient.jykj_zxyl.application.Constant.SERVICEURL + "/" + url);
 
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -972,9 +931,9 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     }
 
 
-
     /**
      * 设置新消息提醒
+     *
      * @param string
      */
     public void setNewMessageView(String string) {
@@ -991,11 +950,10 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     /**
      * 初始化定位
      *
-     * @since 2.8.0
      * @author hongming.wang
-     *
+     * @since 2.8.0
      */
-    private void initLocation(){
+    private void initLocation() {
         //初始化client
         locationClient = new AMapLocationClient(mApp.gContext);
         locationOption = getDefaultOption();

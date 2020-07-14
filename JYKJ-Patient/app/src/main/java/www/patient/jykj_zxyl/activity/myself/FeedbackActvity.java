@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -54,6 +55,7 @@ public class FeedbackActvity extends AppCompatActivity {
             switch (v.getId()){
                 case R.id.sub_feed:
                     subData();
+
                 break;
                 case R.id.tv_question_time:
                     startTime = new TimePickerBuilder(mContext, new OnTimeSelectListener() {
@@ -75,15 +77,15 @@ public class FeedbackActvity extends AppCompatActivity {
         String falttime = StrUtils.defaultStr(tv_question_time.getText());
         String link =StrUtils.defaultStr(ed_feed_telephone.getText());
         if(suggestion.length()==0){
-            Toast.makeText(mContext,"请填写您的建议",Toast.LENGTH_SHORT);
+            Toast.makeText(mContext,"请填写您的建议",Toast.LENGTH_SHORT).show();
             return;
         }
         if(falttime.length()==0){
-            Toast.makeText(mContext,"请选择故障时间",Toast.LENGTH_SHORT);
+            Toast.makeText(mContext,"请选择故障时间",Toast.LENGTH_SHORT).show();
             return;
         }
         if(link.length()==0){
-            Toast.makeText(mContext,"请填写您的联系方式",Toast.LENGTH_SHORT);
+            Toast.makeText(mContext,"请填写您的联系方式",Toast.LENGTH_SHORT).show();
             return;
         }
         FeedBackInfo subbean = new FeedBackInfo();
@@ -126,10 +128,11 @@ public class FeedbackActvity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             if(aBoolean){
-                Toast.makeText(mContext,retmsg,Toast.LENGTH_SHORT);
+
+                Toast.makeText(mContext,retmsg,Toast.LENGTH_SHORT).show();
                 finish();
             }else{
-                Toast.makeText(mContext,retmsg,Toast.LENGTH_SHORT);
+                Toast.makeText(mContext,retmsg,Toast.LENGTH_SHORT).show();
             }
         }
     }

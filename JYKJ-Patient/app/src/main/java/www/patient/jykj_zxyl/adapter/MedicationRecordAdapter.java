@@ -69,7 +69,7 @@ public class MedicationRecordAdapter extends RecyclerView.Adapter<MedicationReco
         if (mData.get(position).getGroupDate() == null || "".equals(mData.get(position).getGroupDate()))
             holder.tv_date.setText("未设置");
         else
-            holder.tv_date.setText(Util.dateToStr(mData.get(position).getGroupDate()));
+            holder.tv_date.setText(Util.dateToStrDate(mData.get(position).getGroupDate()));
 
     }
 

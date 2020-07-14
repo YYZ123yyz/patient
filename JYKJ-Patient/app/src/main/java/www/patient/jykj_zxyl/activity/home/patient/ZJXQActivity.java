@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -57,59 +58,59 @@ public class ZJXQActivity extends AppCompatActivity {
     private DoctorCommentsRecycleAdapter mAdapter;
     private LinearLayout llBack;
 
-    public          ProgressDialog              mDialogProgress =null;
+    public ProgressDialog mDialogProgress = null;
 
-    private         Context                     mContext;                                       //
+    private Context mContext;                                       //
     private ZJXQActivity mActivity;
-    private         JYKJApplication             mApp;
+    private JYKJApplication mApp;
 
-    private         String                      mNetRetStr;                 //返回字符串
-    private         String                      mNetRetPLStr;                 //返回字符串
-    private         Handler                     mHandler;
+    private String mNetRetStr;                 //返回字符串
+    private String mNetRetPLStr;                 //返回字符串
+    private Handler mHandler;
 
-    private         LinearLayout                mChoiceRegion;              //选择区域
-    private         TextView                    mChoiceRegionText;                  //选择的地区
+    private LinearLayout mChoiceRegion;              //选择区域
+    private TextView mChoiceRegionText;                  //选择的地区
 
-    private         LinearLayout                mChoiceHospital;                //选择医院
-    private         TextView                    mChoiceHospitalText;                  //选择的地区
+    private LinearLayout mChoiceHospital;                //选择医院
+    private TextView mChoiceHospitalText;                  //选择的地区
 
-    private         EditText                    mSearchEditText;                        //输入框
+    private EditText mSearchEditText;                        //输入框
 
-    private         ProvincePicker              mPicker;                                            //省市县三级联动选择框
-    public          Map<String,ProvideBasicsRegion> mChoiceRegionMap = new HashMap<>();                  //用户选择的省市区map
-    private                 int                           mChoiceRegionLevel;                                       //选择的区域级别
-    private                 String                      mChoiceRegionID;                                       //选择的区域ID
+    private ProvincePicker mPicker;                                            //省市县三级联动选择框
+    public Map<String, ProvideBasicsRegion> mChoiceRegionMap = new HashMap<>();                  //用户选择的省市区map
+    private int mChoiceRegionLevel;                                       //选择的区域级别
+    private String mChoiceRegionID;                                       //选择的区域ID
 
-    private                 List<ProvideHospitalInfo>   mProvideHospitalInfos = new ArrayList<>();              //获取到的医院列表
-    private                 String[]                    mProvideHospitalNameInfos;                              //医院对应的名称列表
+    private List<ProvideHospitalInfo> mProvideHospitalInfos = new ArrayList<>();              //获取到的医院列表
+    private String[] mProvideHospitalNameInfos;                              //医院对应的名称列表
 
-    private                 int                             mChoiceHospitalIndex;           //选择的医院下标
+    private int mChoiceHospitalIndex;           //选择的医院下标
 
-    private                 TextView                    mSearchTextView;                    //搜索
+    private TextView mSearchTextView;                    //搜索
 
-    private                 int                         mNumPage = 1;                  //页数（默认，1）
-    private                 int                         mRowNum = 10;                  //每页加载10条
-    private                 int                         mSearchModel;                   //搜索模式  1=按条件搜索  其他=扫码搜索
-    private                 List<ProvideViewUnionDoctorDetailInfo>          mUnionList = new ArrayList<>();
+    private int mNumPage = 1;                  //页数（默认，1）
+    private int mRowNum = 10;                  //每页加载10条
+    private int mSearchModel;                   //搜索模式  1=按条件搜索  其他=扫码搜索
+    private List<ProvideViewUnionDoctorDetailInfo> mUnionList = new ArrayList<>();
 
-    private                 boolean                     loadDate = true;               //是否加载数据
+    private boolean loadDate = true;               //是否加载数据
 
-    private             List<ProvideViewDoctorExpertRecommend> provideViewDoctorExpertRecommendList = new ArrayList<>();            //获取到的专家数据
+    private List<ProvideViewDoctorExpertRecommend> provideViewDoctorExpertRecommendList = new ArrayList<>();            //获取到的专家数据
 
-    private                 ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend;
-    private                 List<ProvideViewInteractPatientComment> provideViewInteractPatientComments = new ArrayList<>();
+    private ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend;
+    private List<ProvideViewInteractPatientComment> provideViewInteractPatientComments = new ArrayList<>();
 
-    private                 ImageView               mUserHead;                  //用户头像
-    private                 TextView                mUserName;                  //用户名
-    private                 TextView                mTitleName;                 //用户职称、科室
-    private                 TextView                mHospital;                  //医院
-    private                 TextView                mCollectNum;                //收藏
-    private                 TextView                mThumbsUpNum;               //点赞
-    private                 LinearLayout            mTWJZLayout;                //图文就诊布局
-    private                 LinearLayout            mDHJZLayout;                //电话就诊布局
-    private                 LinearLayout            mYPJZLayout;                //音频就诊布局
-    private                 LinearLayout            mSPJZLayout;                //视频就诊布局
-    private                 LinearLayout            mQYJZLayout;                //签约就诊布局
+    private ImageView mUserHead;                  //用户头像
+    private TextView mUserName;                  //用户名
+    private TextView mTitleName;                 //用户职称、科室
+    private TextView mHospital;                  //医院
+    private TextView mCollectNum;                //收藏
+    private TextView mThumbsUpNum;               //点赞
+    private LinearLayout mTWJZLayout;                //图文就诊布局
+    private LinearLayout mDHJZLayout;                //电话就诊布局
+    private LinearLayout mYPJZLayout;                //音频就诊布局
+    private LinearLayout mSPJZLayout;                //视频就诊布局
+    private LinearLayout mQYJZLayout;                //签约就诊布局
 //
 //    private                 ImageView               mTWJZImageView;             //图文就诊
 //    private                 ImageView               mDHJZImageView;             //电话就诊
@@ -129,44 +130,44 @@ public class ZJXQActivity extends AppCompatActivity {
 //    private                 TextView                mSPJZPriceText;                  //视频就诊价格
 //    private                 TextView                mQYJZPriceText;                  //签约就诊价格
 
-    private                 TextView                mSynopsis;                         //医生介绍
+    private TextView mSynopsis;                         //医生介绍
 
-    private                 TextView                mSchedulingInfo;                    //排版信息
+    private TextView mSchedulingInfo;                    //排版信息
 
-    public TextView         imgTextPrice;                          //
-    public TextView         imgTextSumNum;                          //
-    public TextView         phonePriceStr;                          //
-    public TextView         phoneSumNum;                          //
-    public TextView         audioPrice;                          //
-    public TextView         audioSumNum;                          //
-    public TextView         videoPrice;                          //
-    public TextView         videoSumNum;                          //
-    public TextView         signingPrice;                          //
-    public TextView         signingSumNum;                          //
+    public TextView imgTextPrice;                          //
+    public TextView imgTextSumNum;                          //
+    public TextView phonePriceStr;                          //
+    public TextView phoneSumNum;                          //
+    public TextView audioPrice;                          //
+    public TextView audioSumNum;                          //
+    public TextView videoPrice;                          //
+    public TextView videoSumNum;                          //
+    public TextView signingPrice;                          //
+    public TextView signingSumNum;                          //
 
-    public ImageView        mImgTWJZ;                         //图文就诊图标
-    public ImageView        mImgDHJZ;                         //电话就诊图标
-    public ImageView        mImgYYJZ;                         //语音就诊图标
-    public ImageView        mImgSPJZ;                         //视频就诊图标
-    public ImageView        mImgQYJZ;                         //签约就诊图标
+    public ImageView mImgTWJZ;                         //图文就诊图标
+    public ImageView mImgDHJZ;                         //电话就诊图标
+    public ImageView mImgYYJZ;                         //语音就诊图标
+    public ImageView mImgSPJZ;                         //视频就诊图标
+    public ImageView mImgQYJZ;                         //签约就诊图标
 
-    private                 TextView                            tv_nopl;                //暂无评论
-    private                 TextView                               tv_bd   ;                //绑定
-    private                 TextView                            tv_ybd;                 //已绑定
+    private TextView tv_nopl;                //暂无评论
+    private TextView tv_bd;                //绑定
+    private TextView tv_ybd;                 //已绑定
 
-    private                 ImageView                           iv_dz;          //点赞
-    private                 ImageView                           iv_sc;          //收藏
+    private ImageView iv_dz;          //点赞
+    private ImageView iv_sc;          //收藏
 
     private void initView() {
-        iv_dz = (ImageView)this.findViewById(R.id.iv_dz);
-        iv_sc = (ImageView)this.findViewById(R.id.iv_sc);
+        iv_dz = (ImageView) this.findViewById(R.id.iv_dz);
+        iv_sc = (ImageView) this.findViewById(R.id.iv_sc);
         iv_dz.setOnClickListener(new ButtonClick());
         iv_sc.setOnClickListener(new ButtonClick());
 
-        tv_nopl = (TextView)this.findViewById(R.id.tv_nopl);
-        tv_bd = (TextView)this.findViewById(R.id.tv_bd);
+        tv_nopl = (TextView) this.findViewById(R.id.tv_nopl);
+        tv_bd = (TextView) this.findViewById(R.id.tv_bd);
         tv_bd.setOnClickListener(new ButtonClick());
-        tv_ybd = (TextView)this.findViewById(R.id.tv_ybd);
+        tv_ybd = (TextView) this.findViewById(R.id.tv_ybd);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_pj);
         llBack = (LinearLayout) findViewById(R.id.ll_back);
@@ -176,26 +177,26 @@ public class ZJXQActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setNestedScrollingEnabled(false); //禁止滑动
-        mAdapter = new DoctorCommentsRecycleAdapter(provideViewInteractPatientComments,mContext);
+        mAdapter = new DoctorCommentsRecycleAdapter(provideViewInteractPatientComments, mContext);
         mRecyclerView.setAdapter(mAdapter);
         llBack.setOnClickListener(new ButtonClick());
 
-        mUserHead = (ImageView)this.findViewById(R.id.imageView);
-        mUserName = (TextView)this.findViewById(R.id.userName);
-         mTitleName = (TextView)this.findViewById(R.id.userTitle);
-         mHospital = (TextView)this.findViewById(R.id.hospatal);
-         mCollectNum = (TextView)this.findViewById(R.id.collectNum);
-        mThumbsUpNum = (TextView)this.findViewById(R.id.thumbsUpNum);
+        mUserHead = (ImageView) this.findViewById(R.id.imageView);
+        mUserName = (TextView) this.findViewById(R.id.userName);
+        mTitleName = (TextView) this.findViewById(R.id.userTitle);
+        mHospital = (TextView) this.findViewById(R.id.hospatal);
+        mCollectNum = (TextView) this.findViewById(R.id.collectNum);
+        mThumbsUpNum = (TextView) this.findViewById(R.id.thumbsUpNum);
 
-        mTWJZLayout = (LinearLayout)this.findViewById(R.id.twjz_layout);
-        mDHJZLayout = (LinearLayout)this.findViewById(R.id.dhjz_layout);
-        mYPJZLayout = (LinearLayout)this.findViewById(R.id.ypjz_layout);
-        mSPJZLayout = (LinearLayout)this.findViewById(R.id.spjz_layout);
-        mQYJZLayout = (LinearLayout)this.findViewById(R.id.qyjz_layout);
+        mTWJZLayout = (LinearLayout) this.findViewById(R.id.twjz_layout);
+        mDHJZLayout = (LinearLayout) this.findViewById(R.id.dhjz_layout);
+        mYPJZLayout = (LinearLayout) this.findViewById(R.id.ypjz_layout);
+        mSPJZLayout = (LinearLayout) this.findViewById(R.id.spjz_layout);
+        mQYJZLayout = (LinearLayout) this.findViewById(R.id.qyjz_layout);
 
 
-        mSynopsis = (TextView)this.findViewById(R.id.synopsis);
-        mSchedulingInfo = (TextView)this.findViewById(R.id.schedulingInfo);
+        mSynopsis = (TextView) this.findViewById(R.id.synopsis);
+        mSchedulingInfo = (TextView) this.findViewById(R.id.schedulingInfo);
 
         mTWJZLayout.setOnClickListener(new ButtonClick());
         mDHJZLayout.setOnClickListener(new ButtonClick());
@@ -203,22 +204,22 @@ public class ZJXQActivity extends AppCompatActivity {
         mSPJZLayout.setOnClickListener(new ButtonClick());
         mQYJZLayout.setOnClickListener(new ButtonClick());
 
-        imgTextPrice = (TextView)this.findViewById(R.id.imgTextPrice);
-        imgTextSumNum = (TextView)this.findViewById(R.id.imgTextSumNum);
-        phonePriceStr = (TextView)this.findViewById(R.id.phonePriceStr);
-        phoneSumNum = (TextView)this.findViewById(R.id.phoneSumNum);
-        audioPrice = (TextView)this.findViewById(R.id.audioPrice);
-        audioSumNum = (TextView)this.findViewById(R.id.audioSumNum);
-        videoPrice = (TextView)this.findViewById(R.id.videoPrice);
-        videoSumNum = (TextView)this.findViewById(R.id.videoSumNum);
-        signingPrice = (TextView)this.findViewById(R.id.signingPrice);
-        signingSumNum = (TextView)this.findViewById(R.id.signingSumNum);
+        imgTextPrice = (TextView) this.findViewById(R.id.imgTextPrice);
+        imgTextSumNum = (TextView) this.findViewById(R.id.imgTextSumNum);
+        phonePriceStr = (TextView) this.findViewById(R.id.phonePriceStr);
+        phoneSumNum = (TextView) this.findViewById(R.id.phoneSumNum);
+        audioPrice = (TextView) this.findViewById(R.id.audioPrice);
+        audioSumNum = (TextView) this.findViewById(R.id.audioSumNum);
+        videoPrice = (TextView) this.findViewById(R.id.videoPrice);
+        videoSumNum = (TextView) this.findViewById(R.id.videoSumNum);
+        signingPrice = (TextView) this.findViewById(R.id.signingPrice);
+        signingSumNum = (TextView) this.findViewById(R.id.signingSumNum);
 
-        mImgTWJZ = (ImageView)this.findViewById(R.id.img_tvjz);
-        mImgDHJZ = (ImageView)this.findViewById(R.id.img_dhjz);
-        mImgYYJZ = (ImageView)this.findViewById(R.id.img_yyjz);
-        mImgSPJZ = (ImageView)this.findViewById(R.id.img_spjz);
-        mImgQYJZ = (ImageView)this.findViewById(R.id.img_qyjz);
+        mImgTWJZ = (ImageView) this.findViewById(R.id.img_tvjz);
+        mImgDHJZ = (ImageView) this.findViewById(R.id.img_dhjz);
+        mImgYYJZ = (ImageView) this.findViewById(R.id.img_yyjz);
+        mImgSPJZ = (ImageView) this.findViewById(R.id.img_spjz);
+        mImgQYJZ = (ImageView) this.findViewById(R.id.img_qyjz);
 
     }
 
@@ -241,89 +242,80 @@ public class ZJXQActivity extends AppCompatActivity {
             mUserName.setText("未设置");
         else
             mUserName.setText(provideViewDoctorExpertRecommend.getUserName());
-        if (provideViewDoctorExpertRecommend.getDoctorTitleName() ==null || "".equals(provideViewDoctorExpertRecommend.getDoctorTitle()))
+        if (provideViewDoctorExpertRecommend.getDoctorTitleName() == null || "".equals(provideViewDoctorExpertRecommend.getDoctorTitle()))
             mTitleName.setText("未设置");
         else
-            mTitleName.setText(provideViewDoctorExpertRecommend.getDoctorTitleName()+"|"+provideViewDoctorExpertRecommend.getDepartmentSecondName());
-        if (provideViewDoctorExpertRecommend.getHospitalInfoName() ==null || "".equals(provideViewDoctorExpertRecommend.getHospitalInfoName()))
+            mTitleName.setText(provideViewDoctorExpertRecommend.getDoctorTitleName() + "|" + provideViewDoctorExpertRecommend.getDepartmentSecondName());
+        if (provideViewDoctorExpertRecommend.getHospitalInfoName() == null || "".equals(provideViewDoctorExpertRecommend.getHospitalInfoName()))
             mHospital.setText("未设置");
         else
             mHospital.setText(provideViewDoctorExpertRecommend.getHospitalInfoName());
         if (provideViewDoctorExpertRecommend.getCollectNum() == null)
             mCollectNum.setText("0");
         else
-            mCollectNum.setText(provideViewDoctorExpertRecommend.getCollectNum()+"");
+            mCollectNum.setText(provideViewDoctorExpertRecommend.getCollectNum() + "");
         if (provideViewDoctorExpertRecommend.getThumbsUpNum() == null)
             mThumbsUpNum.setText("0");
         else
-            mThumbsUpNum.setText(provideViewDoctorExpertRecommend.getThumbsUpNum()+"");
+            mThumbsUpNum.setText(provideViewDoctorExpertRecommend.getThumbsUpNum() + "");
 
-        if (provideViewDoctorExpertRecommend.getImgTextPriceShow() == null  || "".equals(provideViewDoctorExpertRecommend.getImgTextPriceShow()))
+        if (provideViewDoctorExpertRecommend.getImgTextPriceShow() == null || "".equals(provideViewDoctorExpertRecommend.getImgTextPriceShow()))
             imgTextPrice.setText("未设置");
         else
-            imgTextPrice.setText("￥"+provideViewDoctorExpertRecommend.getImgTextPriceShow());
-        if (provideViewDoctorExpertRecommend.getImgTextSumNum() == null  || "".equals(provideViewDoctorExpertRecommend.getImgTextSumNum()))
+            imgTextPrice.setText("￥" + provideViewDoctorExpertRecommend.getImgTextPriceShow());
+        if (provideViewDoctorExpertRecommend.getImgTextSumNum() == null || "".equals(provideViewDoctorExpertRecommend.getImgTextSumNum()))
             imgTextSumNum.setText("未设置");
         else
-            imgTextSumNum.setText(provideViewDoctorExpertRecommend.getImgTextSumNum()+"人咨询");
-        if (provideViewDoctorExpertRecommend.getPhonePriceShow() == null  || "".equals(provideViewDoctorExpertRecommend.getPhonePriceShow()))
+            imgTextSumNum.setText(provideViewDoctorExpertRecommend.getImgTextSumNum() + "人咨询");
+        if (provideViewDoctorExpertRecommend.getPhonePriceShow() == null || "".equals(provideViewDoctorExpertRecommend.getPhonePriceShow()))
             phonePriceStr.setText("未设置");
         else
-            phonePriceStr.setText("￥"+provideViewDoctorExpertRecommend.getPhonePriceShow());
-        if (provideViewDoctorExpertRecommend.getPhonePrice() == null  || "".equals(provideViewDoctorExpertRecommend.getPhonePrice()))
+            phonePriceStr.setText("￥" + provideViewDoctorExpertRecommend.getPhonePriceShow());
+        if (provideViewDoctorExpertRecommend.getPhonePrice() == null || "".equals(provideViewDoctorExpertRecommend.getPhonePrice()))
             phoneSumNum.setText("未设置");
         else
-            phoneSumNum.setText(provideViewDoctorExpertRecommend.getPhonePrice()+"人咨询");
-        if (provideViewDoctorExpertRecommend.getAudioPriceShow() == null  || "".equals(provideViewDoctorExpertRecommend.getAudioPriceShow()))
+            phoneSumNum.setText(provideViewDoctorExpertRecommend.getPhonePrice() + "人咨询");
+        if (provideViewDoctorExpertRecommend.getAudioPriceShow() == null || "".equals(provideViewDoctorExpertRecommend.getAudioPriceShow()))
             audioPrice.setText("未设置");
         else
-            audioPrice.setText("￥"+provideViewDoctorExpertRecommend.getAudioPriceShow());
-        if (provideViewDoctorExpertRecommend.getAudioSumNum() == null  || "".equals(provideViewDoctorExpertRecommend.getAudioSumNum()))
+            audioPrice.setText("￥" + provideViewDoctorExpertRecommend.getAudioPriceShow());
+        if (provideViewDoctorExpertRecommend.getAudioSumNum() == null || "".equals(provideViewDoctorExpertRecommend.getAudioSumNum()))
             audioSumNum.setText("未设置");
         else
-            audioSumNum.setText(provideViewDoctorExpertRecommend.getAudioSumNum()+"人咨询");
-        if (provideViewDoctorExpertRecommend.getVideoPriceShow() == null  || "".equals(provideViewDoctorExpertRecommend.getVideoPriceShow()))
+            audioSumNum.setText(provideViewDoctorExpertRecommend.getAudioSumNum() + "人咨询");
+        if (provideViewDoctorExpertRecommend.getVideoPriceShow() == null || "".equals(provideViewDoctorExpertRecommend.getVideoPriceShow()))
             videoPrice.setText("未设置");
         else
-            videoPrice.setText("￥"+provideViewDoctorExpertRecommend.getVideoPriceShow());
-        if (provideViewDoctorExpertRecommend.getVideoSumNum() == null  || "".equals(provideViewDoctorExpertRecommend.getVideoSumNum()))
+            videoPrice.setText("￥" + provideViewDoctorExpertRecommend.getVideoPriceShow());
+        if (provideViewDoctorExpertRecommend.getVideoSumNum() == null || "".equals(provideViewDoctorExpertRecommend.getVideoSumNum()))
             videoSumNum.setText("未设置");
         else
-            videoSumNum.setText(provideViewDoctorExpertRecommend.getVideoSumNum()+"人咨询");
-        if (provideViewDoctorExpertRecommend.getSigningPriceShow() == null  || "".equals(provideViewDoctorExpertRecommend.getSigningPriceShow()))
+            videoSumNum.setText(provideViewDoctorExpertRecommend.getVideoSumNum() + "人咨询");
+        if (provideViewDoctorExpertRecommend.getSigningPriceShow() == null || "".equals(provideViewDoctorExpertRecommend.getSigningPriceShow()))
             signingPrice.setText("未设置");
         else
-            signingPrice.setText("￥"+provideViewDoctorExpertRecommend.getSigningPriceShow());
-        if (provideViewDoctorExpertRecommend.getSigningSumNum() == null  || "".equals(provideViewDoctorExpertRecommend.getSigningSumNum()))
+            signingPrice.setText("￥" + provideViewDoctorExpertRecommend.getSigningPriceShow());
+        if (provideViewDoctorExpertRecommend.getSigningSumNum() == null || "".equals(provideViewDoctorExpertRecommend.getSigningSumNum()))
             signingSumNum.setText("未设置");
         else
-            signingSumNum.setText(provideViewDoctorExpertRecommend.getSigningSumNum()+"人咨询");
-        if (provideViewDoctorExpertRecommend.getFlagBindingState() != null && provideViewDoctorExpertRecommend.getFlagBindingState() == 1)
-        {
+            signingSumNum.setText(provideViewDoctorExpertRecommend.getSigningSumNum() + "人咨询");
+        if (provideViewDoctorExpertRecommend.getFlagBindingState() != null && provideViewDoctorExpertRecommend.getFlagBindingState() == 1) {
             tv_ybd.setVisibility(View.VISIBLE);
             tv_bd.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             tv_ybd.setVisibility(View.GONE);
             tv_bd.setVisibility(View.VISIBLE);
         }
 
-        if (provideViewDoctorExpertRecommend.getFlagThumbsUpState() != null && provideViewDoctorExpertRecommend.getFlagThumbsUpState() == 1)
-        {
+        if (provideViewDoctorExpertRecommend.getFlagThumbsUpState() != null && provideViewDoctorExpertRecommend.getFlagThumbsUpState() == 1) {
             iv_dz.setBackgroundResource(R.mipmap.dianzan);
-        }
-        else
-        {
+        } else {
             iv_dz.setBackgroundResource(R.mipmap.dz);
         }
 
-        if (provideViewDoctorExpertRecommend.getFlagCollectState() != null && provideViewDoctorExpertRecommend.getFlagCollectState() == 1)
-        {
+        if (provideViewDoctorExpertRecommend.getFlagCollectState() != null && provideViewDoctorExpertRecommend.getFlagCollectState() == 1) {
             iv_sc.setBackgroundResource(R.mipmap.sc);
-        }
-        else
-        {
+        } else {
             iv_sc.setBackgroundResource(R.mipmap.sc_no);
         }
 
@@ -378,14 +370,9 @@ public class ZJXQActivity extends AppCompatActivity {
         initView();
         initHandler();
         provideViewDoctorExpertRecommend = (ProvideViewDoctorExpertRecommend) getIntent().getSerializableExtra("provideViewDoctorExpertRecommend");
-//        //获取所有联盟
-//        mNumPage = 1;
-//        mSearchModel = 1;
-//        mUnionList.removeAll(mUnionList);
         getDate();
 
     }
-
 
 
     private void initHandler() {
@@ -395,21 +382,17 @@ public class ZJXQActivity extends AppCompatActivity {
                 switch (msg.what) {
                     case 5:
                         cacerProgress();
-                        if (mNetRetStr == null || "".equals(mNetRetStr))
-                        {
+                        if (mNetRetStr == null || "".equals(mNetRetStr)) {
 
-                            Toast.makeText(mContext,"网络故障",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "网络故障", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 0)
-                        {
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 0) {
 
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                           provideViewDoctorExpertRecommend = JSON.parseObject(netRetEntity.getResJsonData(),ProvideViewDoctorExpertRecommend.class);
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            provideViewDoctorExpertRecommend = JSON.parseObject(netRetEntity.getResJsonData(), ProvideViewDoctorExpertRecommend.class);
 
                         }
                         showDoctorExpertRecommend();
@@ -417,25 +400,21 @@ public class ZJXQActivity extends AppCompatActivity {
                         break;
 
                     case 10:
-                        if (mNetRetPLStr == null || "".equals(mNetRetPLStr))
-                        {
+                        if (mNetRetPLStr == null || "".equals(mNetRetPLStr)) {
 
-                            Toast.makeText(mContext,"网络故障",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "网络故障", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        netRetEntity = JSON.parseObject(mNetRetPLStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 0)
-                        {
+                        netRetEntity = JSON.parseObject(mNetRetPLStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 0) {
 
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
                             loadDate = false;
-                        }
-                        else
-                        {
-                            List<ProvideViewInteractPatientComment> list = JSON.parseArray(netRetEntity.getResJsonData(),ProvideViewInteractPatientComment.class);
+                        } else {
+                            List<ProvideViewInteractPatientComment> list = JSON.parseArray(netRetEntity.getResJsonData(), ProvideViewInteractPatientComment.class);
                             if (list == null || list.size() < mRowNum)
                                 loadDate = false;
-                            if(list != null)
+                            if (list != null)
                                 provideViewInteractPatientComments.addAll(list);
 
                         }
@@ -461,42 +440,34 @@ public class ZJXQActivity extends AppCompatActivity {
                         break;
                     case 11:
                         cacerProgress();
-                        if (provideViewDoctorExpertRecommend.getFlagThumbsUpState() == 0)
-                        {
+                        if (provideViewDoctorExpertRecommend.getFlagThumbsUpState() == 0) {
                             provideViewDoctorExpertRecommend.setFlagThumbsUpState(1);
                             iv_dz.setBackgroundResource(R.mipmap.dianzan);
-                            provideViewDoctorExpertRecommend.setThumbsUpNum(provideViewDoctorExpertRecommend.getThumbsUpNum()+1);
-                            mThumbsUpNum.setText(provideViewDoctorExpertRecommend.getThumbsUpNum()+"");
+                            provideViewDoctorExpertRecommend.setThumbsUpNum(provideViewDoctorExpertRecommend.getThumbsUpNum() + 1);
+                            mThumbsUpNum.setText(provideViewDoctorExpertRecommend.getThumbsUpNum() + "");
 
-                        }
-
-                        else
-                        {
+                        } else {
                             provideViewDoctorExpertRecommend.setFlagThumbsUpState(0);
                             iv_dz.setBackgroundResource(R.mipmap.dz);
-                            provideViewDoctorExpertRecommend.setThumbsUpNum(provideViewDoctorExpertRecommend.getThumbsUpNum()-1);
-                            mThumbsUpNum.setText(provideViewDoctorExpertRecommend.getThumbsUpNum()+"");
+                            provideViewDoctorExpertRecommend.setThumbsUpNum(provideViewDoctorExpertRecommend.getThumbsUpNum() - 1);
+                            mThumbsUpNum.setText(provideViewDoctorExpertRecommend.getThumbsUpNum() + "");
                         }
 
                         break;
 
                     case 12:
                         cacerProgress();
-                        if (provideViewDoctorExpertRecommend.getFlagCollectState() == 0)
-                        {
+                        if (provideViewDoctorExpertRecommend.getFlagCollectState() == 0) {
                             provideViewDoctorExpertRecommend.setFlagCollectState(1);
                             iv_sc.setBackgroundResource(R.mipmap.sc);
-                            provideViewDoctorExpertRecommend.setCollectNum(provideViewDoctorExpertRecommend.getCollectNum()+1);
-                            mCollectNum.setText(provideViewDoctorExpertRecommend.getCollectNum()+"");
+                            provideViewDoctorExpertRecommend.setCollectNum(provideViewDoctorExpertRecommend.getCollectNum() + 1);
+                            mCollectNum.setText(provideViewDoctorExpertRecommend.getCollectNum() + "");
 
-                        }
-
-                        else
-                        {
+                        } else {
                             provideViewDoctorExpertRecommend.setFlagCollectState(0);
                             iv_sc.setBackgroundResource(R.mipmap.sc_no);
-                            provideViewDoctorExpertRecommend.setCollectNum(provideViewDoctorExpertRecommend.getCollectNum()-1);
-                            mCollectNum.setText(provideViewDoctorExpertRecommend.getCollectNum()+"");
+                            provideViewDoctorExpertRecommend.setCollectNum(provideViewDoctorExpertRecommend.getCollectNum() - 1);
+                            mCollectNum.setText(provideViewDoctorExpertRecommend.getCollectNum() + "");
                         }
 
                         break;
@@ -515,10 +486,10 @@ public class ZJXQActivity extends AppCompatActivity {
 
 
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(this);
         }
@@ -531,14 +502,14 @@ public class ZJXQActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }
     }
 
 
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -547,49 +518,44 @@ public class ZJXQActivity extends AppCompatActivity {
                     break;
 
                 case R.id.twjz_layout:
-                    if (provideViewDoctorExpertRecommend.getFlagImgText() == 0)
-                    {
-                        Toast.makeText(mContext,"图文就诊未开通",Toast.LENGTH_SHORT).show();
+                    if (provideViewDoctorExpertRecommend.getFlagImgText() == 0) {
+                        Toast.makeText(mContext, "图文就诊未开通", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                   //图文就诊
-                    startActivity(new Intent(mContext,WZXXActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommend).putExtra("operaType","1"));
+                    //图文就诊
+                    startActivity(new Intent(mContext, WZXXActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "1"));
                     break;
-                    //电话就诊
+                //电话就诊
                 case R.id.dhjz_layout:
-                    if (provideViewDoctorExpertRecommend.getFlagAudio() == 0)
-                    {
-                        Toast.makeText(mContext,"电话就诊未开通",Toast.LENGTH_SHORT).show();
+                    if (provideViewDoctorExpertRecommend.getFlagAudio() == 0) {
+                        Toast.makeText(mContext, "电话就诊未开通", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    startActivity(new Intent(mContext,WZXX_YSPBActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommend).putExtra("operaType","5"));
+                    startActivity(new Intent(mContext, WZXX_YSPBActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "5"));
                     break;
 
                 case R.id.ypjz_layout:
-                    if (provideViewDoctorExpertRecommend.getFlagAudio() == 0)
-                    {
-                        Toast.makeText(mContext,"音频就诊未开通",Toast.LENGTH_SHORT).show();
+                    if (provideViewDoctorExpertRecommend.getFlagAudio() == 0) {
+                        Toast.makeText(mContext, "音频就诊未开通", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    startActivity(new Intent(mContext,WZXX_YSPBActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommend).putExtra("operaType","2"));
+                    startActivity(new Intent(mContext, WZXX_YSPBActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "2"));
 
                     break;
                 case R.id.spjz_layout:
-                    if (provideViewDoctorExpertRecommend.getFlagVideo() == 0)
-                    {
-                        Toast.makeText(mContext,"视频就诊未开通",Toast.LENGTH_SHORT).show();
+                    if (provideViewDoctorExpertRecommend.getFlagVideo() == 0) {
+                        Toast.makeText(mContext, "视频就诊未开通", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    startActivity(new Intent(mContext,WZXX_YSPBActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommend).putExtra("operaType","3"));
+                    startActivity(new Intent(mContext, WZXX_YSPBActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "3"));
 
                     break;
                 case R.id.qyjz_layout:
-                    if (provideViewDoctorExpertRecommend.getFlagSigning() == 0)
-                    {
-                        Toast.makeText(mContext,"签约就诊未开通",Toast.LENGTH_SHORT).show();
+                    if (provideViewDoctorExpertRecommend.getFlagSigning() == 0) {
+                        Toast.makeText(mContext, "签约就诊未开通", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    startActivity(new Intent(mContext,WZXXActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommend).putExtra("operaType","4"));
+                    startActivity(new Intent(mContext, WZXXActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "4"));
 
                     break;
                 case R.id.iv_dz:
@@ -601,7 +567,7 @@ public class ZJXQActivity extends AppCompatActivity {
                     operIndexExpertRecommendDoctorCollect();
                     break;
                 case R.id.tv_bd:
-                    startActivity(new Intent(mContext,ZJXQ_ZJBDActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommend));
+                    startActivity(new Intent(mContext, ZJXQ_ZJBDActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend));
                     break;
 
             }
@@ -612,7 +578,7 @@ public class ZJXQActivity extends AppCompatActivity {
      * 点赞或者取消点赞
      */
     private void operIndexExpertRecommendDoctorThumbsUp() {
-        getProgressBar("请稍候","正在点赞");
+        getProgressBar("请稍候", "正在点赞");
         ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend1 = new ProvideViewDoctorExpertRecommend();
         provideViewDoctorExpertRecommend1.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideViewDoctorExpertRecommend1.setRequestClientType("1");
@@ -624,17 +590,17 @@ public class ZJXQActivity extends AppCompatActivity {
             provideViewDoctorExpertRecommend1.setOperThumbsUpType("2");
         provideViewDoctorExpertRecommend1.setThumbsUpDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideViewDoctorExpertRecommend1);
-                    String urlStr = Constant.SERVICEURL+"patientSearchDoctorControlle/operIndexExpertRecommendDoctorThumbsUp";
+                    String urlStr = Constant.SERVICEURL + "patientSearchDoctorControlle/operIndexExpertRecommendDoctorThumbsUp";
 //                    mNetRetStr = HttpNetService.getUpgradeInfo("jsonDataInfo="+string, urlStr);
-                    mNetRetPLStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"patientSearchDoctorControlle/operIndexExpertRecommendDoctorThumbsUp");
+                    mNetRetPLStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "patientSearchDoctorControlle/operIndexExpertRecommendDoctorThumbsUp");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetPLStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -647,7 +613,7 @@ public class ZJXQActivity extends AppCompatActivity {
      * 收藏或者取消收藏(接口应该是点赞操作，写反了)
      */
     private void operIndexExpertRecommendDoctorCollect() {
-        getProgressBar("请稍候","正在收藏");
+        getProgressBar("请稍候", "正在收藏");
         ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend1 = new ProvideViewDoctorExpertRecommend();
         provideViewDoctorExpertRecommend1.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideViewDoctorExpertRecommend1.setRequestClientType("1");
@@ -659,17 +625,17 @@ public class ZJXQActivity extends AppCompatActivity {
             provideViewDoctorExpertRecommend1.setOperCollectType("2");
         provideViewDoctorExpertRecommend1.setCollectDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideViewDoctorExpertRecommend1);
-                    String urlStr = Constant.SERVICEURL+"patientSearchDoctorControlle/operIndexExpertRecommendDoctorCollect";
+                    String urlStr = Constant.SERVICEURL + "patientSearchDoctorControlle/operIndexExpertRecommendDoctorCollect";
 //                    mNetRetStr = HttpNetService.getUpgradeInfo("jsonDataInfo="+string, urlStr);
-                    mNetRetPLStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"patientSearchDoctorControlle/operIndexExpertRecommendDoctorCollect");
+                    mNetRetPLStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "patientSearchDoctorControlle/operIndexExpertRecommendDoctorCollect");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetPLStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -684,8 +650,8 @@ public class ZJXQActivity extends AppCompatActivity {
      */
     private void getPLDate() {
         ProvideViewInteractPatientComment provideViewInteractPatientComment = new ProvideViewInteractPatientComment();
-        provideViewInteractPatientComment.setRowNum(mRowNum+"");
-        provideViewInteractPatientComment.setPageNum(mNumPage+"");
+        provideViewInteractPatientComment.setRowNum(mRowNum + "");
+        provideViewInteractPatientComment.setPageNum(mNumPage + "");
         provideViewInteractPatientComment.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideViewInteractPatientComment.setRequestClientType("1");
         provideViewInteractPatientComment.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
@@ -693,17 +659,17 @@ public class ZJXQActivity extends AppCompatActivity {
         provideViewInteractPatientComment.setSearchDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
 //        provideViewDoctorExpertRecommend.setShowNum("4");
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideViewInteractPatientComment);
-                    String urlStr = Constant.SERVICEURL+"patientSearchDoctorControlle/searchIndexExpertRecommendDoctorCommentShow";
+                    String urlStr = Constant.SERVICEURL + "patientSearchDoctorControlle/searchIndexExpertRecommendDoctorCommentShow";
 //                    mNetRetStr = HttpNetService.getUpgradeInfo("jsonDataInfo="+string, urlStr);
-                    mNetRetPLStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"patientSearchDoctorControlle/searchIndexExpertRecommendDoctorCommentShow");
+                    mNetRetPLStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "patientSearchDoctorControlle/searchIndexExpertRecommendDoctorCommentShow");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetPLStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -717,7 +683,7 @@ public class ZJXQActivity extends AppCompatActivity {
      * 获取专家详情
      */
     private void getDate() {
-        getProgressBar("请稍候","正在获取数据");
+        getProgressBar("请稍候", "正在获取数据");
         provideViewDoctorExpertRecommend.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideViewDoctorExpertRecommend.setRequestClientType("1");
         provideViewDoctorExpertRecommend.setSearchDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
@@ -725,17 +691,18 @@ public class ZJXQActivity extends AppCompatActivity {
         provideViewDoctorExpertRecommend.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
 //        provideViewDoctorExpertRecommend.setShowNum("4");
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideViewDoctorExpertRecommend);
-                    String urlStr = Constant.SERVICEURL+"patientSearchDoctorControlle/searchIndexExpertRecommendDoctorMoreShow";
+                    String urlStr = Constant.SERVICEURL + "patientSearchDoctorControlle/searchIndexExpertRecommendDoctorMoreShow";
 //                    mNetRetStr = HttpNetService.getUpgradeInfo("jsonDataInfo="+string, urlStr);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"patientSearchDoctorControlle/searchIndexExpertRecommendDoctorDetailShow");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "patientSearchDoctorControlle/searchIndexExpertRecommendDoctorDetailShow");
+                    Log.e("tag", "专家详情 "+mNetRetStr );
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -756,15 +723,12 @@ public class ZJXQActivity extends AppCompatActivity {
 
     /**
      * 选择医院对话框
-     *
      */
     private void showChoiceHospitalView() {
-        if (mProvideHospitalInfos != null)
-        {
+        if (mProvideHospitalInfos != null) {
             mProvideHospitalNameInfos = new String[mProvideHospitalInfos.size()];
         }
-        for (int i = 0; i < mProvideHospitalInfos.size(); i++)
-        {
+        for (int i = 0; i < mProvideHospitalInfos.size(); i++) {
             mProvideHospitalNameInfos[i] = mProvideHospitalInfos.get(i).getHospitalName();
         }
         AlertDialog.Builder listDialog =
@@ -785,30 +749,25 @@ public class ZJXQActivity extends AppCompatActivity {
      */
     public void setRegionText() {
         provideViewDoctorExpertRecommend.setProvince(mChoiceRegionMap.get("provice").getRegion_id());
-        if ("sqb".equals(mChoiceRegionMap.get("city").getRegion_id()))
-        {
+        if ("sqb".equals(mChoiceRegionMap.get("city").getRegion_id())) {
             mChoiceRegionText.setText(mChoiceRegionMap.get("provice").getRegion_name());
             mChoiceRegionLevel = 1;               //市级所有，则是省级
             mChoiceRegionID = mChoiceRegionMap.get("provice").getRegion_id();
             provideViewDoctorExpertRecommend.setCity("");
             provideViewDoctorExpertRecommend.setArea("");
-        }
-        else if (mChoiceRegionMap.get("dist") == null ||"qqb".equals(mChoiceRegionMap.get("dist").getRegion_id()))
-        {
-            mChoiceRegionText.setText(mChoiceRegionMap.get("provice").getRegion_name()+mChoiceRegionMap.get("city").getRegion_name());
+        } else if (mChoiceRegionMap.get("dist") == null || "qqb".equals(mChoiceRegionMap.get("dist").getRegion_id())) {
+            mChoiceRegionText.setText(mChoiceRegionMap.get("provice").getRegion_name() + mChoiceRegionMap.get("city").getRegion_name());
             mChoiceRegionLevel = 2;               //区级全部，则是市级
             mChoiceRegionID = mChoiceRegionMap.get("city").getRegion_id();
             provideViewDoctorExpertRecommend.setArea("");
         }
-        if (!"sqb".equals(mChoiceRegionMap.get("city").getRegion_id()))
-        {
+        if (!"sqb".equals(mChoiceRegionMap.get("city").getRegion_id())) {
             provideViewDoctorExpertRecommend.setCity(mChoiceRegionMap.get("city").getRegion_id());
             mChoiceRegionLevel = 2;               //市级
             mChoiceRegionID = mChoiceRegionMap.get("city").getRegion_id();
         }
-        if (mChoiceRegionMap.get("dist") != null && !"qqb".equals(mChoiceRegionMap.get("dist").getRegion_id()))
-        {
-            mChoiceRegionText.setText(mChoiceRegionMap.get("provice").getRegion_name()+mChoiceRegionMap.get("city").getRegion_name()+mChoiceRegionMap.get("dist").getRegion_name());
+        if (mChoiceRegionMap.get("dist") != null && !"qqb".equals(mChoiceRegionMap.get("dist").getRegion_id())) {
+            mChoiceRegionText.setText(mChoiceRegionMap.get("provice").getRegion_name() + mChoiceRegionMap.get("city").getRegion_name() + mChoiceRegionMap.get("dist").getRegion_name());
             provideViewDoctorExpertRecommend.setArea(mChoiceRegionMap.get("dist").getRegion_id());
             mChoiceRegionLevel = 3;               //区级全部，则是市级
             mChoiceRegionID = mChoiceRegionMap.get("dist").getRegion_id();
@@ -818,32 +777,33 @@ public class ZJXQActivity extends AppCompatActivity {
         provideViewDoctorExpertRecommend.setSearchHospitalInfoCode("");
 
         //获取区域内医院
-        getProgressBar("请稍候。。。。","正在加载数据");
-        new Thread(){
-            public void run(){
+        getProgressBar("请稍候。。。。", "正在加载数据");
+        new Thread() {
+            public void run() {
                 try {
                     ProvideBasicsRegion provideBasicsRegion = new ProvideBasicsRegion();
                     provideBasicsRegion.setRegion_level(mChoiceRegionLevel);
                     provideBasicsRegion.setRegion_id(mChoiceRegionID);
                     String str = new Gson().toJson(provideBasicsRegion);
                     //获取医院数据
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideBasicsRegion),Constant.SERVICEURL+"hospitalDataController/getHospitalInfo");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(provideBasicsRegion), Constant.SERVICEURL + "hospitalDataController/getHospitalInfo");
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
                     if (netRetEntity.getResCode() == 0) {
                         NetRetEntity retEntity = new NetRetEntity();
                         retEntity.setResCode(0);
-                        retEntity.setResMsg("获取医院信息失败："+netRetEntity.getResMsg());
+                        retEntity.setResMsg("获取医院信息失败：" + netRetEntity.getResMsg());
                         mNetRetStr = new Gson().toJson(retEntity);
                         mHandler.sendEmptyMessage(0);
                         return;
                     }
                     //医院数据获取成功
-                    mProvideHospitalInfos = new Gson().fromJson(netRetEntity.getResJsonData(), new TypeToken<List<ProvideHospitalInfo>>(){}.getType());
+                    mProvideHospitalInfos = new Gson().fromJson(netRetEntity.getResJsonData(), new TypeToken<List<ProvideHospitalInfo>>() {
+                    }.getType());
 
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -851,7 +811,6 @@ public class ZJXQActivity extends AppCompatActivity {
             }
         }.start();
     }
-
 
 
 }

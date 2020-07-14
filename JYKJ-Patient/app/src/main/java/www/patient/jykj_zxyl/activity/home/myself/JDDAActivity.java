@@ -33,25 +33,24 @@ import www.patient.jykj_zxyl.application.JYKJApplication;
  */
 public class JDDAActivity extends AppCompatActivity {
 
-    private                 Context                 mContext;
-    public                  ProgressDialog              mDialogProgress =null;
-    private             String                              mNetRetStr;                 //返回字符串
+    private Context mContext;
+    public ProgressDialog mDialogProgress = null;
+    private String mNetRetStr;                 //返回字符串
 
     private JDDAActivity mActivity;
-    private                 Handler                 mHandler;
-    private                 JYKJApplication         mApp;
+    private Handler mHandler;
+    private JYKJApplication mApp;
 
-    private                 LinearLayout            mBack;
+    private LinearLayout mBack;
 
-    private                 LinearLayout            li_jbjkxx;                //建档档案
-    private                 LinearLayout            li_zzxx;                //症状信息
-    private                 LinearLayout            li_bqjl;                //标签记录
-    private                 LinearLayout            li_jwbs;                //既往病史
+    private LinearLayout li_jbjkxx;                //建档档案
+    private LinearLayout li_zzxx;                //症状信息
+    private LinearLayout li_bqjl;                //标签记录
+    private LinearLayout li_jwbs;                //既往病史
 
 
-
-    private                 ProvideInteractClinicRecordWriteState mProvideInteractClinicRecordWriteState;
-    private                 ProvideInteractOrderInfo            mProvideInteractOrderInfo;
+    private ProvideInteractClinicRecordWriteState mProvideInteractClinicRecordWriteState;
+    private ProvideInteractOrderInfo mProvideInteractOrderInfo;
 
     private void setLayoutDate() {
 
@@ -72,7 +71,7 @@ public class JDDAActivity extends AppCompatActivity {
      * 初始化布局
      */
     private void initLayout() {
-        mBack = (LinearLayout)this.findViewById(R.id.iv_back_left);
+        mBack = (LinearLayout) this.findViewById(R.id.iv_back_left);
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,47 +80,46 @@ public class JDDAActivity extends AppCompatActivity {
         });
 
 
-        li_jbjkxx = (LinearLayout)this.findViewById(R.id.li_jbjkxx);
+        li_jbjkxx = (LinearLayout) this.findViewById(R.id.li_jbjkxx);
         li_jbjkxx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mContext,JDDAJBJKXXActivity.class));
+                startActivity(new Intent(mContext, JDDAJBJKXXActivity.class));
             }
         });
 
-        li_zzxx = (LinearLayout)this.findViewById(R.id.li_zzxx);
+        li_zzxx = (LinearLayout) this.findViewById(R.id.li_zzxx);
         li_zzxx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mContext,ZZXXActivity.class));
+                startActivity(new Intent(mContext, ZZXXActivity.class));
             }
         });
 
-        li_bqjl = (LinearLayout)this.findViewById(R.id.li_bqjl);
+        li_bqjl = (LinearLayout) this.findViewById(R.id.li_bqjl);
         li_bqjl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mContext,BQJLActivity.class));
+                startActivity(new Intent(mContext, BQJLActivity.class));
             }
         });
 
-        li_jwbs = (LinearLayout)this.findViewById(R.id.li_jwbs);
+        li_jwbs = (LinearLayout) this.findViewById(R.id.li_jwbs);
         li_jwbs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mContext,JWBSActivity.class));
+                startActivity(new Intent(mContext, JWBSActivity.class));
             }
         });
     }
 
 
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                switch (msg.what)
-                {
+                switch (msg.what) {
 
                 }
             }
@@ -129,13 +127,11 @@ public class JDDAActivity extends AppCompatActivity {
     }
 
 
-
-
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(mContext);
         }
@@ -148,7 +144,7 @@ public class JDDAActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }

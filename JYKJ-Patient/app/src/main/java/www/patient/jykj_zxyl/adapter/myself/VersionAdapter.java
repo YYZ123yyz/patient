@@ -24,22 +24,52 @@ public class VersionAdapter extends RecyclerView.Adapter<VersionAdapter.ViewHold
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.version_items,parent,false);
         ViewHolder retholder = new ViewHolder(view);
-        retholder.lasttime_up_desc.initWidth(screentwidth);
-        retholder.lasttime_up_desc.setMaxLines(3);
-        retholder.lasttime_up_desc.setHasAnimation(true);
-        retholder.lasttime_up_desc.setCloseInNewLine(true);
-        retholder.lasttime_up_desc.setOpenSuffixColor(parent.getContext().getResources().getColor(R.color.textColor_mainPageJF));
-        retholder.lasttime_up_desc.setCloseSuffixColor(parent.getContext().getResources().getColor(R.color.textColor_mainPageJF));
         return retholder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         VersionInfo parbean = datas.get(position);
-        holder.lasttime_up_desc.setOriginalText(parbean.getLatelyUpdDesc());
-        holder.thistime_up_desc.setText(parbean.getThisTimeUpdDesc());
-        holder.tv_pubversion_time.setText(parbean.getUpdateDateShow());
-        holder.version_num.setText(parbean.getVersionNum());
+//        holder.lasttime_up_desc.setOriginalText(parbean.getLatelyUpdDesc());
+//        holder.thistime_up_desc.setText(parbean.getThisTimeUpdDesc());
+//        holder.tv_pubversion_time.setText(parbean.getUpdateDateShow());
+//        holder.version_num.setText(parbean.getVersionNum());
+        holder.dateShow.setText(datas.get(position).getUpdateDateShow());
+        holder.num.setText(datas.get(position).getVersionNum());
+        if (datas.get(position).getThisTimeUpdDesc().indexOf("\\n") >= 0) {
+            String str2 = datas.get(position).getThisTimeUpdDesc().replace("\\n", " \n ");
+            holder.ver_this.setText(str2);
+        }
+
+        if (datas.get(position).getLatelyUpdDesc().indexOf("\\n") >= 0) {
+            String str = datas.get(position).getLatelyUpdDesc().replace("\\n", " \n ");
+            holder.ver_recent.setText(str);
+        }
+        holder.ver_recent.post(new Runnable() {
+            @Override
+            public void run() {
+                int ellipsisCount = holder.ver_recent.getLayout().getEllipsisCount(holder.ver_recent.getLineCount() - 1);
+
+                holder.ver_recent.getLayout().getEllipsisCount(holder.ver_recent.getLineCount() - 1);
+                if (ellipsisCount > 0) {
+                    holder.swi.setVisibility(View.VISIBLE);
+                } else {
+                    holder.swi.setVisibility(View.GONE);
+                }
+
+            }
+        });
+        holder.swi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.ver_recent.setEllipsize(null);
+                //这个方法是必须设置的，否则无法展开
+                holder.ver_recent.setSingleLine(false);
+                holder.swi.setVisibility(View.INVISIBLE);
+            }
+        });
+
+
     }
 
     @Override
@@ -52,16 +82,15 @@ public class VersionAdapter extends RecyclerView.Adapter<VersionAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView version_num;
-        public TextView tv_pubversion_time;
-        public TextView thistime_up_desc;
-        public ExpandableTextView lasttime_up_desc;
+        private TextView ver_this,ver_recent,swi,dateShow,num;
         public ViewHolder(View view){
             super(view);
-            version_num = view.findViewById(R.id.version_num);
-            tv_pubversion_time = view.findViewById(R.id.tv_pubversion_time);
-            thistime_up_desc = view.findViewById(R.id.thistime_up_desc);
-            lasttime_up_desc = view.findViewById(R.id.lasttime_up_desc);
+            ver_this=itemView.findViewById(R.id.ver_this);
+            ver_recent=itemView.findViewById(R.id.ver_recent);
+            swi=itemView.findViewById(R.id.swi);
+            dateShow=itemView.findViewById(R.id.dateShow);
+            num=itemView.findViewById(R.id.num);
+
 
         }
     }

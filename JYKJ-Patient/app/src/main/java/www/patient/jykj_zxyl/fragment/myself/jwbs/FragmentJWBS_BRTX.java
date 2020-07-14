@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
+
 import entity.HZIfno;
 import entity.mySelf.SubPatientHistInfo;
 import entity.mySelf.conditions.QueryHistCond;
@@ -46,31 +47,31 @@ import www.patient.jykj_zxyl.util.StrUtils;
  * 建档档案 == 》 既往病史 ==》 本人填写
  * Created by admin on 2016/6/1.
  */
-public class FragmentJWBS_BRTX extends Fragment{
-    private             Context                             mContext;
-    private             Handler                             mHandler;
+public class FragmentJWBS_BRTX extends Fragment {
+    private Context mContext;
+    private Handler mHandler;
     private JWBSActivity mActivity;
-    private             JYKJApplication                     mApp;
+    private JYKJApplication mApp;
 
-    private         RecyclerView            mRecycleView;
+    private RecyclerView mRecycleView;
 
-    private         LinearLayoutManager     layoutManager;
+    private LinearLayoutManager layoutManager;
 
-    private         String                  mPatientCode;
-    private         int                     mRowNum = 10;                            //每页行数
-    private         int                     mPageNum = 1;                           //页数
-    private          int                    recordTypeId = 0;                           //搜索的记录类型
+    private String mPatientCode;
+    private int mRowNum = 10;                            //每页行数
+    private int mPageNum = 1;                           //页数
+    private int recordTypeId = 0;                           //搜索的记录类型
     private TextView mMore;
 
-    private         LinearLayout            mQB;                                //选择全部
-    private         LinearLayout            mJWBS;                                //选择既往病史
-    private         LinearLayout            mBCJL;                                //选择病程记录
+    private LinearLayout mQB;                                //选择全部
+    private LinearLayout mJWBS;                                //选择既往病史
+    private LinearLayout mBCJL;                                //选择病程记录
     private RelativeLayout mBack;
-    private         List<ProvidePatientConditionDiseaseRecord> mProvidePatientConditionDiseaseRecords = new ArrayList<>();
+    private List<ProvidePatientConditionDiseaseRecord> mProvidePatientConditionDiseaseRecords = new ArrayList<>();
 
     private JDDA_JWBS_BRTXAdapter mJDDA_JWBS_BRTXAdapter;
 
-    private TextView    tv_xzbs;
+    private TextView tv_xzbs;
     private int pageno = 1;
     private LoadDataTask loadDataTask = null;
     private int lastVisibleIndex = 0;
@@ -108,9 +109,9 @@ public class FragmentJWBS_BRTX extends Fragment{
                 mActivity.onBackPressed();
             }
         });*/
-        tv_xzbs = (TextView)view.findViewById(R.id.tv_szbs);
+        tv_xzbs = (TextView) view.findViewById(R.id.tv_szbs);
         tv_xzbs.setOnClickListener(new ButtonClick());
-        mRecycleView = (RecyclerView)view.findViewById(R.id.rv_activityPatientLaber_patientLaber);
+        mRecycleView = (RecyclerView) view.findViewById(R.id.rv_activityPatientLaber_patientLaber);
 
         //创建默认的线性LayoutManager
         layoutManager = new LinearLayoutManager(mContext);
@@ -119,12 +120,12 @@ public class FragmentJWBS_BRTX extends Fragment{
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecycleView.setHasFixedSize(true);
         //创建并设置Adapter
-        mJDDA_JWBS_BRTXAdapter = new JDDA_JWBS_BRTXAdapter(mProvidePatientConditionDiseaseRecords,mContext);
+        mJDDA_JWBS_BRTXAdapter = new JDDA_JWBS_BRTXAdapter(mProvidePatientConditionDiseaseRecords, mContext);
         mRecycleView.setAdapter(mJDDA_JWBS_BRTXAdapter);
         mJDDA_JWBS_BRTXAdapter.setOnItemClickListener(new JDDA_JWBS_BRTXAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
-                startActivity(new Intent(mContext,JWBSDetailActivity.class).putExtra("patientInfo",mProvidePatientConditionDiseaseRecords.get(position)));
+                startActivity(new Intent(mContext, JWBSDetailActivity.class).putExtra("patientInfo", mProvidePatientConditionDiseaseRecords.get(position)));
             }
 
             @Override
@@ -151,11 +152,10 @@ public class FragmentJWBS_BRTX extends Fragment{
 
 
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case 1:
                         break;
                 }
@@ -164,13 +164,13 @@ public class FragmentJWBS_BRTX extends Fragment{
     }
 
 
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
 
                 case R.id.tv_szbs:
-                    startActivity(new Intent(mContext,JWBSLRBSActivity.class));
+                    startActivity(new Intent(mContext, JWBSLRBSActivity.class));
                     break;
 
             }
@@ -200,6 +200,7 @@ public class FragmentJWBS_BRTX extends Fragment{
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
     }*/
+
     /**
      * 设置数据
      */
@@ -216,11 +217,13 @@ public class FragmentJWBS_BRTX extends Fragment{
         loadDataTask.execute();
     }
 
-    class LoadDataTask extends AsyncTask<Void,Void,List<ProvidePatientConditionDiseaseRecord>>{
+    class LoadDataTask extends AsyncTask<Void, Void, List<ProvidePatientConditionDiseaseRecord>> {
         private QueryHistCond queryCond;
-        LoadDataTask(QueryHistCond queryCond){
+
+        LoadDataTask(QueryHistCond queryCond) {
             this.queryCond = queryCond;
         }
+
         @Override
         protected List<ProvidePatientConditionDiseaseRecord> doInBackground(Void... voids) {
             mLoadDate = false;
@@ -228,10 +231,10 @@ public class FragmentJWBS_BRTX extends Fragment{
             try {
                 queryCond.setPageNum(String.valueOf(mPageNum));
                 String querypara = new Gson().toJson(queryCond);
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+querypara, Constant.SERVICEURL+ INetAddress.QUERY_PASTHIST_URL);
-                NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
-                if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
-                    retlist = JSON.parseArray(retEntity.getResJsonData(),ProvidePatientConditionDiseaseRecord.class);
+                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo=" + querypara, Constant.SERVICEURL + INetAddress.QUERY_PASTHIST_URL);
+                NetRetEntity retEntity = JSON.parseObject(retnetstr, NetRetEntity.class);
+                if (1 == retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length() > 3) {
+                    retlist = JSON.parseArray(retEntity.getResJsonData(), ProvidePatientConditionDiseaseRecord.class);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -241,12 +244,12 @@ public class FragmentJWBS_BRTX extends Fragment{
 
         @Override
         protected void onPostExecute(List<ProvidePatientConditionDiseaseRecord> providePatientConditionDiseaseRecords) {
-            if(providePatientConditionDiseaseRecords.size()>0){
+            if (providePatientConditionDiseaseRecords.size() > 0) {
                 mProvidePatientConditionDiseaseRecords.addAll(providePatientConditionDiseaseRecords);
                 mJDDA_JWBS_BRTXAdapter.setDate(mProvidePatientConditionDiseaseRecords);
                 mJDDA_JWBS_BRTXAdapter.notifyDataSetChanged();
-            }else{
-                if(mPageNum>1) {
+            } else {
+                if (mPageNum > 1) {
                     mPageNum = mPageNum - 1;
                 }
             }
