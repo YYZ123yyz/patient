@@ -50,15 +50,6 @@ android {
     }
 
     signingConfigs{
-        debug{  //这里配置的就是debug的签名配置了
-            storeFile file("F:\\yangyunze\\androidPatientApp1\\JYKJ-Patient\\app\\src\\main\\xianjiuyipatient.jsk")   //这个文件是我的,改成你自己的release签名文件
-//            storeFile file("E:\\tmpwork\\git\\androidwork\\JYKJcode\\JYKJ-Patient\\app\\src\\main\\yyz.jks")
-            storePassword "jiuyihtnpatient"   //密码改成自己的
-            keyAlias "xianjiuyipatient"              //再改成你自己的
-            keyPassword "jiuyihealthpatient"     //再改成你自己的
-//            storePassword "JYKJ123456"   //密码改成自己的
-//            keyAlias "JYKJ"              //再改成你自己的
-//            keyPassword "JYKJ123456"     //再改成你自己的
 
         debug {
             keyAlias 'xianjiuyipatient'
@@ -141,6 +132,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     implementation 'com.squareup.okhttp3:okhttp:3.6.0'
     implementation "com.github.bumptech.glide:okhttp3-integration:4.8.0"
+    implementation 'com.youth.banner:banner:1.4.10'
     configurations{
         implementation.exclude group: 'com.google.zxing'
         all*.exclude group: 'com.android.support',module: 'support-v13'
