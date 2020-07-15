@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -102,6 +103,7 @@ public class PhoneLoginActivity extends AppCompatActivity {
         mTimer.schedule(mTask, 0, 1000);
     }
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override

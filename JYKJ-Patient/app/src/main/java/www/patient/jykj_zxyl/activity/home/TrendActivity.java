@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity.home;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -189,6 +190,7 @@ public class TrendActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override
@@ -377,6 +379,7 @@ public class TrendActivity extends AppCompatActivity implements View.OnClickList
                 optionPick.show();
                 break;
             case R.id.tv_1_month:
+                groupList.clear();
                 tv_1_month.setTextColor(getResources().getColor(R.color.groabColor));
                 tv_1_month_cut.setVisibility(View.VISIBLE);
                 tv_3_month.setTextColor(getResources().getColor(R.color.textColor_vo));
@@ -391,6 +394,7 @@ public class TrendActivity extends AppCompatActivity implements View.OnClickList
                 getNetData();
                 break;
             case R.id.tv_3_month:
+                groupList.clear();
                 tv_1_month.setTextColor(getResources().getColor(R.color.textColor_vo));
                 tv_1_month_cut.setVisibility(View.GONE);
                 tv_3_month.setTextColor(getResources().getColor(R.color.groabColor));
@@ -405,6 +409,7 @@ public class TrendActivity extends AppCompatActivity implements View.OnClickList
                 getNetData();
                 break;
             case R.id.tv_6_month:
+                groupList.clear();
                 tv_1_month.setTextColor(getResources().getColor(R.color.textColor_vo));
                 tv_1_month_cut.setVisibility(View.GONE);
                 tv_3_month.setTextColor(getResources().getColor(R.color.textColor_vo));

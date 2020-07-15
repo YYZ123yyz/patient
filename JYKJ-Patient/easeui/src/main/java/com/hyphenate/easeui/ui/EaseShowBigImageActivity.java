@@ -24,22 +24,33 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.model.EaseImageCache;
+import com.hyphenate.easeui.utils.ActivityUtil;
 import com.hyphenate.easeui.utils.EaseLoadLocalBigImgTask;
 import com.hyphenate.easeui.widget.photoview.EasePhotoView;
+import com.hyphenate.easeui.widget.photoview.PhotoViewAttacher;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.ImageUtils;
 
+import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 /**
@@ -54,20 +65,43 @@ public class EaseShowBigImageActivity extends EaseBaseActivity {
 	private String localFilePath;
 	private Bitmap bitmap;
 	private boolean isDownloaded;
-
-	@SuppressLint("NewApi")
+	//开始的坐标值
+	private int startY;
+	private int startX;
+	//开始的宽高
+	private int startWidth;
+	private int startHeight;
+	//X、Y的移动距离
+	private int xDelta;
+	private int yDelta;
+	//X、Y的缩放比例
+	private float mWidthScale;
+	private float mHeightScale;
+	private static final int DURATION = 200;
+	//背景色
+	private ColorDrawable colorDrawable;
+	private RelativeLayout rlRootView;
+	@SuppressLint({"NewApi", "ResourceAsColor"})
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.ease_activity_show_big_image);
 		super.onCreate(savedInstanceState);
-
-		image = (EasePhotoView) findViewById(R.id.image);
+		ActivityUtil.setStatusBarMain(this,R.color.blackColor);
+		//设置背景色，后面需要为其设置渐变动画
+		//全屏
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		image =  findViewById(R.id.image);
+		rlRootView=findViewById(R.id.rl_root_view);
+		colorDrawable = new ColorDrawable(ContextCompat.getColor(this, R.color.blackColor));
+		rlRootView.setBackground(colorDrawable);
 		ProgressBar loadLocalPb = (ProgressBar) findViewById(R.id.pb_load_local);
 		default_res = getIntent().getIntExtra("default_image", R.mipmap.docter_heard);
 		Uri uri = getIntent().getParcelableExtra("uri");
 		localFilePath = getIntent().getExtras().getString("localUrl");
 		String msgId = getIntent().getExtras().getString("messageId");
 		EMLog.d(TAG, "show big msgId:" + msgId );
+
 
 		//show the image if it exist in local path
 		if (uri != null && new File(uri.getPath()).exists()) {
@@ -94,14 +128,81 @@ public class EaseShowBigImageActivity extends EaseBaseActivity {
 			image.setImageResource(default_res);
 		}
 
-		image.setOnClickListener(new OnClickListener() {
+		image.setOnPhotoTapListener((view, x, y) -> onBackPressed());
+
+	}
+
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		startY = image.getTop();
+		startX = image.getLeft();
+		startWidth = image.getWidth();
+		startHeight = image.getHeight();
+		//注册一个回调函数，当一个视图树将要绘制时调用这个回调函数。
+		ViewTreeObserver observer = image.getViewTreeObserver();
+		observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
 			@Override
-			public void onClick(View v) {
-				finish();
+			public boolean onPreDraw() {
+				image.getViewTreeObserver().removeOnPreDrawListener(this);
+				int[] screenLocation = new int[2];
+				image.getLocationOnScreen(screenLocation);
+				//动画需要移动的距离
+				xDelta = startX - screenLocation[0];
+				yDelta = startY - screenLocation[1];
+				//计算缩放比例
+				mWidthScale = (float) startWidth / image.getWidth();
+				mHeightScale = (float) startHeight / image.getHeight();
+				enterAnimation(new Runnable() {
+					@Override
+					public void run() {
+						//开始动画之后要做的操作
+					}
+				});
+				//返回 true 继续绘制，返回false取消。
+				return true;
 			}
 		});
 	}
-	
+
+	private void enterAnimation(final Runnable enterAction) {
+		//放大动画
+		image.setPivotX(0);
+		image.setPivotY(0);
+		image.setScaleX(mWidthScale);
+		image.setScaleY(mHeightScale);
+		image.setTranslationX(xDelta);
+		image.setTranslationY(yDelta);
+		TimeInterpolator sDecelerator = new DecelerateInterpolator();
+		image.animate().setDuration(DURATION).scaleX(1).scaleY(1).
+				translationX(0).translationY(0).setInterpolator(sDecelerator).withEndAction(enterAction);
+		//设置背景渐变成你设置的颜色
+		ObjectAnimator bgAnim = ObjectAnimator.ofInt(colorDrawable, "alpha", 0, 255);
+		bgAnim.setDuration(DURATION);
+		bgAnim.start();
+	}
+
+	private void exitAnimation(final Runnable endAction) {
+		//缩小动画
+		image.setPivotX(0);
+		image.setPivotY(0);
+		image.setScaleX(1);
+		image.setScaleY(1);
+		image.setTranslationX(0);
+		image.setTranslationY(0);
+
+		TimeInterpolator sInterpolator = new AccelerateInterpolator();
+		image.animate().setDuration(DURATION).scaleX(mWidthScale).scaleY(mHeightScale).
+				translationX(xDelta).translationY(yDelta).setInterpolator(sInterpolator).withEndAction(endAction);
+		//设置背景渐透明
+		ObjectAnimator bgAnim = ObjectAnimator.ofInt(colorDrawable, "alpha", 0);
+		bgAnim.setDuration(DURATION);
+		bgAnim.start();
+	}
+
+
+
 	/**
 	 * download image
 	 * 
@@ -194,8 +295,31 @@ public class EaseShowBigImageActivity extends EaseBaseActivity {
 
 	@Override
 	public void onBackPressed() {
-		if (isDownloaded)
-			setResult(RESULT_OK);
-		finish();
+
+		int[] screenLocation = new int[2];
+		image.getLocationOnScreen(screenLocation);
+		xDelta = startX - screenLocation[0];
+		yDelta = startY - screenLocation[1];
+		mWidthScale = (float) startWidth / image.getWidth();
+		mHeightScale = (float) startHeight / image.getHeight();
+
+		exitAnimation(new Runnable() {
+			public void run() {
+				//结束动画要做的操作
+				//finish();
+
+
+				if (isDownloaded)
+					setResult(RESULT_OK);
+				finish();
+				overridePendingTransition(0, 0);
+			}
+		});
+
+
+
+//		if (isDownloaded)
+//			setResult(RESULT_OK);
+//		finish();
 	}
 }

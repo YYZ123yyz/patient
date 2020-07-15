@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity.myself;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -154,6 +155,7 @@ public class UserCenterActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override
@@ -170,6 +172,7 @@ public class UserCenterActivity extends AppCompatActivity {
                             Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
                         else {
                             mProvideViewSysUserPatientInfoAndRegion = JSON.parseObject(netRetEntity.getResJsonData(), ProvideViewSysUserPatientInfoAndRegion.class);
+                            mProvideViewSysUserPatientInfoAndRegion.setLinkPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
                             mApp.mProvideViewSysUserPatientInfoAndRegion = mProvideViewSysUserPatientInfoAndRegion;
                             setLayoutDate();
                         }

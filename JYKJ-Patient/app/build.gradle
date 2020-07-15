@@ -150,6 +150,7 @@ android {
 
 }
 
+
 dependencies {
     // 支付宝SDK AAR 包所需的配置
     implementation fileTree(include: ['*.aar'], dir: 'libs')
@@ -168,8 +169,8 @@ dependencies {
     implementation files('libs/jaxb-api-2.1.9.jar')
 //pay
 //compile(name: 'alipaySdk-15.5.9', ext: 'aar')
-    implementation project(':easeui')
-    implementation project(':app_base')
+    api project(':easeui')
+    //implementation project(':app_base')
 
 //live
 //直播SDK
@@ -219,7 +220,9 @@ dependencies {
     configurations{
         implementation.exclude group: 'com.google.zxing'
         all*.exclude group: 'com.android.support',module: 'support-v13'
+        all*.exclude group: 'com.google.code.gson'
     }
+
 //    configurations.all {
 //        resolutionStrategy.force 'com.android.support:support-v4:26.1.0'
 //    }

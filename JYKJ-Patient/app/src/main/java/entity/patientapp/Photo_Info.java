@@ -14,7 +14,7 @@ public class Photo_Info implements Serializable {
     private String PhotoSL;                 //缩略图内容          （Base64转成的字符串）
     private String PhotoUrl;               //图片URL
     private String PhotoUrlSL;             //缩略图URL
-
+    private int uploadStatus;//上传图片状态
     public String getPhotoSL() {
         return PhotoSL;
     }
@@ -63,4 +63,11 @@ public class Photo_Info implements Serializable {
         Photo = photo;
     }
 
+    public int getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(int uploadStatus) {
+        this.uploadStatus = uploadStatus;
+    }
 }

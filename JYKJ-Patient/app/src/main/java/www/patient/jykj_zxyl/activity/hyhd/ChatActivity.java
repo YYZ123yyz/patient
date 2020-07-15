@@ -43,12 +43,12 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_chat);
+        ActivityUtil.setStatusBarMain(this);
         mContext = this;
         mActivity = this;
         mApp = (JYKJApplication) getApplication();
-        ActivityUtil.setStatusBar(mActivity);
+       // ActivityUtil.setStatusBar(mActivity);
         String chatType = getIntent().getStringExtra("chatType");
         doctorType=getIntent().getStringExtra("doctorType");
 //        initLayout();

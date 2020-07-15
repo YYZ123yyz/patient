@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity.home.patient;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -407,6 +408,7 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
 //    }
 
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override
