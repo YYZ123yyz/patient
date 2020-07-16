@@ -13,8 +13,8 @@ public class ParameUtil {
      * 构建基础请求参数
      * @return HashMap
      */
-    public static HashMap<String, String> buildBaseParam() {
-        HashMap<String, String> paramMap = new HashMap<>();
+    public static HashMap<String, Object> buildBaseParam() {
+        HashMap<String, Object> paramMap = new HashMap<>();
         return paramMap;
     }
 

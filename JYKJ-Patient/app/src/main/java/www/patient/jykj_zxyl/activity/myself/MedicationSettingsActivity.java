@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -35,10 +36,8 @@ import www.patient.jykj_zxyl.adapter.MedicationSettingAdapter;
 import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
 import www.patient.jykj_zxyl.library.PullToRefreshListView;
 import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.adapter.MedicationSettingAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.library.PullToRefreshListView;
 
 public class MedicationSettingsActivity extends Activity {
 
@@ -132,10 +131,11 @@ public class MedicationSettingsActivity extends Activity {
 		add_medic_button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				startActivity(new Intent(MedicationSettingsActivity.this,AddMedicationActivity.class));
+				//startActivity(new Intent(MedicationSettingsActivity.this,AddMedicationActivity.class));
+				startActivityForResult(new Intent(MedicationSettingsActivity.this,AddMedicationActivity.class),100);
 			}
 		});
-
+		getDate();
 
 
 	}
@@ -143,13 +143,14 @@ public class MedicationSettingsActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		providePatientConditionTakingMedicines.clear();
-		getDate();
+//		providePatientConditionTakingMedicines.clear();
+//		getDate();
 	}
 
 	/**
 	 *
 	 */
+	@SuppressLint("HandlerLeak")
 	private void initHandler() {
 		mHandler = new Handler() {
 			@Override
@@ -370,4 +371,12 @@ public class MedicationSettingsActivity extends Activity {
 		}
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode==1001){
+			mPageNum=1;
+			getDate();
+		}
+	}
 }

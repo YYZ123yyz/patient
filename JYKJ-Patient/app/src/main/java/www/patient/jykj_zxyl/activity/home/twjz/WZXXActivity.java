@@ -385,36 +385,6 @@ public class WZXXActivity extends AppCompatActivity {
 
         //生成图片编码
         mProvideInteractPatientInterrogationParment.setImgCode(UUID.randomUUID().toString());
-
-
-        HashMap<String, String> hashMap = ParameUtil.buildBaseParam();
-        hashMap.put("loginPatientPosition",mProvideInteractPatientInterrogationParment.getLoginPatientPosition());
-        hashMap.put("requestClientType","1");
-        hashMap.put("operPatientCode",mProvideInteractPatientInterrogationParment.getOperPatientCode());
-        hashMap.put("operPatientName",mProvideInteractPatientInterrogationParment.getOperPatientName());
-        hashMap.put("orderCode",mProvideInteractPatientInterrogationParment.getOrderCode());
-        hashMap.put("treatmentType",mProvideInteractPatientInterrogationParment.getTreatmentType().toString());
-        hashMap.put("doctorCode",mProvideInteractPatientInterrogationParment.getDoctorCode());
-        hashMap.put("doctorName",mProvideInteractPatientInterrogationParment.getDoctorName());
-        hashMap.put("patientCode",mProvideInteractPatientInterrogationParment.getPatientCode());
-        hashMap.put("patientName",mProvideInteractPatientInterrogationParment.getPatientName());
-        hashMap.put("patientLinkPhone",mProvideInteractPatientInterrogationParment.getPatientLinkPhone());
-        hashMap.put("gender",mProvideInteractPatientInterrogationParment.getGender().toString());
-        hashMap.put("birthday",mProvideInteractPatientInterrogationParment.getBirthday());
-        hashMap.put("bloodPressureAbnormalDate",mProvideInteractPatientInterrogationParment.getBloodPressureAbnormalDate());
-        hashMap.put("flagHtnHistory",mProvideInteractPatientInterrogationParment.getFlagHtnHistory());
-        hashMap.put("htnHistory",mProvideInteractPatientInterrogationParment.getHtnHistory());
-        hashMap.put("flagFamilyHtn",mProvideInteractPatientInterrogationParment.getFlagFamilyHtn().toString());
-        hashMap.put("highPressureNum",mProvideInteractPatientInterrogationParment.getHighPressureNum().toString());
-        hashMap.put("lowPressureNum",mProvideInteractPatientInterrogationParment.getLowPressureNum().toString());
-        hashMap.put("heartRateNum",mProvideInteractPatientInterrogationParment.getHeartRateNum().toString());
-        hashMap.put("measureInstrument",mProvideInteractPatientInterrogationParment.getMeasureInstrument().toString());
-        hashMap.put("measureInstrumentName",mProvideInteractPatientInterrogationParment.getMeasureInstrumentName());
-        hashMap.put("measureMode",mProvideInteractPatientInterrogationParment.getMeasureMode().toString());
-        hashMap.put("measureModeName",mProvideInteractPatientInterrogationParment.getMeasureModeName());
-        hashMap.put("stateOfIllness",mProvideInteractPatientInterrogationParment.getStateOfIllness());
-        hashMap.put("imgCode",mProvideInteractPatientInterrogationParment.getImgCode());
-
         getProgressBar("请稍候", "正在提交数据");
         new Thread() {
             public void run() {

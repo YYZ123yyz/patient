@@ -33,9 +33,9 @@ public class RetrofitUtil {
      */
     @NonNull
     public static RequestBody requestBody(@Nullable Map params){
-        if (params != null) {
-          handlePage(params);
-        }
+//        if (params != null) {
+//          handlePage(params);
+//        }
         return requestBody((Object) params);
     }
 

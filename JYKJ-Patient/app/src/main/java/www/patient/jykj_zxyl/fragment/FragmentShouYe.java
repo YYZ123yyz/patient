@@ -1,6 +1,7 @@
 package www.patient.jykj_zxyl.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -338,6 +339,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     }
 
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override

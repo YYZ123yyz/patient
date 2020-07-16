@@ -41,6 +41,11 @@
         <!--用户注册-->
         <activity android:name=".activity.UseRegistActivity"/>
         <activity android:name=".activity.myself.ShareActivity"/>
+        <!--用户协议-->
+        <activity android:name=".activity.YHXYWebActivity"/>
+        <!--隐私政策-->
+        <activity android:name=".activity.YSZCWebActivity"/>
+
 
         <!--微信登录Activity-->
         <activity android:name="www.patient.jykj_zxyl.wxapi.WXEntryActivity"

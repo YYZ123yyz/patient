@@ -354,7 +354,7 @@ public class QRCodeActivity extends AppCompatActivity {
         tv_fx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                wechatShare(2);
+                wechatShare(1);
             }
         });
 //        userName.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
