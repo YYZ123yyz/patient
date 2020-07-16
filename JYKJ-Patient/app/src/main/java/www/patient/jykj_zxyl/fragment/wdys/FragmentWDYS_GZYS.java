@@ -118,7 +118,8 @@ public class FragmentWDYS_GZYS extends Fragment {
         mAdapter.setOnItemClickListener(new FragmentWDYS_GZYSdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
-                startActivity(new Intent(mContext,ZJXQActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommends.get(position)));
+                startActivity(new Intent(mContext,ZJXQActivity.class).putExtra("provideViewDoctorExpertRecommend"
+                        ,provideViewDoctorExpertRecommends.get(position)));
             }
 
             @Override

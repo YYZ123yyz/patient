@@ -36,6 +36,7 @@ import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WZXXOrderActivity;
+import www.patient.jykj_zxyl.activity.home.patient.ZJXQActivity;
 import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeWDYSQYYSAdapter;
 import www.patient.jykj_zxyl.R;
@@ -113,6 +114,20 @@ public class FragmentWDYS_QYYS extends Fragment {
         mRecyclerView.setLayoutManager(manager);
         mAdapter = new FragmentHomeWDYSQYYSAdapter(provideViewMyDoctorSignings, mContext);
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setmOnItemClickListener(new FragmentHomeWDYSQYYSAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+//                startActivity(new Intent(mContext, ZJXQActivity.class)
+//                        .putExtra("provideViewDoctorExpertRecommend"
+//                                ,provideViewMyDoctorSignings.get(position)));
+            }
+
+            @Override
+            public void onLongClick(int position) {
+
+            }
+        });
+
         //续约
         mAdapter.setOnItemClickXYListener(new FragmentHomeWDYSQYYSAdapter.OnItemClickXYListener() {
             @Override

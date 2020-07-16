@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity.home.myself;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -50,6 +51,7 @@ import www.patient.jykj_zxyl.adapter.ChoiceMedicationDateAdapter;
 import www.patient.jykj_zxyl.adapter.JYZL_GRZLRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.base.base_utils.VerifyUtil;
 import www.patient.jykj_zxyl.util.*;
 
 /**
@@ -362,6 +364,7 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
 
 
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler(){
             @Override
@@ -455,6 +458,15 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
     }
 
     void saveData(){
+
+        if(!VerifyUtil.isIDCardNo(et_sfzh.getText().toString())){
+            Toast.makeText(mContext,"请输入正确的身份证号码",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!VerifyUtil.isPhone(et_dh.getText().toString())){
+            Toast.makeText(mContext,"请输入正确的手机号码",Toast.LENGTH_SHORT).show();
+            return;
+        }
         //if(null==subDataTask){
         SubPatientBasicBean subbean = new SubPatientBasicBean();
         subbean.setLoginPatientPosition(mApp.loginDoctorPosition);
