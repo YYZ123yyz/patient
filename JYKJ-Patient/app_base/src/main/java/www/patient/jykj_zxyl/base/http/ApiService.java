@@ -24,4 +24,7 @@ public interface ApiService {
     @POST("/patientInteractDataControlle/operUpdPatientInterrogationImg")
     Observable<BaseBean> operUpdPatientInterrogationImg(@Body RequestBody requestBody);
 
+    //验证码登录
+    @POST("/patientLoginControlle/loginPatientAppVerifyLoginSmsVerify")
+    Observable<String> loginPatientAppVerifyLoginSmsVerify(@Body RequestBody requestBody);
 }

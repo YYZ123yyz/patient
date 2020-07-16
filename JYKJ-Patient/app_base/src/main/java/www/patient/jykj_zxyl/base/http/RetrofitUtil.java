@@ -73,7 +73,7 @@ public class RetrofitUtil {
     @NonNull
     private static RequestBody requestBody(@Nullable Object object){
         String jsonParam = toJSONStr(object);
-        return RequestBody.create(MEDIA_TYPE_JSON,"jsonDataInfo="+jsonParam);
+        return RequestBody.create(MEDIA_TYPE_JSON,jsonParam);
     }
 
     /**
