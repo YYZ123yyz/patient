@@ -33,6 +33,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
+import com.sak.ultilviewlib.UltimateRefreshView;
+import com.sak.ultilviewlib.interfaces.OnFooterRefreshListener;
+import com.sak.ultilviewlib.interfaces.OnHeaderRefreshListener;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 
@@ -60,6 +63,8 @@ import www.patient.jykj_zxyl.activity.hyhd.LivePlayerActivity;
 import www.patient.jykj_zxyl.activity.myself.MedicationRecordActivity;
 import www.patient.jykj_zxyl.activity.myself.MedicationSettingsActivity;
 import www.patient.jykj_zxyl.activity.myself.couponFragment.FragmentAdapter;
+import www.patient.jykj_zxyl.base.base_adapter.TraditionFooterAdapter;
+import www.patient.jykj_zxyl.base.base_adapter.TraditionHeaderAdapter;
 import www.patient.jykj_zxyl.base.base_utils.NetworkUtil;
 import www.patient.jykj_zxyl.base.http.ApiHelper;
 import www.patient.jykj_zxyl.base.http.ParameUtil;
@@ -182,7 +187,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     private List<String> mTitles;
 
     private View mView;
-
+    private UltimateRefreshView pullRefLay;
     private TextView mYFY;                           //已服用
     private TextView mWFY;                           //未服用
     private TextView mYYDate;                        //用药时间
@@ -356,7 +361,8 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                             mProvidePatientConditionTakingRecords = JSON.parseArray(netRetEntity.getResJsonData(), ProvidePatientConditionTakingRecord.class);
                         }
                         showRecord();
-
+                        pullRefLay.onHeaderRefreshComplete();
+                        pullRefLay.onFooterRefreshComplete();
                         break;
 
                     case 5:
@@ -516,7 +522,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
 
     private void initView(View view) {
-
+        pullRefLay=view.findViewById(R.id.pull_ref_lay);
         tv_yasfy = (TextView) view.findViewById(R.id.tv_yasfy);
         tv_wasfy = (TextView) view.findViewById(R.id.tv_wasfy);
 
@@ -668,10 +674,25 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         port_layout = view.findViewById(R.id.port_layout);
         sweem_layout = view.findViewById(R.id.sweem_layout);
         feeling_layout = view.findViewById(R.id.feeling_layout);
+        pullRefLay.setBaseHeaderAdapter(new TraditionHeaderAdapter(this.getContext()));
+        //pullRefLay.setBaseFooterAdapter(new TraditionFooterAdapter(this.getContext()));
     }
 
 
     private void initListener() {
+        pullRefLay.setOnHeaderRefreshListener(new OnHeaderRefreshListener() {
+            @Override
+            public void onHeaderRefresh(UltimateRefreshView ultimateRefreshView) {
+                searchPatientStateResBloodPressureNewData();
+                getNewMessage();
+            }
+        });
+        pullRefLay.setOnFooterRefreshListener(new OnFooterRefreshListener() {
+            @Override
+            public void onFooterRefresh(UltimateRefreshView ultimateRefreshView) {
+
+            }
+        });
         mBloodEntry.setOnClickListener(this);
         llBloodRecord.setOnClickListener(this);
         mQrCode.setOnClickListener(this);
