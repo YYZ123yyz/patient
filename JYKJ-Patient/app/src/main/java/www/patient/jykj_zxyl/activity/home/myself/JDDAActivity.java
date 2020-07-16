@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity.home.myself;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -114,6 +115,7 @@ public class JDDAActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override

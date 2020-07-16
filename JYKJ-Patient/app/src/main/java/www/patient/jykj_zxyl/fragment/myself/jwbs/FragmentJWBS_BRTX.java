@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.fragment.myself.jwbs;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,9 +16,13 @@ import android.view.ViewGroup;
 import android.widget.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
+import com.allen.library.interceptor.Transformer;
+import com.allen.library.observer.StringObserver;
+import com.allen.library.utils.ToastUtils;
 import com.google.gson.Gson;
 
 import entity.HZIfno;
@@ -26,6 +31,7 @@ import entity.mySelf.conditions.QueryHistCond;
 import entity.patientInfo.ProvidePatientConditionDiseaseRecord;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
+import okhttp3.RequestBody;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.jyzl.GRXX_GRZK_JWBSActivity;
 import www.patient.jykj_zxyl.activity.home.jyzl.JWBSDetailActivity;
@@ -38,6 +44,10 @@ import www.patient.jykj_zxyl.adapter.myself.JDDA_JWBS_BRTXAdapter;
 import www.patient.jykj_zxyl.adapter.myself.MyOrderAlRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.base.base_view.SlideRecyclerView;
+import www.patient.jykj_zxyl.base.http.ApiHelper;
+import www.patient.jykj_zxyl.base.http.ParameUtil;
+import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.util.IConstant;
 import www.patient.jykj_zxyl.util.INetAddress;
 import www.patient.jykj_zxyl.util.StrUtils;
@@ -53,7 +63,7 @@ public class FragmentJWBS_BRTX extends Fragment {
     private JWBSActivity mActivity;
     private JYKJApplication mApp;
 
-    private RecyclerView mRecycleView;
+    private SlideRecyclerView mRecycleView;
 
     private LinearLayoutManager layoutManager;
 
@@ -111,7 +121,7 @@ public class FragmentJWBS_BRTX extends Fragment {
         });*/
         tv_xzbs = (TextView) view.findViewById(R.id.tv_szbs);
         tv_xzbs.setOnClickListener(new ButtonClick());
-        mRecycleView = (RecyclerView) view.findViewById(R.id.rv_activityPatientLaber_patientLaber);
+        mRecycleView =  view.findViewById(R.id.rv_activityPatientLaber_patientLaber);
 
         //创建默认的线性LayoutManager
         layoutManager = new LinearLayoutManager(mContext);
@@ -148,9 +158,39 @@ public class FragmentJWBS_BRTX extends Fragment {
                 }
             }
         });
+        mJDDA_JWBS_BRTXAdapter.setmDeleteClickListener((view1, position) -> {
+            HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
+            hashMap.put("loginPatientPosition",mApp.loginDoctorPosition);
+            hashMap.put("requestClientType","1");
+            hashMap.put("operPatientCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+            hashMap.put("operPatientName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+            hashMap.put("recordId",mProvidePatientConditionDiseaseRecords.get(position).getRecordId());
+            RequestBody requestBody = RetrofitUtil.requestBody(hashMap);
+            ApiHelper.getApiService().operDelPatientConditionDiseaseRecord(requestBody).compose(Transformer.switchSchedulers())
+                    .subscribe(new StringObserver() {
+                @Override
+                protected void onError(String s) {
+                    ToastUtils.showToast("删除失败");
+                }
+
+                @Override
+                protected void onSuccess(String s) {
+                    NetRetEntity retEntity = JSON.parseObject(s, NetRetEntity.class);
+                    if (retEntity.getResCode()==1) {
+                        mProvidePatientConditionDiseaseRecords.remove(position);
+                        mJDDA_JWBS_BRTXAdapter.notifyDataSetChanged();
+                        mRecycleView.closeMenu();
+                    }else{
+                        ToastUtils.showToast("删除失败");
+                    }
+                }
+            });
+
+        });
     }
 
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override
@@ -245,6 +285,7 @@ public class FragmentJWBS_BRTX extends Fragment {
         @Override
         protected void onPostExecute(List<ProvidePatientConditionDiseaseRecord> providePatientConditionDiseaseRecords) {
             if (providePatientConditionDiseaseRecords.size() > 0) {
+                mProvidePatientConditionDiseaseRecords.clear();
                 mProvidePatientConditionDiseaseRecords.addAll(providePatientConditionDiseaseRecords);
                 mJDDA_JWBS_BRTXAdapter.setDate(mProvidePatientConditionDiseaseRecords);
                 mJDDA_JWBS_BRTXAdapter.notifyDataSetChanged();

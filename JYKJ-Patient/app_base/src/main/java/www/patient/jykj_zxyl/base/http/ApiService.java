@@ -27,4 +27,14 @@ public interface ApiService {
     //验证码登录
     @POST("/patientLoginControlle/loginPatientAppVerifyLoginSmsVerify")
     Observable<String> loginPatientAppVerifyLoginSmsVerify(@Body RequestBody requestBody);
+
+    //删除既往病史
+    @POST("/patientHealthRecordsControlle/operDelPatientConditionDiseaseRecord")
+    Observable<String> operDelPatientConditionDiseaseRecord(@Body RequestBody requestBody);
+
+    //服药记录
+
+    @POST("/PatientConditionControlle/operUpdPatientConditionTakingMedicineState")
+    Observable<String> operUpdPatientConditionTakingMedicineState(@Body RequestBody requestBody);
+
 }

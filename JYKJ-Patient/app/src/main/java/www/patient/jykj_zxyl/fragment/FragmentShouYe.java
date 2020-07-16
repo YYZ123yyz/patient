@@ -2,18 +2,17 @@ package www.patient.jykj_zxyl.fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.allen.library.interceptor.Transformer;
+import com.allen.library.interfaces.ILoadingView;
+import com.allen.library.observer.StringObserver;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.AMapLocationQualityReport;
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.location.Poi;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -40,7 +37,9 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import entity.OperUpdPatientConditionTakingMedicineStateParement;
 import entity.ProvideMsgPushReminder;
@@ -51,9 +50,9 @@ import entity.shouye.ProvidePatientConditionTakingRecord;
 import entity.shouye.ProvideViewDoctorExpertRecommend;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
+import okhttp3.RequestBody;
 import rx.functions.Action1;
 import www.patient.jykj_zxyl.activity.MainActivity;
-import www.patient.jykj_zxyl.activity.home.*;
 import www.patient.jykj_zxyl.activity.home.patient.BloodEntryActivity;
 import www.patient.jykj_zxyl.activity.home.patient.ZJXQ_ZJBDActivity;
 import www.patient.jykj_zxyl.activity.hyhd.BindDoctorFriend;
@@ -61,35 +60,26 @@ import www.patient.jykj_zxyl.activity.hyhd.LivePlayerActivity;
 import www.patient.jykj_zxyl.activity.myself.MedicationRecordActivity;
 import www.patient.jykj_zxyl.activity.myself.MedicationSettingsActivity;
 import www.patient.jykj_zxyl.activity.myself.couponFragment.FragmentAdapter;
-import www.patient.jykj_zxyl.activity.patient_home.KSWYSActivity;
+import www.patient.jykj_zxyl.base.base_utils.NetworkUtil;
+import www.patient.jykj_zxyl.base.http.ApiHelper;
+import www.patient.jykj_zxyl.base.http.ParameUtil;
+import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
 import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_WDYS;
 import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_YLZX;
 import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_ZJTJ;
+import www.patient.jykj_zxyl.util.ToastUtils;
 import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.activity.MainActivity;
 import www.patient.jykj_zxyl.activity.home.BloodMonitorActivity;
 import www.patient.jykj_zxyl.activity.home.QRCodeActivity;
-import www.patient.jykj_zxyl.activity.home.patient.BloodEntryActivity;
-import www.patient.jykj_zxyl.activity.hyhd.BindDoctorFriend;
-import www.patient.jykj_zxyl.activity.myself.MedicationSettingsActivity;
-import www.patient.jykj_zxyl.activity.myself.couponFragment.FragmentAdapter;
-import www.patient.jykj_zxyl.activity.patient_home.KSWYSActivity;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
-import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_WDYS;
-import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_YLZX;
-import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_ZJTJ;
 import www.patient.jykj_zxyl.util.CircleImageView;
-import www.patient.jykj_zxyl.util.Util;
-import www.patient.jykj_zxyl.util.widget.AuthorityDialog;
 import www.patient.jykj_zxyl.util.widget.AuthorityJQQDDialog;
 import zxing.android.CaptureActivity;
 
 import static android.app.Activity.RESULT_OK;
-import static com.superrtc.ContextUtils.getApplicationContext;
 
 
 /**
@@ -376,7 +366,15 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 //                        cacerProgress();
 //                        //获取最近一次血压数据
 //                        searchPatientStateResBloodPressureNewData();
-                        showFYView();
+
+                        //ToastUtils.showToastCustom("操作成功");
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                showFYView();
+                            }
+                        },1000);
+
                         break;
 
                     case 100:
@@ -405,6 +403,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
      * 服药操作后
      */
     private void showFYView() {
+
         if (clickState == 3) {
             //已服用
             mYFY.setVisibility(View.GONE);
@@ -548,6 +547,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
             public void onClick(View view) {
                 //调接口已服用
                 clickState = 3;
+
                 operUpdPatientConditionTakingMedicineState(3);
             }
         });
@@ -826,31 +826,74 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
      * @param i
      */
     private void operUpdPatientConditionTakingMedicineState(int i) {
-        getProgressBar("请稍候", "正在处理");
-        OperUpdPatientConditionTakingMedicineStateParement operUpdPatientConditionTakingMedicineStateParement = new OperUpdPatientConditionTakingMedicineStateParement();
-        operUpdPatientConditionTakingMedicineStateParement.setLoginPatientPosition(mApp.loginDoctorPosition);
-        operUpdPatientConditionTakingMedicineStateParement.setRequestClientType("1");
-        operUpdPatientConditionTakingMedicineStateParement.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        operUpdPatientConditionTakingMedicineStateParement.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        operUpdPatientConditionTakingMedicineStateParement.setTakingRecordId(mProvidePatientConditionTakingRecords.get(0).getTakingRecordId() + "");
-        operUpdPatientConditionTakingMedicineStateParement.setPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        operUpdPatientConditionTakingMedicineStateParement.setFlagTakingMedicine(i + "");
+//        getProgressBar("请稍候", "正在处理");
+//        OperUpdPatientConditionTakingMedicineStateParement operUpdPatientConditionTakingMedicineStateParement = new OperUpdPatientConditionTakingMedicineStateParement();
+//        operUpdPatientConditionTakingMedicineStateParement.setLoginPatientPosition(mApp.loginDoctorPosition);
+//        operUpdPatientConditionTakingMedicineStateParement.setRequestClientType("1");
+//        operUpdPatientConditionTakingMedicineStateParement.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+//        operUpdPatientConditionTakingMedicineStateParement.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+//        operUpdPatientConditionTakingMedicineStateParement.setTakingRecordId(mProvidePatientConditionTakingRecords.get(0).getTakingRecordId() + "");
+//        operUpdPatientConditionTakingMedicineStateParement.setPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+//        operUpdPatientConditionTakingMedicineStateParement.setFlagTakingMedicine(i + "");
+//
+//        new Thread() {
+//            public void run() {
+//                try {
+//                    String string = new Gson().toJson(operUpdPatientConditionTakingMedicineStateParement);
+//                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, www.patient.jykj_zxyl.application.Constant.SERVICEURL + "PatientConditionControlle/operUpdPatientConditionTakingMedicineState");
+//
+//                } catch (Exception e) {
+//                    NetRetEntity retEntity = new NetRetEntity();
+//                    retEntity.setResCode(0);
+//                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
+//                    mNetRetStr = new Gson().toJson(retEntity);
+//                    e.printStackTrace();
+//                }
+//                mHandler.sendEmptyMessage(5);
+//            }
+//        }.start();
+        if (!NetworkUtil.isNetworkAvailable(Objects.requireNonNull(this.getContext()))) {
+            ToastUtils.showToast("请检查网络");
+            return;
+        }
+        HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
+        hashMap.put("loginPatientPosition",mApp.loginDoctorPosition);
+        hashMap.put("requestClientType","1");
+        hashMap.put("operPatientCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        hashMap.put("operPatientName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        hashMap.put("takingRecordId",mProvidePatientConditionTakingRecords.get(0).getTakingRecordId() + "");
+        hashMap.put("patientCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        hashMap.put("flagTakingMedicine",i + "");
 
-        new Thread() {
-            public void run() {
-                try {
-                    String string = new Gson().toJson(operUpdPatientConditionTakingMedicineStateParement);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, www.patient.jykj_zxyl.application.Constant.SERVICEURL + "PatientConditionControlle/operUpdPatientConditionTakingMedicineState");
-                } catch (Exception e) {
-                    NetRetEntity retEntity = new NetRetEntity();
-                    retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
-                    mNetRetStr = new Gson().toJson(retEntity);
-                    e.printStackTrace();
-                }
-                mHandler.sendEmptyMessage(5);
+        RequestBody requestBody = RetrofitUtil.requestBody(hashMap);
+        ApiHelper.getApiService().operUpdPatientConditionTakingMedicineState(requestBody).
+                compose(Transformer.switchSchedulers(new ILoadingView() {
+            @Override
+            public void showLoadingView() {
+                getProgressBar("请稍候", "正在处理");
             }
-        }.start();
+
+            @Override
+            public void hideLoadingView() {
+                cacerProgress();
+            }
+        })).subscribe(new StringObserver() {
+            @Override
+            protected void onError(String s) {
+                ToastUtils.showToast("操作失败");
+            }
+
+            @Override
+            protected void onSuccess(String s) {
+                ToastUtils.showToast("操作成功");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showFYView();
+                    }
+                },1000);
+            }
+        });
     }
 
     private void operScanQrCodeInside(String content) {

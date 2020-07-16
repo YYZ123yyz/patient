@@ -29,10 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.allen.library.interceptor.Transformer;
-import com.allen.library.interfaces.ILoadingView;
-import com.allen.library.observer.CommonObserver;
-import com.allen.library.observer.StringObserver;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -40,7 +36,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -59,21 +54,13 @@ import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.adapter.WZZXImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.DoctorPBRecycleAdapter;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.ImageViewRecycleAdapter;
-import www.patient.jykj_zxyl.base.base_bean.BaseBean;
-import www.patient.jykj_zxyl.base.base_utils.ParameUtil;
-import www.patient.jykj_zxyl.base.http.ApiHelper;
-import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.patient.WZXXOrderActivity;
-import www.patient.jykj_zxyl.adapter.WZZXImageViewRecycleAdapter;
-import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.DoctorPBRecycleAdapter;
-import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.ImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.BitmapUtil;
 import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
-import www.patient.jykj_zxyl.util.Util;
 
 /**
  * 问诊信息
