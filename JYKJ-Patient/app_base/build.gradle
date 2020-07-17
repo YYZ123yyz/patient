@@ -85,5 +85,7 @@ dependencies {
     api 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     api files('libs/gson-2.3.1.jar')
     api 'com.android.support:recyclerview-v7:27.0.0'
+    //今日头条依赖包
+    api 'me.jessyan:autosize:0.9.5'
 
 }

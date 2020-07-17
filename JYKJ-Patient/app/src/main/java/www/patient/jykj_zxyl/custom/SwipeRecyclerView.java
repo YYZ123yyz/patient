@@ -200,17 +200,21 @@ public class SwipeRecyclerView extends RecyclerView {
     /**
      * 向左滑动
      */
-    private void scrollLeft(View item, int scorllX){
+    private void scrollLeft(View item, int scorllX) {
         Log.e(TAG, " scroll left -> " + scorllX);
-        item.scrollBy(scorllX, 0);
+        if (item != null) {
+            item.scrollBy(scorllX, 0);
+        }
     }
 
     /**
      * 向右滑动
      */
-    private void scrollRight(View item, int scorllX){
+    private void scrollRight(View item, int scorllX) {
         Log.e(TAG, " scroll right -> " + scorllX);
-        item.scrollBy(scorllX, 0);
+        if (item != null) {
+            item.scrollBy(scorllX, 0);
+        }
     }
 
     public interface OnRightClickListener{

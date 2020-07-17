@@ -21,6 +21,7 @@ import com.allen.library.RxHttpUtils;
 import com.allen.library.config.OkHttpConfig;
 import com.allen.library.cookie.store.SPCookieStore;
 import com.allen.library.manage.RxUrlManager;
+import com.allin.commlibrary.LibApp;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -277,7 +278,7 @@ public class JYKJApplication extends Application {
         // 默认添加好友时，是不需要验证的，改成需要验证
         options.setAcceptInvitationAlways(false);
         EaseUI.getInstance().init(gContext, options);
-
+        LibApp.init(this);
         //初始化图片方法
         /**
          * 配置并初始化ImageLoader

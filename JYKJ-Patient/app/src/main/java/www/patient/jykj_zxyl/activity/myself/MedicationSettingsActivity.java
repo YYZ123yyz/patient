@@ -38,6 +38,7 @@ import www.patient.jykj_zxyl.library.PullToRefreshListView;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.util.ActivityUtil;
 
 public class MedicationSettingsActivity extends Activity {
 
@@ -73,6 +74,7 @@ public class MedicationSettingsActivity extends Activity {
 		context = this;
 		mApp = (JYKJApplication) getApplication();
 		setContentView(R.layout.medication_settings);
+		ActivityUtil.setStatusBarMain(this);
 		initHandler();
 		//获取返回按钮
 		ImageView iv_back = (ImageView)findViewById(R.id.iv_back);

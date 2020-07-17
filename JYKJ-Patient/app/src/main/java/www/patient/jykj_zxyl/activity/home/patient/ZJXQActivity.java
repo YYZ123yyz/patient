@@ -49,6 +49,7 @@ import www.patient.jykj_zxyl.activity.home.twjz.WZXX_YSPBActivity;
 import www.patient.jykj_zxyl.adapter.DoctorCommentsRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.ProvincePicker;
 
 /**
@@ -364,6 +365,7 @@ public class ZJXQActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tjzj_zjxq);
+        ActivityUtil.setStatusBarMain(this);
         mContext = this;
         mActivity = this;
         mApp = (JYKJApplication) getApplication();

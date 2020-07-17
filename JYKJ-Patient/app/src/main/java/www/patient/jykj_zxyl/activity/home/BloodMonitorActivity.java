@@ -67,6 +67,7 @@ public class BloodMonitorActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blood_monitor);
+        ActivityUtil.setStatusBarMain(this);
         EventBus.getDefault().register(this);
         mApp = (JYKJApplication) getApplicationContext();
         initView();
