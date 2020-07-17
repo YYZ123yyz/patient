@@ -72,5 +72,6 @@
 
     <color name="color">#ff00ff</color>
     <color name="color_c0c0c0">#c0c0c0</color>
+    <color name="color_666666">#666666</color>
 
 </resources>

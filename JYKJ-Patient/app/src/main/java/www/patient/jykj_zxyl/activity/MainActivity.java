@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -152,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
 //        timer.schedule(task, 0, mApp.mMsgTimeInterval*60*1000);
     }
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override

@@ -15,6 +15,7 @@ public class ParameUtil {
      */
     public static HashMap<String, Object> buildBaseParam() {
         HashMap<String, Object> paramMap = new HashMap<>();
+
         return paramMap;
     }
 

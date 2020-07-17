@@ -36,5 +36,9 @@ public interface ApiService {
 
     @POST("/PatientConditionControlle/operUpdPatientConditionTakingMedicineState")
     Observable<String> operUpdPatientConditionTakingMedicineState(@Body RequestBody requestBody);
+    //提交诊后留言
+
+    @POST("/patientMyOrderControlle/operPatientMyOrderResMessageContent")
+    Observable<String> operPatientMyOrderResMessageContent(@Body RequestBody requestBody);
 
 }

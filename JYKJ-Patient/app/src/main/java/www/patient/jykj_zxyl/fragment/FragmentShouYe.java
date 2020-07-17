@@ -912,7 +912,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                     public void run() {
                         showFYView();
                     }
-                },1000);
+                },2000);
             }
         });
     }
