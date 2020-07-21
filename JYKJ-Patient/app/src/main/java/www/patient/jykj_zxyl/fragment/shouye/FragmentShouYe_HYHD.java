@@ -105,6 +105,7 @@ public class FragmentShouYe_HYHD extends Fragment {
         initLayout(v);
         initHandler();
         mApp.gNetWorkTextView = true;
+
         getMessageList();
 
         return v;

@@ -1132,7 +1132,7 @@ public class WZXXActivity extends AppCompatActivity {
     }
 
     /**
-     * 获取问诊资料
+     * 获取问诊资料b
      */
     private void getInteractPatientInterrogationResNewest() {
         ProvideInteractPatientInterrogation provideInteractPatientInterrogation = new ProvideInteractPatientInterrogation();

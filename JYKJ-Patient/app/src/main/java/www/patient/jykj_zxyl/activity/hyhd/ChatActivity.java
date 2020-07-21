@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.allin.commlibrary.preferences.SavePreferences;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.domain.EaseEmojicon;
@@ -88,6 +89,7 @@ public class ChatActivity extends AppCompatActivity {
         args.putString("doctorType",doctorType);
         chatFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().add(R.id.container, chatFragment).commit();
+        SavePreferences.setData("isNewMsg",false);
     }
 
     /**

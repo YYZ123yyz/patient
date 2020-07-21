@@ -29,8 +29,10 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.google.gson.Gson;
 import com.hyphenate.EMCallBack;
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.hyhd.model.CallReceiver;
@@ -301,7 +303,7 @@ public class JYKJApplication extends Application {
         saveIMNumInfo();
         getIMNumInfo();
         initRxHttpUtils();
-
+        //addImMessageListener();
 //        startLocate();
 
     }
@@ -345,6 +347,43 @@ public class JYKJApplication extends Application {
         System.out.println(gVedioTime);
     }
 
+
+    /**
+     * 添加消息监听
+     */
+    private void addImMessageListener(){
+        EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
+            @Override
+            public void onMessageReceived(List<EMMessage> list) {
+                System.out.println(list);
+            }
+
+            @Override
+            public void onCmdMessageReceived(List<EMMessage> list) {
+
+            }
+
+            @Override
+            public void onMessageRead(List<EMMessage> list) {
+
+            }
+
+            @Override
+            public void onMessageDelivered(List<EMMessage> list) {
+
+            }
+
+            @Override
+            public void onMessageRecalled(List<EMMessage> list) {
+
+            }
+
+            @Override
+            public void onMessageChanged(EMMessage emMessage, Object o) {
+
+            }
+        });
+    }
 
     /**
      * 退出登录

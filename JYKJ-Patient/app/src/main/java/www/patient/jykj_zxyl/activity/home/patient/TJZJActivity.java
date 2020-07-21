@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity.home.patient;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -155,8 +156,8 @@ public class TJZJActivity extends AppCompatActivity {
         getBasicDate(50003);
         Map<Integer, List<ProvideBasicsDomain>> gBasicDate = mApp.gBasicDate;
         //通过定位地区编码获取系统定位编码
-        searchBasicsRegionByRegionCode();
-//        getDate();
+        //searchBasicsRegionByRegionCode();
+        getDate();
 
     }
 
@@ -217,6 +218,7 @@ public class TJZJActivity extends AppCompatActivity {
         }.start();
     }
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override
@@ -362,7 +364,7 @@ public class TJZJActivity extends AppCompatActivity {
 
         mChoiceRegion = (LinearLayout) this.findViewById(R.id.li_activityJoinDoctorsUnion_choiceRegionText);
         mChoiceRegionText = (TextView) this.findViewById(R.id.tv_activityJoinDoctorsUnion_choiceRegionText);
-        mChoiceRegionText.setText(mApp.gGDLocationName);
+        //mChoiceRegionText.setText(mApp.gGDLocationName);
         mChoiceRegion.setOnClickListener(new ButtonClick());
 
         mChoiceHospital = (LinearLayout) this.findViewById(R.id.li_activityJoinDoctorsUnion_choiceHospitalLayout);

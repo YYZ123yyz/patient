@@ -911,6 +911,8 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                     @Override
                     public void run() {
                         showFYView();
+                        searchPatientStateResBloodPressureNewData();
+                        getNewMessage();
                     }
                 },2000);
             }

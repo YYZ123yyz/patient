@@ -64,7 +64,7 @@ android {
     buildTypes {
         //本地开发环境[开启日志打印;测试环境ip;不混淆]
         debug {
-            resValue "string", "app_name", "心血管健康"
+            resValue "string", "app_name", "心血管患者"
             //是否混淆
             minifyEnabled false
             // 移除无用的resource文件
@@ -79,7 +79,7 @@ android {
 
         //线下测试
         detest {
-            resValue "string", "app_name", "心血管健康test"
+            resValue "string", "app_name", "心血管患者test"
             //签名文件
             signingConfig signingConfigs.myConfig
             //是否混淆
@@ -94,7 +94,7 @@ android {
         }
 
         release {
-            resValue "string", "app_name", "心血管健康"
+            resValue "string", "app_name", "心血管患者"
             //签名文件
             signingConfig signingConfigs.myConfig
             //是否混淆

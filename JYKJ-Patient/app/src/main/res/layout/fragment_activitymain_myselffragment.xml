@@ -191,7 +191,7 @@
                 android:background="@color/result_minor_text" />
 
             <www.patient.jykj_zxyl.custom.MyselfItemView
-                android:id="@+id/myself_doctor"
+                android:id="@+id/myself_doctor_btn"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 app:have_img="true"

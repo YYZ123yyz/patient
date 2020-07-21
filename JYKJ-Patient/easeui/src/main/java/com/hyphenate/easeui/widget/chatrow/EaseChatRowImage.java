@@ -15,6 +15,8 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.model.EaseImageCache;
 import com.hyphenate.easeui.utils.EaseImageUtils;
+import com.hyphenate.util.ImageUtils;
+
 import java.io.File;
 
 public class EaseChatRowImage extends EaseChatRowFile{
@@ -130,14 +132,17 @@ public class EaseChatRowImage extends EaseChatRowFile{
                 protected Bitmap doInBackground(Object... args) {
                     File file = new File(thumbernailPath);
                     if (file.exists()) {
-                        return EaseImageUtils.decodeScaleImage(thumbernailPath, 320, 320);
+                        return EaseImageUtils.decodeScaleImage(thumbernailPath,
+                                ImageUtils.SCALE_IMAGE_WIDTH, ImageUtils.SCALE_IMAGE_HEIGHT);
                     } else if (new File(imgBody.thumbnailLocalPath()).exists()) {
-                        return EaseImageUtils.decodeScaleImage(imgBody.thumbnailLocalPath(), 320, 320);
+                        return EaseImageUtils.decodeScaleImage(imgBody.thumbnailLocalPath(),
+                                ImageUtils.SCALE_IMAGE_WIDTH,  ImageUtils.SCALE_IMAGE_HEIGHT);
                     }
                     else {
                         if (message.direct() == EMMessage.Direct.SEND) {
                             if (localFullSizePath != null && new File(localFullSizePath).exists()) {
-                                return EaseImageUtils.decodeScaleImage(localFullSizePath, 320, 320);
+                                return EaseImageUtils.decodeScaleImage(localFullSizePath,
+                                        ImageUtils.SCALE_IMAGE_WIDTH, ImageUtils.SCALE_IMAGE_HEIGHT);
                             } else {
                                 return null;
                             }

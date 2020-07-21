@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.allin.commlibrary.preferences.SavePreferences;
 import com.google.gson.Gson;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
@@ -31,6 +32,10 @@ import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.hyhd.DemoHelper;
 import com.hyphenate.easeui.hyhd.model.CallReceiver;
 import com.hyphenate.easeui.model.EaseNotifier;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,6 +47,8 @@ import entity.ProvideMsgPushReminder;
 import entity.home.newsMessage.ProvideMsgPushReminderCount;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
+import www.patient.jykj_zxyl.base.base_bean.MainMessage;
+import www.patient.jykj_zxyl.base.base_utils.BadgeUtil;
 import www.patient.jykj_zxyl.service.MessageReciveService;
 import www.patient.jykj_zxyl.util.NoScrollViewPager;
 import www.patient.jykj_zxyl.util.Util;
@@ -70,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mImageViewYHHD;                                            //医患互动图标
     private ImageView mImageViewYLZX;                                            //医疗资讯图标
     private ImageView mImageViewMySelf;                                        //我图标
-
+    private TextView mTvUnreadBtn;
     private TextView mTextViewShouYE;                                 //首页text
     //    private         TextView                    mTextViewHZGuanLi;                                  //患者管理text
     private TextView mTextViewYHHD;                                   //医患互动text
@@ -110,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mContext = this;
         mainActivity = this;
+        EventBus.getDefault().register(this);
         ActivityUtil.setStatusBarMain(mainActivity);
         mApp = (JYKJApplication) getApplication();
 
@@ -129,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
         startMessageTimer();
 
         Util.getRegionDate(mApp);
+
+        BadgeUtil.setBadgeCount(this,1,R.drawable.bg_red_circle);
 
 
     }
@@ -297,6 +307,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        setUnReadMsgBtnStatus();
         //启动程序，查询是否有未读消息
 //       getMessageCount();
     }
@@ -316,13 +327,12 @@ public class MainActivity extends AppCompatActivity {
         mImageViewYHHD = (ImageView) this.findViewById(R.id.iv_activityMain_ImageHYHD);
         mImageViewYLZX = (ImageView) this.findViewById(R.id.iv_activityMain_ImageYLZX);
         mImageViewMySelf = (ImageView) this.findViewById(R.id.iv_activityMain_ImageGRZX);
-
+        mTvUnreadBtn=this.findViewById(R.id.tv_unread_btn);
         mTextViewShouYE = (TextView) this.findViewById(R.id.tv_activityMain_TextShouYe);
 //        mTextViewHZGuanLi = (TextView) this.findViewById(R.id.tv_activityMain_TextHZGuanLi);
         mTextViewYHHD = (TextView) this.findViewById(R.id.tv_activityMain_TextHYHD);
         mTextViewYLZX = (TextView) this.findViewById(R.id.tv_activityMain_TextYLZX);
         mTextViewSelf = (TextView) this.findViewById(R.id.tv_activityMain_TextGRZX);
-
         setDefaultLayout();
         mImageViewShouYe.setBackgroundResource(R.mipmap.sy_press);
         mTextViewShouYE.setTextColor(getResources().getColor(R.color.tabColor_press));
@@ -584,5 +594,32 @@ public class MainActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    //主线程中执行
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMainEventBus(MainMessage msg) {
+        setUnReadMsgBtnStatus();
+    }
+
+    /**
+     * 设置未读消息按钮状态
+     */
+    @SuppressLint("DefaultLocale")
+    private void setUnReadMsgBtnStatus(){
+        int unreadMessageCount = EMClient.getInstance().chatManager().getUnreadMessageCount();
+        if(unreadMessageCount>0){
+            mTvUnreadBtn.setVisibility(View.VISIBLE);
+            mTvUnreadBtn.setText(String.format("%d", unreadMessageCount));
+        }else{
+            mTvUnreadBtn.setVisibility(View.GONE);
+        }
+    }
 
 }

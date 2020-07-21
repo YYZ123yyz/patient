@@ -1,6 +1,5 @@
 package www.patient.jykj_zxyl.activity;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -101,7 +102,6 @@ public class PhoneLoginActivity extends AppCompatActivity {
         mTimer.schedule(mTask, 0, 1000);
     }
 
-    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override
@@ -337,7 +337,6 @@ public class PhoneLoginActivity extends AppCompatActivity {
                 mHandler.sendEmptyMessage(1);
             }
         }.start();
-
     }
 
     /**

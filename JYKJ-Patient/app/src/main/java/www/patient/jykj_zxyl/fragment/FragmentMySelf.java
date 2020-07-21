@@ -87,7 +87,7 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
 
         myselfBindFriend = v.findViewById(R.id.myself_bind_friend);
         myselfOrder = v.findViewById(R.id.myself_order);
-        myselfMyDoctor = v.findViewById(R.id.myself_doctor);
+        myselfMyDoctor = v.findViewById(R.id.myself_doctor_btn);
         myselfFile = v.findViewById(R.id.myself_file);
         myselfBlood = v.findViewById(R.id.myself_blood);
         myselfMedication = v.findViewById(R.id.myself_medication);
@@ -153,7 +153,7 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
             case R.id.myself_order://我的订单
                 startActivity(new Intent(getActivity(),MyOrderActivity.class));
                 break;
-            case R.id.myself_doctor://我的医生
+            case R.id.myself_doctor_btn://我的医生
                 startActivity(new Intent(getActivity(),WDYSActivity.class));
                 break;
             case R.id.myself_file://建档

@@ -84,10 +84,10 @@ public class FeedbackActvity extends AppCompatActivity {
             Toast.makeText(mContext, "请选择故障时间", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (link.length() == 0) {
-            Toast.makeText(mContext, "请填写您的联系方式", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (link.length() == 0) {
+//            Toast.makeText(mContext, "请填写您的联系方式", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         FeedBackInfo subbean = new FeedBackInfo();
         subbean.setContactMode(link);
         subbean.setFaultDate(falttime);
