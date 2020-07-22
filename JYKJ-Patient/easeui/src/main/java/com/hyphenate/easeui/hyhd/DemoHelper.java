@@ -610,7 +610,7 @@ public class DemoHelper {
         //register group and contact event listener
         registerGroupAndContactListener();
         //register message event listener
-        registerMessageListener();
+        //registerMessageListener();
 
     }
 

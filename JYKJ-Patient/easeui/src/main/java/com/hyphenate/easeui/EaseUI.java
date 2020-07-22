@@ -126,7 +126,7 @@ public final class EaseUI {
         }
         
         initNotifier();
-        registerMessageListener();
+        //registerMessageListener();
         
         if(settingsProvider == null){
             settingsProvider = new DefaultSettingsProvider();
