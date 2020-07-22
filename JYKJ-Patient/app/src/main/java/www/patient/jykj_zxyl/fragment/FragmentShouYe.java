@@ -36,6 +36,11 @@ import com.google.gson.Gson;
 import com.sak.ultilviewlib.UltimateRefreshView;
 import com.sak.ultilviewlib.interfaces.OnFooterRefreshListener;
 import com.sak.ultilviewlib.interfaces.OnHeaderRefreshListener;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 
@@ -187,7 +192,6 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     private List<String> mTitles;
 
     private View mView;
-    private UltimateRefreshView pullRefLay;
     private TextView mYFY;                           //已服用
     private TextView mWFY;                           //未服用
     private TextView mYYDate;                        //用药时间
@@ -199,7 +203,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
     private TextView tv_wasfy;                       //未按时服用提示
     private TextView tv_yasfy;                       //已按时服用提示
-
+    private RefreshLayout refreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -361,8 +365,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                             mProvidePatientConditionTakingRecords = JSON.parseArray(netRetEntity.getResJsonData(), ProvidePatientConditionTakingRecord.class);
                         }
                         showRecord();
-                        pullRefLay.onHeaderRefreshComplete();
-                        pullRefLay.onFooterRefreshComplete();
+                        refreshLayout.finishRefresh();
                         break;
 
                     case 5:
@@ -522,7 +525,10 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
 
     private void initView(View view) {
-        pullRefLay=view.findViewById(R.id.pull_ref_lay);
+        refreshLayout =view.findViewById(R.id.refreshLayout);
+        refreshLayout.setRefreshHeader(new ClassicsHeader(Objects.requireNonNull(this.getContext())));
+        refreshLayout.setRefreshFooter(new ClassicsFooter(this.getContext()));
+
         tv_yasfy = (TextView) view.findViewById(R.id.tv_yasfy);
         tv_wasfy = (TextView) view.findViewById(R.id.tv_wasfy);
 
@@ -674,23 +680,23 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         port_layout = view.findViewById(R.id.port_layout);
         sweem_layout = view.findViewById(R.id.sweem_layout);
         feeling_layout = view.findViewById(R.id.feeling_layout);
-        pullRefLay.setBaseHeaderAdapter(new TraditionHeaderAdapter(this.getContext()));
         //pullRefLay.setBaseFooterAdapter(new TraditionFooterAdapter(this.getContext()));
     }
 
 
     private void initListener() {
-        pullRefLay.setOnHeaderRefreshListener(new OnHeaderRefreshListener() {
+
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onHeaderRefresh(UltimateRefreshView ultimateRefreshView) {
+            public void onRefresh(RefreshLayout refreshlayout) {
                 searchPatientStateResBloodPressureNewData();
                 getNewMessage();
             }
         });
-        pullRefLay.setOnFooterRefreshListener(new OnFooterRefreshListener() {
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onFooterRefresh(UltimateRefreshView ultimateRefreshView) {
-
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                refreshLayout.finishLoadMore();
             }
         });
         mBloodEntry.setOnClickListener(this);

@@ -135,11 +135,24 @@
                 android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
-    <com.sak.ultilviewlib.UltimateRefreshView
-        android:id="@+id/pull_ref_lay"
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/refreshLayout"
         >
+
+    <com.scwang.smart.refresh.header.ClassicsHeader
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+
+<!--    <com.sak.ultilviewlib.UltimateRefreshView-->
+<!--        android:id="@+id/pull_ref_lay"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        >-->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -752,5 +765,9 @@
         </LinearLayout>
 
     </ScrollView>
-    </com.sak.ultilviewlib.UltimateRefreshView>
+<!--    </com.sak.ultilviewlib.UltimateRefreshView>-->
+    <com.scwang.smart.refresh.footer.ClassicsFooter
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </LinearLayout>
