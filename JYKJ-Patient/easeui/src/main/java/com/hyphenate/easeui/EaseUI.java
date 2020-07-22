@@ -170,7 +170,7 @@ public final class EaseUI {
                         }
                     }
                 }
-                EventBus.getDefault().post(new MainMessage(messages.size()+""));
+
             }
             @Override
             public void onMessageRead(List<EMMessage> messages) {

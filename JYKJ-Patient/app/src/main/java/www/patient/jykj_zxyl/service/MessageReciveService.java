@@ -25,6 +25,8 @@ import com.hyphenate.easeui.model.EaseAtMessageHelper;
 import com.hyphenate.easeui.model.EaseDingMessageHelper;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -34,6 +36,7 @@ import entity.basicDate.EMMessageEntity;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.MainActivity;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.base.base_bean.MainMessage;
 
 public class MessageReciveService extends Service {
 
@@ -147,6 +150,7 @@ public class MessageReciveService extends Service {
                     //设置fragment显示新消息
                     application.gMainActivity.setNewsMessageView();
                 }
+                EventBus.getDefault().post(new MainMessage(messages.size()+""));
             }
             @Override
             public void onMessageRead(List<EMMessage> messages) {
