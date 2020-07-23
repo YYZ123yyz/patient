@@ -12,6 +12,8 @@ import android.view.Window;
 
 import com.gyf.immersionbar.ImmersionBar;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import www.patient.jykj_zxyl.base.R;
 import www.patient.jykj_zxyl.base.base_utils.ActivityStackManager;
 
@@ -24,7 +26,8 @@ import www.patient.jykj_zxyl.base.base_utils.ActivityStackManager;
 public abstract class BaseActivity extends AppCompatActivity {
     /**上下文*/
     protected Context context;
-
+    /**ButterKnife*/
+    private Unbinder unbinder;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(setLayoutId());
 
-        //unbinder = ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
         //初始化沉浸式
         if (isImmersionBarEnabled()) {
             initImmersionBar();
@@ -129,4 +132,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.startActivityForResult(localIntent, requestCode);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+    }
 }

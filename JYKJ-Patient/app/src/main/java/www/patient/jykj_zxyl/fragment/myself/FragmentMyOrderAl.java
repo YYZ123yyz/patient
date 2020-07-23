@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.fragment.myself;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -34,8 +35,10 @@ import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.MainActivity;
 import www.patient.jykj_zxyl.activity.home.OrderMessage_OrderPayActivity;
+import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJL_WZZLActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJL_ZHLYActivity;
 import www.patient.jykj_zxyl.activity.home.twjz.TWJZ_JZJLActivity;
+import www.patient.jykj_zxyl.activity.home.twjz.WDZS_WZXQActivity;
 import www.patient.jykj_zxyl.activity.home.wdzs.ProvideViewInteractOrderTreatmentAndPatientInterrogation;
 import www.patient.jykj_zxyl.activity.myself.*;
 import www.patient.jykj_zxyl.activity.ylzx.YLZXWebActivity;
@@ -98,11 +101,13 @@ public class FragmentMyOrderAl extends Fragment {
             @Override
             public void onClick(int position, View parview) {
                 switch (parview.getId()) {
-                    case R.id.item_fragmentYLZX_rmjxLayout:
-                        MyOrderProcess parbean = (MyOrderProcess) getView().getTag();
-                        ProvideViewInteractOrderTreatmentAndPatientInterrogation parorder = new ProvideViewInteractOrderTreatmentAndPatientInterrogation();
-                        parorder.setOrderCode(parbean.getOrderCode());
-                        startActivity(new Intent(mActivity, TWJZ_JZJLActivity.class).putExtra("wzxx", parorder));
+                    case R.id.item_root:
+                        MyOrderProcess parbean = mAdapter.datas.get(position);
+                        //MyOrderProcess parbean = (MyOrderProcess) getView().getTag();
+                        ProvideViewInteractOrderTreatmentAndPatientInterrogation provideInteractOrderInfo = new ProvideViewInteractOrderTreatmentAndPatientInterrogation();
+                        provideInteractOrderInfo.setOrderCode(parbean.getOrderCode());
+                       // startActivity(new Intent(mActivity, TWJZ_JZJLActivity.class).putExtra("wzxx", parorder));
+                        startActivity(new Intent(mContext, WDZS_WZXQActivity.class).putExtra("wzxx", provideInteractOrderInfo));
                         break;
                     case R.id.leave_btn:
                         /*MyOrderProcess leavebean = (MyOrderProcess)getView().getTag();
@@ -130,6 +135,7 @@ public class FragmentMyOrderAl extends Fragment {
     }
 
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override

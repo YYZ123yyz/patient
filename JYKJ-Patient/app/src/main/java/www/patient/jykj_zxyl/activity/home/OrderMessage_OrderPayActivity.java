@@ -53,47 +53,46 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
     private FragmentHomeTJZJAdapter mAdapter;
     private LinearLayout llBack;
 
-    public          ProgressDialog              mDialogProgress =null;
+    public ProgressDialog mDialogProgress = null;
 
-    private         Context                     mContext;                                       //
+    private Context mContext;                                       //
     private OrderMessage_OrderPayActivity mActivity;
-    private         JYKJApplication             mApp;
+    private JYKJApplication mApp;
 
-    private         String                      mNetRetStr;                 //返回字符串
-    private         Handler                     mHandler;
-
-
-
-    private         TextView                    mCommit;                    //提交
-
-    private         ProvideInteractOrderInfo provideInteractOrderInfo = new ProvideInteractOrderInfo();               //订单信息
+    private String mNetRetStr;                 //返回字符串
+    private Handler mHandler;
 
 
-    private         TextView                    tv_ddlx;                    //订单类型
-    private         TextView                    tv_zfzt;                    //支付状态
-    private         TextView                    tv_zxys;                    //咨询医生
-    private         TextView                    tv_xzr;                    //询诊人
-    private         TextView                    tv_zxdh;                    //诊询电话
-    private         TextView                    tv_ddrq;                    //订单日期
-    private         TextView                    tv_fwkssj;                    //服务开始时间
-    private         TextView                    tv_fwjzsj;                    //服务截止时间
-    private         TextView                    tv_fwzj;                    //服务总价
-    private         TextView                    tv_ddms1;                    //订单描述1
-    private         TextView                    tv_sfk;                    //实付款
+    private TextView mCommit;                    //提交
 
-    private         TextView                    tv_serviceName;             //名称
-    private         LinearLayout                tv_jzsj;                      //截止时间
+    private ProvideInteractOrderInfo provideInteractOrderInfo = new ProvideInteractOrderInfo();               //订单信息
+
+
+    private TextView tv_ddlx;                    //订单类型
+    private TextView tv_zfzt;                    //支付状态
+    private TextView tv_zxys;                    //咨询医生
+    private TextView tv_xzr;                    //询诊人
+    private TextView tv_zxdh;                    //诊询电话
+    private TextView tv_ddrq;                    //订单日期
+    private TextView tv_fwkssj;                    //服务开始时间
+    private TextView tv_fwjzsj;                    //服务截止时间
+    private TextView tv_fwzj;                    //服务总价
+    private TextView tv_ddms1;                    //订单描述1
+    private TextView tv_sfk;                    //实付款
+
+    private TextView tv_serviceName;             //名称
+    private LinearLayout tv_jzsj;                      //截止时间
 
 //    private         TextView                    tv_kszx;                    //开始咨询
 
-    private         TextView                tv_payModel;                    //支付类型
-    private         ImageView                iv_payModel;                    //支付类型图片
+    private TextView tv_payModel;                    //支付类型
+    private ImageView iv_payModel;                    //支付类型图片
 
-    public          IWXAPI                  msgApi;
+    public IWXAPI msgApi;
 
-    private         ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatment;
+    private ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatment;
 
-    private         AuthorityDialog         mAuthorityDialog;
+    private AuthorityDialog mAuthorityDialog;
 
     private String pay_appid;
     private String pay_productid;
@@ -101,6 +100,7 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
 
     /**
      * 展示数据
+     *
      * @param provideViewMyDoctorOrderAndTreatment
      */
     private void showDate(ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatment) {
@@ -116,15 +116,14 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
         if (provideViewMyDoctorOrderAndTreatment.getServiceTotal() == null)
             tv_fwzj.setText("0.0元");
         else
-            tv_fwzj.setText(provideViewMyDoctorOrderAndTreatment.getServiceTotal()+"元");
+            tv_fwzj.setText(provideViewMyDoctorOrderAndTreatment.getServiceTotal() + "元");
         tv_ddms1.setText(provideViewMyDoctorOrderAndTreatment.getOrderDesc());
         if (provideViewMyDoctorOrderAndTreatment.getActualPayment() == null)
             tv_sfk.setText("0.0元");
         else
-            tv_sfk.setText(provideViewMyDoctorOrderAndTreatment.getActualPayment()+"元");
+            tv_sfk.setText(provideViewMyDoctorOrderAndTreatment.getActualPayment() + "元");
 
-        switch(provideViewMyDoctorOrderAndTreatment.getTreatmentType())
-        {
+        switch (provideViewMyDoctorOrderAndTreatment.getTreatmentType()) {
             case 1:
                 tv_jzsj.setVisibility(View.VISIBLE);
                 tv_serviceName.setText("服务开始时间");
@@ -156,60 +155,53 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
         }
 
         //待付款
-       if (provideViewMyDoctorOrderAndTreatment.getFlagOrderState() == 1)
-       {
-           mCommit.setVisibility(View.VISIBLE);
+        if (provideViewMyDoctorOrderAndTreatment.getFlagOrderState() == 1) {
+            mCommit.setVisibility(View.VISIBLE);
 //           tv_kszx.setVisibility(View.GONE);
-       }
-       else if (provideViewMyDoctorOrderAndTreatment.getFlagOrderState() == 2)
-        {
+        } else if (provideViewMyDoctorOrderAndTreatment.getFlagOrderState() == 2) {
             mCommit.setVisibility(View.GONE);
 //            tv_kszx.setVisibility(View.VISIBLE);
-        }
-        else
-       {
-           mCommit.setVisibility(View.GONE);
+        } else {
+            mCommit.setVisibility(View.GONE);
 //           tv_kszx.setVisibility(View.GONE);
-       }
+        }
 
-       if (provideViewMyDoctorOrderAndTreatment.getPaymentMode() != null)
-       {
-           //0:未知;1:微信支付;2:支付宝支付;3:银联支付;
-           switch (provideViewMyDoctorOrderAndTreatment.getPaymentMode())
-           {
-               case 0:
-                   tv_payModel.setText("未知");
-                   iv_payModel.setVisibility(View.GONE);
-                   break;
-               case 1:
-                   tv_payModel.setText("微信");
-                   iv_payModel.setBackgroundResource(R.mipmap.zffs_wxzf);
-                   break;
-               case 2:
-                   tv_payModel.setText("支付宝");
-                   iv_payModel.setBackgroundResource(R.mipmap.pay_zfb);
-                   break;
-               case 3:
-                   tv_payModel.setText("银联支付");
-                   iv_payModel.setVisibility(View.GONE);
-                   break;
-           }
-       }
+        if (provideViewMyDoctorOrderAndTreatment.getPaymentMode() != null) {
+            //0:未知;1:微信支付;2:支付宝支付;3:银联支付;
+            switch (provideViewMyDoctorOrderAndTreatment.getPaymentMode()) {
+                case 0:
+                    tv_payModel.setText("未知");
+                    iv_payModel.setVisibility(View.GONE);
+                    break;
+                case 1:
+                    tv_payModel.setText("微信");
+                    iv_payModel.setBackgroundResource(R.mipmap.zffs_wxzf);
+                    break;
+                case 2:
+                    tv_payModel.setText("支付宝");
+                    iv_payModel.setBackgroundResource(R.mipmap.pay_zfb);
+                    break;
+                case 3:
+                    tv_payModel.setText("银联支付");
+                    iv_payModel.setVisibility(View.GONE);
+                    break;
+            }
+        }
     }
 
 
     private void initView() {
-        tv_ddlx = (TextView)this.findViewById(R.id.tv_ddlx);
-        tv_zfzt = (TextView)this.findViewById(R.id.tv_zfzt);
-        tv_zxys = (TextView)this.findViewById(R.id.tv_zxys);
-        tv_xzr = (TextView)this.findViewById(R.id.tv_xzr);
-        tv_zxdh = (TextView)this.findViewById(R.id.tv_zxdh);
-        tv_ddrq = (TextView)this.findViewById(R.id.tv_ddrq);
-        tv_fwkssj = (TextView)this.findViewById(R.id.tv_fwkssj);
-        tv_fwjzsj = (TextView)this.findViewById(R.id.tv_fwjzsj);
-        tv_fwzj = (TextView)this.findViewById(R.id.tv_fwzj);
-        tv_ddms1 = (TextView)this.findViewById(R.id.tv_ddms1);
-        tv_sfk = (TextView)this.findViewById(R.id.tv_sfk);
+        tv_ddlx = (TextView) this.findViewById(R.id.tv_ddlx);
+        tv_zfzt = (TextView) this.findViewById(R.id.tv_zfzt);
+        tv_zxys = (TextView) this.findViewById(R.id.tv_zxys);
+        tv_xzr = (TextView) this.findViewById(R.id.tv_xzr);
+        tv_zxdh = (TextView) this.findViewById(R.id.tv_zxdh);
+        tv_ddrq = (TextView) this.findViewById(R.id.tv_ddrq);
+        tv_fwkssj = (TextView) this.findViewById(R.id.tv_fwkssj);
+        tv_fwjzsj = (TextView) this.findViewById(R.id.tv_fwjzsj);
+        tv_fwzj = (TextView) this.findViewById(R.id.tv_fwzj);
+        tv_ddms1 = (TextView) this.findViewById(R.id.tv_ddms1);
+        tv_sfk = (TextView) this.findViewById(R.id.tv_sfk);
 //        tv_kszx = (TextView)this.findViewById(R.id.tv_kszx);
 //        tv_kszx.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -217,13 +209,13 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
 //                startActivity(new Intent(mContext,WDYSActivity.class));
 //            }
 //        });
-        tv_serviceName = (TextView)this.findViewById(R.id.tv_serviceName);
+        tv_serviceName = (TextView) this.findViewById(R.id.tv_serviceName);
         tv_jzsj = (LinearLayout) this.findViewById(R.id.tv_jzsj);
-        mCommit = (TextView)this.findViewById(R.id.commit);
+        mCommit = (TextView) this.findViewById(R.id.commit);
         mCommit.setOnClickListener(new ButtonClick());
 
-        tv_payModel = (TextView)this.findViewById(R.id.tv_payModel);
-        iv_payModel = (ImageView)this.findViewById(R.id.iv_payModel);
+        tv_payModel = (TextView) this.findViewById(R.id.tv_payModel);
+        iv_payModel = (ImageView) this.findViewById(R.id.iv_payModel);
         findViewById(R.id.ll_back).setOnClickListener(new ButtonClick());
 
 //        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -236,23 +228,23 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
      */
     public void zf(int payModel) {
         mAuthorityDialog.cancel();
-        getProgressBar("请稍候","正在获取数据。。。");
+        getProgressBar("请稍候", "正在获取数据。。。");
         ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatmentParment = new ProvideViewMyDoctorOrderAndTreatment();
         provideViewMyDoctorOrderAndTreatmentParment.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideViewMyDoctorOrderAndTreatmentParment.setRequestClientType("1");
         provideViewMyDoctorOrderAndTreatmentParment.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideViewMyDoctorOrderAndTreatmentParment.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         provideViewMyDoctorOrderAndTreatmentParment.setOrderCode(provideInteractOrderInfo.getOrderCode());
-        provideViewMyDoctorOrderAndTreatmentParment.setFlagPayType(payModel+"");
-        new Thread(){
-            public void run(){
+        provideViewMyDoctorOrderAndTreatmentParment.setFlagPayType(payModel + "");
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideViewMyDoctorOrderAndTreatmentParment);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, www.patient.jykj_zxyl.application.Constant.SERVICEURL+"msgDataControlle/operPatientOrderPay");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, www.patient.jykj_zxyl.application.Constant.SERVICEURL + "msgDataControlle/operPatientOrderPay");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -269,7 +261,7 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
     }
 
 
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -286,11 +278,10 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
                     break;
 
                 case R.id.commit:
-                    if (provideViewMyDoctorOrderAndTreatment == null)
-                    {
-                        Toast.makeText(mContext,"未获取到订单",Toast.LENGTH_SHORT).show();
+                    if (provideViewMyDoctorOrderAndTreatment == null) {
+                        Toast.makeText(mContext, "未获取到订单", Toast.LENGTH_SHORT).show();
                     }
-                    mAuthorityDialog = new AuthorityDialog(mContext,mActivity);
+                    mAuthorityDialog = new AuthorityDialog(mContext, mActivity);
                     mAuthorityDialog.setmProvideViewMyDoctorOrderAndTreatment(provideViewMyDoctorOrderAndTreatment);
                     mAuthorityDialog.show();
                     break;
@@ -302,41 +293,42 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
 
     /**
      * 获取n个月后的时间
+     *
      * @param inputDate
      * @param number
      * @return
      */
-    public static String  getAfterMonth(String inputDate,int number) {
+    public static String getAfterMonth(String inputDate, int number) {
         Calendar c = Calendar.getInstance();//获得一个日历的实例
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
-        try{
+        try {
             date = sdf.parse(inputDate);//初始日期
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
         c.setTime(date);//设置日历时间
-        c.add(Calendar.MONTH,number);//在日历的月份上增加6个月
+        c.add(Calendar.MONTH, number);//在日历的月份上增加6个月
         String strDate = sdf.format(c.getTime());//的到你想要得6个月后的日期
         return strDate;
     }
 
     /**
      * 比较两个时间大小
+     *
      * @param time1
      * @param time2
      * @return
      * @throws ParseException
      */
-    public boolean compare(String time1,String time2) throws ParseException
-    {
+    public boolean compare(String time1, String time2) throws ParseException {
         //如果想比较日期则写成"yyyy-MM-dd"就可以了
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         //将字符串形式的时间转化为Date类型的时间
-        Date a=sdf.parse(time1);
-        Date b=sdf.parse(time2);
+        Date a = sdf.parse(time1);
+        Date b = sdf.parse(time2);
         //Date类的一个方法，如果a早于b返回true，否则返回false
-        if(a.before(b))
+        if (a.before(b))
             return true;
         else
             return false;
@@ -348,9 +340,6 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
 			return false;
 		*/
     }
-
-
-
 
 
     @Override
@@ -385,22 +374,22 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
      * 获取订单详情
      */
     private void getDate() {
-        getProgressBar("请稍候","正在获取数据。。。");
-        ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreat= new ProvideViewMyDoctorOrderAndTreatment();
+        getProgressBar("请稍候", "正在获取数据。。。");
+        ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreat = new ProvideViewMyDoctorOrderAndTreatment();
         provideViewMyDoctorOrderAndTreat.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideViewMyDoctorOrderAndTreat.setRequestClientType("1");
         provideViewMyDoctorOrderAndTreat.setSearchPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideViewMyDoctorOrderAndTreat.setSearchPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         provideViewMyDoctorOrderAndTreat.setOrderCode(provideInteractOrderInfo.getOrderCode());
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideViewMyDoctorOrderAndTreat);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, www.patient.jykj_zxyl.application.Constant.SERVICEURL+"msgDataControlle/searchPatientMsgInteractOrderInfoDetail");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, www.patient.jykj_zxyl.application.Constant.SERVICEURL + "msgDataControlle/searchPatientMsgInteractOrderInfoDetail");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -417,12 +406,11 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
                 switch (msg.what) {
                     case 0:
                         cacerProgress();
-                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
                         if (netRetEntity.getResCode() == 0)
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
-                        else if(netRetEntity.getResCode() == 1)
-                        {
-                           provideViewMyDoctorOrderAndTreatment = JSON.parseObject(netRetEntity.getResJsonData(),ProvideViewMyDoctorOrderAndTreatment.class);
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                        else if (netRetEntity.getResCode() == 1) {
+                            provideViewMyDoctorOrderAndTreatment = JSON.parseObject(netRetEntity.getResJsonData(), ProvideViewMyDoctorOrderAndTreatment.class);
                             showDate(provideViewMyDoctorOrderAndTreatment);
                         }
                         break;
@@ -483,7 +471,7 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
         };
     }
 
-    public void sendAliPay(final String orderInfo){
+    public void sendAliPay(final String orderInfo) {
         //final String orderInfo = provideWechatPayModel.getSign();
         final Runnable payRunnable = new Runnable() {
 
@@ -502,11 +490,10 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * 开始调起微信支付
      */
-    private void weichatPay( ProvideWechatPayModel provideWechatPayModel) {
+    private void weichatPay(ProvideWechatPayModel provideWechatPayModel) {
         //将appid注册到微信
         msgApi = WXAPIFactory.createWXAPI(mContext, null);
         boolean a = msgApi.registerApp(provideWechatPayModel.getAppId());
@@ -527,10 +514,10 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
 
 
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(this);
         }
@@ -543,15 +530,11 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }
     }
-
-
-
-
 
 
     /**
@@ -569,7 +552,7 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
 //        new Thread(){
 //            public void run(){
 //                try {
-                    //获取一级科室
+        //获取一级科室
 //                    ProvideHospitalDepartment provideHospitalDepartment = new ProvideHospitalDepartment();
 //                    provideHospitalDepartment.setHospitalInfoCode(mProvideHospitalInfos.get(index).getHospitalInfoCode());
 //                    provideHospitalDepartment.setHospitalDepartmentId(0);

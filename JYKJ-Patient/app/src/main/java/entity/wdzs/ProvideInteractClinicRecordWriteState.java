@@ -22,6 +22,9 @@ public class ProvideInteractClinicRecordWriteState implements java.io.Serializab
 	private String operDoctorCode;
 	private String operDoctorName;
 	private String orderCode;
+	private String requestClientType;
+
+
 
 	public Integer getTotalityState() {
 		return totalityState;
@@ -101,5 +104,13 @@ public class ProvideInteractClinicRecordWriteState implements java.io.Serializab
 
 	public void setOrderCode(String orderCode) {
 		this.orderCode = orderCode;
+	}
+
+	public String getRequestClientType() {
+		return requestClientType;
+	}
+
+	public void setRequestClientType(String requestClientType) {
+		this.requestClientType = requestClientType;
 	}
 }

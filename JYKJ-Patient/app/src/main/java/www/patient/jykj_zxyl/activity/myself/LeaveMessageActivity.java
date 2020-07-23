@@ -25,6 +25,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.allen.library.interceptor.Transformer;
+import com.allen.library.interfaces.ILoadingView;
+import com.allen.library.observer.CommonObserver;
 import com.google.gson.Gson;
 import com.tencent.cos.common.Const;
 
@@ -33,16 +36,23 @@ import entity.mySelf.conditions.QueryZhlyImgCond;
 import entity.patientapp.Photo_Info;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
+import okhttp3.RequestBody;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.ImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.base.base_utils.StringUtils;
+import www.patient.jykj_zxyl.base.enum_type.UploadStatusEnum;
+import www.patient.jykj_zxyl.base.http.ApiHelper;
+import www.patient.jykj_zxyl.base.http.ParameUtil;
+import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.util.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class LeaveMessageActivity extends AppCompatActivity {
@@ -89,6 +99,7 @@ public class LeaveMessageActivity extends AppCompatActivity {
         final Photo_Info photo_info = new Photo_Info();
         photo_info.setPhotoID("ADDPHOTO");
         mPhotoInfos.add(photo_info);
+        tv_lemsg_content.setText(paramDetailInfo.getMessageContent());
         mImageViewRecycleAdapter = new ImageViewRecycleAdapter(mPhotoInfos, mApp);
         mImageRecycleView.setAdapter(mImageViewRecycleAdapter);
         //点击
@@ -282,11 +293,13 @@ public class LeaveMessageActivity extends AppCompatActivity {
             return;
         }
         getProgressBar("数据提交", "正在提交，请稍后...");
-        mImageCode = MyId.createUUID();
+
         SubZwlyAllInfo subbean = new SubZwlyAllInfo();
         if (StrUtils.defaultStr(paramDetailInfo.getImgCode()).length() > 0) {
             subbean.setImgCode(paramDetailInfo.getImgCode());
+            mImageCode=paramDetailInfo.getImgCode();
         } else {
+            mImageCode = MyId.createUUID();
             subbean.setImgCode(mImageCode);
         }
         subbean.setLoginPatientPosition(mApp.loginDoctorPosition);
@@ -304,27 +317,28 @@ public class LeaveMessageActivity extends AppCompatActivity {
         subbean.setTreatmentType(StrUtils.defaultStr(parabean.getTreatmentType()));
         subDataTask = new SubDataTask(subbean);
         subDataTask.execute();
-        for (int j = 0; j < mPhotoInfos.size(); j++) {
-            Photo_Info parphoto = mPhotoInfos.get(j);
-            if (null != parphoto.getPhoto()) {
-                hasimgcount = hasimgcount + 1;
-            }
-        }
-        for (int j = 0; j < mPhotoInfos.size(); j++) {
-            Photo_Info parphoto = mPhotoInfos.get(j);
-            if (null != parphoto.getPhoto()) {
-                SubZhlyImgInfo subimg = new SubZhlyImgInfo();
-                subimg.setLoginPatientPosition(mApp.loginDoctorPosition);
-                subimg.setImgBase64Data(URLEncoder.encode("data:image/jpg;base64," + parphoto.getPhoto()));
-                subimg.setRequestClientType("1");
-                subimg.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-                subimg.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-                subimg.setImgCode(mImageCode);
-                subimg.setOrderCode(parabean.getOrderCode());
-                subImgTask = new SubImgTask(subimg);
-                subImgTask.execute();
-            }
-        }
+//        for (int j = 0; j < mPhotoInfos.size(); j++) {
+//            Photo_Info parphoto = mPhotoInfos.get(j);
+//            if (null != parphoto.getPhoto()) {
+//                hasimgcount = hasimgcount + 1;
+//            }
+//        }
+//        for (int j = 0; j < mPhotoInfos.size(); j++) {
+//            Photo_Info parphoto = mPhotoInfos.get(j);
+//            if (null != parphoto.getPhoto()) {
+//                SubZhlyImgInfo subimg = new SubZhlyImgInfo();
+//                subimg.setLoginPatientPosition(mApp.loginDoctorPosition);
+//                subimg.setImgBase64Data(URLEncoder.encode("data:image/jpg;base64," + parphoto.getPhoto()));
+//                subimg.setRequestClientType("1");
+//                subimg.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+//                subimg.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+//                subimg.setImgCode(mImageCode);
+//                subimg.setOrderCode(parabean.getOrderCode());
+//                subImgTask = new SubImgTask(subimg);
+//                subImgTask.execute();
+//            }
+//        }
+
     }
 
     class LoadImgTask extends AsyncTask<Void, Void, List<ZhlyImgInfo>> {
@@ -341,7 +355,7 @@ public class LeaveMessageActivity extends AppCompatActivity {
                 String retstr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(queryCond), Constant.SERVICEURL + INetAddress.QUERY_ZHLY_IMG_INFO);
                 NetRetEntity retEntity = JSON.parseObject(retstr, NetRetEntity.class);
                 if (1 == retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length() > 3) {
-                    retimgs = JSON.parseArray(retstr, ZhlyImgInfo.class);
+                    retimgs = JSON.parseArray(retEntity.getResJsonData(), ZhlyImgInfo.class);
                 }
             } catch (Exception ex) {
 
@@ -394,13 +408,124 @@ public class LeaveMessageActivity extends AppCompatActivity {
             if (!aBoolean) {
                 Toast.makeText(mContext, errmsg, Toast.LENGTH_SHORT).show();
             } else {
-                if (mPhotoInfos.size() == 1) {
+                if (getNotUploadImgCount() == 0) {
                     finish();
                     cacerProgress();
+                }else{
+                    startUploadImageTask();
                 }
             }
         }
     }
+
+
+    /**
+     * 启动上传任务
+     */
+    private void startUploadImageTask() {
+        for (int i = 0; i < mPhotoInfos.size(); i++) {
+            Photo_Info mPhotoInfo = mPhotoInfos.get(i);
+            if (mPhotoInfo.getPhoto()!=null&&
+                    mPhotoInfo.getUploadStatus()
+                            != UploadStatusEnum.uploadSucess) {
+                executeUploadTask(mPhotoInfo);
+            }
+        }
+    }
+
+    /**
+     * 是否把所有图片上传成功
+     * @return true or false
+     */
+    private boolean isUploadSucessAll(){
+        int count=0;
+        for (Photo_Info mPhotoInfo : mPhotoInfos) {
+            if (mPhotoInfo.getPhoto() !=null&&mPhotoInfo.getUploadStatus()
+                    == UploadStatusEnum.uploadSucess) {
+                count++;
+            }
+        }
+        return count==mPhotoInfos.size()-(getNetPicCount()+1);
+    }
+
+    /**
+     * 获取未上传图片数量
+     * @return count
+     */
+    private int getNotUploadImgCount(){
+        int count=0;
+        for (Photo_Info mPhotoInfo : mPhotoInfos) {
+            if (mPhotoInfo.getPhoto()!=null) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * 获取网络图片图片的数量
+     * @return count
+     */
+    private int getNetPicCount(){
+         int count=0;
+        for (Photo_Info mPhotoInfo : mPhotoInfos) {
+            if (mPhotoInfo.getPhotoUrl()!=null) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+
+    /**
+     * 执行上传任务
+     *
+     * @param mPhotoInfo 上传图片任务
+     */
+    private void executeUploadTask(Photo_Info mPhotoInfo) {
+        HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
+        hashMap.put("loginPatientPosition", mApp.loginDoctorPosition);
+        hashMap.put("requestClientType", "1");
+        hashMap.put("operPatientCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        hashMap.put("operPatientName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        hashMap.put("orderCode", parabean.getOrderCode());
+        hashMap.put("imgCode", mImageCode);
+        hashMap.put("imgBase64Data","data:image/jpg;base64," + mPhotoInfo.getPhoto());
+        RequestBody requestBody = RetrofitUtil.requestBody(hashMap);
+        ApiHelper.getApiService().operPatientMyOrderResMessageImg(requestBody)
+                .compose(Transformer.switchSchedulers(new ILoadingView() {
+                    @Override
+                    public void showLoadingView() {
+                        mPhotoInfo.setUploadStatus(UploadStatusEnum.uploadPre);
+                    }
+
+                    @Override
+                    public void hideLoadingView() {
+
+                    }
+                })).subscribe(
+                new CommonObserver<String>() {
+                    @Override
+                    protected void onError(String s) {
+                        mPhotoInfo.setUploadStatus(UploadStatusEnum.uploadError);
+                    }
+
+                    @Override
+                    protected void onSuccess(String s) {
+                        NetRetEntity netEntity = JSON.parseObject(s, NetRetEntity.class);
+                        if (netEntity.getResCode() == 1) {
+                            mPhotoInfo.setUploadStatus(UploadStatusEnum.uploadSucess);
+                            if (isUploadSucessAll()) {
+                                finish();
+                                cacerProgress();
+                            }
+                        } else {
+                            mPhotoInfo.setUploadStatus(UploadStatusEnum.uploadError);
+                        }
+                    }
+                });
+    }
+
 
     class SubImgTask extends AsyncTask<Void, Void, Boolean> {
         SubZhlyImgInfo imgInfo;

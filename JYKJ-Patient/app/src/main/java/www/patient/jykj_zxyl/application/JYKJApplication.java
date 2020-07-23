@@ -617,6 +617,7 @@ public class JYKJApplication extends Application {
                 .setOkClient(createOkHttp());
 
 
+
 //        TODO: 2018/5/31 如果以上OkHttpClient的配置满足不了你，传入自己的 OkHttpClient 自行设置
 //        OkHttpClient.Builder builder = new OkHttpClient.Builder();
 //

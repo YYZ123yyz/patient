@@ -98,5 +98,6 @@ dependencies {
     api  'com.scwang.smart:refresh-footer-ball:2.0.1'        //球脉冲加载
     api  'com.scwang.smart:refresh-footer-classics:2.0.1'    //经典加载
     api  'org.greenrobot:eventbus:3.0.0'
+    api  'com.jakewharton:butterknife:8.8.1'
 
 }
