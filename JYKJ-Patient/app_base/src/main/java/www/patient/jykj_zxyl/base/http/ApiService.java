@@ -44,5 +44,8 @@ public interface ApiService {
     //提交留言图片
     @POST("/patientMyOrderControlle/operPatientMyOrderResMessageImg")
     Observable<String> operPatientMyOrderResMessageImg(@Body RequestBody requestBody);
+    //提交订单评价
+    @POST("/patientMyOrderControlle/operPatientMyOrderResComment")
+    Observable<String> operPatientMyOrderResComment(@Body RequestBody requestBody);
 
 }

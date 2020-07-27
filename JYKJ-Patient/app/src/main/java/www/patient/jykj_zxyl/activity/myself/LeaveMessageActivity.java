@@ -29,7 +29,6 @@ import com.allen.library.interceptor.Transformer;
 import com.allen.library.interfaces.ILoadingView;
 import com.allen.library.observer.CommonObserver;
 import com.google.gson.Gson;
-import com.tencent.cos.common.Const;
 
 import entity.mySelf.*;
 import entity.mySelf.conditions.QueryZhlyImgCond;
@@ -41,16 +40,14 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.ImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.base.base_utils.StringUtils;
 import www.patient.jykj_zxyl.base.enum_type.UploadStatusEnum;
 import www.patient.jykj_zxyl.base.http.ApiHelper;
-import www.patient.jykj_zxyl.base.http.ParameUtil;
+import www.patient.jykj_zxyl.util.ParameUtil;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.util.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

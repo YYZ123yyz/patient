@@ -282,7 +282,7 @@ public class FragmentMyOrderAl extends Fragment {
 
         @Override
         protected void onPostExecute(CommentInfo commentInfo) {
-            if (null != commentInfo) {
+            if (null != commentInfo&&commentInfo.getCommentId()!=0) {
                 Intent showint = new Intent(mActivity, ShowCommentActivity.class);
                 showint.putExtra("orderinfo", orderInfo);
                 showint.putExtra("commentinfo", commentInfo);
@@ -292,6 +292,7 @@ public class FragmentMyOrderAl extends Fragment {
                 addint.putExtra("orderinfo", orderInfo);
                 mActivity.startActivity(addint);
             }
+
         }
     }
 }

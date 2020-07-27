@@ -213,7 +213,7 @@ public class MyOrderAlRecycleAdapter extends RecyclerView.Adapter<MyOrderAlRecyc
             service_time = view.findViewById(R.id.service_time);
             leave_btn = view.findViewById(R.id.leave_btn);
             opinion_btn = view.findViewById(R.id.opinion_btn);
-            item_root=view.findViewById(R.id.item_root);
+            item_root = view.findViewById(R.id.item_root);
 
         }
     }

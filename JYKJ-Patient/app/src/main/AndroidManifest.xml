@@ -519,7 +519,7 @@
         <!--首页=》》 血压监控-->
         <activity
             android:name=".activity.home.BloodMonitorActivity"
-            android:windowSoftInputMode="stateHidden|stateUnchanged"></activity>
+            android:windowSoftInputMode="stateHidden|stateUnchanged"/>
         <!--首页=》》 血压趋势-->
         <activity
             android:name=".activity.home.TrendActivity"

@@ -1,89 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:background="@color/pBackColor">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pBackColor"
+    android:orientation="vertical">
+
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/groabColor"
-    >
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/groabColor">
+
         <LinearLayout
-                android:layout_width="61dp"
-                android:layout_height="match_parent"
-                android:id="@+id/back"
-                android:orientation="horizontal">
+            android:id="@+id/back"
+            android:layout_width="61dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
             <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:src="@mipmap/arrow_left"/>
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/arrow_left" />
         </LinearLayout>
+
         <TextView
-                android:text="评价"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:textColor="@color/writeColor"
-                android:layout_height="wrap_content"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="评价"
+            android:textColor="@color/writeColor"
+            android:textSize="17sp" />
     </RelativeLayout>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp"
-                  android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:padding="2dp">
-        <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="订单编号："></TextView>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="16845151132149" android:id="@+id/comm_order_code"></TextView>
-    </LinearLayout>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp"
-                  android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:padding="2dp">
-        <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="图文就诊：" android:id="@+id/comm_treat_type"></TextView>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2020-04-10 08:00" android:id="@+id/comm_treat_date"></TextView>
-    </LinearLayout>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="10dp"
-                  android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:padding="5dp">
-        <EditText android:layout_width="match_parent" android:layout_height="60dp" android:lines="5" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:id="@+id/comm_content"
-        android:hint="请填写您对本次服务的评价，可以帮助更多人">
-        </EditText>
-    </LinearLayout>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:orientation="horizontal">
-        <TextView android:layout_width="50dp" android:layout_height="wrap_content" android:text="评价"></TextView>
-        <ToggleButton
-                android:id="@+id/good_comment"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/good_comment_btn"
-                android:textOn="@null"
-                android:textOff="@null"/>
-        <ToggleButton
-                android:id="@+id/middle_comment"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/middle_comment_btn"
-                android:textOn="@null"
-                android:textOff="@null" android:layout_marginLeft="5dp"/>
-        <ToggleButton
-                android:id="@+id/weak_comment"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/weak_comment_btn"
-                android:textOn="@null"
-                android:textOff="@null" android:layout_marginLeft="5dp"/>
-    </LinearLayout>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:layout_marginTop="10dp" android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        android:padding="2dp">
+
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/bg_jwbs_txbs"
-                android:gravity="center"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="60dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="80dp"
-                android:text="发布"
-                android:id="@+id/pub_comment"
-                android:textColor="#ffffffff"
-                android:textSize="15sp"
-        />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="订单编号"
+            android:textColor="@color/color_000000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/comm_order_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:text="16845151132149"
+            android:textColor="@color/color_000000"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        android:padding="2dp">
+
+        <TextView
+            android:id="@+id/comm_treat_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="图文就诊"
+            android:textColor="@color/color_000000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/comm_treat_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:text="2020-04-10 08:00"
+            android:textColor="@color/color_000000"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/comm_content"
+        android:layout_width="match_parent"
+        android:layout_height="78.5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="14.5dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/bg_round_eeeeee_5"
+        android:gravity="start"
+        android:hint="请填写您对本次服务的评价，可以帮助更多人"
+        android:lines="5"
+        android:paddingStart="6.5dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="6.5dp"
+        android:textColor="@color/color_666666"
+        android:textSize="13sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="评价" />
+
+        <ToggleButton
+            android:id="@+id/good_comment"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/good_comment_btn"
+            android:textOff="@null"
+            android:textOn="@null" />
+
+        <ToggleButton
+            android:id="@+id/middle_comment"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/middle_comment_btn"
+            android:textOff="@null"
+            android:textOn="@null" />
+
+        <ToggleButton
+            android:id="@+id/weak_comment"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/weak_comment_btn"
+            android:textOff="@null"
+            android:textOn="@null" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/pub_comment"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_jwbs_txbs"
+            android:gravity="center"
+            android:text="发布"
+            android:textColor="#ffffffff"
+            android:textSize="15sp" />
     </LinearLayout>
 </LinearLayout>

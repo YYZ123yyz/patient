@@ -19,15 +19,19 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 
+import entity.ProvideInteractOrderInfo;
 import entity.wdzs.ProvideInteractClinicRecordWriteState;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.ZhlyReplyActivity;
+import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJL_BLXJActivity;
+import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJL_WZZLActivity;
+import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJL_ZDMSActivity;
 import www.patient.jykj_zxyl.activity.home.wdzs.ProvideViewInteractOrderTreatmentAndPatientInterrogation;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.base.http.ParameUtil;
+import www.patient.jykj_zxyl.util.ParameUtil;
 
 /**
  * 问诊详情
@@ -45,64 +49,95 @@ public class WDZS_WZXQActivity extends AppCompatActivity {
     private ProvideViewInteractOrderTreatmentAndPatientInterrogation mProvideViewInteractOrderTreatmentAndPatientInterrogation;
     private LinearLayout mBack;
 
-    private LinearLayout mZHLYHF;                //诊后留言
-    private LinearLayout mZDMS;                //诊断描述
-    private LinearLayout mJZXJ;                //就诊小结
-    private LinearLayout mKJCF;                //开具处方
-    private LinearLayout mJZJL;                //就诊记录
+    private LinearLayout mLlConsulationInfo;                //问诊资料
+    private LinearLayout mLlDiagnosisMsg;                //诊后留言
+    private LinearLayout mLlAssumeDesc;                //臆断描述
+    private LinearLayout mLlMedicalRecord;                //病历小结
+    private LinearLayout mLlPrescriptionNotes;                //处方笺
 
-    private TextView mZHLYHFText;                //诊后留言
-    private TextView mZDMSText;                //诊断描述
-    private TextView mJZXJText;                //就诊小结
-    private TextView mKJCFText;                //开具处方
-    private TextView mJZJLText;                //就诊记录
+    private TextView mTvConsulationInfo;                //问诊资料
+    private TextView mTvDiagnosisMsg;                //诊后留言
+    private TextView mTvAssumeDesc;                //臆断描述
+    private TextView mTvMedicalRecord;                //病历小结
+    private TextView mTvPrescriptionNotes;                //处方笺
 
     private ProvideInteractClinicRecordWriteState mProvideInteractClinicRecordWriteState;
 
     private void setLayoutDate() {
-        if (mProvideInteractClinicRecordWriteState.getMessageState() == null || mProvideInteractClinicRecordWriteState.getMessageState() == 0) {
-            mZHLYHFText.setText("问诊人未提交");
-            mZHLYHFText.setTextColor(getResources().getColor(R.color.colorRed));
-        } else if (mProvideInteractClinicRecordWriteState.getMessageState() == 1) {
-            mZHLYHFText.setText("问诊人已提交");
-            mZHLYHFText.setTextColor(getResources().getColor(R.color.textColor_vo));
-        } else if (mProvideInteractClinicRecordWriteState.getMessageState() == 0) {
-            mZHLYHFText.setText("已回复");
-            mZHLYHFText.setTextColor(getResources().getColor(R.color.groabColor));
+        Integer interrogationState = mProvideInteractClinicRecordWriteState.getInterrogationState();
+        if (interrogationState != null) {
+            if (interrogationState == 0) {
+                mTvConsulationInfo.setText("未填写");
+                mTvConsulationInfo.setTextColor(getResources().getColor(R.color.colorRed));
+
+            } else if (interrogationState == 1) {
+                mTvConsulationInfo.setText("已填写");
+                mTvConsulationInfo.setTextColor(getResources().getColor(R.color.color_799dfe));
+            }
+        }else{
+            mTvConsulationInfo.setText("未填写");
+            mTvConsulationInfo.setTextColor(getResources().getColor(R.color.colorRed));
+        }
+        Integer messageState = mProvideInteractClinicRecordWriteState.getMessageState();
+        if (messageState!=null) {
+            if (messageState==0) {
+                mTvDiagnosisMsg.setText("未填写");
+                mTvDiagnosisMsg.setTextColor(getResources().getColor(R.color.colorRed));
+            }else if(messageState==1){
+                mTvDiagnosisMsg.setText("已填写");
+                mTvDiagnosisMsg.setTextColor(getResources().getColor(R.color.color_799dfe));
+            }else if(messageState==2){
+                mTvDiagnosisMsg.setText("已回复");
+                mTvDiagnosisMsg.setTextColor(getResources().getColor(R.color.color_799dfe));
+            }
+
+        }else{
+            mTvDiagnosisMsg.setText("问诊人未提交");
+            mTvDiagnosisMsg.setTextColor(getResources().getColor(R.color.colorRed));
         }
 
-        if (mProvideInteractClinicRecordWriteState.getDiagState() == null || mProvideInteractClinicRecordWriteState.getDiagState() == 0) {
-            mZDMSText.setText("未填写");
-            mZDMSText.setTextColor(getResources().getColor(R.color.colorRed));
-        } else if (mProvideInteractClinicRecordWriteState.getDiagState() == 1) {
-            mZDMSText.setText("已填写");
-            mZDMSText.setTextColor(getResources().getColor(R.color.groabColor));
+        Integer diagState = mProvideInteractClinicRecordWriteState.getDiagState();
+        if (diagState!=null) {
+            if (diagState==0) {
+                mTvAssumeDesc.setText("未填写");
+                mTvAssumeDesc.setTextColor(getResources().getColor(R.color.colorRed));
+            }else if(diagState==1){
+                mTvAssumeDesc.setText("已填写");
+                mTvAssumeDesc.setTextColor(getResources().getColor(R.color.color_799dfe));
+            }
+        }else{
+            mTvAssumeDesc.setText("未填写");
+            mTvAssumeDesc.setTextColor(getResources().getColor(R.color.colorRed));
         }
 
-        if (mProvideInteractClinicRecordWriteState.getTreatmentState() == null || mProvideInteractClinicRecordWriteState.getTreatmentState() == 0) {
-            mJZXJText.setText("未填写");
-            mJZXJText.setTextColor(getResources().getColor(R.color.colorRed));
-        } else if (mProvideInteractClinicRecordWriteState.getTreatmentState() == 1) {
-            mJZXJText.setText("已填写");
-            mJZXJText.setTextColor(getResources().getColor(R.color.groabColor));
+        Integer treatmentState = mProvideInteractClinicRecordWriteState.getTreatmentState();
+        if (treatmentState!=null) {
+            if (treatmentState==0) {
+                mTvMedicalRecord.setText("未填写");
+                mTvMedicalRecord.setTextColor(getResources().getColor(R.color.colorRed));
+            }else if(treatmentState==1){
+                mTvMedicalRecord.setText("已填写");
+                mTvMedicalRecord.setTextColor(getResources().getColor(R.color.color_799dfe));
+            }
+        }else{
+            mTvMedicalRecord.setText("未填写");
+            mTvMedicalRecord.setTextColor(getResources().getColor(R.color.colorRed));
+        }
+        Integer prescribeState = mProvideInteractClinicRecordWriteState.getPrescribeState();
+        if (prescribeState!=null) {
+            if (prescribeState==0) {
+                mTvPrescriptionNotes.setText("未填写");
+                mTvPrescriptionNotes.setTextColor(getResources().getColor(R.color.colorRed));
+            }else if(prescribeState==1){
+                mTvPrescriptionNotes.setText("已填写");
+                mTvPrescriptionNotes.setTextColor(getResources().getColor(R.color.color_799dfe));
+            }
+
+        }else{
+            mTvPrescriptionNotes.setText("未填写");
+            mTvPrescriptionNotes.setTextColor(getResources().getColor(R.color.colorRed));
         }
 
-
-        if (mProvideInteractClinicRecordWriteState.getPrescribeState() == null || mProvideInteractClinicRecordWriteState.getPrescribeState() == 0) {
-            mKJCFText.setText("未填写");
-            mKJCFText.setTextColor(getResources().getColor(R.color.colorRed));
-        } else if (mProvideInteractClinicRecordWriteState.getPrescribeState() == 1) {
-            mKJCFText.setText("已填写");
-            mKJCFText.setTextColor(getResources().getColor(R.color.groabColor));
-        }
-
-        if (mProvideInteractClinicRecordWriteState.getMedicalState() == null || mProvideInteractClinicRecordWriteState.getMedicalState() == 0) {
-            mJZJLText.setText("未填写");
-            mJZJLText.setTextColor(getResources().getColor(R.color.colorRed));
-        } else if (mProvideInteractClinicRecordWriteState.getMedicalState() == 1) {
-            mJZJLText.setText("已填写");
-            mJZJLText.setTextColor(getResources().getColor(R.color.groabColor));
-        }
     }
 
     @Override
@@ -129,47 +164,55 @@ public class WDZS_WZXQActivity extends AppCompatActivity {
                 finish();
             }
         });
-        mZHLYHF = (LinearLayout) this.findViewById(R.id.zhlyhf);
-        mZHLYHF.setOnClickListener(new View.OnClickListener() {
+        mLlConsulationInfo = this.findViewById(R.id.ll_consulation_info);
+        mLlConsulationInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mContext, ZhlyReplyActivity.class).putExtra("wzxx", mProvideViewInteractOrderTreatmentAndPatientInterrogation));
+                ProvideInteractOrderInfo mProvideInteractOrderInfo = new ProvideInteractOrderInfo();
+                mProvideInteractOrderInfo.setOrderCode(mProvideViewInteractOrderTreatmentAndPatientInterrogation.getOrderCode());
+                startActivity(new Intent(mContext, WDYS_JZJL_WZZLActivity.class).putExtra("provideInteractOrderInfo", mProvideInteractOrderInfo));
             }
         });
-        mZDMS = (LinearLayout) this.findViewById(R.id.zdms);
-        mZDMS.setOnClickListener(new View.OnClickListener() {
+        mLlDiagnosisMsg =  this.findViewById(R.id.ll_diagnosis_msg);
+        mLlDiagnosisMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mContext, TWJZ_ZDMSActivity.class).putExtra("wzxx", mProvideViewInteractOrderTreatmentAndPatientInterrogation));
+                startActivity(new Intent(mContext, ZhlyReplyActivity.class).putExtra("wzxx",
+                        mProvideViewInteractOrderTreatmentAndPatientInterrogation));
             }
         });
-        mJZXJ = (LinearLayout) this.findViewById(R.id.jzxj);
-        mJZXJ.setOnClickListener(new View.OnClickListener() {
+        mLlAssumeDesc =  this.findViewById(R.id.ll_assume_desc);
+        mLlAssumeDesc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mContext, TWJZ_JZXJActivity.class).putExtra("wzxx", mProvideViewInteractOrderTreatmentAndPatientInterrogation));
+                ProvideInteractOrderInfo mProvideInteractOrderInfo = new ProvideInteractOrderInfo();
+                mProvideInteractOrderInfo.setOrderCode(mProvideViewInteractOrderTreatmentAndPatientInterrogation.getOrderCode());
+                startActivity(new Intent(mContext, WDYS_JZJL_ZDMSActivity.class).putExtra("provideInteractOrderInfo",
+                        mProvideInteractOrderInfo));
             }
         });
-        mKJCF = (LinearLayout) this.findViewById(R.id.kjcf);
-        mKJCF.setOnClickListener(new View.OnClickListener() {
+        mLlMedicalRecord =  this.findViewById(R.id.ll_medical_record);
+        mLlMedicalRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ProvideInteractOrderInfo mProvideInteractOrderInfo = new ProvideInteractOrderInfo();
+                mProvideInteractOrderInfo.setOrderCode(mProvideViewInteractOrderTreatmentAndPatientInterrogation.getOrderCode());
+                startActivity(new Intent(mContext, WDYS_JZJL_BLXJActivity.class).putExtra("provideInteractOrderInfo",mProvideInteractOrderInfo));
+            }
+        });
+        mLlPrescriptionNotes = (LinearLayout) this.findViewById(R.id.ll_prescription_notes);
+        mLlPrescriptionNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(mContext, TWJZ_KJCFActivity.class).putExtra("wzxx", mProvideViewInteractOrderTreatmentAndPatientInterrogation));
             }
         });
-        mJZJL = (LinearLayout) this.findViewById(R.id.jzjl);
-        mJZJL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(mContext, TWJZ_JZJLActivity.class).putExtra("wzxx", mProvideViewInteractOrderTreatmentAndPatientInterrogation));
-            }
-        });
 
-        mZHLYHFText = (TextView) this.findViewById(R.id.tv_zhlyhf);
-        mZDMSText = (TextView) this.findViewById(R.id.tv_zdms);
-        mJZXJText = (TextView) this.findViewById(R.id.tv_jzxj);
-        mKJCFText = (TextView) this.findViewById(R.id.tv_kjcf);
-        mJZJLText = (TextView) this.findViewById(R.id.tv_jzjl);
+        mTvConsulationInfo = this.findViewById(R.id.tv_consulation_info);
+        mTvDiagnosisMsg =  this.findViewById(R.id.tv_diagnosis_msg);
+        mTvAssumeDesc = this.findViewById(R.id.tv_assume_desc);
+        mTvMedicalRecord =  this.findViewById(R.id.tv_medical_record);
+        mTvPrescriptionNotes =  this.findViewById(R.id.tv_prescription_notes);
     }
 
 
