@@ -206,31 +206,31 @@ public class MainActivity extends AppCompatActivity {
                         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                         builder.setTitle("异常登录提醒");
                         builder.setMessage("您的账号在在另一台手机登录了,如非本人操作,建议修改密码");
-                        builder.setPositiveButton("重新登录", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //通过这个SharedPreferences 库得到账号密码，实现重新登录的功能
-                                EMClient.getInstance().login(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mApp.mProvideViewSysUserPatientInfoAndRegion.getQrCode(), new EMCallBack() {//回调
-                                    @Override
-                                    public void onSuccess() {
-                                        mHandler.sendEmptyMessage(21);
-                                    }
-
-                                    @Override
-                                    public void onProgress(int progress, String status) {
-
-                                    }
-
-                                    @Override
-                                    public void onError(int code, String message) {
-                                        Log.d("main", "登录聊天服务器失败！");
-                                    }
-                                });
-                            }
-                        });
+//                        builder.setPositiveButton("重新登录", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                //通过这个SharedPreferences 库得到账号密码，实现重新登录的功能
+//                                EMClient.getInstance().login(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mApp.mProvideViewSysUserPatientInfoAndRegion.getQrCode(), new EMCallBack() {//回调
+//                                    @Override
+//                                    public void onSuccess() {
+//                                        mHandler.sendEmptyMessage(21);
+//                                    }
+//
+//                                    @Override
+//                                    public void onProgress(int progress, String status) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(int code, String message) {
+//                                        Log.d("main", "登录聊天服务器失败！");
+//                                    }
+//                                });
+//                            }
+//                        });
 
                         //退出 退到登录页面
-                        builder.setNeutralButton("退出", new DialogInterface.OnClickListener() {
+                        builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 EMClient.getInstance().logout(true);
