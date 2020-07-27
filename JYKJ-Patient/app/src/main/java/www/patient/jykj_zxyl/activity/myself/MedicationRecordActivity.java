@@ -17,6 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -68,7 +69,7 @@ public class MedicationRecordActivity extends Activity {
     private RecyclerView mRecycleView;
     private MedicationRecordAdapter mAdapter;
     private MedicationRecordActivity medicationRecordActivity;
-
+    private TextView add_medic_button;
     private MoreFeaturesPopupWindow mPopupWindow;
 
     ImageView iv_add;
@@ -120,6 +121,16 @@ public class MedicationRecordActivity extends Activity {
                         }
                     }
                 }
+            }
+        });
+
+        add_medic_button = (TextView) this.findViewById(R.id.add_medic_button);
+        add_medic_button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //startActivity(new Intent(MedicationSettingsActivity.this,AddMedicationActivity.class));
+                startActivityForResult(new Intent(MedicationRecordActivity.this,
+                        AddMedicationActivity.class), 100);
             }
         });
 

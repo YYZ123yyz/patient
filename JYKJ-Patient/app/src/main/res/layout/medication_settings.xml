@@ -13,12 +13,14 @@
         <LinearLayout
             android:id="@+id/ll_back"
             android:layout_width="60dp"
+
             android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/iv_back"
-                android:layout_width="10dp"
-                android:layout_height="20dp"
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="15dp"
@@ -114,7 +116,7 @@
         android:layout_gravity="center_horizontal"
         android:background="#ff799dfe"
         android:gravity="center"
-        android:text="添加用药"
+        android:text="添加服药设置"
         android:textColor="#ffffffff"
         android:textSize="15sp" />
 </LinearLayout>

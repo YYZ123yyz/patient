@@ -28,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.allin.commlibrary.StringUtils;
+import com.allin.commlibrary.preferences.SavePreferences;
 import com.google.android.gms.common.api.Api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -138,6 +140,24 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initData();
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void initData(){
+        String phoneNumber = SavePreferences.getString("PhoneNumber");
+        if (StringUtils.isNotEmpty(phoneNumber)) {
+            mAccountEdit.setText(phoneNumber);
+        }
+    }
+
     /**
      * 自动登录
      */
@@ -173,7 +193,7 @@ public class LoginActivity extends AppCompatActivity {
 //                                mApp.mViewSysUserDoctorInfoAndHospital.setDoctorCode("dd0500f4e9684678aad9ee00000001");
 //                                mApp.mViewSysUserDoctorInfoAndHospital.setQrCode("JY0100HZ200111180041000001");
                                 mApp.saveUserInfo();
-
+                                SavePreferences.setData("PhoneNumber",mAccountEdit.getText().toString());
 
                                 Toast.makeText(mContext, "恭喜，登录成功", LENGTH_SHORT).show();
                                 mApp.loginIM();

@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.allin.commlibrary.StringUtils;
+import com.allin.commlibrary.preferences.SavePreferences;
 import com.google.gson.Gson;
 
 import java.util.Timer;
@@ -102,6 +105,7 @@ public class PhoneLoginActivity extends AppCompatActivity {
         mTimer.schedule(mTask, 0, 1000);
     }
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override
@@ -136,6 +140,7 @@ public class PhoneLoginActivity extends AppCompatActivity {
                                 userInfo.setUserPwd(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
                                 mApp.mLoginUserInfo = userInfo;
                                 mApp.saveUserInfo();
+                                SavePreferences.setData("PhoneNumber",mPhoneNum.getText().toString());
                                 Toast.makeText(mContext, "恭喜，登录成功", Toast.LENGTH_SHORT).show();
                                 //登录IM
                                 mApp.loginIM();
@@ -213,6 +218,23 @@ public class PhoneLoginActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initData();
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void initData(){
+        String phoneNumber = SavePreferences.getString("PhoneNumber");
+        if (StringUtils.isNotEmpty(phoneNumber)) {
+            mPhoneNum.setText(phoneNumber);
+        }
     }
 
 
