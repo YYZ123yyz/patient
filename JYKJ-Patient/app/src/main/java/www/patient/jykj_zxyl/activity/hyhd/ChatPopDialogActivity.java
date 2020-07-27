@@ -64,7 +64,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -793,6 +795,10 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
         });
     }
 
+    Map msgmap = new HashMap();
+
+    public abstract void showMessages(EMMessage paramMessage);
+
     @Override
     public void onMessageReceived(List<EMMessage> messages) {
         for (EMMessage message : messages) {
@@ -809,6 +815,13 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
             if (username.equals(toChatUsername) || message.getTo().equals(toChatUsername) || message.conversationId().equals(toChatUsername)) {
                 messageList.refreshSelectLast();
                 conversation.markMessageAsRead(message.getMsgId());
+            }
+            if(null!=username && ""!=username){
+                /*if(!msgmap.containsKey(username)){
+                    msgmap.put(username,"1");
+                    showMessages(message);
+                }*/
+                showMessages(message);
             }
             EaseUI.getInstance().getNotifier().vibrateAndPlayTone(message);
         }

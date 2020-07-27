@@ -27,7 +27,9 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
+import com.hyphenate.easeui.hyhd.DemoHelper;
 import com.hyphenate.easeui.hyhd.model.CallReceiver;
+import com.hyphenate.easeui.utils.ExtEaseUtils;
 import com.hyphenate.exceptions.HyphenateException;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -243,7 +245,7 @@ public class JYKJApplication extends Application {
 
 
     public void loginIM(){
-        new Thread(){
+        /*new Thread(){
             public void run(){
                 //注册
                 try {
@@ -255,7 +257,55 @@ public class JYKJApplication extends Application {
                     System.out.println("~~~~~~~注册失败~~~~~~~~"+e.getDescription());
                 }
             }
-        }.start();
+        }.start();*/
+        final String IMTAG = "imlog";
+
+        new Thread() {
+            public void run() {
+                //注册
+                try {
+                    EMClient.getInstance().login(mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mProvideViewSysUserPatientInfoAndRegion.getQrCode(),new EMCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d(IMTAG, "登录成功");
+
+                            // ** manually load all local groups and conversation
+                            EMClient.getInstance().groupManager().loadAllGroups();
+                            EMClient.getInstance().chatManager().loadAllConversations();
+
+                            // update current user's display name for APNs
+                            boolean updatenick = EMClient.getInstance().pushManager().updatePushNickname(ExtEaseUtils.getInstance().getNickName());
+                            if (!updatenick) {
+                                Log.e(IMTAG, "更新用户昵称");
+                            }
+                            DemoHelper.getInstance().getUserProfileManager().asyncGetCurrentUserInfo();
+                            String retuser = EMClient.getInstance().getCurrentUser();
+                            setNewsMessage();
+                            Log.e("iis",retuser);
+                        }
+
+                        @Override
+                        public void onProgress(int progress, String status) {
+                            Log.d(IMTAG, "登录中...");
+                        }
+
+                        @Override
+                        public void onError(final int code, final String message) {
+                            if (code == 101 || code==204) {
+                                try {
+                                    EMClient.getInstance().createAccount(mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mProvideViewSysUserPatientInfoAndRegion.getQrCode());
+                                    gHandler.sendEmptyMessage(1);
+                                } catch (Exception logex) {
+                                    Log.e(IMTAG, "登录失败: " + code);
+                                }
+                            }
+                            Log.d(IMTAG, "登录失败: " + code);
+                        }
+                    });
+                }catch (Exception ex){
+                    Log.e(IMTAG,ex.getMessage());
+                }
+            }}.start();
     }
 
     @Override
@@ -263,6 +313,7 @@ public class JYKJApplication extends Application {
         super.onCreate();
         //初始化IM聊天界面
         gContext = getApplicationContext();
+        DemoHelper.getInstance().init(gContext);
         //获取本地缓存
         getPersistence();
         EMOptions options = new EMOptions();
@@ -304,7 +355,13 @@ public class JYKJApplication extends Application {
         m_persist 	= new SharedPreferences_DataSave(this, "JYKJDOCTER");
         m_persist.putString("loginUserInfo",new Gson().toJson(mLoginUserInfo));
         m_persist.putString("viewSysUserDoctorInfoAndHospital",new Gson().toJson(mProvideViewSysUserPatientInfoAndRegion));
+        ExtEaseUtils.getInstance().setNickName(mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        ExtEaseUtils.getInstance().setImageUrl(mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+        ExtEaseUtils.getInstance().setUserId(mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         m_persist.commit();
+        DemoHelper.getInstance().getUserProfileManager().updateCurrentUserNickName(mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        DemoHelper.getInstance().getUserProfileManager().setCurrentUserAvatar(mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+        DemoHelper.getInstance().setCurrentUserName(mProvideViewSysUserPatientInfoAndRegion.getPatientCode()); // 环信Id
     }
 
     /**

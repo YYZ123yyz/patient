@@ -129,7 +129,8 @@ public class HotRoomFragment extends Fragment {
             List<HotLiveInfo> retlist = new ArrayList();
             try {
                 queryCond.setPageNum(String.valueOf(pageno));
-                String retstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryCond),"https://www.jiuyihtn.com:41041/broadcastLiveDataControlle/searchLiveRoomDetailsByBroadcastStateResHotPlayList");
+                String reqjson = new Gson().toJson(queryCond);
+                String retstr = HttpNetService.urlConnectionService("jsonDataInfo="+reqjson,"https://www.jiuyihtn.com:41041/broadcastLiveDataControlle/searchLiveRoomDetailsByBroadcastStateResHotPlayList");
                 NetRetEntity retEntity = JSON.parseObject(retstr, NetRetEntity.class);
                 if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
                     retlist = JSON.parseArray(retEntity.getResJsonData(),HotLiveInfo.class);

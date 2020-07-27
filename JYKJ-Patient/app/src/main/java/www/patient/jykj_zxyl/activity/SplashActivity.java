@@ -90,6 +90,8 @@ public class SplashActivity extends AppCompatActivity {
 //        }
         if (mApp.mProvideViewSysUserPatientInfoAndRegion != null) {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            mApp.saveUserInfo();
+            mApp.loginIM();
             startActivity(intent);
             finish();
         }else{

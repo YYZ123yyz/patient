@@ -8,27 +8,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
+import android.os.*;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.*;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.utils.ExtEaseUtils;
 import com.tencent.rtmp.*;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import entity.liveroom.RoomDetailInfo;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.adapter.HeadImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.util.CircleImageView;
+import www.patient.jykj_zxyl.util.StrUtils;
 import www.patient.jykj_zxyl.util.TCConstants;
+import ztextviewlib.MarqueeTextView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -75,6 +83,14 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
     private Button btnShare;
     private Button btnShut;
     private Button mBtnOrientation;
+    CircleImageView iv_live_user_head;
+    RecyclerView chat_head_imgs;
+    TextView tv_chat_num;
+    MarqueeTextView mv_chat_content;
+    LinearLayoutManager mLayoutManager;
+    HeadImageViewRecycleAdapter mImageViewRecycleAdapter;
+    List<String> headpics = new ArrayList();
+    TextView tv_head_tit;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +104,23 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
         mPlayConfig = new TXLivePlayConfig();
         checkPublishPermission();
         initview();
+        iv_live_user_head = findViewById(R.id.iv_live_user_head);
+        chat_head_imgs = findViewById(R.id.chat_head_imgs);
+        tv_chat_num = findViewById(R.id.tv_chat_num);
+        mv_chat_content = findViewById(R.id.mv_chat_content);
+        tv_head_tit = findViewById(R.id.tv_head_tit);
+        mLayoutManager = new LinearLayoutManager(mContext);
+        mLayoutManager.setOrientation(LinearLayout.HORIZONTAL);
+        chat_head_imgs.setLayoutManager(mLayoutManager);
+        chat_head_imgs.setHasFixedSize(true);
+        mImageViewRecycleAdapter = new HeadImageViewRecycleAdapter(headpics,mApp);
+        chat_head_imgs.setAdapter(mImageViewRecycleAdapter);
+        Glide.with(mContext).load(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl())
+                .apply(RequestOptions.placeholderOf(com.hyphenate.easeui.R.mipmap.docter_heard)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
+                .into(iv_live_user_head);
+        String parnickname = ExtEaseUtils.getInstance().getNickName();
+        tv_head_tit.setText(parnickname);
     }
 
     void initview(){
@@ -127,6 +160,63 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
         joinChatroom();
         setUpView();
         isopenchat = true;
+    }
+
+    StringBuffer msgnamesb = new StringBuffer();
+
+    static final int SHOW_MESSAGE_FLAG = 101;
+
+
+    Handler myHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case SHOW_MESSAGE_FLAG:
+                    try {
+                        EMMessage paramMessage = (EMMessage) msg.obj;
+                        String parname = StrUtils.defaultStr(paramMessage.getStringAttribute("nickName"));
+                        String parhead = StrUtils.defaultStr(paramMessage.getStringAttribute("imageUrl"));
+                        if (null != parname && "" != parname) {
+                            if (!msgmap.containsKey(parname)) {
+                                msgmap.put(parname, "1");
+                                if (null != msgmap.keySet() && msgmap.keySet().size() > 0) {
+                                    tv_chat_num.setText(String.valueOf(msgmap.keySet().size()) + "人");
+                                }
+                                if (parhead.length() > 0) {
+                                    headpics.add(parhead);
+                                    mImageViewRecycleAdapter.setDate(headpics);
+                                    mImageViewRecycleAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                        mv_chat_content.setText(msgnamesb);
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                    }
+                break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+    @Override
+    public void showMessages(EMMessage paramMessage) {
+        try {
+            String parname = StrUtils.defaultStr(paramMessage.getStringAttribute("nickName"));
+            if(parname.length()>0){
+                msgnamesb.append("  ");
+                EMTextMessageBody txtBody = (EMTextMessageBody) paramMessage.getBody();
+                //Spannable span = EaseSmileUtils.(mContext, txtBody.getMessage());
+                msgnamesb.append(txtBody.getMessage());
+                // 设置内容
+            }
+            Message parmsg = new Message();
+            parmsg.what = SHOW_MESSAGE_FLAG;
+            parmsg.obj = paramMessage;
+            myHandler.sendMessage(parmsg);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     @Override

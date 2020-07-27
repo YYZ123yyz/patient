@@ -2,6 +2,7 @@ package www.patient.jykj_zxyl.activity.hyhd;
 
 import android.Manifest;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -10,6 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -19,12 +22,23 @@ import android.view.ContextMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.utils.ExtEaseUtils;
 import com.tencent.rtmp.*;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.ugc.TXRecordCommon;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.adapter.HeadImageViewRecycleAdapter;
+import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.util.CircleImageView;
+import www.patient.jykj_zxyl.util.StrUtils;
 import www.patient.jykj_zxyl.util.TCConstants;
+import ztextviewlib.MarqueeTextView;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -97,10 +111,22 @@ public class LivePlayerActivity extends ChatPopDialogActivity implements ITXLive
     private boolean mCancelRecordFlag = false;
     private boolean mEnableCache;
     private String mychatid = "113582047035393";
+    CircleImageView iv_live_user_head;
+    RecyclerView chat_head_imgs;
+    TextView tv_chat_num;
+    MarqueeTextView mv_chat_content;
+    LinearLayoutManager mLayoutManager;
+    HeadImageViewRecycleAdapter mImageViewRecycleAdapter;
+    List<String> headpics = new ArrayList();
+    TextView tv_head_tit;
+    Context mContext;
+    JYKJApplication mApp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mApp = (JYKJApplication)getApplication();
+        mContext = LivePlayerActivity.this;
         String sdkver = TXLiveBase.getSDKVersionStr();
         Log.d("liteavsdk", "liteav sdk version is : " + sdkver);
         mCurrentRenderMode     = TXLiveConstants.RENDER_MODE_ADJUST_RESOLUTION;
@@ -143,6 +169,32 @@ public class LivePlayerActivity extends ChatPopDialogActivity implements ITXLive
         joinChatroom();
         setUpView();
         isopenchat = true;
+    }
+
+    StringBuffer msgnamesb = new StringBuffer();
+
+    @Override
+    public void showMessages(EMMessage paramMessage) {
+        try {
+            String parname = StrUtils.defaultStr(paramMessage.getStringAttribute("nickName"));
+            String parhead = StrUtils.defaultStr(paramMessage.getStringAttribute("imageUrl"));
+            if(parname.length()>0){
+                msgnamesb.append("&#160;&#160;&#160;&#160;");
+                EMTextMessageBody txtBody = (EMTextMessageBody) paramMessage.getBody();
+                //Spannable span = EaseSmileUtils.(mContext, txtBody.getMessage());
+                msgnamesb.append(txtBody.getMessage());
+                // 设置内容
+                mv_chat_content.setText(msgnamesb);
+            }
+            if(parhead.length()>0){
+                headpics.add(parhead);
+                mImageViewRecycleAdapter.setDate(headpics);
+                mImageViewRecycleAdapter.notifyDataSetChanged();
+                tv_chat_num.setText(String.valueOf(headpics.size())+"人");
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     void goChat(){
@@ -221,7 +273,23 @@ public class LivePlayerActivity extends ChatPopDialogActivity implements ITXLive
     public void setContentView() {
         super.setContentView(R.layout.activity_play);
         initView();
-
+        iv_live_user_head = findViewById(R.id.iv_live_user_head);
+        chat_head_imgs = findViewById(R.id.chat_head_imgs);
+        tv_chat_num = findViewById(R.id.tv_chat_num);
+        mv_chat_content = findViewById(R.id.mv_chat_content);
+        tv_head_tit = findViewById(R.id.tv_head_tit);
+        mLayoutManager = new LinearLayoutManager(mContext);
+        mLayoutManager.setOrientation(LinearLayout.HORIZONTAL);
+        chat_head_imgs.setLayoutManager(mLayoutManager);
+        chat_head_imgs.setHasFixedSize(true);
+        mImageViewRecycleAdapter = new HeadImageViewRecycleAdapter(headpics,mApp);
+        chat_head_imgs.setAdapter(mImageViewRecycleAdapter);
+        Glide.with(mContext).load(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl())
+                .apply(RequestOptions.placeholderOf(com.hyphenate.easeui.R.mipmap.docter_heard)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
+                .into(iv_live_user_head);
+        String parnickname = ExtEaseUtils.getInstance().getNickName();
+        tv_head_tit.setText(parnickname);
         mRootView = (android.support.constraint.ConstraintLayout) findViewById(R.id.root);
         if (mLivePlayer == null){
             mLivePlayer = new TXLivePlayer(this);

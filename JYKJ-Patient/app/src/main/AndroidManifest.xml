@@ -54,7 +54,7 @@
         <activity android:name=".activity.ForgetPwdActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"/>
 
         <!--首页-->
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".activity.SplashActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
