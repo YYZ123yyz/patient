@@ -7,7 +7,7 @@ android:background="@color/pBackColor">
 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
               android:layout_margin="3dp" android:orientation="horizontal" android:layout_marginLeft="10dp" android:layout_marginRight="10dp">
 <RelativeLayout android:layout_width="135dp" android:layout_height="80dp">
-<ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:src="@mipmap/cover_demo" android:id="@+id/hot_live_cover">
+<ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:src="@mipmap/cover_demo" android:id="@+id/hot_live_cover" android:scaleType="fitXY">
 </ImageView>
     <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true"
                android:src="@mipmap/playbtn" android:id="@+id/play_live_btn"></ImageView>
