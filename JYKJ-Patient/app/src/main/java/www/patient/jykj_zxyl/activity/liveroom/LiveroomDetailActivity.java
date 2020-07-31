@@ -75,6 +75,7 @@ public class LiveroomDetailActivity extends AppCompatActivity {
         public void onClick(View v) {
             if(null!=mRoomDetailInfo){
                 Intent parint = new Intent(mActivity, NewLivePlayerActivity.class);
+                parint.putExtra("detailCode",mRoomDetailInfo.getDetailsCode());
             }
         }
     }

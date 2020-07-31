@@ -20,16 +20,23 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
+import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.utils.ExtEaseUtils;
 import com.tencent.rtmp.*;
 import com.tencent.rtmp.ui.TXCloudVideoView;
+import entity.liveroom.OpenLiveCond;
 import entity.liveroom.RoomDetailInfo;
+import netService.HttpNetService;
+import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.adapter.HeadImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.application.JYKJApplication;
@@ -91,16 +98,19 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
     HeadImageViewRecycleAdapter mImageViewRecycleAdapter;
     List<String> headpics = new ArrayList();
     TextView tv_head_tit;
+    String mdetailCode = "";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mychatid = getIntent().getStringExtra("chatId");
         playUrl = getIntent().getStringExtra("pullUrl");
+        mdetailCode = getIntent().getStringExtra("detailCode");
         mApp = (JYKJApplication)getApplication();
         mActivity = NewLivePlayerActivity.this;
         mContext = NewLivePlayerActivity.this;
         setContentView(R.layout.activity_new_player);
         mActivityType = getIntent().getIntExtra("PLAY_TYPE", ACTIVITY_TYPE_LIVE_PLAY);
+        loadLive();
         mPlayConfig = new TXLivePlayConfig();
         checkPublishPermission();
         initview();
@@ -119,7 +129,7 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
                 .apply(RequestOptions.placeholderOf(com.hyphenate.easeui.R.mipmap.docter_heard)
                         .diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(iv_live_user_head);
-        String parnickname = ExtEaseUtils.getInstance().getNickName();
+        String parnickname = mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName();
         tv_head_tit.setText(parnickname);
     }
 
@@ -160,6 +170,70 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
         joinChatroom();
         setUpView();
         isopenchat = true;
+    }
+
+    /**
+     * 获取进度条
+     */
+
+    public void getProgressBar(String title, String progressPrompt) {
+        if (mDialogProgress == null) {
+            mDialogProgress = new ProgressDialog(this);
+        }
+        mDialogProgress.setTitle(title);
+        mDialogProgress.setMessage(progressPrompt);
+        mDialogProgress.setCancelable(false);
+        mDialogProgress.show();
+    }
+
+    /**
+     * 取消进度条
+     */
+    public void cacerProgress() {
+        if (mDialogProgress != null) {
+            mDialogProgress.dismiss();
+        }
+    }
+
+    void loadLive(){
+        getProgressBar("打开直播间","正在打开直播间，请稍后...");
+        OpenLiveCond opencond = new OpenLiveCond();
+        opencond.setDetailsCode(mdetailCode);
+        opencond.setLoginUserPosition(mApp.loginDoctorPosition);
+        opencond.setOperUserCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        opencond.setOperUserName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        opencond.setRequestClientType("1");
+        LoadLiveTask loadtask = new LoadLiveTask(opencond);
+        loadtask.execute();
+    }
+
+    class LoadLiveTask extends AsyncTask<Void, Void, Boolean>{
+        OpenLiveCond queCond;
+        LoadLiveTask(OpenLiveCond queCond){
+            this.queCond =queCond;
+        }
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try{
+                String repjson = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queCond),"https://www.jiuyihtn.com:41041/broadcastLiveDataControlle/getLiveRoomDetailsByDetailsCode");
+                NetRetEntity retent = JSON.parseObject(repjson,NetRetEntity.class);
+                if(retent.getResCode()==1){
+                    String subrepjson = retent.getResJsonData();
+                    RoomDetailInfo retliveresp = JSON.parseObject(subrepjson,RoomDetailInfo.class);
+                    mychatid = retliveresp.getChatRoomCode();
+                    playUrl = retliveresp.getPullUrl();
+                    return true;
+                }
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            cacerProgress();
+        }
     }
 
     StringBuffer msgnamesb = new StringBuffer();
@@ -558,15 +632,44 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
     }
 
     void goChat(){
-        if(isopenchat){
-            if(chatViewLayout.getVisibility()== View.VISIBLE) {
-                chatViewLayout.setVisibility(View.GONE);
-            }else{
+        if(StrUtils.defaultStr(ExtEaseUtils.getInstance().getUserId()).length()==0){
+            mApp.saveUserInfo();
+            EMClient.getInstance().login(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mApp.mProvideViewSysUserPatientInfoAndRegion.getQrCode(),new EMCallBack() {
+                @Override
+                public void onSuccess() {
+                    if(isopenchat){
+                        if(chatViewLayout.getVisibility()== View.VISIBLE) {
+                            chatViewLayout.setVisibility(View.GONE);
+                        }else{
+                            chatViewLayout.setVisibility(View.VISIBLE);
+                        }
+                    }else{
+                        createChat();
+                        chatViewLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onError(int i, String s) {
+
+                }
+
+                @Override
+                public void onProgress(int i, String s) {
+
+                }
+            });
+        }else {
+            if (isopenchat) {
+                if (chatViewLayout.getVisibility() == View.VISIBLE) {
+                    chatViewLayout.setVisibility(View.GONE);
+                } else {
+                    chatViewLayout.setVisibility(View.VISIBLE);
+                }
+            } else {
+                createChat();
                 chatViewLayout.setVisibility(View.VISIBLE);
             }
-        }else{
-            createChat();
-            chatViewLayout.setVisibility(View.VISIBLE);
         }
     }
 
