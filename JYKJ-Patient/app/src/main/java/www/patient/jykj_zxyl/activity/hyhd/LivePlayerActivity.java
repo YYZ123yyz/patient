@@ -120,7 +120,6 @@ public class LivePlayerActivity extends ChatPopDialogActivity implements ITXLive
     List<String> headpics = new ArrayList();
     TextView tv_head_tit;
     Context mContext;
-    JYKJApplication mApp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

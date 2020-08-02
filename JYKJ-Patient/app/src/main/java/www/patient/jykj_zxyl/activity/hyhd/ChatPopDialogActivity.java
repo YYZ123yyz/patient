@@ -57,6 +57,8 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.util.StrUtils;
 import www.patient.jykj_zxyl.util.SwipeAnimationController;
 
 import java.io.File;
@@ -76,6 +78,7 @@ import static com.hyphenate.easeui.EaseConstant.CHATTYPE_GROUP;
 public abstract class ChatPopDialogActivity extends AppCompatActivity implements EMMessageListener {
 
     protected static final String TAG = "EaseChatFragment";
+    protected JYKJApplication mApp;
     protected EaseTitleBar titleBar;
     protected InputMethodManager inputMethodManager;
     protected static final int REQUEST_CODE_MAP = 1;
@@ -148,7 +151,7 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
     // "正在输入"功能的开关，打开后本设备发送消息将持续发送cmd类型消息通知对方"正在输入"
     private boolean turnOnTyping;
 
-    private String mChatType;
+    private String mChatType = "";
     private             int                     mMessageNum;                //可发送消息数量
     private Long mVoiceTime;                //可拨打语音时长（单位：秒）
     private Long mVedioTime;                //可拨打视频时长
@@ -185,7 +188,7 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
         // userId you are chat with or group id
         toChatUsername = fragmentArgs.getString(EaseConstant.EXTRA_USER_ID);
         toChatUsernameName = fragmentArgs.getString(EaseConstant.EXTRA_USER_NAME);
-        mChatType = fragmentArgs.getString("chatType");
+        mChatType = StrUtils.defaultStr(fragmentArgs.getString("chatType"));
         itemStrings = new int[]{ R.string.attach_take_pic, R.string.attach_picture,
                 R.string.attach_voice_call,R.string.attach_video,R.string.attach_file};
         itemdrawables = new int[]{ R.mipmap.hyhd_pz, R.mipmap.hyhd_tp,
@@ -1365,9 +1368,9 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
      */
     private void updateTW(String operType, String limitNum, String treatmentType){
         updMyClinicDetailByOrderTreatmentLimitNum = new UpdMyClinicDetailByOrderTreatmentLimitNum();
-        updMyClinicDetailByOrderTreatmentLimitNum.setLoginDoctorPosition(loginDoctorPosition);
-        updMyClinicDetailByOrderTreatmentLimitNum.setOperDoctorCode(operDoctorCode);
-        updMyClinicDetailByOrderTreatmentLimitNum.setOperDoctorName(operDoctorName);
+        updMyClinicDetailByOrderTreatmentLimitNum.setLoginDoctorPosition(mApp.loginDoctorPosition);
+        updMyClinicDetailByOrderTreatmentLimitNum.setOperDoctorCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        updMyClinicDetailByOrderTreatmentLimitNum.setOperDoctorName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         updMyClinicDetailByOrderTreatmentLimitNum.setOrderCode(orderCode);
         updMyClinicDetailByOrderTreatmentLimitNum.setTreatmentType(treatmentType);
         updMyClinicDetailByOrderTreatmentLimitNum.setOperType(operType);
@@ -1378,7 +1381,7 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
                 try {
 
                     String string = new Gson().toJson(updMyClinicDetailByOrderTreatmentLimitNum);
-                    HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"doctorInteractDataControlle/operUpdMyClinicDetailByOrderTreatmentLimitNum");
+                    //HttpNetService.urlConnectionService("jsonDataInfo="+string, "https://www.jiuyihtn.com:41041/doctorInteractDataControlle/operUpdMyClinicDetailByOrderTreatmentLimitNum");
                     String string01 = Constant.SERVICEURL+"msgDataControlle/searchMsgPushReminderAllCount";
                     System.out.println(string+string01);
                 } catch (Exception e) {

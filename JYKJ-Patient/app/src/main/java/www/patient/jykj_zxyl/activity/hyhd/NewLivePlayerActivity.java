@@ -30,6 +30,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.hyhd.DemoHelper;
 import com.hyphenate.easeui.utils.ExtEaseUtils;
 import com.tencent.rtmp.*;
 import com.tencent.rtmp.ui.TXCloudVideoView;
@@ -50,7 +51,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXLivePlayListener, View.OnClickListener {
-    JYKJApplication mApp;
     Activity mActivity;
     Context mContext;
     public ProgressDialog mDialogProgress = null;
@@ -220,7 +220,7 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
                 if(retent.getResCode()==1){
                     String subrepjson = retent.getResJsonData();
                     RoomDetailInfo retliveresp = JSON.parseObject(subrepjson,RoomDetailInfo.class);
-                    mychatid = retliveresp.getChatRoomCode();
+                    //mychatid = retliveresp.getChatRoomCode();
                     playUrl = retliveresp.getPullUrl();
                     return true;
                 }
@@ -637,6 +637,12 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
             EMClient.getInstance().login(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mApp.mProvideViewSysUserPatientInfoAndRegion.getQrCode(),new EMCallBack() {
                 @Override
                 public void onSuccess() {
+                    EMClient.getInstance().groupManager().loadAllGroups();
+                    EMClient.getInstance().chatManager().loadAllConversations();
+
+                    // update current user's display name for APNs
+                    boolean updatenick = EMClient.getInstance().pushManager().updatePushNickname(ExtEaseUtils.getInstance().getNickName());
+                    DemoHelper.getInstance().getUserProfileManager().asyncGetCurrentUserInfo();
                     if(isopenchat){
                         if(chatViewLayout.getVisibility()== View.VISIBLE) {
                             chatViewLayout.setVisibility(View.GONE);
