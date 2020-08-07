@@ -220,7 +220,7 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
                 if(retent.getResCode()==1){
                     String subrepjson = retent.getResJsonData();
                     RoomDetailInfo retliveresp = JSON.parseObject(subrepjson,RoomDetailInfo.class);
-                    //mychatid = retliveresp.getChatRoomCode();
+                    mychatid = retliveresp.getChatRoomCode();
                     playUrl = retliveresp.getPullUrl();
                     queroominfo = retliveresp;
                     return true;

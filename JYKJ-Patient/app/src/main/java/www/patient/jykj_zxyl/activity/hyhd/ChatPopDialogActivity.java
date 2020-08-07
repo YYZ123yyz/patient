@@ -177,9 +177,9 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
         chatType = fragmentArgs.getInt(EaseConstant.CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
 
         //消息数量限制
-        mMessageNum = fragmentArgs.getInt(EaseConstant.EXTRA_MESSAGE_NUM, EaseConstant.CHATTYPE_SINGLE);
-        mVoiceTime = fragmentArgs.getLong(EaseConstant.EXTRA_VOICE_NUM, EaseConstant.CHATTYPE_SINGLE);
-        mVedioTime = fragmentArgs.getLong(EaseConstant.EXTRA_VEDIO_NUM, EaseConstant.CHATTYPE_SINGLE);
+        mMessageNum = fragmentArgs.getInt(EaseConstant.EXTRA_MESSAGE_NUM, Integer.MAX_VALUE);
+        mVoiceTime = fragmentArgs.getLong(EaseConstant.EXTRA_VOICE_NUM, Integer.MAX_VALUE);
+        mVedioTime = fragmentArgs.getLong(EaseConstant.EXTRA_VEDIO_NUM, Integer.MAX_VALUE);
         mStopDate = fragmentArgs.getString("date");
         loginDoctorPosition = fragmentArgs.getString("loginDoctorPosition","");
         operDoctorCode = fragmentArgs.getString("operDoctorCode","");
@@ -189,6 +189,7 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
         toChatUsername = fragmentArgs.getString(EaseConstant.EXTRA_USER_ID);
         toChatUsernameName = fragmentArgs.getString(EaseConstant.EXTRA_USER_NAME);
         mChatType = StrUtils.defaultStr(fragmentArgs.getString("chatType"));
+        mApp.loginIM();
         itemStrings = new int[]{ R.string.attach_take_pic, R.string.attach_picture,
                 R.string.attach_voice_call,R.string.attach_video,R.string.attach_file};
         itemdrawables = new int[]{ R.mipmap.hyhd_pz, R.mipmap.hyhd_tp,
