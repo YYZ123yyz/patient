@@ -15,7 +15,7 @@
         android:id="@+id/et_sendmessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dip"
+        android:layout_margin="1dip"
         android:background="#DDD"
         android:gravity="start"
         android:imeOptions="actionSend"
