@@ -108,6 +108,7 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
         mApp = (JYKJApplication)getApplication();
         mActivity = NewLivePlayerActivity.this;
         mContext = NewLivePlayerActivity.this;
+        //mApp.loginIM();
         setContentView(R.layout.activity_new_player);
         mActivityType = getIntent().getIntExtra("PLAY_TYPE", ACTIVITY_TYPE_LIVE_PLAY);
         loadLive();
