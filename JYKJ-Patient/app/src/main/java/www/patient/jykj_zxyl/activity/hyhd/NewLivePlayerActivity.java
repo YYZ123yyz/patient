@@ -159,6 +159,7 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
 
     boolean isopenchat = false;
     static final int GO_CHAT_ACT = 999;
+    static final int LOGIN_CHAT_FAIL = 997;
     @Override
     public void createChat() {
         LogimImTask logimImTask = new LogimImTask();
@@ -207,7 +208,10 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
                             }
                         }*/
                         Log.d(IMTAG, "登录失败: " + code);
-                        Toast.makeText(mContext,"登录聊天室失败",Toast.LENGTH_SHORT);
+                        Message sendmsg = new Message();
+                        sendmsg.what = LOGIN_CHAT_FAIL;
+                        myHandler.sendMessage(sendmsg);
+                        //Toast.makeText(mContext,"登录聊天室失败",Toast.LENGTH_SHORT);
                     }
                 });
             }catch (Exception ex){
@@ -353,6 +357,9 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
                     break;
                 case GO_CHAT_ACT:
                     doChat();
+                    break;
+                case LOGIN_CHAT_FAIL:
+                    Toast.makeText(mContext,"登录聊天室失败，请稍后重试！",Toast.LENGTH_SHORT);
                     break;
             }
             super.handleMessage(msg);
