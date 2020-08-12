@@ -49,15 +49,16 @@
                 android:textSize="12sp" />
         </RelativeLayout>
 
-       <!--  <TextView
+     <TextView
             android:id="@+id/tv_userid"
             android:visibility="gone"
+            android:textSize="12sp"
             style="@style/chat_text_name_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:layout_toLeftOf="@id/iv_userhead"
-            android:text="xxx" /> -->
+            android:layout_marginRight="@dimen/chat_nick_margin_left"
+            android:layout_toRightOf="@id/iv_userhead"
+            android:text="xxx" />
 
         <ImageView
             android:id="@+id/msg_status"
