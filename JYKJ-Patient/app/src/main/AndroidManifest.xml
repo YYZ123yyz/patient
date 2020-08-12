@@ -23,7 +23,12 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-feature android:name="android.hardware.Camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE" />
+    <uses-permission android:name="com.heytap.mcs.permission.RECIEVE_MCS_MESSAGE"/>
     <application
         android:name=".application.JYKJApplication"
         android:allowBackup="true"
@@ -537,6 +542,12 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="T9EnCIL7LexKqGmQoAyiXZ9rxfxlDCcH" />
+        <meta-data
+                android:name="com.mob.push.oppo.appkey"
+                android:value="67ZtaSY1EyjZZoYqqYVT6e3X" />
+        <meta-data
+                android:name="com.mob.push.oppo.appsecret"
+                android:value="sK8dkfTwHt11QezBuIO4kjJV" />
        <!--< meta-data-->
             <!--android:name="com.baidu.lbsapi.API_KEY"-->
             <!--android:value="ItMylMpbeZNsTcNGSedrSmpa9ii497XH" />-->

@@ -274,7 +274,7 @@ public class JYKJApplication extends Application {
                             EMClient.getInstance().chatManager().loadAllConversations();
 
                             // update current user's display name for APNs
-                            boolean updatenick = EMClient.getInstance().pushManager().updatePushNickname(ExtEaseUtils.getInstance().getNickName());
+                            boolean updatenick = EMClient.getInstance().pushManager().updatePushNickname(mProvideViewSysUserPatientInfoAndRegion.getUserName());
                             if (!updatenick) {
                                 Log.e(IMTAG, "更新用户昵称");
                             }
