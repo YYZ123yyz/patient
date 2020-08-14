@@ -59,8 +59,8 @@ public class EaseNotifier {
     protected static int NOTIFY_ID = 0525; // start notification id
 
     protected static final String CHANNEL_ID = "hyphenate_chatuidemo_notification";
-    protected static final long[] VIBRATION_PATTERN = new long[]{0, 180, 80, 120};
-
+    //protected static final long[] VIBRATION_PATTERN = new long[]{0, 180, 80, 120};
+    protected static final long[] VIBRATION_PATTERN =  new long[]{0};
     protected NotificationManager notificationManager = null;
 
     protected HashSet<String> fromUsers = new HashSet<>();
