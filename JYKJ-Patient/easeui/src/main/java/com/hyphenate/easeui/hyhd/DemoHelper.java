@@ -182,6 +182,8 @@ public class DemoHelper {
      */
     public void init(Context context) {
         demoModel = new DemoModel(context);
+        demoModel.setSettingMsgNotification(false);
+        demoModel.setSettingMsgSound(false);
         EMOptions options = initChatOptions(context);
 //        options.setRestServer("a1-hsb.easemob.com");
 //        options.setIMServer("39.107.54.56");

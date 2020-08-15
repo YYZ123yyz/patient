@@ -284,7 +284,7 @@ public class EaseNotifier {
                 return;
             }
             if (settingsProvider.isMsgVibrateAllowed(message)) {
-                vibrator.vibrate(VIBRATION_PATTERN, -1);
+                //vibrator.vibrate(VIBRATION_PATTERN, -1);
             }
 
 //            if (settingsProvider.isMsgSoundAllowed(message)) {
