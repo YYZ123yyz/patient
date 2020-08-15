@@ -134,6 +134,7 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
             mImageViewRecycleAdapter.setDate(headpics);
             mImageViewRecycleAdapter.notifyDataSetChanged();
         }
+        createChat();
     }
 
     static final int UP_JOINNUM_ACT = 511;
@@ -190,6 +191,7 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
     static final int LOGIN_CHAT_FAIL = 997;
     @Override
     public void createChat() {
+        isopenchat = true;
         LogimImTask logimImTask = new LogimImTask();
         logimImTask.execute();
     }

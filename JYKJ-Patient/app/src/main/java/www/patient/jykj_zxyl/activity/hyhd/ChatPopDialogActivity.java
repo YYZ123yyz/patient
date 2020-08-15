@@ -857,7 +857,7 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
                 }*/
                 showMessages(message);
             }
-            EaseUI.getInstance().getNotifier().vibrateAndPlayTone(message);
+            //EaseUI.getInstance().getNotifier().vibrateAndPlayTone(message);
         }
     }
 
