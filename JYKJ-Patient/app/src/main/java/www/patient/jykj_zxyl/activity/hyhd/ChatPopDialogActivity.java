@@ -9,10 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.os.*;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -355,6 +352,9 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
 
 
     protected void joinChatroom(){
+        if(true){
+            return;
+        }
         if(chatType== EaseConstant.CHATTYPE_CHATROOM){
             EMClient.getInstance().chatroomManager().joinChatRoom(toChatUsername, new EMValueCallBack<EMChatRoom>() {
 
@@ -754,34 +754,63 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
         }
     }
 
+    boolean isbacked = false;
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (groupListener != null) {
-            EMClient.getInstance().groupManager().removeGroupChangeListener(groupListener);
+        if(isbacked){
+            return;
         }
-
-        if (chatRoomListener != null) {
-            EMClient.getInstance().chatroomManager().removeChatRoomListener(chatRoomListener);
-        }
-
-        if(chatType == EaseConstant.CHATTYPE_CHATROOM){
+        if(chatType == EaseConstant.CHATTYPE_CHATROOM && !isbacked) {
             doSend("离开直播间了");
-            EMClient.getInstance().chatroomManager().leaveChatRoom(toChatUsername);
+        }
+        closeRoom();
+    }
+
+    public void closeRoom(){
+        CloseRoomTask closeRoomTask = new CloseRoomTask();
+        closeRoomTask.execute();
+    }
+
+    class CloseRoomTask extends AsyncTask<Void,Void,Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if (groupListener != null) {
+                EMClient.getInstance().groupManager().removeGroupChangeListener(groupListener);
+            }
+
+            if (chatRoomListener != null) {
+                EMClient.getInstance().chatroomManager().removeChatRoomListener(chatRoomListener);
+            }
+            if(chatType == EaseConstant.CHATTYPE_CHATROOM){
+                EMClient.getInstance().chatroomManager().leaveChatRoom(toChatUsername);
+            }
+            myActivity.finish();
         }
     }
 
     public void onBackPressed() {
         if (inputMenu.onBackPressed()) {
-            myActivity.finish();
             if(chatType == CHATTYPE_GROUP){
                 EaseAtMessageHelper.get().removeAtMeGroup(toChatUsername);
                 EaseAtMessageHelper.get().cleanToAtUserList();
             }
             if (chatType == EaseConstant.CHATTYPE_CHATROOM) {
+                isbacked = true;
                 doSend("离开直播间了");
-                EMClient.getInstance().chatroomManager().leaveChatRoom(toChatUsername);
             }
+            closeRoom();
+            //myActivity.finish();
         }
     }
 
@@ -797,7 +826,12 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
                         if(myActivity.isFinishing() || !toChatUsername.equals(value.getId()))
                             return;
                         pd.dismiss();
+                        Message themsg = new Message();
+                        themsg.what = ADD_ENTERROOM_MSG;
+                        messagehandler.sendMessage(themsg);
+                        upJoinUsernum(1);
                         EMChatRoom room = EMClient.getInstance().chatroomManager().getChatRoom(toChatUsername);
+                        int users = room.getMemberCount();
                         if (room != null) {
                             titleBar.setTitle(room.getName());
                             EMLog.d(TAG, "join room success : " + room.getName());
@@ -1038,6 +1072,7 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
                         if(null!=members && members.size()>=0) {
                             upJoinUsernum(members.size());
                         }*/
+                        //doSend("加入直播间了");
                         upJoinUsernum(1);
                     }
                 });
@@ -1055,6 +1090,7 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
                         if(null!=members && members.size()>=0) {
                             upJoinUsernum(members.size());
                         }*/
+                        //doSend("离开直播间了");
                         upJoinUsernum(-1);
                     }
                 });
@@ -1703,7 +1739,7 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
         }
 
         if(forward_msg.getChatType() == EMMessage.ChatType.ChatRoom){
-            doSend("离开直播间了");
+            //doSend("离开直播间了");
             EMClient.getInstance().chatroomManager().leaveChatRoom(forward_msg.getTo());
         }
     }
