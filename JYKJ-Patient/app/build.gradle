@@ -49,16 +49,24 @@ android {
         abortOnError false
     }
 
-    signingConfigs{
-        debug{  //这里配置的就是debug的签名配置了
-            storeFile file("E:\\tmpwork\\git\\androidwork\\JYKJcode\\JYKJ-Patient\\app\\src\\main\\xianjiuyipatient.jsk")   //这个文件是我的,改成你自己的release签名文件
-//            storeFile file("E:\\tmpwork\\git\\androidwork\\JYKJcode\\JYKJ-Patient\\app\\src\\main\\yyz.jks")
-            storePassword "jiuyihtnpatient"   //密码改成自己的
-            keyAlias "xianjiuyipatient"              //再改成你自己的
-            keyPassword "jiuyihealthpatient"     //再改成你自己的
-//            storePassword "JYKJ123456"   //密码改成自己的
-//            keyAlias "JYKJ"              //再改成你自己的
-//            keyPassword "JYKJ123456"     //再改成你自己的
+    //签名
+    signingConfigs {
+        //您自己的keystore信息
+        myConfig {
+            storeFile file("../xianjiuyipatient.jks")
+            storePassword "jiuyihtnpatient"
+            keyAlias "xianjiuyipatient"
+            keyPassword "jiuyihealthpatient"
+            v2SigningEnabled false
+        }
+
+        //您自己的keystore信息
+        debug {
+            storeFile file("../xianjiuyipatient.jks")
+            storePassword "jiuyihtnpatient"
+            keyAlias "xianjiuyipatient"
+            keyPassword "jiuyihealthpatient"
+            v2SigningEnabled false
         }
     }
 
