@@ -29,11 +29,9 @@ import www.patient.jykj_zxyl.adapter.TWJZ_CFQRecycleAdapter;
 import www.patient.jykj_zxyl.util.NestedExpandaleListView;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.wdzs.ProvideViewInteractOrderTreatmentAndPatientInterrogation;
-import www.patient.jykj_zxyl.adapter.TWJZ_CFQRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.util.NestedExpandaleListView;
-import www.patient.jykj_zxyl.util.ParameUtil;
+import www.patient.jykj_zxyl.base.http.ParameUtil;
 
 /**
  * 图文就诊（开具处方）
@@ -243,7 +241,7 @@ public class TWJZ_KJCFActivity extends AppCompatActivity {
 //        provideInteractOrderPrescribe.setOrderCode(mProvideViewInteractOrderTreatmentAndPatientInterrogation.getOrderCode());
 
 
-        HashMap<String, Object> hashMap = ParameUtil.buildBaseParam(this);
+        HashMap<String, Object> hashMap = ParameUtil.buildBasePatientParam(this);
         hashMap.put("orderCode",mProvideViewInteractOrderTreatmentAndPatientInterrogation.getOrderCode());
 
         new Thread() {

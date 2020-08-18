@@ -19,7 +19,7 @@ public class ChoiceMedicationAdapter extends RecyclerView.Adapter<ChoiceMedicati
     private List<ProvideDrugInfo> mData;
     private Context mContext;
 
-    private ChoiceMedicationAdapter.OnItemClickListener mOnItemClickListener;           //用户资料点击事件
+    private OnItemClickListener mOnItemClickListener;           //用户资料点击事件
 
     public interface OnItemClickListener{
         void onClick(int position);

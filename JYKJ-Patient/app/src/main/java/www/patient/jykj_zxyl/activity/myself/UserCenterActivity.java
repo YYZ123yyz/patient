@@ -184,7 +184,7 @@ public class UserCenterActivity extends AppCompatActivity {
                             netRetEntity = new Gson().fromJson(mNetLoginRetStr, NetRetEntity.class);
                             if (netRetEntity.getResCode() == 1) {
                                 mApp.mProvideViewSysUserPatientInfoAndRegion = new Gson().fromJson(netRetEntity.getResJsonData(), ProvideViewSysUserPatientInfoAndRegion.class);
-                               mApp.saveUserInfo();
+                                mApp.saveUserInfo();
                                 Toast.makeText(mContext, "操作成功", Toast.LENGTH_SHORT).show();
                                 //登录IM
                                 mApp.loginIM();
@@ -250,7 +250,7 @@ public class UserCenterActivity extends AppCompatActivity {
                         .into(mUserHeadImage);
             }
         }
-        if (null != mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() ) {
+        if (null != mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus()) {
             nickName_open.setImageResource(R.mipmap.open);
             nickName_open.setTag(R.mipmap.open);
         } else {

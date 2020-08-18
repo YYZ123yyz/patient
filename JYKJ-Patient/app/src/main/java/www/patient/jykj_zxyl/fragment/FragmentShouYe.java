@@ -63,9 +63,10 @@ import www.patient.jykj_zxyl.activity.hyhd.LivePlayerActivity;
 import www.patient.jykj_zxyl.activity.myself.MedicationRecordActivity;
 import www.patient.jykj_zxyl.activity.myself.MedicationSettingsActivity;
 import www.patient.jykj_zxyl.activity.myself.couponFragment.FragmentAdapter;
+import www.patient.jykj_zxyl.activity.myself.order.activity.MyOrderListActivity;
 import www.patient.jykj_zxyl.base.base_utils.NetworkUtil;
 import www.patient.jykj_zxyl.base.http.ApiHelper;
-import www.patient.jykj_zxyl.util.ParameUtil;
+import www.patient.jykj_zxyl.base.http.ParameUtil;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
 import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_WDYS;
@@ -437,7 +438,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
             public void run() {
                 try {
                     String string = new Gson().toJson(providePatientBindingMyDoctorInfo);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, www.patient.jykj_zxyl.application.Constant.SERVICEURL + "PatientMyDoctorControlle/searchIndexMyDoctorShow");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "PatientMyDoctorControlle/searchIndexMyDoctorShow");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
@@ -779,7 +780,9 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                 alertWillpub();
                 break;
             case R.id.diet_layout:
-                alertWillpub();
+               // alertWillpub();
+                Intent intent1=new Intent(this.getContext(), MyOrderListActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.port_layout:
                 alertWillpub();
@@ -931,7 +934,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
             public void run() {
                 try {
                     String string = new Gson().toJson(operScanQrCodeInside);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, www.patient.jykj_zxyl.application.Constant.SERVICEURL + "doctorDataControlle/operScanQrCodeInside");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "doctorDataControlle/operScanQrCodeInside");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
@@ -960,7 +963,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
             public void run() {
                 try {
                     String string = new Gson().toJson(bindDoctorFriend);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, www.patient.jykj_zxyl.application.Constant.SERVICEURL + "/" + url);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "/" + url);
 
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();

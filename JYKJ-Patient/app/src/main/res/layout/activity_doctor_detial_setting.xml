@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_f6f6f6">
+    <include layout="@layout/item_toolbar"
+        android:id="@+id/item_title"
+        >
+
+
+    </include>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48.5dp"
+        android:background="@color/white"
+        android:id="@+id/rl_authority_root"
+        android:layout_below="@+id/item_title"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_000000"
+            android:textSize="15sp"
+            android:layout_marginStart="11.5dp"
+            android:layout_centerVertical="true"
+            android:text="是否让医生查看病例"
+            >
+
+
+        </TextView>
+
+        <com.suke.widget.SwitchButton
+            android:id="@+id/sw_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            app:sb_show_indicator="false"
+            android:layout_marginEnd="11.5dp"
+            app:sb_background="@color/color_e5e5e5"
+            app:sb_uncheckcircle_color="@color/white"
+            app:sb_uncheck_color="@color/color_e5e5e5"
+            app:sb_checked_color="@color/color_green"
+            />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/rl_authority_root"
+        android:background="@color/color_eeeeee"
+        android:id="@+id/view_line"
+        >
+
+
+    </View>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48.5dp"
+        android:background="@color/white"
+        android:id="@+id/rl_cancel_contract"
+        android:layout_below="@+id/view_line"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_000000"
+            android:textSize="15sp"
+            android:layout_marginStart="11.5dp"
+            android:text="解约"
+            android:layout_centerVertical="true"
+            >
+
+
+        </TextView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@mipmap/bg_right_forward"
+            android:layout_marginEnd="11.5dp"
+            android:layout_centerVertical="true"
+            >
+
+
+        </ImageView>
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_round_799dfe_17"
+        android:text="提交"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:paddingTop="9.5dp"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="9.5dp"
+        android:paddingStart="102dp"
+        android:paddingEnd="102dp"
+        android:id="@+id/tv_submit_btn"
+        android:layout_marginBottom="58dp"
+        android:layout_centerHorizontal="true"
+
+        >
+
+
+    </TextView>
+
+</RelativeLayout>

@@ -28,16 +28,13 @@ import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.activity.home.wdzs.ProvideViewInteractOrderTreatmentAndPatientInterrogation;
 import www.patient.jykj_zxyl.adapter.WZZXImageViewRecycleAdapter;
-import www.patient.jykj_zxyl.util.ParameUtil;
+import www.patient.jykj_zxyl.base.http.ParameUtil;
 import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.activity.home.wdzs.ProvideViewInteractOrderTreatmentAndPatientInterrogation;
-import www.patient.jykj_zxyl.adapter.WZZXImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
 import www.patient.jykj_zxyl.util.PhotoDialog;
-import www.patient.jykj_zxyl.util.Util;
 
 public class ZhlyReplyActivity extends AppCompatActivity {
 
@@ -139,7 +136,7 @@ public class ZhlyReplyActivity extends AppCompatActivity {
 //        provideBasicsImg.setOrderCode(mProvideViewInteractOrderTreatmentAndPatientInterrogation.getOrderCode());
 //        provideBasicsImg.setImgCode(mProvideInteractPatientMessage.getImgCode());
 
-        HashMap<String, Object> hashMap = ParameUtil.buildBaseParam(this);
+        HashMap<String, Object> hashMap = ParameUtil.buildBasePatientParam(this);
         hashMap.put("orderCode",mProvideViewInteractOrderTreatmentAndPatientInterrogation.getOrderCode());
         hashMap.put("imgCode",mProvideInteractPatientMessage.getImgCode());
         new Thread() {
@@ -262,7 +259,7 @@ public class ZhlyReplyActivity extends AppCompatActivity {
 //        provideInteractPatientMessage.setOperDoctorName(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
 //        provideInteractPatientMessage.setOrderCode(mProvideViewInteractOrderTreatmentAndPatientInterrogation.getOrderCode());
 
-        HashMap<String, Object> hashMap = ParameUtil.buildBaseParam(this);
+        HashMap<String, Object> hashMap = ParameUtil.buildBasePatientParam(this);
         hashMap.put("orderCode",mProvideViewInteractOrderTreatmentAndPatientInterrogation.getOrderCode());
         new Thread() {
             public void run() {

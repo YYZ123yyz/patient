@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.allin.commlibrary.preferences.SavePreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hyphenate.chat.EMClient;
@@ -48,7 +47,7 @@ import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.MainActivity;
-import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
+import com.hyphenate.easeui.ui.ChatActivity;
 import www.patient.jykj_zxyl.activity.myself.couponFragment.FragmentAdapter;
 import www.patient.jykj_zxyl.adapter.DorcerFriendExpandableListViewAdapter;
 import www.patient.jykj_zxyl.adapter.MessageInfoRecycleAdapter;

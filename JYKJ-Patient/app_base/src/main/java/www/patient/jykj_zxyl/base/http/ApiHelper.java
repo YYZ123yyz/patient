@@ -50,12 +50,45 @@ public class ApiHelper {
 
     /**
      * 获取线下测试api
-     * @return
+     * @return ApiService
      */
     private static ApiService getDevTestApi(){
         return RxHttpUtils.createApi(AppUrlConfig.SERVICE_API_TEST_KEY,
                 AppUrlConfig.SERVICE_API_TEST_URL, ApiService.class);
     }
+
+
+
+    /**
+     * 获取本地Api
+     *
+     * @return ApiService
+     */
+    public static ApiService getLocalApi() {
+        return RxHttpUtils.createApi(AppUrlConfig.SERVICE_API_LOCAL_KEY,
+                AppUrlConfig.SERVICE_API_LOCAL_URL, ApiService.class);
+    }
+
+
+    /**
+     * 获取本地Api
+     *
+     * @return ApiService
+     */
+    public static ApiService getLocalApi2() {
+        return RxHttpUtils.createApi(AppUrlConfig.SERVICE_API_LOCAL_KEY_1,
+                AppUrlConfig.SERVICE_API_LOCAL_URL_1, ApiService.class);
+    }
+
+    /**
+     * 获取测试Api
+     * @return ApiService
+     */
+    public static ApiService getPatientTestApi(){
+        return RxHttpUtils.createApi(AppUrlConfig.SERVICE_PATIENT_API_KEY,
+                AppUrlConfig.SERVICE_PATIENT_API_URL, ApiService.class);
+    }
+
 
 
 }

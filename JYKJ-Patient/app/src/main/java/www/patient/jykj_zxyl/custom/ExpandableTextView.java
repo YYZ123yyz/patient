@@ -59,7 +59,7 @@ public class ExpandableTextView extends AppCompatTextView {
     private String mCloseSuffixStr = DEFAULT_CLOSE_SUFFIX;
     private int mOpenSuffixColor, mCloseSuffixColor;
 
-    private View.OnClickListener mOnClickListener;
+    private OnClickListener mOnClickListener;
 
     private CharSequenceToSpannableHandler mCharSequenceToSpannableHandler;
 
@@ -161,7 +161,7 @@ public class ExpandableTextView extends AppCompatTextView {
         if (mExpandable) {
             setText(mCloseSpannableStr);
             //设置监听
-            super.setOnClickListener(new View.OnClickListener() {
+            super.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
 //                    switchOpenClose();
@@ -485,7 +485,7 @@ public class ExpandableTextView extends AppCompatTextView {
     }
 
     @Override
-    public void setOnClickListener(View.OnClickListener onClickListener) {
+    public void setOnClickListener(OnClickListener onClickListener) {
         mOnClickListener = onClickListener;
     }
 

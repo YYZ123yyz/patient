@@ -215,7 +215,7 @@ public class MainActivity extends BaseActivity implements OnClickListener{
 		//我们这里需要做的是打开一个安装包
 		Intent apkIntent = new Intent();
 		apkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		apkIntent.setAction(android.content.Intent.ACTION_VIEW);
+		apkIntent.setAction(Intent.ACTION_VIEW);
 		//注意：这里的这个APK是放在assets文件夹下，获取路径不能直接读取的，要通过COYP出去在读或者直接读取自己本地的PATH，这边只是做一个跳转APK，实际打不开的
 		String apk_path = "file:///android_asset/cs.apk";
 //		Uri uri = Uri.parse(apk_path);

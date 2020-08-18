@@ -27,7 +27,7 @@ import www.patient.jykj_zxyl.util.marqueeimage.MarqueeImage;
 import www.patient.jykj_zxyl.util.marqueeimage.transforms.AccordionTransformer;
 
 public class PhotoDialogHZ extends Dialog {
-    ImageLoadingListener animateFirstListener = new PhotoDialogHZ.AnimateFirstDisplayListener();
+    ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
     ArrayList<View> mImageList=new ArrayList<View>();//数据源
     MarqueeImage marqueeImage;
     private JYKJApplication mApp;

@@ -1,28 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/writeColor">
+    android:background="@color/writeColor"
+    android:orientation="vertical">
 
-   <android.support.v7.widget.RecyclerView
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_weight="1"
-       android:id="@+id/rv"/>
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tv_zjtj"
+        >
 
-   <TextView
-       android:layout_width="match_parent"
-       android:layout_height="40dp"
-       android:layout_marginLeft="80dp"
-       android:layout_marginRight="80dp"
-       android:layout_marginBottom="50dp"
-       android:gravity="center"
-       android:text="专家推荐"
-       android:background="@drawable/wdys_jztj"
-       android:id="@+id/tv_zjtj"
-       android:textColor="#ffffffff"
-       android:textSize="15sp"
-       />
+        <com.scwang.smart.refresh.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-</LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+    <TextView
+        android:id="@+id/tv_zjtj"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="30dp"
+        android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/wdys_jztj"
+        android:gravity="center"
+        android:text="专家推荐"
+        android:textColor="#ffffffff"
+        android:textSize="15sp" />
+
+</RelativeLayout>

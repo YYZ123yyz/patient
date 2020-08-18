@@ -29,7 +29,7 @@ import www.patient.jykj_zxyl.application.JYKJApplication;
 
 public class DorcerFriendExpandableListViewAdapter extends BaseExpandableListAdapter {
 
-    private ImageLoadingListener animateFirstListener = new DorcerFriendExpandableListViewAdapter.AnimateFirstDisplayListener();
+    private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
 
     public List<ProvideDoctorGoodFriendGroup> mDatas = new ArrayList<>();

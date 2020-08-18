@@ -122,7 +122,7 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
 
 
     public interface OnItemClickListener {
-        void onItemClick(View v,int position);
+        void onItemClick(View v, int position);
     }
 
 }

@@ -1102,14 +1102,14 @@ public class WZXXActivity extends AppCompatActivity {
         getInteractOrderCodeGenerate.setLoginPatientPosition(mApp.loginDoctorPosition);
         getInteractOrderCodeGenerate.setRequestClientType("1");
         getInteractOrderCodeGenerate.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        Log.e("tag", "getData: "+mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode() );
+        Log.e("tag", "getData: " + mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         getInteractOrderCodeGenerate.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        Log.e("tag", "getData: "+mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName() );
+        Log.e("tag", "getData: " + mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         getInteractOrderCodeGenerate.setUserLinkPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
-        Log.e("tag", "getData: "+mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone() );
+        Log.e("tag", "getData: " + mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
 
         getInteractOrderCodeGenerate.setOrderTreatmentType(mOperaType);
-        Log.e("tag", "getData: "+mOperaType.toString());
+        Log.e("tag", "getData: " + mOperaType.toString());
 
         new Thread() {
             public void run() {
@@ -1118,7 +1118,7 @@ public class WZXXActivity extends AppCompatActivity {
                     mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "patientInteractDataControlle/getInteractOrderCodeGenerate");
                     String string01 = Constant.SERVICEURL + "msgDataControlle/searchMsgPushReminderAllCount";
                     System.out.println(string + string01);
-                    Log.e("tag", "专家详情 "+mNetRetStr );
+                    Log.e("tag", "专家详情 " + mNetRetStr);
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
