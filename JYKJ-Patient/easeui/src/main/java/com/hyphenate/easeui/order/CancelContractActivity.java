@@ -275,7 +275,7 @@ public class CancelContractActivity extends AbstractMvpBaseActivity<CancelContra
         OrderMessage orderMessage = new OrderMessage(mOrderDetialBean.getSignCode()
                 ,mOrderDetialBean.getSignNo(),
                 monitorTypeList.size() + "项", monitorRate,
-                mOrderDetialBean.getSignDurationUnit()
+                mOrderDetialBean.getSignDuration()+ mOrderDetialBean.getSignDurationUnit()
                 , mOrderDetialBean.getSignPrice() + "", messageType, orderType);
         return orderMessage;
 

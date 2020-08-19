@@ -231,7 +231,7 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
         OrderMessage orderMessage = new OrderMessage(orderDetialBean.getSignCode()
                 ,orderDetialBean.getSignNo(),
                 monitorTypeList.size() + "项", monitorRate,
-                orderDetialBean.getSignDurationUnit()
+                orderDetialBean.getSignDuration()+ orderDetialBean.getSignDurationUnit()
                 , orderDetialBean.getSignPrice() + "", messageType, orderType);
         return orderMessage;
 

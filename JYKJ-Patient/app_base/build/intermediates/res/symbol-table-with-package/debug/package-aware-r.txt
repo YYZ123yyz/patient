@@ -708,6 +708,7 @@ color color_303133
 color color_333333
 color color_48C2F4
 color color_616266
+color color_656565
 color color_666666
 color color_78A0E6
 color color_799dfe
@@ -1526,7 +1527,8 @@ id tv_cancel_btn
 id tv_cancel_contact_text
 id tv_cancel_contract
 id tv_cancel_contract_btn
-id tv_cancel_contrct_desc
+id tv_cancel_contract_desc
+id tv_cancel_contract_reason
 id tv_cancel_desc
 id tv_coatch_rate
 id tv_coatch_rate_value
@@ -1541,6 +1543,8 @@ id tv_no_more_msg
 id tv_patient_age
 id tv_patient_gender
 id tv_patient_name
+id tv_rate_time
+id tv_rate_time_value
 id tv_refuse_btn
 id tv_sign_order_price
 id tv_sign_rate_text

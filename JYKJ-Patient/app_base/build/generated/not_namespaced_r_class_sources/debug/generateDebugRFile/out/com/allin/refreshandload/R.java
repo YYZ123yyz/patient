@@ -78,8 +78,8 @@ public final class R {
         public static int ptr_classic_header_rotate_view_header_text = 0x7f0c0091;
         public static int ptr_classic_header_rotate_view_header_title = 0x7f0c0092;
         public static int ptr_classic_header_rotate_view_progressbar = 0x7f0c0093;
-        public static int tv_loading_msg = 0x7f0c0105;
-        public static int tv_no_more_msg = 0x7f0c0108;
+        public static int tv_loading_msg = 0x7f0c0106;
+        public static int tv_no_more_msg = 0x7f0c0109;
     }
     public static final class layout {
         private layout() {}

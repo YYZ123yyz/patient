@@ -50,6 +50,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
     private TextView mTvSignOrderPrice;
     private TextView mTvRefuseBtn;
     private TextView mTvAgreeBtn;
+    private TextView mTvCancelContractReason;
     private RelativeLayout mLLOperButtomRoot;
     private List<OrderDetialBean.OrderDetailListBean> monitorTypeList;
     private List<OrderDetialBean.OrderDetailListBean> coachTypeList;
@@ -82,7 +83,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
         super.initView();
         mToolBar = findViewById(R.id.toolbar);
         mRlContentRoot = findViewById(R.id.rl_content_root);
-        mTvCancelContractDesc=findViewById(R.id.tv_cancel_contrct_desc);
+        mTvCancelContractDesc=findViewById(R.id.tv_cancel_contract_desc);
         mTvSignStartTime=findViewById(R.id.tv_sign_start_time);
         mTvMonitorTypeValue=findViewById(R.id.tv_monitor_type_value);
         mTvCoatchRateValue=findViewById(R.id.tv_coatch_rate_value);
@@ -92,6 +93,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
         mTvAgreeBtn=findViewById(R.id.tv_agree_btn);
         mLlContentRoot=findViewById(R.id.ll_content_root);
         mLLOperButtomRoot=findViewById(R.id.ll_oper_buttom_root);
+        mTvCancelContractReason=findViewById(R.id.tv_cancel_contract_reason);
         setToolBar();
         initLoadingAndRetryManager();
         addListener();
@@ -194,7 +196,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
      */
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void setOrderData(OrderDetialBean signOrderInfoBean){
-        mTvCancelContractDesc.setText(signOrderInfoBean.getRefuseReasonClassName());
+        mTvCancelContractDesc.setText(signOrderInfoBean.getRefuseRemark());
         mTvSignStartTime.setText(DateUtils.getStringTimeMinute(
                 signOrderInfoBean.getSignStartTime()));
         mTvSignTimeValue.setText(String.format("%d%s", signOrderInfoBean.getSignDuration()
@@ -212,6 +214,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
         }else{
             mLLOperButtomRoot.setVisibility(View.GONE);
         }
+        mTvCancelContractReason.setText(signOrderInfoBean.getRefuseReasonClassName());
 
 
     }
@@ -300,7 +303,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
                 orderDetialBean.getDetectRateUnitName());
         return new OrderMessage(orderDetialBean.getSignCode(),orderDetialBean.getSignNo(),
                 monitorTypeList.size() + "项", monitorRate,
-                orderDetialBean.getSignDurationUnit()
+                orderDetialBean.getSignDuration()+ orderDetialBean.getSignDurationUnit()
                 , orderDetialBean.getSignPrice() + "", messageType, orderType);
 
     }

@@ -1071,11 +1071,11 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 
                 case ITEM_WJ:
                     //调用系统文件管理器打开指定路径目录
-//                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-//                    intent.setType("*/*");
-//                    startActivityForResult(intent, REQUEST_CODE_FILE);
-                    showCard();
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType("*/*");
+                    startActivityForResult(intent, REQUEST_CODE_FILE);
+                    //showCard();
 
                     break;
                 default:

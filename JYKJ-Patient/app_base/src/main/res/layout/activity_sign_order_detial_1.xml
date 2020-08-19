@@ -172,7 +172,38 @@
                 </TextView>
 
             </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/color_f8f8f8">
 
+                <TextView
+                    android:id="@+id/tv_rate_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:text="频率时长"
+                    android:textColor="@color/color_000000"
+                    android:textSize="15sp">
+
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_rate_time_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:text="7天"
+                    android:textColor="@color/color_666666"
+                    android:textSize="15sp">
+
+                </TextView>
+
+            </RelativeLayout>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_monitor_list"
                 android:layout_width="match_parent"

@@ -47,7 +47,8 @@ public class OrderDetialBean {
      * videoLastCount : 0
      * videoTotle : 2
      */
-
+    private int age;
+    private String genderName;
     private int audioLastCount;
     private int audioTotle;
     private int callLastCount;
@@ -87,6 +88,7 @@ public class OrderDetialBean {
     //扩展
     private  String refuseReasonClassCode;  //拒绝/解约原因分类code
     private  String refuseReasonClassName;  //拒绝/解约原因分类名称
+    private  String refuseRemark;
     private List<OrderDetailListBean> orderDetailList;
 
     public int getAudioLastCount() {
@@ -597,5 +599,29 @@ public class OrderDetialBean {
 
     public void setRefuseReasonClassName(String refuseReasonClassName) {
         this.refuseReasonClassName = refuseReasonClassName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getGenderName() {
+        return genderName;
+    }
+
+    public void setGenderName(String genderName) {
+        this.genderName = genderName;
+    }
+
+    public String getRefuseRemark() {
+        return refuseRemark;
+    }
+
+    public void setRefuseRemark(String refuseRemark) {
+        this.refuseRemark = refuseRemark;
     }
 }

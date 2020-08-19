@@ -63,6 +63,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
     private TextView tvCancelBtn;//取消
     private TextView tvConfirmPaymentBtn;//支付按钮
     private TextView tvAgreementMsg;//同意协议
+    private TextView tvRateTimeValue;
     private RelativeLayout mRlWeixinRoot;//微信支付
     private RelativeLayout mRlAlipayRoot;//支付宝支付
     private ImageView mIvWeixinChoosed;//微信支付icon
@@ -81,6 +82,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
     private TextView tvSignStartTimeValue;
     private TextView tvSignTimeValue;
     private TextView tvTotalPriceValue;
+    private TextView tvCancelDesc;
     private OrderDetialMonitorAdapter mMonitorOrderDetialAdapter;
     private OrderDetialCoatchAdapter mCoatchOrderDetialAdapter;
     private List<OrderDetialBean.OrderDetailListBean> monitorTypeList;
@@ -150,6 +152,8 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         tvTotalPriceValue=findViewById(R.id.tv_total_price_value);
         ivChooseAgreementBtn=findViewById(R.id.iv_choose_agreement_btn);
         tvAgreementMsg=findViewById(R.id.tv_agreement_msg);
+        tvRateTimeValue=findViewById(R.id.tv_rate_time_value);
+        tvCancelDesc=findViewById(R.id.tv_cancel_desc);
         SpannableString spannableString = new SpannableString("点击即代表您已同意《鹫一健康医生与患者签约协议》");
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#799DFF"));
         spannableString.setSpan(colorSpan, 9, spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -330,6 +334,8 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
      * @param orderDetialData 订单详情
      */
     private void handleOrderListResult(OrderDetialBean orderDetialData) {
+        coachTypeList.clear();
+        monitorTypeList.clear();
         List<OrderDetialBean.OrderDetailListBean> orderDetailList = orderDetialData.getOrderDetailList();
         for (OrderDetialBean.OrderDetailListBean orderDetailListBean : orderDetailList) {
             String configDetailTypeCode = orderDetailListBean.getConfigDetailTypeCode();
@@ -398,7 +404,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
                 orderDetialData.getDetectRateUnitName());
         OrderMessage orderMessage = new OrderMessage(orderDetialData.getSignCode(),orderDetialData.getSignNo(),
                 monitorTypeList.size() + "项", monitorRate,
-                orderDetialData.getSignDurationUnit()
+                orderDetialData.getSignDuration()+orderDetialData.getSignDurationUnit()
                 , orderDetialData.getSignPrice() + "", messageType, orderType);
         return orderMessage;
 
@@ -545,17 +551,17 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
      * 设置订单详情数据data
      * @param orderDetialData 订单详情
      */
-    @SuppressLint("DefaultLocale")
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void setOrderDetialData(OrderDetialBean orderDetialData){
         mTvPatientName.setText(orderDetialData.getMainUserName());
         mTvPatientAge.setText(orderDetialData.getPatientAge());
-        mTvPatientGender.setText(orderDetialData.getPatientGender());
-        tvSignStartTimeValue.setText(DateUtils.getStringTimeMinute(
+        mTvPatientGender.setText(orderDetialData.getGenderName());
+        tvSignStartTimeValue.setText(DateUtils.getLongYYYYMMDD(
                 orderDetialData.getSignStartTime()));
-        tvSignTimeValue.setText(String.format("%d%s", orderDetialData.getSignDuration(),
-                orderDetialData.getSignDurationUnit()));
+        tvSignTimeValue.setText(String.format("%d个月", orderDetialData.getSignDuration()));
         tvTotalPriceValue.setText(String.format("¥%s", orderDetialData.getSignPrice()));
-        mTvPatientAge.setText(orderDetialData.getPatientAge());
+        mTvPatientAge.setText(orderDetialData.getAge()+"");
+        tvRateTimeValue.setText(orderDetialData.getDetectRate()+""+orderDetialData.getDetectRateUnitName());
     }
 
     @Override

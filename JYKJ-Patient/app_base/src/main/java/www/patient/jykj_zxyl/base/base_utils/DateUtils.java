@@ -131,6 +131,8 @@ public class DateUtils {
         return 0L;
     }
 
+
+
     /**
      * 将字符串时间转为Long时间
      *
@@ -169,6 +171,12 @@ public class DateUtils {
     public static String getStringTimeOfSSS(Long time) {
         Date date = new Date(time);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+        return sdf.format(date);
+    }
+
+    public static String getLongYYYYMMDD(Long time){
+        Date date = new Date(time);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(date);
     }
 

@@ -30,16 +30,38 @@
         android:layout_height="47dp"
         android:background="@color/white">
 
-        <ImageView
-            android:id="@+id/iv_weixin"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_centerVertical="true"
-            android:layout_marginStart="26dp"
-            android:src="@mipmap/bg_weixin_icon">
+            >
+
+            <ImageView
+                android:id="@+id/iv_weixin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="26dp"
+                android:src="@mipmap/bg_weixin_icon"
+                android:layout_gravity="center_vertical"
+                >
 
 
-        </ImageView>
+            </ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/color_656565"
+                android:textSize="15sp"
+                android:text="微信支付"
+                android:layout_marginStart="13dp"
+                >
+
+
+            </TextView>
+        </LinearLayout>
 
 
         <ImageView
@@ -67,17 +89,37 @@
         android:layout_width="match_parent"
         android:layout_height="47dp"
         android:background="@color/white">
-
-        <ImageView
-            android:id="@+id/iv_alipay"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_centerVertical="true"
-            android:layout_marginStart="26dp"
-            android:src="@mipmap/bg_alipay_icon">
+            >
+
+            <ImageView
+                android:id="@+id/iv_alipay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="26dp"
+                android:src="@mipmap/bg_alipay_icon">
 
 
-        </ImageView>
+            </ImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/color_656565"
+                android:textSize="15sp"
+                android:text="支付宝支付"
+                android:layout_marginStart="13dp"
+                >
+
+
+            </TextView>
+        </LinearLayout>
 
 
         <ImageView
@@ -98,7 +140,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:layout_marginStart="19dp"
+        android:layout_marginStart="14dp"
         android:layout_marginEnd="19dp"
         android:orientation="horizontal">
 
