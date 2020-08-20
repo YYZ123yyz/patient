@@ -102,6 +102,15 @@ public class OrderToBeConfirmedFragment extends
         setAdapter();
     }
 
+
+    /**
+     * 刷新数据
+     */
+    public void refreshLaodData(){
+        pageIndex=1;
+        mPresenter.sendSearchPatientMyOrderResIncompleteRequest(
+                pageSize+"",pageIndex+"",this.getActivity());
+    }
     @Override
     protected void initData() {
         mPresenter.sendSearchPatientMyOrderResIncompleteRequest(

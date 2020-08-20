@@ -324,10 +324,14 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         } catch (Exception e) {
 
         }
-        mPresenter.sendSearchOrderDetialRequest(signCode,operDoctorCode,operDoctorName);
+
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.sendSearchOrderDetialRequest(signCode,operDoctorCode,operDoctorName);
+    }
 
     /**
      * 处理订单详情数据

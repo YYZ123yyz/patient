@@ -199,7 +199,7 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
         if (ActivityStackManager.getInstance().exists(ChatActivity.class)) {
             ActivityStackManager.getInstance().finish(ChatActivity.class);
         }
-        this.finish();
+
         Intent intent = new Intent();
         intent.setClass(this, ChatActivity.class);
         intent.putExtra("userCode", orderDetialBean.getMainDoctorCode());
@@ -215,6 +215,8 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
         bundle.putSerializable("orderMsg", card);
         intent.putExtras(bundle);
         startActivity(intent);
+        setResult(1000);
+        this.finish();
     }
 
 

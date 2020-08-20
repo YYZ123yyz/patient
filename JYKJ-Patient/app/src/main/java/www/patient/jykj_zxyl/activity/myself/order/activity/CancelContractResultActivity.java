@@ -1,6 +1,9 @@
 package www.patient.jykj_zxyl.activity.myself.order.activity;
 
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,13 +13,23 @@ import android.widget.TextView;
 
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.interfaces.ILoadingView;
+import com.allin.commlibrary.CollectionUtils;
+import com.hyphenate.easeui.order.SignOrderDetialActivity;
+import com.hyphenate.easeui.ui.ChatActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_activity.BaseActivity;
 import www.patient.jykj_zxyl.base.base_bean.BaseBean;
 import www.patient.jykj_zxyl.base.base_bean.OrderAbstractDetialBean;
+import www.patient.jykj_zxyl.base.base_bean.OrderDetialBean;
+import www.patient.jykj_zxyl.base.base_bean.OrderMessage;
+import www.patient.jykj_zxyl.base.base_bean.UserInfoBaseBean;
+import www.patient.jykj_zxyl.base.base_utils.ActivityStackManager;
 import www.patient.jykj_zxyl.base.base_utils.GsonUtils;
 import www.patient.jykj_zxyl.base.enum_type.OrderStatusEnum;
 import www.patient.jykj_zxyl.base.http.ApiHelper;
@@ -51,7 +64,8 @@ public class CancelContractResultActivity extends BaseActivity {
     private String orderId;
     private String dateTime;
     private String signNo;
-
+    private  OrderDetialBean orderDetialBean;
+    private List<OrderDetialBean.OrderDetailListBean> monitorTypeList;
     @Override
     protected void onBeforeSetContentLayout() {
         super.onBeforeSetContentLayout();
@@ -65,6 +79,7 @@ public class CancelContractResultActivity extends BaseActivity {
             dateTime = extras.getString("dateTime");
             signNo=extras.getString("signNo");
         }
+        monitorTypeList=new ArrayList<>();
     }
 
     @Override
@@ -88,17 +103,7 @@ public class CancelContractResultActivity extends BaseActivity {
         tvRefundPath=findViewById(R.id.tv_refund_path);
         tvRevokeBtn=findViewById(R.id.tv_revoke_btn);
         String state = Integer.toString(orderState);
-        if (state.equals(OrderStatusEnum.orderPatientCancelContractApplyCode)) {
-            llStartCancelContractRoot.setVisibility(View.VISIBLE);
-            rlRefundRoot.setVisibility(View.VISIBLE);
-            rlRefundMoneyRoot.setVisibility(View.GONE);
-        }else if(state.equals(OrderStatusEnum.orderAdvenceCancelContractCode)){
-            llStartCancelContractRoot.setVisibility(View.GONE);
-            rlRefundRoot.setVisibility(View.VISIBLE);
-            rlRefundMoneyRoot.setVisibility(View.VISIBLE);
-            tvTitleTip.setText("解约成功");
-            tvTitleTipDate.setText(dateTime);
-        }
+
 
         addListener();
     }
@@ -107,9 +112,7 @@ public class CancelContractResultActivity extends BaseActivity {
     protected void initData() {
         super.initData();
         tvTitle.setText("解约详情");
-        if (orderState==120) {
-            getOrderMsgByCode(orderId);
-        }
+        getOrderMsgByCode(orderId);
     }
 
     private void addListener(){
@@ -122,6 +125,9 @@ public class CancelContractResultActivity extends BaseActivity {
         tvRevokeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(orderDetialBean==null){
+                    return;
+                }
                 HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
                 hashMap.put("loginDoctorPosition",ParameUtil.loginDoctorPosition);
                 hashMap.put("mainDoctorCode",mainDoctorCode);
@@ -142,7 +148,7 @@ public class CancelContractResultActivity extends BaseActivity {
 
                             @Override
                             public void hideLoadingView() {
-                                dismissLoading();
+
 
                             }
                         })).subscribe(new CommonDataObserver() {
@@ -150,7 +156,8 @@ public class CancelContractResultActivity extends BaseActivity {
                     protected void onSuccessResult(BaseBean baseBean) {
                         int resCode = baseBean.getResCode();
                         if (resCode==1) {
-                            CancelContractResultActivity.this.finish();
+                           // CancelContractResultActivity.this.finish();
+                            getUserInfo(mainDoctorCode);
                         }else{
                             ToastUtils.showToast(baseBean.getResMsg());
                         }
@@ -173,24 +180,26 @@ public class CancelContractResultActivity extends BaseActivity {
     private void getOrderMsgByCode(String code){
         HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
         hashMap.put("loginDoctorPosition",ParameUtil.loginDoctorPosition);
-        hashMap.put("mainPatientCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        hashMap.put("mainUserName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        hashMap.put("signCode",code);
+        hashMap.put("signOrderCode",code);
+        hashMap.put("operDoctorCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        hashMap.put("operDoctorName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         String s = RetrofitUtil.encodeParam(hashMap);
 
-        ApiHelper.getApiService().serchSignInfoByPatientCode(s)
+        ApiHelper.getPatientTestApi().searchSignPatientDoctorOrder(s)
                 .compose(Transformer.switchSchedulers()).subscribe(new CommonDataObserver() {
             @Override
             protected void onSuccessResult(BaseBean baseBean) {
                 int resCode = baseBean.getResCode();
                 if (resCode==1) {
-                    OrderAbstractDetialBean orderAbstractDetialBean = GsonUtils.fromJson(
-                            baseBean.getResJsonData(), OrderAbstractDetialBean.class);
-                    if (orderAbstractDetialBean!=null) {
-                        long terminationTime = orderAbstractDetialBean.getTerminationTime();
+                     orderDetialBean = GsonUtils.fromJson(
+                            baseBean.getResJsonData(), OrderDetialBean.class);
+                    if (orderDetialBean!=null) {
+                        long terminationTime = orderDetialBean.getTerminationTime();
                         tvTitleTipDate.setText(DateTimeUtils.formatLongDate(terminationTime,
                                 "yyyy-MM-dd HH:mm:ss"));
-                        tvRefundMoney.setText(String.format("¥%s", orderAbstractDetialBean.getSignPrice()));
+                        tvRefundMoney.setText(String.format("¥%s", orderDetialBean.getSignPrice()));
+                        setLayoutVisible(orderDetialBean.getSignStatus());
+                        handleOrderListResult(orderDetialBean);
                     }
 
                 }
@@ -203,6 +212,118 @@ public class CancelContractResultActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 设置页面显示状态
+     * @param state 订单状态
+     */
+    private void setLayoutVisible(String state){
+        if (state.equals(OrderStatusEnum.orderPatientCancelContractApplyCode)) {
+            llStartCancelContractRoot.setVisibility(View.VISIBLE);
+            rlRefundRoot.setVisibility(View.VISIBLE);
+            rlRefundMoneyRoot.setVisibility(View.GONE);
+        }else if(state.equals(OrderStatusEnum.orderAdvenceCancelContractCode)){
+            llStartCancelContractRoot.setVisibility(View.GONE);
+            rlRefundRoot.setVisibility(View.VISIBLE);
+            rlRefundMoneyRoot.setVisibility(View.VISIBLE);
+            tvTitleTip.setText("解约成功");
+            tvTitleTipDate.setText(dateTime);
+        }
+    }
+
+
+    /**
+     * 获取用户信息
+     * @param userCodeList 用户Id
+     */
+    private void getUserInfo(String userCodeList){
+        HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
+        hashMap.put("userCodeList",userCodeList);
+        String s = RetrofitUtil.encodeParam(hashMap);
+        ApiHelper.getApiService().getUserInfoList(s).
+                compose(Transformer.switchSchedulers(new ILoadingView() {
+                    @Override
+                    public void showLoadingView() {
+
+                    }
+
+                    @Override
+                    public void hideLoadingView() {
+                        dismissLoading();
+                    }
+                })).subscribe(new CommonDataObserver() {
+            @Override
+            protected void onSuccessResult(BaseBean baseBean) {
+                int resCode = baseBean.getResCode();
+                if (resCode==1) {
+                    String resJsonData = baseBean.getResJsonData();
+                    List<UserInfoBaseBean> userInfoBaseBeans = GsonUtils.jsonToList(resJsonData, UserInfoBaseBean.class);
+                    if (!CollectionUtils.isEmpty(userInfoBaseBeans)) {
+                        UserInfoBaseBean userInfoBaseBean = userInfoBaseBeans.get(0);
+                        OrderMessage terminationOrder = getOrderMessage("terminationOrder", "3",orderDetialBean);
+
+                        if (ActivityStackManager.getInstance().exists(ChatActivity.class)) {
+                            ActivityStackManager.getInstance().finish(ChatActivity.class);
+                        }
+                        Intent intent = new Intent();
+                        intent.setClass(CancelContractResultActivity.this, ChatActivity.class);
+                        intent.putExtra("userCode", orderDetialBean.getMainDoctorCode());
+                        intent.putExtra("userName", orderDetialBean.getMainDoctorName());
+                        intent.putExtra("doctorUrl", userInfoBaseBean.getUserLogoUrl());
+                        intent.putExtra("patientUrl", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+                        intent.putExtra("operDoctorName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                        terminationOrder.setImageUrl(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+                        terminationOrder.setIsPatient("1");
+                        Bundle bundle=new Bundle();
+                        bundle.putSerializable("orderMsg",terminationOrder);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        setResult(1001);
+                        CancelContractResultActivity.this.finish();
+                    }
+
+                }
+
+            }
+
+            @Override
+            protected void onError(String s) {
+                super.onError(s);
+            }
+
+        });
+    }
+    /**
+     * 获取订单信息
+     * @param messageType 消息类型
+     * @param orderType 操作类型
+     * @return orderMessage
+     */
+    private OrderMessage getOrderMessage(String messageType, String orderType, OrderDetialBean orderDetialBean) {
+        @SuppressLint("DefaultLocale")
+        String  monitorRate= String.format("一次/%d%s", orderDetialBean.getDetectRate(),
+                orderDetialBean.getDetectRateUnitName());
+        return new OrderMessage(orderDetialBean.getSignCode(),orderDetialBean.getSignNo(),
+                monitorTypeList.size() + "项", monitorRate,
+                orderDetialBean.getSignDuration()+ orderDetialBean.getSignDurationUnit()
+                , orderDetialBean.getSignPrice() + "", messageType, orderType);
+
+    }
+
+    /**
+     * 处理订单详情数据
+     * @param orderDetialData 订单详情
+     */
+    private void handleOrderListResult(OrderDetialBean orderDetialData) {
+        monitorTypeList.clear();
+        List<OrderDetialBean.OrderDetailListBean> orderDetailList = orderDetialData.getOrderDetailList();
+        for (OrderDetialBean.OrderDetailListBean orderDetailListBean : orderDetailList) {
+            String configDetailTypeCode = orderDetailListBean.getConfigDetailTypeCode();
+            if (configDetailTypeCode.equals("10")) {
+                monitorTypeList.add(orderDetailListBean);
+            }
+
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -106,8 +106,8 @@ public class EaseMessageAdapter extends BaseAdapter {
             // you should not call getAllMessages() in UI thread
             // otherwise there is problem when refreshing UI and there is new message arrive
             List<EMMessage> var = conversation.getAllMessages();
-            handleData(var);
-            messages = var.toArray(new EMMessage[var.size()]);
+            List<EMMessage> messages = handleData(var);
+            EaseMessageAdapter.this.messages = messages.toArray(new EMMessage[messages.size()]);
             conversation.markAllMessagesAsRead();
             notifyDataSetChanged();
         }
@@ -137,7 +137,7 @@ public class EaseMessageAdapter extends BaseAdapter {
      * 处理数据
      * @param list 数据列表
      */
-    private void handleData(List<EMMessage> list){
+    private List<EMMessage> handleData(List<EMMessage> list){
         List<Integer> cards=new ArrayList<>();
         if (!CollectionUtils.isEmpty(list)) {
 
@@ -165,7 +165,8 @@ public class EaseMessageAdapter extends BaseAdapter {
             }
 
         }
-
+        List<EMMessage> messages = new ArrayList<>(list);
+        return messages;
     }
 
     /**
@@ -187,18 +188,7 @@ public class EaseMessageAdapter extends BaseAdapter {
         return isFlag;
     }
 
-//    /**
-//     * 是否是最后一条数据
-//     * @param list 数据列表
-//     * @return true or false
-//     */
-//    private boolean isLastData(int pos,List<EMMessage> list){
-//        if (!CollectionUtils.isEmpty(list)) {
-//            for (int i = 0; i < list.size(); i++) {
-//
-//            }
-//        }
-//    }
+
 
     public void refresh() {
         if (handler.hasMessages(HANDLER_MESSAGE_REFRESH_LIST)) {

@@ -70,25 +70,25 @@ public final class R {
         private id() {}
 
         public static int arrow = 0x7f0c001d;
-        public static int ll_load_view_content = 0x7f0c006d;
-        public static int pb_loading = 0x7f0c0089;
-        public static int ptr_classic_header_rotate_header_view = 0x7f0c008e;
-        public static int ptr_classic_header_rotate_view = 0x7f0c008f;
-        public static int ptr_classic_header_rotate_view_header_last_update = 0x7f0c0090;
-        public static int ptr_classic_header_rotate_view_header_text = 0x7f0c0091;
-        public static int ptr_classic_header_rotate_view_header_title = 0x7f0c0092;
-        public static int ptr_classic_header_rotate_view_progressbar = 0x7f0c0093;
-        public static int tv_loading_msg = 0x7f0c0106;
-        public static int tv_no_more_msg = 0x7f0c0109;
+        public static int ll_load_view_content = 0x7f0c006e;
+        public static int pb_loading = 0x7f0c008b;
+        public static int ptr_classic_header_rotate_header_view = 0x7f0c0090;
+        public static int ptr_classic_header_rotate_view = 0x7f0c0091;
+        public static int ptr_classic_header_rotate_view_header_last_update = 0x7f0c0092;
+        public static int ptr_classic_header_rotate_view_header_text = 0x7f0c0093;
+        public static int ptr_classic_header_rotate_view_header_title = 0x7f0c0094;
+        public static int ptr_classic_header_rotate_view_progressbar = 0x7f0c0095;
+        public static int tv_loading_msg = 0x7f0c010a;
+        public static int tv_no_more_msg = 0x7f0c010d;
     }
     public static final class layout {
         private layout() {}
 
-        public static int cube_ptr_classic_default_header = 0x7f0f0029;
-        public static int cube_ptr_simple_loading = 0x7f0f002a;
-        public static int loading_view_final_footer_default = 0x7f0f0041;
-        public static int ptr_pull_header_new = 0x7f0f0050;
-        public static int ptr_pull_to_refresh_header = 0x7f0f0051;
+        public static int cube_ptr_classic_default_header = 0x7f0f002a;
+        public static int cube_ptr_simple_loading = 0x7f0f002b;
+        public static int loading_view_final_footer_default = 0x7f0f0042;
+        public static int ptr_pull_header_new = 0x7f0f0051;
+        public static int ptr_pull_to_refresh_header = 0x7f0f0052;
     }
     public static final class string {
         private string() {}

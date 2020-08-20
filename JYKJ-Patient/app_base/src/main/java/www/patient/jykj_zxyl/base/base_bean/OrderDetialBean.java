@@ -73,6 +73,7 @@ public class OrderDetialBean {
     private String signCode;
     private int signDuration;
     private String signDurationUnit;
+    private long terminationTime;
     private long signEndTime;
     private int signId;
     private String signNo;
@@ -619,6 +620,14 @@ public class OrderDetialBean {
 
     public String getRefuseRemark() {
         return refuseRemark;
+    }
+
+    public long getTerminationTime() {
+        return terminationTime;
+    }
+
+    public void setTerminationTime(long terminationTime) {
+        this.terminationTime = terminationTime;
     }
 
     public void setRefuseRemark(String refuseRemark) {

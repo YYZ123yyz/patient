@@ -1272,6 +1272,7 @@ drawable refreshing_06
 drawable refreshing_07
 drawable refreshing_08
 drawable refreshing_09
+drawable shape_gradient
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
 drawable video_bg_mobile_trafic
@@ -1366,6 +1367,7 @@ id item_toolbar
 id item_touch_helper_previous_elevation
 id iv_alipay
 id iv_alipay_choosed
+id iv_back_left
 id iv_choose_agreement_btn
 id iv_close_btn
 id iv_item_choosed
@@ -1389,6 +1391,7 @@ id ll_oper_buttom_root
 id ll_order_detial_payment_root
 id ll_refuse_root
 id ll_root_view
+id ll_start_cancel_contract_root
 id ll_top_root
 id load_error
 id loading_text
@@ -1446,6 +1449,8 @@ id rl_cancel_desc
 id rl_content_root
 id rl_order_detial_cancel_root
 id rl_order_detialsign_up_root
+id rl_refund_money_root
+id rl_refund_root
 id rl_weixin_root
 id rv_coatch_list
 id rv_list
@@ -1545,7 +1550,10 @@ id tv_patient_gender
 id tv_patient_name
 id tv_rate_time
 id tv_rate_time_value
+id tv_refund_money
+id tv_refund_path
 id tv_refuse_btn
+id tv_revoke_btn
 id tv_sign_order_price
 id tv_sign_rate_text
 id tv_sign_rate_value
@@ -1554,6 +1562,9 @@ id tv_sign_start_time_value
 id tv_sign_time
 id tv_sign_time_value
 id tv_submit_btn
+id tv_title
+id tv_title_tip
+id tv_title_tip_date
 id tv_toast_content
 id tv_total_price
 id tv_total_price_value
@@ -1625,6 +1636,7 @@ layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_cancel_contract
 layout activity_cancel_contract_deital
+layout activity_cancel_result
 layout activity_order_detial_cancel_contract_buttom
 layout activity_order_detial_payment_buttom
 layout activity_order_detial_sign_up_buttom

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -65,7 +64,6 @@ public class EaseChatRowOrderCard extends EaseChatRow {
     private String orderType;
     private String messageType;
     private String imageUrl;
-    private String isPatient;
     private RelativeLayout rlCancelContractOrderRoot;
     private RelativeLayout rlSignOrderRoot;
 
@@ -112,45 +110,55 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             if (mTvAgreeBtn != null) {
                 mTvAgreeBtn.setBackgroundResource(R.drawable.bg_oval_frame_7a9eff_13);
                 mTvAgreeBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_7a9eff));
+                mTvAgreeBtn.setTag(1);
             }
             if (mTvUpdateBtn != null) {
                 mTvUpdateBtn.setBackgroundResource(R.drawable.bg_oval_frame_7a9eff_13);
                 mTvUpdateBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_7a9eff));
+                mTvUpdateBtn.setTag(1);
             }
             if (mTvRefuseBtn != null) {
                 mTvRefuseBtn.setBackgroundResource(R.drawable.bg_oval_frame_7a9eff_13);
                 mTvRefuseBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_7a9eff));
+                mTvRefuseBtn.setTag(1);
             }
             if (mTvCancelContractAgreeBtn != null) {
+                mTvCancelContractAgreeBtn.setTag(1);
                 mTvCancelContractAgreeBtn.setBackgroundResource(R.drawable.bg_oval_frame_7a9eff_13);
                 mTvCancelContractAgreeBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_7a9eff));
             }
             if (mTvCancelContractRefuseBtn != null) {
                 mTvCancelContractRefuseBtn.setBackgroundResource(R.drawable.bg_oval_frame_7a9eff_13);
                 mTvCancelContractRefuseBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_7a9eff));
+                mTvCancelContractRefuseBtn.setTag(1);
             }
 
         } else {
             if (mTvAgreeBtn != null) {
                 mTvAgreeBtn.setBackgroundResource(R.drawable.bg_oval_frame_999999_13);
                 mTvAgreeBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_999999));
+                mTvAgreeBtn.setTag(0);
             }
             if (mTvUpdateBtn != null) {
                 mTvUpdateBtn.setBackgroundResource(R.drawable.bg_oval_frame_999999_13);
                 mTvUpdateBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_999999));
+                mTvUpdateBtn.setTag(0);
             }
             if (mTvRefuseBtn != null) {
                 mTvRefuseBtn.setBackgroundResource(R.drawable.bg_oval_frame_999999_13);
                 mTvRefuseBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_999999));
+                mTvRefuseBtn.setTag(0);
             }
 
             if (mTvCancelContractAgreeBtn != null) {
                 mTvCancelContractAgreeBtn.setBackgroundResource(R.drawable.bg_oval_frame_999999_13);
                 mTvCancelContractAgreeBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_999999));
+                mTvCancelContractAgreeBtn.setTag(0);
             }
             if (mTvCancelContractRefuseBtn != null) {
                 mTvCancelContractRefuseBtn.setBackgroundResource(R.drawable.bg_oval_frame_999999_13);
                 mTvCancelContractRefuseBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_999999));
+                mTvCancelContractRefuseBtn.setTag(0);
             }
         }
 
@@ -178,7 +186,6 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         messageType = message.getStringAttribute("messageType", "");
         singNO = message.getStringAttribute("singNo", "");
         imageUrl = message.getStringAttribute("imageUrl", "");
-        isPatient=message.getStringAttribute("isPatient","");
         mTvMonitValue.setText(monitoringType);
         mTvCoachRateValue.setText(coach);
         mTvSignTimeValue.setText(signUpTime);
@@ -211,17 +218,25 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 }
             } else if (messageType.equals("terminationOrder")) {
 
-                if (orderType.equals("1")) {
-                    ivStampIcon.setVisibility(View.VISIBLE);
-                    ivStampIcon.setImageResource(R.mipmap.bg_agree_stamp);
-                    mTvOperMsg.setText("您已同意");
-                } else if (orderType.equals("2")) {
-                    ivStampIcon.setVisibility(View.VISIBLE);
-                    ivStampIcon.setImageResource(R.mipmap.bg_refuse_stamp);
-                    mTvOperMsg.setText("您已拒绝");
-                } else {
-                    ivStampIcon.setVisibility(View.GONE);
-                    mTvOperMsg.setText("您已成功发起解约，等待对方确认");
+                switch (orderType) {
+                    case "1":
+                        ivStampIcon.setVisibility(View.VISIBLE);
+                        ivStampIcon.setImageResource(R.mipmap.bg_agree_stamp);
+                        mTvOperMsg.setText("您已同意");
+                        break;
+                    case "2":
+                        ivStampIcon.setVisibility(View.VISIBLE);
+                        ivStampIcon.setImageResource(R.mipmap.bg_refuse_stamp);
+                        mTvOperMsg.setText("您已拒绝");
+                        break;
+                    case "3":
+                        ivStampIcon.setVisibility(View.GONE);
+                        mTvOperMsg.setText("您已撤销解约");
+                        break;
+                    default:
+                        ivStampIcon.setVisibility(View.GONE);
+                        mTvOperMsg.setText("您已成功发起解约，等待对方确认");
+                        break;
                 }
 
             }
@@ -231,25 +246,36 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             ivStampIcon.setVisibility(View.GONE);
             if (messageType.equals("terminationOrder")) {
 
-                if (orderType.equals("1")) {
-                    ivStampIcon.setVisibility(View.VISIBLE);
-                    ivStampIcon.setImageResource(R.mipmap.bg_agree_stamp);
-                    rlCancelContractOrderRoot.setVisibility(View.GONE);
-                    rlSignOrderRoot.setVisibility(View.GONE);
-                    mTvOperReceivedMsg.setVisibility(View.VISIBLE);
-                    mTvOperReceivedMsg.setText("对方已同意");
-                } else if (orderType.equals("2")) {
-                    ivStampIcon.setVisibility(View.VISIBLE);
-                    ivStampIcon.setImageResource(R.mipmap.bg_refuse_stamp);
-                    rlCancelContractOrderRoot.setVisibility(View.GONE);
-                    rlSignOrderRoot.setVisibility(View.GONE);
-                    mTvOperReceivedMsg.setVisibility(View.VISIBLE);
-                    mTvOperReceivedMsg.setText("对方已拒绝");
-                }else{
-                    mTvUpdateBtn.setVisibility(View.GONE);
-                    mTvOperReceivedMsg.setVisibility(View.GONE);
-                    rlCancelContractOrderRoot.setVisibility(View.VISIBLE);
-                    rlSignOrderRoot.setVisibility(View.GONE);
+                switch (orderType) {
+                    case "1":
+                        ivStampIcon.setVisibility(View.VISIBLE);
+                        ivStampIcon.setImageResource(R.mipmap.bg_agree_stamp);
+                        rlCancelContractOrderRoot.setVisibility(View.GONE);
+                        rlSignOrderRoot.setVisibility(View.GONE);
+                        mTvOperReceivedMsg.setVisibility(View.VISIBLE);
+                        mTvOperReceivedMsg.setText("对方已同意");
+                        break;
+                    case "2":
+                        ivStampIcon.setVisibility(View.VISIBLE);
+                        ivStampIcon.setImageResource(R.mipmap.bg_refuse_stamp);
+                        rlCancelContractOrderRoot.setVisibility(View.GONE);
+                        rlSignOrderRoot.setVisibility(View.GONE);
+                        mTvOperReceivedMsg.setVisibility(View.VISIBLE);
+                        mTvOperReceivedMsg.setText("对方已拒绝");
+                        break;
+                    case "3":
+                        ivStampIcon.setVisibility(View.GONE);
+                        rlCancelContractOrderRoot.setVisibility(View.GONE);
+                        rlSignOrderRoot.setVisibility(View.GONE);
+                        mTvOperReceivedMsg.setVisibility(View.VISIBLE);
+                        mTvOperReceivedMsg.setText("对方已撤销解约");
+                        break;
+                    default:
+                        mTvUpdateBtn.setVisibility(View.GONE);
+                        mTvOperReceivedMsg.setVisibility(View.GONE);
+                        rlCancelContractOrderRoot.setVisibility(View.VISIBLE);
+                        rlSignOrderRoot.setVisibility(View.GONE);
+                        break;
                 }
 
 
@@ -270,42 +296,44 @@ public class EaseChatRowOrderCard extends EaseChatRow {
      */
     private void addListener() {
         if (message.direct() == EMMessage.Direct.RECEIVE) {
-            boolean isValid = message.getBooleanAttribute("isValid", false);
             mTvAgreeBtn.setOnClickListener(v -> {
-
-                if (isValid) {
-                    String patientCode = mProvideViewSysUserPatientInfoAndRegion.getPatientCode();
-                    String userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
-                    String nickName = message.getStringAttribute("nickName", "");
-                    OrderOperationManager.getInstance().sendOrderOperRequest(message.getFrom()
-                            , nickName, orderId, singNO, patientCode, userName, "1",
-                            ParameUtil.loginDoctorPosition, new OrderOperationManager.OnCallBackListener() {
-                                @Override
-                                public void onResult(boolean isSucess, String msg) {
-                                    if (isSucess) {
-                                        EventBus.getDefault().post(new OrderMessage(orderId, singNO, monitoringType, coach
-                                                , signUpTime, price, messageType, "1"));
-                                    } else {
-                                        ToastUtils.showToast(msg);
-                                    }
-                                }
-                            });
-
-                }
-
-            });
-            mTvUpdateBtn.setOnClickListener(v -> {
-                if (isValid) {
-                    if (messageType.equals("card")) {
-
+                Object tag = mTvAgreeBtn.getTag();
+                if (tag!=null) {
+                    String string = tag.toString();
+                    int i = Integer.parseInt(string);
+                    if(i==1){
                         String patientCode = mProvideViewSysUserPatientInfoAndRegion.getPatientCode();
                         String userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
                         String nickName = message.getStringAttribute("nickName", "");
                         OrderOperationManager.getInstance().sendOrderOperRequest(message.getFrom()
-                                , nickName, orderId, singNO, patientCode, userName, "2",
-                                ParameUtil.loginDoctorPosition, new OrderOperationManager.OnCallBackListener() {
-                                    @Override
-                                    public void onResult(boolean isSucess, String msg) {
+                                , nickName, orderId, singNO, patientCode, userName, "1",
+                                ParameUtil.loginDoctorPosition, (isSucess, msg) -> {
+                                    if (isSucess) {
+                                        EventBus.getDefault().post(new OrderMessage(orderId,
+                                                singNO, monitoringType, coach
+                                                , signUpTime, price, messageType, "1"));
+                                    } else {
+                                        ToastUtils.showToast(msg);
+                                    }
+                                });
+                    }
+                }
+
+            });
+            mTvUpdateBtn.setOnClickListener(v -> {
+                Object tag = mTvUpdateBtn.getTag();
+                if (tag!=null) {
+                    String string = tag.toString();
+                    int i = Integer.parseInt(string);
+                    if (i==1) {
+                        if (messageType.equals("card")) {
+
+                            String patientCode = mProvideViewSysUserPatientInfoAndRegion.getPatientCode();
+                            String userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
+                            String nickName = message.getStringAttribute("nickName", "");
+                            OrderOperationManager.getInstance().sendOrderOperRequest(message.getFrom()
+                                    , nickName, orderId, singNO, patientCode, userName, "2",
+                                    ParameUtil.loginDoctorPosition, (isSucess, msg) -> {
                                         if (isSucess) {
                                             if (StringUtils.isNotEmpty(msg)) {
                                                 UpdateOrderResultBean updateOrderResultBean
@@ -322,61 +350,75 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                                             ToastUtils.showToast(msg);
 
                                         }
-                                    }
-                                });
+                                    });
 
 
+                        }
                     }
                 }
+
 
             });
             mTvRefuseBtn.setOnClickListener(v -> {
-                if (message.direct() == EMMessage.Direct.RECEIVE && isValid) {
-                    if (messageType.equals("card")) {
-                        String nickName = message.getStringAttribute("nickName", "");
-                        Bundle bundle = new Bundle();
-                        bundle.putString("orderId", orderId);
-                        bundle.putString("operDoctorCode",message.getFrom());
-                        bundle.putString("operDoctorName",nickName);
-                        startActivity(RefusedOrderActivity.class, bundle);
 
-                    } else if (messageType.equals("terminationOrder")) {
-                        EventBus.getDefault().post(new OrderMessage(orderId, singNO, monitoringType, coach
-                                , signUpTime, price, messageType, "2"));
+                if (message.direct() == EMMessage.Direct.RECEIVE ) {
+                    Object tag = mTvRefuseBtn.getTag();
+                    if (tag!=null) {
+                        String string = tag.toString();
+                        int i = Integer.parseInt(string);
+                        if (i==1) {
+                            if (messageType.equals("card")) {
+                                String nickName = message.getStringAttribute("nickName", "");
+                                Bundle bundle = new Bundle();
+                                bundle.putString("orderId", orderId);
+                                bundle.putString("operDoctorCode",message.getFrom());
+                                bundle.putString("operDoctorName",nickName);
+                                startActivity(RefusedOrderActivity.class, bundle);
+
+                            } else if (messageType.equals("terminationOrder")) {
+                                EventBus.getDefault().post(new OrderMessage(orderId, singNO, monitoringType, coach
+                                        , signUpTime, price, messageType, "2"));
+                            }
+                        }
                     }
+
+
                 }
 
             });
-            mTvCancelContractAgreeBtn.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isValid) {
+            mTvCancelContractAgreeBtn.setOnClickListener(v -> {
+                Object tag = mTvCancelContractAgreeBtn.getTag();
+                if (tag!=null) {
+                    String string = tag.toString();
+                    int i = Integer.parseInt(string);
+                    if (i==1) {
                         String patientCode = mProvideViewSysUserPatientInfoAndRegion.getPatientCode();
                         String userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
                         String nickName = message.getStringAttribute("nickName", "");
                         OrderOperationManager.getInstance().sendOrderCancelContractOperRequest(message.getFrom()
                                 , nickName, orderId, singNO, patientCode, userName, "1",
-                                ParameUtil.loginDoctorPosition, new OrderOperationManager.OnCallBackListener() {
-                                    @Override
-                                    public void onResult(boolean isSucess, String msg) {
-                                        if (isSucess) {
-                                            OrderMessage event = new OrderMessage(orderId, singNO,
-                                                    monitoringType, coach
-                                                    , signUpTime, price, messageType, "1");
-                                            EventBus.getDefault().post(event);
-                                        } else {
-                                            ToastUtils.showToast(msg);
-                                        }
+                                ParameUtil.loginDoctorPosition, (isSucess, msg) -> {
+                                    if (isSucess) {
+                                        OrderMessage event = new OrderMessage(orderId, singNO,
+                                                monitoringType, coach
+                                                , signUpTime, price, messageType, "1");
+                                        EventBus.getDefault().post(event);
+                                    } else {
+                                        ToastUtils.showToast(msg);
                                     }
                                 });
                     }
 
                 }
+
+
             });
-            mTvCancelContractRefuseBtn.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isValid) {
+            mTvCancelContractRefuseBtn.setOnClickListener(v -> {
+                Object tag = mTvCancelContractAgreeBtn.getTag();
+                if (tag!=null) {
+                    String string = tag.toString();
+                    int i = Integer.parseInt(string);
+                    if (i==1) {
                         String nickName = message.getStringAttribute("nickName", "");
                         Bundle bundle = new Bundle();
                         bundle.putString("orderId", orderId);
@@ -384,87 +426,34 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                         bundle.putString("operDoctorName",nickName);
                         startActivity(RefusedCancelContractActivity.class, bundle);
                     }
-
                 }
+
+
             });
         }
 
-        mLLRootView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nickName = message.getStringAttribute("nickName", "");
-                if (messageType.equals("card")) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("signCode", orderId);
-                    bundle.putString("operDoctorCode",message.getFrom());
-                    bundle.putString("operDoctorName",nickName);
-                    startActivity(SignOrderDetialActivity.class, bundle);
-                } else if (messageType.equals("terminationOrder")) {
-                    EMMessage.Direct direct = message.direct();
-                    if (direct == EMMessage.Direct.RECEIVE) {
-                        if(TextUtils.isEmpty(orderType)){
-                            if (StringUtils.isNotEmpty(isPatient)&&isPatient.equals("1")) {
-                                Bundle bundle = new Bundle();
-                                bundle.putString("signCode", orderId);
-                                bundle.putString("operDoctorCode",message.getFrom());
-                                bundle.putString("operDoctorName",nickName);
-                                startActivity(SignOrderDetialActivity.class, bundle);
-                            }else{
-                                Bundle bundle1 = new Bundle();
-                                bundle1.putString("operDoctorCode",message.getFrom());
-                                bundle1.putString("operDoctorName",nickName);
-                                bundle1.putString("orderId", orderId);
-                                startActivity(CancelConfirmDeitalActivity.class, bundle1);
-                            }
+        mLLRootView.setOnClickListener(v -> {
+            String nickName = message.getStringAttribute("nickName", "");
+            if (messageType.equals("card")) {
+                Bundle bundle = new Bundle();
+                bundle.putString("signCode", orderId);
+                bundle.putString("operDoctorCode",message.getFrom());
+                bundle.putString("operDoctorName",nickName);
+                startActivity(SignOrderDetialActivity.class, bundle);
+            } else if (messageType.equals("terminationOrder")) {
 
-                        }else {
-                            if (StringUtils.isNotEmpty(isPatient)&&isPatient.equals("1")) {
-                                Bundle bundle = new Bundle();
-                                bundle.putString("signCode", orderId);
-                                bundle.putString("operDoctorCode",message.getFrom());
-                                bundle.putString("operDoctorName",nickName);
-                                startActivity(SignOrderDetialActivity.class, bundle);
-                            }else{
-                                Bundle bundle1 = new Bundle();
-                                bundle1.putString("operDoctorCode",message.getFrom());
-                                bundle1.putString("operDoctorName",nickName);
-                                bundle1.putString("orderId", orderId);
-                                startActivity(CancelConfirmDeitalActivity.class, bundle1);
-
-                            }
-
-
-                        }
-
-                    } else {
-                        if (direct == EMMessage.Direct.SEND) {
-                            if (StringUtils.isNotEmpty(isPatient)&&isPatient.equals("1")) {
-                                Bundle bundle1 = new Bundle();
-                                bundle1.putString("operDoctorCode",message.getFrom());
-                                bundle1.putString("operDoctorName",nickName);
-                                bundle1.putString("orderId", orderId);
-                                startActivity(CancelConfirmDeitalActivity.class, bundle1);
-                            }else{
-                                Bundle bundle = new Bundle();
-                                bundle.putString("signCode", orderId);
-                                bundle.putString("operDoctorCode",message.getFrom());
-                                bundle.putString("operDoctorName",nickName);
-                                startActivity(SignOrderDetialActivity.class, bundle);
-                            }
-                        }else{
-                            Bundle bundle = new Bundle();
-                            bundle.putString("signCode", orderId);
-                            bundle.putString("operDoctorCode",message.getFrom());
-                            bundle.putString("operDoctorName",nickName);
-                            startActivity(SignOrderDetialActivity.class, bundle);
-                        }
-
-                    }
-
+                if (!orderType.equals("3")) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putString("operDoctorCode",message.getFrom());
+                    bundle1.putString("operDoctorName",nickName);
+                    bundle1.putString("orderId", orderId);
+                    startActivity(CancelConfirmDeitalActivity.class, bundle1);
                 }
 
 
             }
+
+
         });
 
     }

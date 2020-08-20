@@ -1,6 +1,7 @@
 package www.patient.jykj_zxyl.activity.myself.order.activity;
 
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -30,6 +31,9 @@ public class MyOrderListActivity extends BaseActivity {
     private List<Fragment> mFragments;//Fragment集合列表
     private List<String> mTitles;//标题集合列表
     private FragmentAdapter fragmentAdapter;
+    private OrderToBeConfirmedFragment orderToBeConfirmedFragment;
+    private OrderOnGoingFragment orderOnGoingFragment;
+    private OrderCompletedFragment orderCompletedFragment;
     @Override
     protected void onBeforeSetContentLayout() {
         super.onBeforeSetContentLayout();
@@ -69,9 +73,12 @@ public class MyOrderListActivity extends BaseActivity {
         mTitles.add("待确认");
         mTitles.add("进行中");
         mTitles.add("已完成");
-        mFragments.add(OrderToBeConfirmedFragment.newInstance());
-        mFragments.add(OrderOnGoingFragment.newInstance());
-        mFragments.add(OrderCompletedFragment.newInstance());
+        orderToBeConfirmedFragment = OrderToBeConfirmedFragment.newInstance();
+        mFragments.add(orderToBeConfirmedFragment);
+        orderOnGoingFragment = OrderOnGoingFragment.newInstance();
+        mFragments.add(orderOnGoingFragment);
+        orderCompletedFragment = OrderCompletedFragment.newInstance();
+        mFragments.add(orderCompletedFragment);
         fragmentAdapter = new FragmentAdapter(this.getSupportFragmentManager(),
                 mFragments, mTitles);
         mVpager.setAdapter(fragmentAdapter);
@@ -80,7 +87,13 @@ public class MyOrderListActivity extends BaseActivity {
         mTabLayout.setupWithViewPager(mVpager);//与ViewPage建立关系
     }
 
-
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==1001){
+            orderOnGoingFragment.refreshLaodData();
+        }else if(resultCode==1000){
+            orderToBeConfirmedFragment.refreshLaodData();
+        }
+    }
 }

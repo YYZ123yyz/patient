@@ -244,6 +244,7 @@ public class CancelContractActivity extends AbstractMvpBaseActivity<CancelContra
         bundle.putSerializable("orderMsg",terminationOrder);
         intent.putExtras(bundle);
         startActivity(intent);
+        setResult(1001);
         this.finish();
     }
 

@@ -64,6 +64,7 @@ public class OrderOnGoingFragment extends
     private List<MultiItemEntity> mMultiItemEntitys;//多布局内容列表
     private JYKJApplication mApp;
     private  MyOrderProcess myOrderProcess;
+    private int currentPos;
     @Override
     protected int setLayoutId() {
         return R.layout.fragment_base_list;
@@ -88,11 +89,21 @@ public class OrderOnGoingFragment extends
         setAdapter();
     }
 
+    /**
+     * 刷新数据
+     */
+    public void refreshLaodData(){
+        pageIndex=1;
+        mPresenter.sendSearchPatientMyOrderResOngoingRequest(pageSize+"",
+                pageIndex+"",this.getActivity());
+    }
+
     @Override
     protected void initData() {
         mPresenter.sendSearchPatientMyOrderResOngoingRequest(pageSize+"",
                 pageIndex+"",this.getActivity());
     }
+
 
 
     /**
@@ -133,6 +144,19 @@ public class OrderOnGoingFragment extends
     }
 
     /**
+     * 设置到指定位置
+     * @param pos 位置
+     */
+    private void setCurrentPos(int pos){
+        mRvList.post(new Runnable() {
+            @Override
+            public void run() {
+                mRvList.scrollToPosition(pos);
+            }
+        });
+    }
+
+    /**
      * 设置适配器
      */
     private void setAdapter(){
@@ -151,7 +175,7 @@ public class OrderOnGoingFragment extends
                 bundle.putString("orderId",myOrderProcess.getOrderCode());
                 bundle.putString("operDoctorCode",myOrderProcess.getDoctorCode());
                 bundle.putString("operDoctorName",myOrderProcess.getDoctorName());
-                startActivity(CancelContractActivity.class,bundle);
+                startActivity(CancelContractActivity.class,bundle,100);
             }
 
             @Override
@@ -163,6 +187,7 @@ public class OrderOnGoingFragment extends
 
             @Override
             public void onClickCancelOnGoing(int pos) {
+                currentPos=pos;
                 myOrderProcess = (MyOrderProcess) mMultiItemEntitys.get(pos);
                 Bundle bundle=new Bundle();
                 bundle.putString("mainDoctorCode",myOrderProcess.getDoctorCode());
@@ -170,12 +195,13 @@ public class OrderOnGoingFragment extends
                 bundle.putInt("orderState",myOrderProcess.getFlagTreatmentState());
                 bundle.putString("signNo",myOrderProcess.getSignNo());
                 bundle.putString("orderId",myOrderProcess.getOrderCode());
-                startActivity(CancelContractResultActivity.class,bundle);
+                startActivity(CancelContractResultActivity.class,bundle,100);
 
             }
 
             @Override
             public void onClickItem(int position, ViewHolder holder) {
+                currentPos=position;
                  myOrderProcess = (MyOrderProcess)
                         mMultiItemEntitys.get(position);
                 Integer treatmentType = myOrderProcess.getTreatmentType();
@@ -186,14 +212,14 @@ public class OrderOnGoingFragment extends
                         bundle.putString("orderId",myOrderProcess.getOrderCode());
                         bundle.putString("operDoctorCode",myOrderProcess.getDoctorCode());
                         bundle.putString("operDoctorName",myOrderProcess.getDoctorName());
-                        startActivity(CancelConfirmDeitalActivity.class,bundle);
+                        startActivity(CancelConfirmDeitalActivity.class,bundle,100);
 
                     }else{
                         Bundle bundle=new Bundle();
                         bundle.putString("signCode",myOrderProcess.getOrderCode());
                         bundle.putString("operDoctorCode",myOrderProcess.getDoctorCode());
                         bundle.putString("operDoctorName",myOrderProcess.getDoctorName());
-                        startActivity(SignOrderDetialActivity.class,bundle);
+                        startActivity(SignOrderDetialActivity.class,bundle,100);
                     }
 
                 }else{
@@ -206,17 +232,19 @@ public class OrderOnGoingFragment extends
 
             @Override
             public void onClickRefund(int pos) {
+                currentPos=pos;
                 myOrderProcess = (MyOrderProcess)
                         mMultiItemEntitys.get(pos);
                 String actualPayment = myOrderProcess.getActualPayment();
                 Bundle bundle=new Bundle();
                 bundle.putString("actualPayment",actualPayment);
                 bundle.putString("orderId",myOrderProcess.getOrderCode());
-                startActivity(RefundActivity.class,bundle);
+                startActivity(RefundActivity.class,bundle,100);
             }
 
             @Override
             public void onClickRefused(int pos) {
+                currentPos=pos;
                 myOrderProcess = (MyOrderProcess)
                         mMultiItemEntitys.get(pos);
                 Bundle bundle=new Bundle();
@@ -224,11 +252,12 @@ public class OrderOnGoingFragment extends
                 bundle.putString("signOrderCode",myOrderProcess.getDoctorCode());
                 bundle.putString("operDoctorName",myOrderProcess.getDoctorName());
                 bundle.putString("operDoctorCode",myOrderProcess.getDoctorCode());
-                startActivity(RefusedCancelContractActivity.class,bundle);
+                startActivity(RefusedCancelContractActivity.class,bundle,100);
             }
 
             @Override
             public void onClickAgree(int pos) {
+                currentPos=pos;
                 showLoading("",null);
                 myOrderProcess = (MyOrderProcess)
                         mMultiItemEntitys.get(pos);
@@ -297,6 +326,7 @@ public class OrderOnGoingFragment extends
                 mRefreshLayout.finishLoadMore();
             }
             mOrderOnGoingAdapter.notifyDataSetChanged();
+            setCurrentPos(currentPos);
         } else {
             if (pageIndex == 1) {
                 mLoadingLayout.showEmpty();

@@ -729,17 +729,17 @@
         <activity android:name=".activity.home.patient.DoctorDetialSettingActivity"
             android:screenOrientation="portrait"
            />
-        <activity android:name=".activity.myself.order.activity.CancelContractResultActivity"
-            android:screenOrientation="portrait"
-            >
-
-
-        </activity>
         <activity android:name=".activity.myself.order.activity.RefundActivity"
             android:screenOrientation="portrait"
             >
         </activity>
         <activity android:name=".activity.myself.order.activity.RefundResultActivity"
+            android:screenOrientation="portrait"
+            >
+
+
+        </activity>
+        <activity android:name=".activity.myself.order.activity.CancelContractResultActivity"
             android:screenOrientation="portrait"
             >
 
