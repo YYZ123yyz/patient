@@ -231,6 +231,7 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
         messageList = (EaseChatMessageList)findViewById(R.id.message_list);
         if(chatType != EaseConstant.CHATTYPE_SINGLE)
             messageList.setShowUserNick(true);
+            messageList.setShowChatRoom(true);
 //        messageList.setAvatarShape(1);
         listView = messageList.getListView();
 
@@ -1317,6 +1318,7 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
             sendAtMessage(content);
         }else{
             EMMessage message = EMMessage.createTxtSendMessage(content, toChatUsername);
+            message.setAttribute("messageType","chatRoom");
             sendMessage(message);
         }
     }
@@ -1333,6 +1335,7 @@ public abstract class ChatPopDialogActivity extends AppCompatActivity implements
             return;
         }
         EMMessage message = EMMessage.createTxtSendMessage(content, toChatUsername);
+        message.setAttribute("messageType","chatRoom");
         EMGroup group = EMClient.getInstance().groupManager().getGroup(toChatUsername);
         if(EMClient.getInstance().getCurrentUser().equals(group.getOwner()) && EaseAtMessageHelper.get().containsAtAll(content)){
             message.setAttribute(EaseConstant.MESSAGE_ATTR_AT_MSG, EaseConstant.MESSAGE_ATTR_VALUE_AT_MSG_ALL);

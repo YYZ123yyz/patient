@@ -268,7 +268,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         // message list layout
         messageList = (EaseChatMessageList) getView().findViewById(R.id.message_list);
         if (chatType != EaseConstant.CHATTYPE_SINGLE)
-            messageList.setShowUserNick(true);
+            messageList.setShowUserNick(false);
+            messageList.setShowChatRoom(false);
 //        messageList.setAvatarShape(1);
         listView = messageList.getListView();
 

@@ -170,7 +170,10 @@ public abstract class EaseChatRow extends LinearLayout {
                             .into(userAvatarView);
                 }
             }
-            userAvatarView.setVisibility(View.GONE);
+            if (itemStyle.isShowChatRoom()) {
+                userAvatarView.setVisibility(View.GONE);
+            }
+
         }
         if (EMClient.getInstance().getOptions().getRequireDeliveryAck()) {
             if(deliveredView != null){
@@ -213,7 +216,10 @@ public abstract class EaseChatRow extends LinearLayout {
                 } else {
                     userAvatarView.setVisibility(View.GONE);
                 }
-                userAvatarView.setVisibility(View.GONE);
+                if (itemStyle.isShowChatRoom()) {
+                    userAvatarView.setVisibility(View.GONE);
+                }
+
             }
             if (usernickView != null) {
                 if (itemStyle.isShowUserNick())

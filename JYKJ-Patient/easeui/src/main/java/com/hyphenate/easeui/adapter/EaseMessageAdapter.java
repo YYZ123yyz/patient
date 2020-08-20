@@ -34,6 +34,7 @@ import com.hyphenate.easeui.widget.presenter.EaseChatBigExpressionPresenter;
 import com.hyphenate.easeui.widget.presenter.EaseChatFilePresenter;
 import com.hyphenate.easeui.widget.presenter.EaseChatImagePresenter;
 import com.hyphenate.easeui.widget.presenter.EaseChatLocationPresenter;
+import com.hyphenate.easeui.widget.presenter.EaseChatRoomTextPresenter;
 import com.hyphenate.easeui.widget.presenter.EaseChatRowPresenter;
 import com.hyphenate.easeui.widget.presenter.EaseChatTextPresenter;
 import com.hyphenate.easeui.widget.presenter.EaseChatVideoPresenter;
@@ -63,7 +64,10 @@ public class EaseMessageAdapter extends BaseAdapter{
 	private static final int MESSAGE_TYPE_RECV_FILE = 11;
 	private static final int MESSAGE_TYPE_SENT_EXPRESSION = 12;
 	private static final int MESSAGE_TYPE_RECV_EXPRESSION = 13;
-	
+	private static final int MESSAGE_TYPE_SEND_ORDER_CARD = 14;
+	private static final int MESSAGE_TYPE_RECV_ORDER_CARD = 15;
+	private static final int MESSAGE_TYPE_SEND_TXT_ROOM=14;
+	private static final int MESSAGE_TYPE_RECV_TXT_ROOM=15;
 	
 	public int itemTypeCount; 
 	
@@ -171,9 +175,9 @@ public class EaseMessageAdapter extends BaseAdapter{
 	 */
 	public int getViewTypeCount() {
 	    if(customRowProvider != null && customRowProvider.getCustomChatRowTypeCount() > 0){
-	        return customRowProvider.getCustomChatRowTypeCount() + 14;
+	        return customRowProvider.getCustomChatRowTypeCount() + 14+2;
 	    }
-        return 14;
+        return 14+2;
     }
 	
 
@@ -187,13 +191,18 @@ public class EaseMessageAdapter extends BaseAdapter{
 		}
 		
 		if(customRowProvider != null && customRowProvider.getCustomChatRowType(message) > 0){
-		    return customRowProvider.getCustomChatRowType(message) + 13;
+		    return customRowProvider.getCustomChatRowType(message) + 13+2;
 		}
 		
 		if (message.getType() == EMMessage.Type.TXT) {
 		    if(message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_BIG_EXPRESSION, false)){
 		        return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_EXPRESSION : MESSAGE_TYPE_SENT_EXPRESSION;
-		    }
+		    }else{
+				if (itemStyle!=null&&itemStyle.isShowChatRoom()) {
+					return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_TXT_ROOM : MESSAGE_TYPE_SEND_TXT_ROOM;
+				}
+
+			}
 			return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_TXT : MESSAGE_TYPE_SENT_TXT;
 		}
 		if (message.getType() == EMMessage.Type.IMAGE) {
@@ -228,7 +237,17 @@ public class EaseMessageAdapter extends BaseAdapter{
             if(message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_BIG_EXPRESSION, false)){
 				presenter = new EaseChatBigExpressionPresenter();
             }else{
-				presenter = new EaseChatTextPresenter();
+				String messageType = message.getStringAttribute("messageType", "");
+				if (messageType
+						.equals("card")||messageType.equals("terminationOrder")) {
+					//presenter = new EaseChatOrderPresenter();
+				}else{
+					if (itemStyle.isShowChatRoom()) {
+						presenter=new EaseChatRoomTextPresenter();
+					}else{
+						presenter = new EaseChatTextPresenter();
+					}
+				}
             }
             break;
         case LOCATION:
