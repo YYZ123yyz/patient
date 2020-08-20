@@ -213,7 +213,7 @@ abstract public class AbstractClient {
                 this.profile.getHttpProfile().getReadTimeout(), this.profile.getHttpProfile().getWriteTimeout());
         this.trySetProxy(conn);
         String url = this.profile.getHttpProfile().getProtocol() + endpoint + this.path;
-        Builder hb = new Headers.Builder();
+        Builder hb = new Builder();
         hb.add("Content-Type", contentType).add("Host", endpoint).add("Authorization", authorization)
                 .add("X-TC-Action", action).add("X-TC-Timestamp", timestamp).add("X-TC-Version", this.apiVersion)
                 .add("X-TC-Region", this.getRegion()).add("X-TC-RequestClient", SDK_VERSION);
@@ -423,7 +423,7 @@ abstract public class AbstractClient {
                 this.profile.getHttpProfile().getWriteTimeout());
         this.trySetProxy(conn);
         String url = this.profile.getHttpProfile().getProtocol() + endpoint + this.path;
-        Builder hb = new Headers.Builder();
+        Builder hb = new Builder();
         hb.add("Content-Type", contentType)
             .add("Host", endpoint)
             .add("Authorization", authorization)

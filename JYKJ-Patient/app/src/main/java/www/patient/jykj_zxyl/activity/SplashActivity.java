@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -26,18 +29,24 @@ import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.util.ActivityUtil;
 
 public class SplashActivity extends AppCompatActivity {
     private JYKJApplication mApp;
-    public                  ProgressDialog              mDialogProgress =null;
-    private                 String                      mNetLoginRetStr;                 //登录返回字符串
-    private                 String                      mNetRegionRetStr;                 //获取返回字符串
-    private                 Handler                     mHandler;
+    public ProgressDialog mDialogProgress = null;
+    private String mNetLoginRetStr;                 //登录返回字符串
+    private String mNetRegionRetStr;                 //获取返回字符串
+    private Handler mHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //隐藏标题栏以及状态栏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
+        ActivityUtil.setStatusBarMain(this);
         mApp = (JYKJApplication) getApplication();
         mApp.gActivityList.add(this);
         SharedPreferences sharedPreferences = this.getSharedPreferences("share", MODE_PRIVATE);
@@ -94,7 +103,7 @@ public class SplashActivity extends AppCompatActivity {
             mApp.loginIM();
             startActivity(intent);
             finish();
-        }else{
+        } else {
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -135,12 +144,12 @@ public class SplashActivity extends AppCompatActivity {
         }.start();
     }
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case 1:
                         cacerProgress();
                         if (mNetLoginRetStr != null && !mNetLoginRetStr.equals("")) {
@@ -158,22 +167,17 @@ public class SplashActivity extends AppCompatActivity {
                                 //登录IM
                                 mApp.loginIM();
 //                                startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                                for (int i = 0; i < mApp.gActivityList.size(); i++)
-                                {
+                                for (int i = 0; i < mApp.gActivityList.size(); i++) {
                                     mApp.gActivityList.get(i).finish();
                                 }
                                 startActivity(new Intent(SplashActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));//它可以关掉所要到的界面中间的activity);
 //                                finish();
-                            }
-                            else
-                            {
-                                Toast.makeText(SplashActivity.this, "登录失败，"+netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+                            } else {
+                                Toast.makeText(SplashActivity.this, "登录失败，" + netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                                 finish();
                             }
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(SplashActivity.this, "网络异常，请联系管理员", Toast.LENGTH_SHORT).show();
                         }
                         break;
@@ -235,10 +239,10 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(this);
         }
@@ -251,7 +255,7 @@ public class SplashActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }

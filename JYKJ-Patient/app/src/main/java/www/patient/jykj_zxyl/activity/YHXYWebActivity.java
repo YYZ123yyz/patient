@@ -32,7 +32,7 @@ public class YHXYWebActivity extends AppCompatActivity {
         setContentView(R.layout.activity_yhxy_webinfo);
         mContext = this;
         mActivity = this;
-        ActivityUtil.setStatusBar(mActivity);
+        ActivityUtil.setStatusBarMain(mActivity);
         initLayout();
     }
 

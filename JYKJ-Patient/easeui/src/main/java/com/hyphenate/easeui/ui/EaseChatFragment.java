@@ -3,8 +3,6 @@ package com.hyphenate.easeui.ui;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ClipboardManager;
-import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -78,18 +76,25 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import www.patient.jykj_zxyl.base.base_bean.OrderMessage;
+import www.patient.jykj_zxyl.base.base_bean.ProvideViewSysUserPatientInfoAndRegion;
+import www.patient.jykj_zxyl.base.base_utils.GsonUtils;
+import www.patient.jykj_zxyl.base.base_utils.SharedPreferences_DataSave;
 
-import static android.content.Context.MODE_PRIVATE;
-import static com.baidu.mapapi.BMapManager.getContext;
 import static com.hyphenate.easeui.EaseConstant.CHATTYPE_GROUP;
 
 /**
@@ -188,6 +193,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     private String userUrl;
     private SharedPreferences sharedPreferences;
     private SharedPreferences preferences;
+    private OrderMessage orderMessage;
+    private ProvideViewSysUserPatientInfoAndRegion mProvideViewSysUserPatientInfoAndRegion;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -196,12 +203,20 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, boolean roaming) {
         isRoaming = roaming;
+
         return inflater.inflate(R.layout.ease_fragment_chat, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
 
+        EventBus.getDefault().register(this);
+
+        SharedPreferences_DataSave m_persist = new SharedPreferences_DataSave(this.getActivity(),
+                "JYKJDOCTER");
+        String userInfoSuLogin = m_persist.getString("viewSysUserDoctorInfoAndHospital", "");
+        mProvideViewSysUserPatientInfoAndRegion
+                = GsonUtils.fromJson(userInfoSuLogin, ProvideViewSysUserPatientInfoAndRegion.class);
         fragmentArgs = getArguments();
         // check if single chat or group chat
         chatType = fragmentArgs.getInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
@@ -218,6 +233,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 
         Constant.doctorUrl = fragmentArgs.getString("doctorUrl");
         Constant.patientUrl = fragmentArgs.getString("userUrl");
+         orderMessage =(OrderMessage) fragmentArgs.getSerializable("orderMessage");
 
 
         // userId you are chat with or group id
@@ -248,7 +264,9 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 //            itemIds = new int[]{ITEM_VIDEO};
 //        }
         this.turnOnTyping = turnOnTyping();
-
+        if(orderMessage!=null){
+            sendOrderCardMsg(orderMessage);
+        }
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -1043,12 +1061,32 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     intent.setType("*/*");
                     startActivityForResult(intent, REQUEST_CODE_FILE);
+                    //showCard();
+
                     break;
                 default:
                     break;
             }
         }
 
+    }
+
+    private void showCard() {
+        //发送扩展消息
+        EMMessage message = EMMessage.createTxtSendMessage("[签约订单]",toChatUsername);
+        //增加自己的属性
+        message.setAttribute("messageType","card");
+
+        //设置群聊和聊天室发送消息
+        if (chatType == EaseConstant.CHATTYPE_GROUP){
+            message.setChatType(ChatType.GroupChat);
+        }else if (chatType == EaseConstant.CHATTYPE_CHATROOM){
+            message.setChatType(ChatType.ChatRoom);
+        }
+        //发送扩展消息
+        EMClient.getInstance().chatManager().sendMessage(message);
+        messageList.refresh();//刷新消息数据
+        //TODO 第二步 修改easeUi的 EaseMessageAdapter
     }
 
     /**
@@ -1687,6 +1725,61 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
          * @return
          */
         EaseCustomChatRowProvider onSetCustomChatRowProvider();
+    }
+
+
+    //主线程中执行
+    @SuppressLint("DefaultLocale")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMainEventBus(OrderMessage msg) {
+        sendOrderCardMsg(msg);
+    }
+
+    /**
+     * 发送订单
+     * @param msg 消息
+     */
+    private void sendOrderCardMsg( OrderMessage msg) {
+        String msgContent="";
+        String messageType = msg.getMessageType();
+        if (messageType.equals("card")) {
+            msgContent="[签约订单]";
+        }else if(messageType.equals("terminationOrder")){
+            msgContent="[解约订单]";
+        }
+        //发送扩展消息
+        EMMessage message = EMMessage.createTxtSendMessage(msgContent,toChatUsername);
+        //增加自己的属性
+        message.setAttribute("messageType",msg.getMessageType());
+        message.setAttribute("orderId",msg.getOrderId());
+        message.setAttribute("coach",msg.getCoach());
+        message.setAttribute("signUpTime",msg.getSignUpTime());
+        message.setAttribute("singNo",msg.getSingNo());
+        message.setAttribute("price",msg.getPrice());
+        message.setAttribute("monitoringType",msg.getMonitoringType());
+        message.setAttribute("orderType",msg.getOrderType());
+        message.setAttribute("nickName", mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        message.setAttribute("imageUrl", mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+        message.setAttribute("isPatient",msg.getIsPatient());
+        //设置群聊和聊天室发送消息
+        if (chatType == EaseConstant.CHATTYPE_GROUP){
+            message.setChatType(ChatType.GroupChat);
+        }else if (chatType == EaseConstant.CHATTYPE_CHATROOM){
+            message.setChatType(ChatType.ChatRoom);
+        }
+        //发送扩展消息
+        EMClient.getInstance().chatManager().sendMessage(message);
+        if (messageList!=null) {
+            messageList.refresh();//刷新消息数据
+            //TODO 第二步 修改easeUi的 EaseMessageAdapter
+        }
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 
 }

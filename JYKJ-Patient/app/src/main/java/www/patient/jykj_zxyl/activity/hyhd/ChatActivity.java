@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.allin.commlibrary.preferences.SavePreferences;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.domain.EaseEmojicon;
@@ -36,20 +37,22 @@ public class ChatActivity extends AppCompatActivity {
     private EaseChatInputMenu inputMenu;
     private JYKJApplication mApp;
 
+
     private String doctorUrl;
     private String patientUrl;
-
+    private String doctorType;//医生类型
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_chat);
+        ActivityUtil.setStatusBarMain(this);
         mContext = this;
         mActivity = this;
         mApp = (JYKJApplication) getApplication();
-        ActivityUtil.setStatusBar(mActivity);
+        // ActivityUtil.setStatusBar(mActivity);
         String chatType = getIntent().getStringExtra("chatType");
+        doctorType = getIntent().getStringExtra("doctorType");
 //        initLayout();
         //new出EaseChatFragment或其子类的实例
         EaseChatFragment chatFragment = new EaseChatFragment();
@@ -83,8 +86,10 @@ public class ChatActivity extends AppCompatActivity {
         args.putLong(EaseConstant.EXTRA_VOICE_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_VOICE_NUM, 0));
         args.putLong(EaseConstant.EXTRA_VEDIO_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_VEDIO_NUM, 0));
         args.putString("chatType", chatType);
+        args.putString("doctorType", doctorType);
         chatFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().add(R.id.container, chatFragment).commit();
+        SavePreferences.setData("isNewMsg", false);
     }
 
     /**

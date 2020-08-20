@@ -18,10 +18,14 @@ import com.hyphenate.easeui.model.EaseAtMessageHelper;
 import com.hyphenate.easeui.model.EaseNotifier;
 import com.hyphenate.easeui.model.EaseDingMessageHelper;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import www.patient.jykj_zxyl.base.base_bean.MainMessage;
 
 public final class EaseUI {
     private static final String TAG = EaseUI.class.getSimpleName();
@@ -60,6 +64,10 @@ public final class EaseUI {
      * save foreground Activity which registered eventlistener
      */
     private List<Activity> activityList = new ArrayList<Activity>();
+    /**
+     * 消息ID
+     */
+    private String lastMsgId="";
     
     public void pushActivity(Activity activity){
         if(!activityList.contains(activity)){
@@ -118,7 +126,7 @@ public final class EaseUI {
         }
         
         initNotifier();
-//        registerMessageListener();
+        //registerMessageListener();
         
         if(settingsProvider == null){
             settingsProvider = new DefaultSettingsProvider();
@@ -155,9 +163,14 @@ public final class EaseUI {
                 EaseAtMessageHelper.get().parseMessages(messages);
                 for (EMMessage message : messages) {
                     if (!instance.hasForegroundActivies()) {
-                        getNotifier().notify(message);
+                        if (!lastMsgId.equals(message.getMsgId())) {
+                            getNotifier().notify(message);
+
+                            lastMsgId=message.getMsgId();
+                        }
                     }
                 }
+
             }
             @Override
             public void onMessageRead(List<EMMessage> messages) {

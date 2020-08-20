@@ -33,7 +33,7 @@ public class CustomActivity extends BaseActivity implements OnClickListener{
 	/** Notification 的ID */
 	int notifyId = 101;
 	/** NotificationCompat 构造器*/
-	NotificationCompat.Builder mBuilder;
+	Builder mBuilder;
 	/** 是否在播放*/
 	public boolean isPlay = false;
 	/** 通知栏按钮广播 */
@@ -94,7 +94,7 @@ public class CustomActivity extends BaseActivity implements OnClickListener{
 	 * 带按钮的通知栏
 	 */
 	public void showButtonNotify(){
-		NotificationCompat.Builder mBuilder = new Builder(this);
+		Builder mBuilder = new Builder(this);
 		RemoteViews mRemoteViews = new RemoteViews(getPackageName(), R.layout.view_custom_button);
 		mRemoteViews.setImageViewResource(R.id.custom_song_icon, R.mipmap.sing_icon);
 		//API3.0 以上的时候显示按钮，否则消失

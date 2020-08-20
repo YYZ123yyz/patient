@@ -45,6 +45,7 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.hyhd.BindDoctorFriend;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
+import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.SaveImg;
 import www.patient.jykj_zxyl.util.WechatShareManager;
 import zxing.android.CaptureActivity;
@@ -98,6 +99,7 @@ public class QRCodeActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_code);
+        ActivityUtil.setStatusBarMain(this);
         context = this;
         mApp = (JYKJApplication) getApplication();
         mShareManager = WechatShareManager.getInstance(context);
@@ -354,7 +356,7 @@ public class QRCodeActivity extends AppCompatActivity {
         tv_fx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                wechatShare(2);
+                wechatShare(1);
             }
         });
 //        userName.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());

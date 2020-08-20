@@ -18,7 +18,7 @@ import java.util.List;
 public class NewPatientLaberAdapter extends RecyclerView.Adapter<NewPatientLaberAdapter.ViewHolder> {
     public List<ProvidePatientLabel> datas = new ArrayList<>();
     private RedeemRecordActivity mActivity;
-    private NewPatientLaberAdapter.OnItemClickListener mOnItemClickListener;
+    private OnItemClickListener mOnItemClickListener;
     private Context mContext;
 
 
@@ -34,9 +34,9 @@ public class NewPatientLaberAdapter extends RecyclerView.Adapter<NewPatientLaber
 
     //创建新View，被LayoutManager所调用
     @Override
-    public NewPatientLaberAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType){
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType){
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_patientlaber_patientlabers,viewGroup,false);
-        NewPatientLaberAdapter.ViewHolder vh = new NewPatientLaberAdapter.ViewHolder(view);
+        ViewHolder vh = new ViewHolder(view);
         return vh;
     }
     //将数据与界面进行绑定的操作
@@ -48,7 +48,7 @@ public class NewPatientLaberAdapter extends RecyclerView.Adapter<NewPatientLaber
      * @param position
      */
     @Override
-    public void onBindViewHolder(NewPatientLaberAdapter.ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         viewHolder.mCreateDate.setText(Util.dateToStr(datas.get(position).getCreateDate()));
         viewHolder.mLaberName.setText(datas.get(position).getUserLabelSecondName());
     }
@@ -86,7 +86,7 @@ public class NewPatientLaberAdapter extends RecyclerView.Adapter<NewPatientLaber
         void onLongClick(int position);
     }
 
-    public void setOnItemClickListener(NewPatientLaberAdapter.OnItemClickListener onItemClickListener ){
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener ){
         this.mOnItemClickListener=onItemClickListener;
     }
 }

@@ -20,26 +20,28 @@ import www.patient.jykj_zxyl.util.Util;
  * 建档档案 == 》 既往病史 ==》 本人填写
  */
 public class JDDA_JWBS_BRTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_BRTXAdapter.ViewHolder> {
-    public          List<ProvidePatientConditionDiseaseRecord>            datas = new ArrayList<>();
-    private         RedeemRecordActivity            mActivity;
-    private         OnItemClickListener             mOnItemClickListener;
-    private         Context                         mContext;
+    public List<ProvidePatientConditionDiseaseRecord> datas = new ArrayList<>();
+    private RedeemRecordActivity mActivity;
+    private OnItemClickListener mOnItemClickListener;
+    private Context mContext;
+    private OnDeleteClickLister mDeleteClickListener;
 
 
-    public JDDA_JWBS_BRTXAdapter(List<ProvidePatientConditionDiseaseRecord> list, Context context){
+
+    public JDDA_JWBS_BRTXAdapter(List<ProvidePatientConditionDiseaseRecord> list, Context context) {
         mContext = context;
         datas = list;
     }
 
     //重新设置数据
-    public void setDate(List<ProvidePatientConditionDiseaseRecord> list){
+    public void setDate(List<ProvidePatientConditionDiseaseRecord> list) {
         datas = list;
     }
 
     //创建新View，被LayoutManager所调用
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType){
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_jdda_jwbs_brtx,viewGroup,false);
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_jdda_jwbs_brtx, viewGroup, false);
         ViewHolder vh = new ViewHolder(view);
         return vh;
     }
@@ -58,8 +60,20 @@ public class JDDA_JWBS_BRTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_BRTXAd
 //        viewHolder.mType.setText(datas.get(position).getRecordTypeName());
         viewHolder.mContent.setText(datas.get(position).getRecordContent());
 
-        if (mOnItemClickListener != null)
-        {
+        View view = viewHolder.tvDelete;
+        view.setTag(position);
+        if (!view.hasOnClickListeners()) {
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mDeleteClickListener != null) {
+                        mDeleteClickListener.onDeleteClick(v, (Integer) v.getTag());
+                    }
+                }
+            });
+        }
+
+        if (mOnItemClickListener != null) {
             viewHolder.mClickLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -78,46 +92,54 @@ public class JDDA_JWBS_BRTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_BRTXAd
         }
 
     }
+
     //获取数据的数量
     @Override
-    public int getItemCount(){
-        if (datas == null )
+    public int getItemCount() {
+        if (datas == null)
             return 0;
         return datas.size();
         //return 10;
     }
 
 
-
-
     //自定义的ViewHolder，持有每个Item的的所有界面元素
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout mClickLinearLayout;                     //整个布局，用来监听点击事件
-        public TextView     mBM;                                //别名
-        public TextView     mDate;                             //时间
-        public TextView     mType;                             //类型
-        public TextView     mContent;                             //内容
+        public TextView mBM;                                //别名
+        public TextView mDate;                             //时间
+        public TextView mType;                             //类型
+        public TextView mContent;                             //内容
+        public TextView tvDelete;
 
-
-        public ViewHolder(View view){
+        public ViewHolder(View view) {
             super(view);
+            tvDelete=view.findViewById(R.id.tv_delete);
             mClickLinearLayout = (LinearLayout) view.findViewById(R.id.li_clickLayout);
-            mBM = (TextView)view.findViewById(R.id.tv_activityPatientJWBS_bm);
-            mDate = (TextView)view.findViewById(R.id.tv_activityPatientLaber_createDate);
-            mType = (TextView)view.findViewById(R.id.tv_activityPatientLaber_laberName);
-            mContent = (TextView)view.findViewById(R.id.tv_activityPatientLaber_content);
+            mBM = (TextView) view.findViewById(R.id.tv_activityPatientJWBS_bm);
+            mDate = (TextView) view.findViewById(R.id.tv_activityPatientLaber_createDate);
+            mType = (TextView) view.findViewById(R.id.tv_activityPatientLaber_laberName);
+            mContent = (TextView) view.findViewById(R.id.tv_activityPatientLaber_content);
         }
     }
 
 
+    public void setmDeleteClickListener(OnDeleteClickLister mDeleteClickListener) {
+        this.mDeleteClickListener = mDeleteClickListener;
+    }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onClick(int position);
+
         void onLongClick(int position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener ){
-        this.mOnItemClickListener=onItemClickListener;
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
+
+    public interface OnDeleteClickLister {
+        void onDeleteClick(View view, int position);
     }
 }

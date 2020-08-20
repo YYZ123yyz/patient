@@ -27,7 +27,7 @@ public class MedicationRecordAdapter extends RecyclerView.Adapter<MedicationReco
 //    private List<ProvidePatientConditionTakingRecord> mProvidePatientConditionTakingRecord;
     private Context mContext;
 
-    private MedicationRecordAdapter.OnItemClickListener mOnItemClickListener;           //用户资料点击事件
+    private OnItemClickListener mOnItemClickListener;           //用户资料点击事件
     private MedicationRecordActivity medicationRecordActivity;
 
     public interface OnItemClickListener{

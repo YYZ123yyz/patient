@@ -143,7 +143,7 @@ public class BloodLogListAdapter extends RecyclerView.Adapter<BloodLogListAdapte
     }
 
     public interface OnItemClickListener{
-        void onClick(int position,ViewHolder holder);
+        void onClick(int position, ViewHolder holder);
     }
 
 

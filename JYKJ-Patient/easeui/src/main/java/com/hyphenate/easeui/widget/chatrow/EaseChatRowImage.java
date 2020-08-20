@@ -1,5 +1,6 @@
 package com.hyphenate.easeui.widget.chatrow;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -14,6 +15,8 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.model.EaseImageCache;
 import com.hyphenate.easeui.utils.EaseImageUtils;
+import com.hyphenate.util.ImageUtils;
+
 import java.io.File;
 
 public class EaseChatRowImage extends EaseChatRowFile{
@@ -113,7 +116,8 @@ public class EaseChatRowImage extends EaseChatRowFile{
      * load image into image view
      * 
      */
-    private void showImageView(final String thumbernailPath, final String localFullSizePath,final EMMessage message) {
+    @SuppressLint("StaticFieldLeak")
+    private void showImageView(final String thumbernailPath, final String localFullSizePath, final EMMessage message) {
         // first check if the thumbnail image already loaded into cache s
         Bitmap bitmap = EaseImageCache.getInstance().get(thumbernailPath);
 
@@ -128,14 +132,17 @@ public class EaseChatRowImage extends EaseChatRowFile{
                 protected Bitmap doInBackground(Object... args) {
                     File file = new File(thumbernailPath);
                     if (file.exists()) {
-                        return EaseImageUtils.decodeScaleImage(thumbernailPath, 160, 160);
+                        return EaseImageUtils.decodeScaleImage(thumbernailPath,
+                                ImageUtils.SCALE_IMAGE_WIDTH, ImageUtils.SCALE_IMAGE_HEIGHT);
                     } else if (new File(imgBody.thumbnailLocalPath()).exists()) {
-                        return EaseImageUtils.decodeScaleImage(imgBody.thumbnailLocalPath(), 160, 160);
+                        return EaseImageUtils.decodeScaleImage(imgBody.thumbnailLocalPath(),
+                                ImageUtils.SCALE_IMAGE_WIDTH,  ImageUtils.SCALE_IMAGE_HEIGHT);
                     }
                     else {
                         if (message.direct() == EMMessage.Direct.SEND) {
                             if (localFullSizePath != null && new File(localFullSizePath).exists()) {
-                                return EaseImageUtils.decodeScaleImage(localFullSizePath, 160, 160);
+                                return EaseImageUtils.decodeScaleImage(localFullSizePath,
+                                        ImageUtils.SCALE_IMAGE_WIDTH, ImageUtils.SCALE_IMAGE_HEIGHT);
                             } else {
                                 return null;
                             }

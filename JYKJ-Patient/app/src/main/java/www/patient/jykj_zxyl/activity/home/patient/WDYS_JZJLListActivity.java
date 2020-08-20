@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity.home.patient;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,11 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,39 +39,39 @@ import www.patient.jykj_zxyl.adapter.JYZLecycleAdapter;
 import www.patient.jykj_zxyl.adapter.TWDYS_JZLBRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.util.ActivityUtil;
 
 /**
  * 我的医生 ==》就诊记录列表
  */
 public class WDYS_JZJLListActivity extends AppCompatActivity {
 
-    private                 Context                 mContext;
-    public                  ProgressDialog              mDialogProgress =null;
-    private             String                              mNetRetStr;                 //返回字符串
+    private Context mContext;
+    public ProgressDialog mDialogProgress = null;
+    private String mNetRetStr;                 //返回字符串
 
     private WDYS_JZJLListActivity mActivity;
-    private                 Handler                 mHandler;
-    private                 JYKJApplication         mApp;
+    private Handler mHandler;
+    private JYKJApplication mApp;
 
-    private                 RecyclerView            mRecycleView;
+    private RecyclerView mRecycleView;
 
     private LinearLayoutManager layoutManager;
     private TWDYS_JZLBRecycleAdapter mTWDYS_JZLBRecycleAdapter;       //适配器
 
 
-    private ProvidePatientBindingMyDoctorInfo    mProvidePatientBindingMyDoctorInfo;
-    private                 LinearLayout            mBack;
+    private ProvidePatientBindingMyDoctorInfo mProvidePatientBindingMyDoctorInfo;
+    private LinearLayout mBack;
 
+    private RefreshLayout refreshLayout;
+    private ProvideInteractClinicRecordWriteState mProvideInteractClinicRecordWriteState;
 
-    private                 ProvideInteractClinicRecordWriteState mProvideInteractClinicRecordWriteState;
+    private List<ProvideInteractOrderInfo> mProvideInteractOrderInfos = new ArrayList<>();
 
-    private List<ProvideInteractOrderInfo>          mProvideInteractOrderInfos = new ArrayList<>();
-
-    private                 int                         mNumPage = 1;                  //页数（默认，1）
-    private                 int                         mRowNum = 10;                  //每页加载10条
-
-    private             boolean                             loadDate;
-
+    private int mNumPage = 1;                  //页数（默认，1）
+    private int mRowNum = 10;                  //每页加载10条
+    private boolean isShowLoading=true;
+    private boolean loadDate;
 
 
     private void setLayoutDate() {
@@ -76,6 +82,7 @@ public class WDYS_JZJLListActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jzjllist);
+        ActivityUtil.setStatusBarMain(this);
         mContext = this;
         mActivity = this;
         mApp = (JYKJApplication) getApplication();
@@ -89,7 +96,31 @@ public class WDYS_JZJLListActivity extends AppCompatActivity {
      * 初始化布局
      */
     private void initLayout() {
-        mBack = (LinearLayout)this.findViewById(R.id.iv_back_left);
+
+        refreshLayout = findViewById(R.id.refreshLayout);
+        refreshLayout.setRefreshHeader(new ClassicsHeader(this));
+        refreshLayout.setRefreshFooter(new ClassicsFooter(this));
+        refreshLayout.autoRefresh();
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                //refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+                isShowLoading=false;
+                mNumPage=1;
+                getData();
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                //refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+                isShowLoading=false;
+                mNumPage++;
+                getData();
+            }
+        });
+
+        mBack = (LinearLayout) this.findViewById(R.id.iv_back_left);
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,32 +137,30 @@ public class WDYS_JZJLListActivity extends AppCompatActivity {
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecycleView.setHasFixedSize(true);
         //创建并设置Adapter
-        mTWDYS_JZLBRecycleAdapter = new TWDYS_JZLBRecycleAdapter(mProvideInteractOrderInfos,mContext);
+        mTWDYS_JZLBRecycleAdapter = new TWDYS_JZLBRecycleAdapter(mProvideInteractOrderInfos, mContext);
         mRecycleView.setAdapter(mTWDYS_JZLBRecycleAdapter);
 
-        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(newState == RecyclerView.SCROLL_STATE_IDLE)
-                {
-                    int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
-                    if(lastVisiblePosition >= layoutManager.getItemCount() - 1) {
-                        if (loadDate)
-                        {
-                            mNumPage ++;
-                            getData();
-                        }
-
-                    }
-                }
-            }
-        });
+//        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+//                    if (lastVisiblePosition >= layoutManager.getItemCount() - 1) {
+//                        if (loadDate) {
+//                            mNumPage++;
+//                            getData();
+//                        }
+//
+//                    }
+//                }
+//            }
+//        });
 
         mTWDYS_JZLBRecycleAdapter.setOnItemClickListener(new TWDYS_JZLBRecycleAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
-                startActivity(new Intent(mContext,WDYS_JZJLActivity.class).putExtra("provideInteractOrderInfo",mProvideInteractOrderInfos.get(position)));
+                startActivity(new Intent(mContext, WDYS_JZJLActivity.class).putExtra("provideInteractOrderInfo", mProvideInteractOrderInfos.get(position)));
             }
 
             @Override
@@ -142,36 +171,37 @@ public class WDYS_JZJLListActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case 0:
                         cacerProgress();
-                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 0)
-                        {
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 0) {
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
                             loadDate = false;
-                        }
-
-                        else
-                        {
-                            List<ProvideInteractOrderInfo> list = JSON.parseArray(netRetEntity.getResJsonData(),ProvideInteractOrderInfo.class);
+                        } else {
+                            List<ProvideInteractOrderInfo> list = JSON.parseArray(netRetEntity.getResJsonData(), ProvideInteractOrderInfo.class);
                             if (list == null || list.size() == 0)
                                 loadDate = false;
-                            else
-                            {
+                            else {
                                 if (list.size() < mRowNum)
                                     loadDate = false;
                                 mProvideInteractOrderInfos.addAll(list);
                             }
-                           mTWDYS_JZLBRecycleAdapter.setDate(mProvideInteractOrderInfos);
+                            mTWDYS_JZLBRecycleAdapter.setDate(mProvideInteractOrderInfos);
                             mTWDYS_JZLBRecycleAdapter.notifyDataSetChanged();
                         }
+                        if(mNumPage==1){
+                            refreshLayout.finishRefresh();
+                        }else{
+                            refreshLayout.finishLoadMore();
+                        }
+
                         break;
                 }
             }
@@ -179,31 +209,32 @@ public class WDYS_JZJLListActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * 设置数据
      */
     private void getData() {
-        getProgressBar("请稍候","正在获取数据。。。");
+        if(isShowLoading){
+            getProgressBar("请稍候", "正在获取数据。。。");
+        }
         ProvideInteractOrderInfo provideInteractOrderInfo = new ProvideInteractOrderInfo();
-        provideInteractOrderInfo.setRowNum(mRowNum+"");
-        provideInteractOrderInfo.setPageNum(mNumPage+"");
+        provideInteractOrderInfo.setRowNum(mRowNum + "");
+        provideInteractOrderInfo.setPageNum(mNumPage + "");
         provideInteractOrderInfo.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideInteractOrderInfo.setRequestClientType("1");
         provideInteractOrderInfo.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideInteractOrderInfo.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         provideInteractOrderInfo.setSearchDoctorCode(mProvidePatientBindingMyDoctorInfo.getDoctorCode());
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideInteractOrderInfo);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string,Constant.SERVICEURL+"PatientMyDoctorControlle/searchIndexMyDoctorNotSigningResTreatmentList");
-                    String string01 = Constant.SERVICEURL+"msgDataControlle/searchMsgPushReminderAllCount";
-                    System.out.println(string+string01);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "PatientMyDoctorControlle/searchIndexMyDoctorNotSigningResTreatmentList");
+                    String string01 = Constant.SERVICEURL + "msgDataControlle/searchMsgPushReminderAllCount";
+                    System.out.println(string + string01);
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -213,10 +244,10 @@ public class WDYS_JZJLListActivity extends AppCompatActivity {
     }
 
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(mContext);
         }
@@ -229,7 +260,7 @@ public class WDYS_JZJLListActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }

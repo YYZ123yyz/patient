@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.adapter.myself;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Entity;
 import android.content.Intent;
@@ -29,26 +30,26 @@ import www.patient.jykj_zxyl.util.StrUtils;
  */
 public class MyOrderNoRecycleAdapter extends RecyclerView.Adapter<MyOrderNoRecycleAdapter.ViewHolder> {
     public List<ProvideInteractOrderInfo> datas = new ArrayList<>();
-    private MyOrderActivity mActivity;
-    private         OnItemClickListener     mOnItemClickListener;
-    private         Context                 mContext;
+    private Activity mActivity;
+    private OnItemClickListener mOnItemClickListener;
+    private Context mContext;
 
 
-    public MyOrderNoRecycleAdapter(List<ProvideInteractOrderInfo> list, Context context, MyOrderActivity mainActivity){
+    public MyOrderNoRecycleAdapter(List<ProvideInteractOrderInfo> list, Context context, Activity mainActivity) {
         mContext = context;
         datas = list;
         mActivity = mainActivity;
     }
 
     //重新设置数据
-    public void setDate(List<ProvideInteractOrderInfo> list){
+    public void setDate(List<ProvideInteractOrderInfo> list) {
         datas = list;
     }
 
     //创建新View，被LayoutManager所调用
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType){
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_fragment_myorder_no,viewGroup,false);
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_fragment_myorder_no, viewGroup, false);
         ViewHolder vh = new ViewHolder(view);
         return vh;
     }
@@ -59,15 +60,12 @@ public class MyOrderNoRecycleAdapter extends RecyclerView.Adapter<MyOrderNoRecyc
      * 如果该用户是该组的第一个用户，那么就显示组别
      * 否则不再显示
      *
-     *
-     *
      * @param viewHolder
      * @param position
      */
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        if (mOnItemClickListener != null)
-        {
+        if (mOnItemClickListener != null) {
             viewHolder.mClickLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -87,13 +85,13 @@ public class MyOrderNoRecycleAdapter extends RecyclerView.Adapter<MyOrderNoRecyc
 
         ProvideInteractOrderInfo parbean = datas.get(position);
         viewHolder.mDate.setText(DateUtils.getStringTimeMinute(parbean.getOrderDate().getTime()));
-        viewHolder.mSurPrice.setText("["+parbean.getFlagOrderStateName()+"]");
+        viewHolder.mSurPrice.setText("[" + parbean.getFlagOrderStateName() + "]");
         viewHolder.price.setText(parbean.getOrderShowContent());
         viewHolder.mSuType.setText(parbean.getTreatmentTypeName());
-        if(1==parbean.getFlagOrderState().intValue()){
+        if (1 == parbean.getFlagOrderState().intValue()) {
             viewHolder.pay_btn.setVisibility(View.VISIBLE);
             viewHolder.find_doc_btn.setVisibility(View.GONE);
-        }else{
+        } else {
             viewHolder.pay_btn.setVisibility(View.GONE);
             viewHolder.find_doc_btn.setVisibility(View.VISIBLE);
         }
@@ -111,7 +109,7 @@ public class MyOrderNoRecycleAdapter extends RecyclerView.Adapter<MyOrderNoRecyc
                 String parodertype = StrUtils.defaultStr(parbean.getTreatmentType());
                 parintent.putExtra("provideInteractPatientInterrogation",mProvideInteractPatientInterrogation).putExtra("orderID",parorderid).putExtra("orderType",parodertype);
                 mContext.startActivity(parintent);*/
-                mContext.startActivity(new Intent(mActivity, OrderMessage_OrderPayActivity.class).putExtra("provideInteractOrderInfo",provideInteractOrderInfo));
+                mContext.startActivity(new Intent(mActivity, OrderMessage_OrderPayActivity.class).putExtra("provideInteractOrderInfo", provideInteractOrderInfo));
             }
         });
         viewHolder.find_doc_btn.setOnClickListener(new View.OnClickListener() {
@@ -121,19 +119,18 @@ public class MyOrderNoRecycleAdapter extends RecyclerView.Adapter<MyOrderNoRecyc
             }
         });
     }
+
     //获取数据的数量
     @Override
-    public int getItemCount(){
+    public int getItemCount() {
 
         return datas.size();
     }
 
 
-
-
     //自定义的ViewHolder，持有每个Item的的所有界面元素
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout ll_item;
         public LinearLayout mClickLinearLayout;                     //整个布局，用来监听点击事件
         public TextView mSuType;                                //类型
@@ -143,31 +140,31 @@ public class MyOrderNoRecycleAdapter extends RecyclerView.Adapter<MyOrderNoRecyc
         public TextView pay_btn;
         public TextView find_doc_btn;
 
-        public ViewHolder(View view){
+        public ViewHolder(View view) {
             super(view);
             ll_item = view.findViewById(R.id.ll_item);
             mClickLinearLayout = (LinearLayout) view.findViewById(R.id.item_fragmentYLZX_rmjxLayout);
-            mDate = (TextView)view.findViewById(R.id.order_date);
-            mSuType = (TextView)view.findViewById(R.id.treat_type);
-            mSurPrice = (TextView)view.findViewById(R.id.treat_state);
-            price = (TextView)view.findViewById(R.id.order_desc);
-            pay_btn = (TextView)view.findViewById(R.id.pay_btn);
-            find_doc_btn = (TextView)view.findViewById(R.id.find_doc_btn);
+            mDate = (TextView) view.findViewById(R.id.order_date);
+            mSuType = (TextView) view.findViewById(R.id.treat_type);
+            mSurPrice = (TextView) view.findViewById(R.id.treat_state);
+            price = (TextView) view.findViewById(R.id.order_desc);
+            pay_btn = (TextView) view.findViewById(R.id.pay_btn);
+            find_doc_btn = (TextView) view.findViewById(R.id.find_doc_btn);
         }
     }
 
 
-
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onClick(int position);
+
         void onLongClick(int position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener ){
-        this.mOnItemClickListener=onItemClickListener;
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
     }
 
-    public void updatas(List<ProvideInteractOrderInfo> paradatas){
+    public void updatas(List<ProvideInteractOrderInfo> paradatas) {
         this.datas.addAll(paradatas);
         this.notifyDataSetChanged();
     }

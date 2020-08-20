@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ import com.allen.library.utils.ToastUtils;
 import com.gyf.immersionbar.ImmersionBar;
 import com.gyf.immersionbar.components.SimpleImmersionFragment;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import www.patient.jykj_zxyl.base.R;
 
 
@@ -29,7 +32,7 @@ import www.patient.jykj_zxyl.base.R;
  *
  */
 public abstract class BaseLazyFragment extends SimpleImmersionFragment {
-    //private Unbinder unbinder;
+    private Unbinder unbinder;
     protected Activity mActivity;
     protected View mRootView;
     /**
@@ -84,9 +87,9 @@ public abstract class BaseLazyFragment extends SimpleImmersionFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        //绑定控件
-//        unbinder = ButterKnife.bind(this,view);
-        initView();
+        //绑定控件
+        unbinder = ButterKnife.bind(this,view);
+        initView(view);
         if (isLazyLoad()) {
             mIsPrepare = true;
             mIsImmersion = true;
@@ -119,9 +122,9 @@ public abstract class BaseLazyFragment extends SimpleImmersionFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        if (unbinder != null) {
-//            unbinder.unbind();
-//        }
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 
     @Override
@@ -186,8 +189,10 @@ public abstract class BaseLazyFragment extends SimpleImmersionFragment {
 
     /**
      * view与数据绑定
+     * @param view 当前View
      */
-    protected void initView() {
+    protected void initView(View view) {
+
     }
     /**
      * 设置监听
@@ -207,58 +212,45 @@ public abstract class BaseLazyFragment extends SimpleImmersionFragment {
 
 
 
-//    public void showSUCCESS(String msg) {
-//        if (TextUtils.isEmpty(msg)) {
-//            msg = "发送成功";
-//        }
-//        tipDialog = new QMUITipDialog.Builder(mActivity)
-//                .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
-//                .setTipWord(msg)
-//                .create();
-//        tipDialog.show();
-//        dismissTipDialog();
-//    }
-//
-//    public void showFAIL(String msg) {
-//        if (TextUtils.isEmpty(msg)) {
-//            msg = "发送失败";
-//        }
-//        tipDialog = new QMUITipDialog.Builder(mActivity)
-//                .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
-//                .setTipWord(msg)
-//                .create();
-//        tipDialog.show();
-//        dismissTipDialog();
-//    }
-//
-//    public void showINFO(String msg) {
-//        if (TextUtils.isEmpty(msg)) {
-//            msg = "请勿重复操作";
-//        }
-//        tipDialog = new QMUITipDialog.Builder(mActivity)
-//                .setIconType(QMUITipDialog.Builder.ICON_TYPE_INFO)
-//                .setTipWord(msg)
-//                .create();
-//        tipDialog.show();
-//        dismissTipDialog();
-//    }
-//
-//    public void showCustom(String msg) {
-//        tipDialog = new QMUITipDialog.CustomBuilder(mActivity)
-//                .setContent(R.layout.dialog_loading)
-//                .create();
-//        tipDialog.show();
-//        dismissTipDialog();
-//    }
-//
-//    public void dismissTipDialog() {
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                tipDialog.dismiss();
-//            }
-//        },1500);
-//    }
+    /**
+     * 开启进度框
+     */
+    public void showLoading(String msg, DialogInterface.OnCancelListener onCancelListener) {
+        LayoutInflater inflater = LayoutInflater.from(mActivity);
+
+        if (dialog == null) {
+            dialog = new AlertDialog.Builder(mActivity, R.style.NormalDialogStyle).create();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+            view = inflater.inflate(R.layout.dialog_loading, null, false);
+            if (dialog.getWindow() == null) {
+                return;
+            }
+            tvMessage = view.findViewById(R.id.tvMessage);
+            dialog.getWindow().setContentView(view.getRootView());
+        } else if (dialog.isShowing()) {
+            return;
+        } else {
+            dialog.show();
+        }
+        if (TextUtils.isEmpty(msg)) {
+            tvMessage.setText("正在加载...");
+        } else {
+            tvMessage.setText(msg);
+        }
+        if (onCancelListener != null) {
+            dialog.setOnCancelListener(onCancelListener);
+        }
+    }
+
+    /**
+     * 关闭对话框
+     */
+    public void dismissLoading() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
 
     /**
      * 跳转Activity

@@ -34,7 +34,7 @@ public class JoinUnionListAdapter extends RecyclerView.Adapter<JoinUnionListAdap
         mDate = list;
     }
     @Override
-    public JoinUnionListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_join_union,parent,false);
         ViewHolder vh = new ViewHolder(view);
         return vh;

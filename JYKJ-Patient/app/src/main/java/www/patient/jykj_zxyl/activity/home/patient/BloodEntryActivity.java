@@ -29,6 +29,7 @@ import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.custom.AllRulerCallback;
 import www.patient.jykj_zxyl.custom.VerticalRulerView;
+import www.patient.jykj_zxyl.util.ActivityUtil;
 
 /**
  *血压录入
@@ -54,6 +55,7 @@ public class BloodEntryActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blood_entry);
+        ActivityUtil.setStatusBarMain(this);
         mApp = (JYKJApplication) getApplicationContext();
         initView();
         initHandler();

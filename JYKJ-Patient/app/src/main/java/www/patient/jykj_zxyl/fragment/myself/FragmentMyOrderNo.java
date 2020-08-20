@@ -22,8 +22,10 @@ import java.util.Collections;
 import java.util.List;
 
 import android.widget.Toast;
+
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
+
 import entity.HZIfno;
 import entity.mySelf.ProvideInteractOrderInfo;
 import entity.mySelf.conditions.QueryOrder;
@@ -41,24 +43,25 @@ import www.patient.jykj_zxyl.custom.OnRecyclerItemClickListener;
 import www.patient.jykj_zxyl.custom.SwipeRecyclerView;
 import www.patient.jykj_zxyl.util.IConstant;
 import www.patient.jykj_zxyl.util.INetAddress;
+
 import android.widget.AbsListView.OnScrollListener;
 
 /**
  * 我的订单未完成
  * Created by admin on 2016/6/1.
  */
-public class FragmentMyOrderNo extends Fragment{
-    private             Context                             mContext;
-    private             Handler                             mHandler;
+public class FragmentMyOrderNo extends Fragment {
+    private Context mContext;
+    private Handler mHandler;
     private MyOrderActivity mActivity;
-    private             JYKJApplication                     mApp;
+    private JYKJApplication mApp;
 
-    private             SwipeRecyclerView                        mRMJXRecycleView;              //热门精选列表
-    private             LinearLayoutManager                 layoutManager;
+    private SwipeRecyclerView mRMJXRecycleView;              //热门精选列表
+    private LinearLayoutManager layoutManager;
     private MyOrderNoRecycleAdapter mAdapter;       //适配器
-    private             List<ProvideInteractOrderInfo>                        mHZEntyties = new ArrayList<>();            //所有数据
-    private             List<ProvideInteractOrderInfo>                        mHZEntytiesClick = new ArrayList<>();            //点击之后的数据
-    private int pageno=1;
+    private List<ProvideInteractOrderInfo> mHZEntyties = new ArrayList<>();            //所有数据
+    private List<ProvideInteractOrderInfo> mHZEntytiesClick = new ArrayList<>();            //点击之后的数据
+    private int pageno = 1;
     private int lastVisibleIndex = 0;
     private LoadDataTask loadDataTask = null;
     private boolean mLoadDate = true;
@@ -78,7 +81,6 @@ public class FragmentMyOrderNo extends Fragment{
     }
 
 
-
     /**
      * 初始化界面
      */
@@ -91,7 +93,7 @@ public class FragmentMyOrderNo extends Fragment{
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRMJXRecycleView.setHasFixedSize(true);
         //创建并设置Adapter
-        mAdapter = new MyOrderNoRecycleAdapter(mHZEntyties,mContext,mActivity);
+        mAdapter = new MyOrderNoRecycleAdapter(mHZEntyties, mContext, mActivity);
         mRMJXRecycleView.setAdapter(mAdapter);
         /*mAdapter.setOnItemClickListener(new MyOrderNoRecycleAdapter.OnItemClickListener() {
             @Override
@@ -124,7 +126,7 @@ public class FragmentMyOrderNo extends Fragment{
         });
     }
 
-    void initRecycleView(){
+    void initRecycleView() {
         mRMJXRecycleView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRMJXRecycleView) {
             @Override
             public void onItemClick(RecyclerView.ViewHolder vh) {
@@ -245,11 +247,10 @@ public class FragmentMyOrderNo extends Fragment{
     }
 
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case 1:
                         break;
                 }
@@ -258,16 +259,16 @@ public class FragmentMyOrderNo extends Fragment{
     }
 
 
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
 
 
-
             }
         }
     }
+
     /**
      * 设置数据
      */
@@ -339,21 +340,23 @@ public class FragmentMyOrderNo extends Fragment{
         lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
     }*/
 
-    class LoadDataTask extends AsyncTask<Void,Void,List<ProvideInteractOrderInfo>>{
+    class LoadDataTask extends AsyncTask<Void, Void, List<ProvideInteractOrderInfo>> {
         private QueryOrder queryOrder;
-        public LoadDataTask(QueryOrder queryOrder){
+
+        public LoadDataTask(QueryOrder queryOrder) {
             this.queryOrder = queryOrder;
         }
+
         @Override
         protected List<ProvideInteractOrderInfo> doInBackground(Void... voids) {
             mLoadDate = false;
             List<ProvideInteractOrderInfo> retlist = new ArrayList();
             queryOrder.setPageNum(String.valueOf(pageno));
             try {
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryOrder), Constant.SERVICEURL+INetAddress.QUERY_UNIMPLEMENT_ORDER_URL);
+                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(queryOrder), Constant.SERVICEURL + INetAddress.QUERY_UNIMPLEMENT_ORDER_URL);
                 NetRetEntity retnetbean = JSON.parseObject(retnetstr, NetRetEntity.class);
-                if(1==retnetbean.getResCode() && !TextUtils.isEmpty(retnetbean.getResJsonData()) && retnetbean.getResJsonData().length()>3){
-                    retlist = JSON.parseArray(retnetbean.getResJsonData(),ProvideInteractOrderInfo.class);
+                if (1 == retnetbean.getResCode() && !TextUtils.isEmpty(retnetbean.getResJsonData()) && retnetbean.getResJsonData().length() > 3) {
+                    retlist = JSON.parseArray(retnetbean.getResJsonData(), ProvideInteractOrderInfo.class);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -364,12 +367,12 @@ public class FragmentMyOrderNo extends Fragment{
 
         @Override
         protected void onPostExecute(List<ProvideInteractOrderInfo> hzIfnos) {
-            if(hzIfnos.size()>0){
+            if (hzIfnos.size() > 0) {
                 mHZEntyties.addAll(hzIfnos);
                 mAdapter.setDate(mHZEntyties);
                 mAdapter.notifyDataSetChanged();
-            }else{
-                if(pageno>1){
+            } else {
+                if (pageno > 1) {
                     pageno = pageno - 1;
                 }
             }

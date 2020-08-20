@@ -1,17 +1,26 @@
 package www.patient.jykj_zxyl.base.base_activity;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 
 import com.gyf.immersionbar.ImmersionBar;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import www.patient.jykj_zxyl.base.R;
 import www.patient.jykj_zxyl.base.base_utils.ActivityStackManager;
 
@@ -24,7 +33,12 @@ import www.patient.jykj_zxyl.base.base_utils.ActivityStackManager;
 public abstract class BaseActivity extends AppCompatActivity {
     /**上下文*/
     protected Context context;
-
+    /**ButterKnife*/
+    private Unbinder unbinder;
+    /**进度加载框*/
+    private Dialog dialog;
+    private TextView tvMessage;
+    private View view;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(setLayoutId());
 
-        //unbinder = ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
         //初始化沉浸式
         if (isImmersionBarEnabled()) {
             initImmersionBar();
@@ -96,6 +110,49 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onBeforeSetContentLayout() {
 
     }
+
+
+    /**
+     * 开启进度框
+     */
+    protected void showLoading(String msg, DialogInterface.OnCancelListener onCancelListener) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        if (dialog == null) {
+            dialog = new AlertDialog.Builder(context, R.style.NormalDialogStyle).create();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+            view = inflater.inflate(R.layout.dialog_loading, null, false);
+            if (dialog.getWindow() == null) {
+                return;
+            }
+            tvMessage = view.findViewById(R.id.tvMessage);
+            dialog.getWindow().setContentView(view.getRootView());
+        } else if (dialog.isShowing()) {
+            return;
+        } else {
+            dialog.show();
+        }
+        if (TextUtils.isEmpty(msg)) {
+            tvMessage.setText("正在加载...");
+        } else {
+            tvMessage.setText(msg);
+        }
+        if (onCancelListener != null) {
+            dialog.setOnCancelListener(onCancelListener);
+        }
+    }
+
+
+    /**
+     * 关闭对话框
+     */
+    protected void dismissLoading() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
     /**
      * 跳转Activity
      *
@@ -129,4 +186,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.startActivityForResult(localIntent, requestCode);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+    }
 }

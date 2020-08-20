@@ -1,6 +1,5 @@
 package www.patient.jykj_zxyl.base.mvp;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;

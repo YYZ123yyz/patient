@@ -1,4 +1,5 @@
 package www.patient.jykj_zxyl.adapter.patient.fragmentShouYe;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.allin.commlibrary.encode.Base64Utils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -16,6 +18,7 @@ import entity.patientapp.Photo_Info;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.util.BitmapUtil;
+import www.patient.jykj_zxyl.util.ImageViewUtil;
 import www.patient.jykj_zxyl.util.StrUtils;
 
 
@@ -59,6 +62,7 @@ public class ImageViewRecycleAdapter extends RecyclerView.Adapter<ImageViewRecyc
                         .apply(RequestOptions.placeholderOf(com.hyphenate.easeui.R.mipmap.docter_heard)
                                 .diskCacheStrategy(DiskCacheStrategy.ALL))
                         .into(viewHolder.mImageView);
+
             }
             if (mOnItemClickListener != null)
             {

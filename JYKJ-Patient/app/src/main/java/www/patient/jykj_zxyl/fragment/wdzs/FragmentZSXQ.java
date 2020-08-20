@@ -35,16 +35,9 @@ import www.patient.jykj_zxyl.activity.home.twjz.WDZS_WZXQActivity;
 import www.patient.jykj_zxyl.activity.home.twjz.WZXXActivity;
 import www.patient.jykj_zxyl.activity.home.wdzs.ProvideDoctorSetServiceState;
 import www.patient.jykj_zxyl.activity.home.wdzs.ProvideViewInteractOrderTreatmentAndPatientInterrogation;
-import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
+import com.hyphenate.easeui.ui.ChatActivity;
 import www.patient.jykj_zxyl.adapter.TWJZNoFinishRecycleAdapter;
 import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.activity.home.MyClinicActivity;
-import www.patient.jykj_zxyl.activity.home.twjz.WDZS_WZXQActivity;
-import www.patient.jykj_zxyl.activity.home.twjz.WZXXActivity;
-import www.patient.jykj_zxyl.activity.home.wdzs.ProvideDoctorSetServiceState;
-import www.patient.jykj_zxyl.activity.home.wdzs.ProvideViewInteractOrderTreatmentAndPatientInterrogation;
-import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
-import www.patient.jykj_zxyl.adapter.TWJZNoFinishRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 

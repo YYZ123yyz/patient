@@ -34,31 +34,31 @@ import www.patient.jykj_zxyl.application.JYKJApplication;
  */
 public class WDYS_JZJL_BLXJActivity extends AppCompatActivity {
 
-    public              ProgressDialog mDialogProgress =null;
+    public ProgressDialog mDialogProgress = null;
 
-    private             Context                                 mContext;
-    private             Handler                                 mHandler;
+    private Context mContext;
+    private Handler mHandler;
     private WDYS_JZJL_BLXJActivity mActivity;
-    private              JYKJApplication                            mApp;
+    private JYKJApplication mApp;
 
-    private             String                              mNetRetStr;                 //返回字符串
-    private             ProvideViewInteractOrderTreatmentAndPatientInterrogation mProvideViewInteractOrderTreatmentAndPatientInterrogation;
-    private             ProvideInteractPatientMessage mProvideInteractPatientMessage;
+    private String mNetRetStr;                 //返回字符串
+    private ProvideViewInteractOrderTreatmentAndPatientInterrogation mProvideViewInteractOrderTreatmentAndPatientInterrogation;
+    private ProvideInteractPatientMessage mProvideInteractPatientMessage;
 
-    private             List<ProvideBasicsImg>                      mProvideBasicsImg = new ArrayList<>();
-    private             String                              mGetImgNetRetStr;                 //获取图片返回字符串
+    private List<ProvideBasicsImg> mProvideBasicsImg = new ArrayList<>();
+    private String mGetImgNetRetStr;                 //获取图片返回字符串
 
-    private             TextView                                mMessageReply;                  //留言回复内容
-    private             TextView                                mCommit;                        //
+    private TextView mMessageReply;                  //留言回复内容
+    private TextView mCommit;                        //
     private ProvideInteractOrderMedical mProvideInteractOrderMedical;
 
-    private             TextView                                mTitleName;
+    private TextView mTitleName;
 
-    private             TextView                                mZSEdit;                    //主诉
-    private             TextView                                mXBSEdit;                    //现病史
-    private             TextView                                mJZCTEdit;                    //就诊查体
-    private             TextView                                mFZJCEdit;                    //辅助检查
-    private             TextView                                mCBZLJHEdit;                    //初步诊疗计划
+    private TextView mZSEdit;                    //主诉
+    private TextView mXBSEdit;                    //现病史
+    private TextView mJZCTEdit;                    //就诊查体
+    private TextView mFZJCEdit;                    //辅助检查
+    private TextView mCBZLJHEdit;                    //初步诊疗计划
 
     private ProvideInteractOrderInfo mProvideInteractOrderInfo;                          //订单信息
 
@@ -67,7 +67,7 @@ public class WDYS_JZJL_BLXJActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wdys_jzjl_blxj);
-        mContext =this;
+        mContext = this;
         mActivity = this;
         mApp = (JYKJApplication) getApplication();
         mProvideInteractOrderInfo = (ProvideInteractOrderInfo) getIntent().getSerializableExtra("provideInteractOrderInfo");
@@ -78,7 +78,7 @@ public class WDYS_JZJL_BLXJActivity extends AppCompatActivity {
     }
 
     private void initLayout() {
-        mTitleName = (TextView)this.findViewById(R.id.tv_userNameTitle);
+        mTitleName = (TextView) this.findViewById(R.id.tv_userNameTitle);
 
         mZSEdit = (TextView) this.findViewById(R.id.tv_jzjlZS);
         mXBSEdit = (TextView) this.findViewById(R.id.tv_jzjlxbs);
@@ -92,25 +92,19 @@ public class WDYS_JZJL_BLXJActivity extends AppCompatActivity {
     }
 
 
-
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case 0:
                         cacerProgress();
-                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 0)
-                        {
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 0) {
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                        } else {
                             mProvideInteractOrderMedical = JSON.parseObject(netRetEntity.getResJsonData(), ProvideInteractOrderMedical.class);
-                            if (mProvideInteractOrderMedical != null)
-                            {
+                            if (mProvideInteractOrderMedical != null) {
                                 showLayoutDate();
                             }
 
@@ -119,13 +113,10 @@ public class WDYS_JZJL_BLXJActivity extends AppCompatActivity {
 
                     case 1:
                         cacerProgress();
-                        netRetEntity = JSON.parseObject(mGetImgNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 0)
-                        {
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
+                        netRetEntity = JSON.parseObject(mGetImgNetRetStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 0) {
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                        } else {
 
 
                         }
@@ -134,8 +125,8 @@ public class WDYS_JZJL_BLXJActivity extends AppCompatActivity {
 
                     case 2:
                         cacerProgress();
-                        netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                        Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -146,24 +137,24 @@ public class WDYS_JZJL_BLXJActivity extends AppCompatActivity {
      * 设置数据
      */
     private void getData() {
-        getProgressBar("请稍后","正在获取数据。。。");
+        getProgressBar("请稍后", "正在获取数据。。。");
         ProvideInteractOrderMedical provideInteractOrderMedical = new ProvideInteractOrderMedical();
         provideInteractOrderMedical.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideInteractOrderMedical.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideInteractOrderMedical.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         provideInteractOrderMedical.setOrderCode(mProvideInteractOrderInfo.getOrderCode());
         provideInteractOrderMedical.setRequestClientType("1");
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideInteractOrderMedical);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string,Constant.SERVICEURL+"PatientMyDoctorControlle/searchIndexMyDoctorNotSigningResMedical");
-                    String string01 = Constant.SERVICEURL+"doctorInteractDataControlle/searchMyClinicDetailResOrderDiag";
-                    System.out.println(string+string01);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "PatientMyDoctorControlle/searchIndexMyDoctorNotSigningResMedical");
+                    String string01 = Constant.SERVICEURL + "doctorInteractDataControlle/searchMyClinicDetailResOrderDiag";
+                    System.out.println(string + string01);
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -173,7 +164,7 @@ public class WDYS_JZJL_BLXJActivity extends AppCompatActivity {
     }
 
 
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -184,8 +175,9 @@ public class WDYS_JZJL_BLXJActivity extends AppCompatActivity {
             }
         }
     }
+
     private void showLayoutDate() {
-        mTitleName = (TextView)this.findViewById(R.id.tv_userNameTitle);
+        mTitleName = (TextView) this.findViewById(R.id.tv_userNameTitle);
 
         mTitleName.setText("就诊记录");
         if (mProvideInteractOrderMedical.getChiefComplaint() == null || "".equals(mProvideInteractOrderMedical.getChiefComplaint()))
@@ -212,8 +204,6 @@ public class WDYS_JZJL_BLXJActivity extends AppCompatActivity {
             mCBZLJHEdit.setHint("未设置");
         else
             mCBZLJHEdit.setText(mProvideInteractOrderMedical.getTreatmentPlanCode());
-
-
 
 
     }
@@ -269,13 +259,11 @@ public class WDYS_JZJL_BLXJActivity extends AppCompatActivity {
     }
 
 
-
-
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(mContext);
         }
@@ -288,13 +276,11 @@ public class WDYS_JZJL_BLXJActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }
     }
-
-
 
 
 }

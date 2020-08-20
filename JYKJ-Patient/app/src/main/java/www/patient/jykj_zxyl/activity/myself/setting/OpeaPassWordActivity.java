@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity.myself.setting;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -70,6 +71,7 @@ public class OpeaPassWordActivity extends AppCompatActivity {
         initHandler();
     }
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override

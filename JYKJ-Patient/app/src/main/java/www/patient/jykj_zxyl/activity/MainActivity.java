@@ -1,11 +1,11 @@
 package www.patient.jykj_zxyl.activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -22,25 +22,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
-import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.hyhd.DemoHelper;
 import com.hyphenate.easeui.hyhd.model.CallReceiver;
 import com.hyphenate.easeui.model.EaseNotifier;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import entity.ProvideMsgPushReminder;
 import entity.home.newsMessage.ProvideMsgPushReminderCount;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
+import www.patient.jykj_zxyl.base.base_bean.MainMessage;
+import www.patient.jykj_zxyl.base.base_utils.BadgeUtil;
 import www.patient.jykj_zxyl.service.MessageReciveService;
 import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.R;
@@ -51,9 +52,7 @@ import www.patient.jykj_zxyl.fragment.FragmentMySelf;
 import www.patient.jykj_zxyl.fragment.FragmentShouYe;
 import www.patient.jykj_zxyl.fragment.FragmentYHHD;
 import www.patient.jykj_zxyl.fragment.FragmentYLZX;
-import www.patient.jykj_zxyl.service.MessageReciveService;
 import www.patient.jykj_zxyl.util.ActivityUtil;
-import www.patient.jykj_zxyl.util.Util;
 
 public class MainActivity extends AppCompatActivity {
     private Context mContext;
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mImageViewYHHD;                                            //医患互动图标
     private ImageView mImageViewYLZX;                                            //医疗资讯图标
     private ImageView mImageViewMySelf;                                        //我图标
-
+    private TextView mTvUnreadBtn;
     private TextView mTextViewShouYE;                                 //首页text
     //    private         TextView                    mTextViewHZGuanLi;                                  //患者管理text
     private TextView mTextViewYHHD;                                   //医患互动text
@@ -109,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mContext = this;
         mainActivity = this;
+        EventBus.getDefault().register(this);
         ActivityUtil.setStatusBarMain(mainActivity);
         mApp = (JYKJApplication) getApplication();
 
@@ -128,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
         startMessageTimer();
 
         Util.getRegionDate(mApp);
+
+        BadgeUtil.setBadgeCount(this,1,R.drawable.bg_red_circle);
 
 
     }
@@ -152,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
 //        timer.schedule(task, 0, mApp.mMsgTimeInterval*60*1000);
     }
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override
@@ -194,31 +197,31 @@ public class MainActivity extends AppCompatActivity {
                         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                         builder.setTitle("异常登录提醒");
                         builder.setMessage("您的账号在在另一台手机登录了,如非本人操作,建议修改密码");
-                        builder.setPositiveButton("重新登录", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //通过这个SharedPreferences 库得到账号密码，实现重新登录的功能
-                                EMClient.getInstance().login(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mApp.mProvideViewSysUserPatientInfoAndRegion.getQrCode(), new EMCallBack() {//回调
-                                    @Override
-                                    public void onSuccess() {
-                                        mHandler.sendEmptyMessage(21);
-                                    }
-
-                                    @Override
-                                    public void onProgress(int progress, String status) {
-
-                                    }
-
-                                    @Override
-                                    public void onError(int code, String message) {
-                                        Log.d("main", "登录聊天服务器失败！");
-                                    }
-                                });
-                            }
-                        });
+//                        builder.setPositiveButton("重新登录", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                //通过这个SharedPreferences 库得到账号密码，实现重新登录的功能
+//                                EMClient.getInstance().login(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mApp.mProvideViewSysUserPatientInfoAndRegion.getQrCode(), new EMCallBack() {//回调
+//                                    @Override
+//                                    public void onSuccess() {
+//                                        mHandler.sendEmptyMessage(21);
+//                                    }
+//
+//                                    @Override
+//                                    public void onProgress(int progress, String status) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(int code, String message) {
+//                                        Log.d("main", "登录聊天服务器失败！");
+//                                    }
+//                                });
+//                            }
+//                        });
 
                         //退出 退到登录页面
-                        builder.setNeutralButton("退出", new DialogInterface.OnClickListener() {
+                        builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 EMClient.getInstance().logout(true);
@@ -295,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        setUnReadMsgBtnStatus();
         //启动程序，查询是否有未读消息
 //       getMessageCount();
     }
@@ -314,13 +318,12 @@ public class MainActivity extends AppCompatActivity {
         mImageViewYHHD = (ImageView) this.findViewById(R.id.iv_activityMain_ImageHYHD);
         mImageViewYLZX = (ImageView) this.findViewById(R.id.iv_activityMain_ImageYLZX);
         mImageViewMySelf = (ImageView) this.findViewById(R.id.iv_activityMain_ImageGRZX);
-
+        mTvUnreadBtn=this.findViewById(R.id.tv_unread_btn);
         mTextViewShouYE = (TextView) this.findViewById(R.id.tv_activityMain_TextShouYe);
 //        mTextViewHZGuanLi = (TextView) this.findViewById(R.id.tv_activityMain_TextHZGuanLi);
         mTextViewYHHD = (TextView) this.findViewById(R.id.tv_activityMain_TextHYHD);
         mTextViewYLZX = (TextView) this.findViewById(R.id.tv_activityMain_TextYLZX);
         mTextViewSelf = (TextView) this.findViewById(R.id.tv_activityMain_TextGRZX);
-
         setDefaultLayout();
         mImageViewShouYe.setBackgroundResource(R.mipmap.sy_press);
         mTextViewShouYE.setTextColor(getResources().getColor(R.color.tabColor_press));
@@ -581,5 +584,32 @@ public class MainActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    //主线程中执行
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMainEventBus(MainMessage msg) {
+        setUnReadMsgBtnStatus();
+    }
+
+    /**
+     * 设置未读消息按钮状态
+     */
+    @SuppressLint("DefaultLocale")
+    private void setUnReadMsgBtnStatus(){
+        int unreadMessageCount = EMClient.getInstance().chatManager().getUnreadMessageCount();
+        if(unreadMessageCount>0){
+            mTvUnreadBtn.setVisibility(View.VISIBLE);
+            mTvUnreadBtn.setText(String.format("%d", unreadMessageCount));
+        }else{
+            mTvUnreadBtn.setVisibility(View.GONE);
+        }
+    }
 
 }

@@ -3,6 +3,7 @@ package www.patient.jykj_zxyl.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import entity.ProvidePatientConditionTakingMedicine;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.base.base_utils.StringUtils;
 
 /**
  * 用药设置适配器
@@ -21,7 +23,7 @@ public class MedicationSettingAdapter extends RecyclerView.Adapter<MedicationSet
     private List<ProvidePatientConditionTakingMedicine> mData;
     private Context mContext;
 
-    private MedicationSettingAdapter.OnItemClickListener mOnItemClickListener;           //用户资料点击事件
+    private OnItemClickListener mOnItemClickListener;           //用户资料点击事件
 
     public interface OnItemClickListener{
         void onClick(int position);
@@ -54,19 +56,20 @@ public class MedicationSettingAdapter extends RecyclerView.Adapter<MedicationSet
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.dunName.setText(mData.get(position).getDrugName());
-        holder.dunUnit.setText(mData.get(position).getUseNum()+mData.get(position).getUseUnit()+"/次");
-        String[] time = mData.get(position).getTakingMedicineTimeShow().split("\\^");
-        if (time == null)
-        {
+        holder.dunUnit.setText(mData.get(position).getUseNum() + mData.get(position).getUseUnit() + "/次");
+        String takingMedicineTimeShow = mData.get(position).getTakingMedicineTimeShow();
+        if (!StringUtils.isNotEmpty(takingMedicineTimeShow)) {
             holder.time1.setVisibility(View.GONE);
-        }
-        else
-        {
-            switch (time.length)
-            {
+            holder.time2.setVisibility(View.GONE);
+            holder.time3.setVisibility(View.GONE);
+            holder.time4.setVisibility(View.GONE);
+            holder.time5.setVisibility(View.GONE);
+            holder.time6.setVisibility(View.GONE);
+        } else {
+            String[] time = mData.get(position).getTakingMedicineTimeShow().replace("null","").split("\\^");
+            switch (time.length) {
                 case 0:
                     holder.time1.setVisibility(View.GONE);
-
                     holder.time2.setVisibility(View.GONE);
                     holder.time3.setVisibility(View.GONE);
                     holder.time4.setVisibility(View.GONE);
@@ -153,22 +156,21 @@ public class MedicationSettingAdapter extends RecyclerView.Adapter<MedicationSet
                     holder.time6.setText(time[5]);
                     break;
                 default:
-                    holder.time1.setVisibility(View.VISIBLE);
-                    holder.time2.setVisibility(View.VISIBLE);
-                    holder.time3.setVisibility(View.VISIBLE);
-                    holder.time4.setVisibility(View.VISIBLE);
-                    holder.time5.setVisibility(View.VISIBLE);
-                    holder.time6.setVisibility(View.VISIBLE);
-                    holder.time1.setText(time[0]);
-                    holder.time2.setText(time[1]);
-                    holder.time3.setText(time[2]);
-                    holder.time4.setText(time[3]);
-                    holder.time5.setText(time[4]);
-                    holder.time6.setText(time[5]);
+                    holder.time1.setVisibility(View.GONE);
+                    holder.time2.setVisibility(View.GONE);
+                    holder.time3.setVisibility(View.GONE);
+                    holder.time4.setVisibility(View.GONE);
+                    holder.time5.setVisibility(View.GONE);
+                    holder.time6.setVisibility(View.GONE);
+//                    holder.time1.setText(time[0]);
+//                    holder.time2.setText(time[1]);
+//                    holder.time3.setText(time[2]);
+//                    holder.time4.setText(time[3]);
+//                    holder.time5.setText(time[4]);
+//                    holder.time6.setText(time[5]);
                     break;
             }
         }
-
 
 //        if (mData.get(position).get)
 //        holder.dunName.setText(mData.get(position).getDrugName());
@@ -176,8 +178,7 @@ public class MedicationSettingAdapter extends RecyclerView.Adapter<MedicationSet
 //        holder.dunName.setText(mData.get(position).getDrugName());
 
 
-        if (mOnItemClickListener != null)
-        {
+        if (mOnItemClickListener != null) {
             holder.mOnItemClick.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

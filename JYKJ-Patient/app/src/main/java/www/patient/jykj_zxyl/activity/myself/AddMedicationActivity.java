@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity.myself;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -111,6 +112,7 @@ public class AddMedicationActivity extends AppCompatActivity implements View.OnC
         initHandler();
     }
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler(){
             @Override
@@ -126,6 +128,7 @@ public class AddMedicationActivity extends AppCompatActivity implements View.OnC
                         else
                         {
                             Toast.makeText(AddMedicationActivity.this,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                            setResult(1001);
                             finish();
                         }
                         break;

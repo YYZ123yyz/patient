@@ -42,54 +42,53 @@ import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
  */
 public class WDYS_JZJL_ZDMSActivity extends AppCompatActivity {
 
-    public ProgressDialog mDialogProgress =null;
+    public ProgressDialog mDialogProgress = null;
 
-    private             Context                                 mContext;
-    private             Handler                                 mHandler;
+    private Context mContext;
+    private Handler mHandler;
     private WDYS_JZJL_ZDMSActivity mActivity;
-    private              JYKJApplication                            mApp;
+    private JYKJApplication mApp;
 
-    private             String                              mNetRetStr;                 //返回字符串
-    private              ProvideViewInteractOrderTreatmentAndPatientInterrogation mProvideViewInteractOrderTreatmentAndPatientInterrogation;
-    private             ProvideInteractPatientMessage           mProvideInteractPatientMessage;
-    private             TextView                                  mNameTitle;               //标题，患者姓名
-    private             TextView                                  mMessageType;               //消息类型
-    private             TextView                                  mMessageDate;               //留言日期
-    private             TextView                                  mMessageContent;               //消息类型
-    private             TextView                                  mMessageLinkPhone;            //联系电话
+    private String mNetRetStr;                 //返回字符串
+    private ProvideViewInteractOrderTreatmentAndPatientInterrogation mProvideViewInteractOrderTreatmentAndPatientInterrogation;
+    private ProvideInteractPatientMessage mProvideInteractPatientMessage;
+    private TextView mNameTitle;               //标题，患者姓名
+    private TextView mMessageType;               //消息类型
+    private TextView mMessageDate;               //留言日期
+    private TextView mMessageContent;               //消息类型
+    private TextView mMessageLinkPhone;            //联系电话
 
-    private             RecyclerView                                mImageRecycleView;
-    private             FullyGridLayoutManager                      mGridLayoutManager;
+    private RecyclerView mImageRecycleView;
+    private FullyGridLayoutManager mGridLayoutManager;
     private WZZXImageViewRecycleAdapter mAdapter;
 
-    private             List<ProvideBasicsImg>                      mProvideBasicsImg = new ArrayList<>();
-    private             String                              mGetImgNetRetStr;                 //获取图片返回字符串
+    private List<ProvideBasicsImg> mProvideBasicsImg = new ArrayList<>();
+    private String mGetImgNetRetStr;                 //获取图片返回字符串
 
-    private             TextView                                mMessageReply;                  //留言回复内容
-    private             TextView                                mCommit;                        //
+    private TextView mMessageReply;                  //留言回复内容
+    private TextView mCommit;                        //
     private ProvideInteractOrderDiag mProvideInteractOrderDiag;
 
-    private             TextView                                mTitleName;
-    private             TextView                                mZDMC1;
-    private             TextView                                mZDMC2;
-    private             TextView                                mZDMC3;
-    private             TextView                                mZDBM1;
-    private             TextView                                mZDBM2;
-    private             TextView                                mZDBM3;
-    private             TextView                                mZDMS;
-    private     static    final          int                       mCHOICEJB1 = 1;
-    private     static    final          int                       mCHOICEJB2 = 2;
-    private     static    final          int                       mCHOICEJB3 = 3;
+    private TextView mTitleName;
+    private TextView mZDMC1;
+    private TextView mZDMC2;
+    private TextView mZDMC3;
+    private TextView mZDBM1;
+    private TextView mZDBM2;
+    private TextView mZDBM3;
+    private TextView mZDMS;
+    private static final int mCHOICEJB1 = 1;
+    private static final int mCHOICEJB2 = 2;
+    private static final int mCHOICEJB3 = 3;
 
     private ProvideInteractOrderInfo mProvideInteractOrderInfo;                          //订单信息
-
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_twjz_zdms);
-        mContext =this;
+        mContext = this;
         mActivity = this;
         mApp = (JYKJApplication) getApplication();
         mProvideInteractOrderInfo = (ProvideInteractOrderInfo) getIntent().getSerializableExtra("provideInteractOrderInfo");
@@ -100,13 +99,13 @@ public class WDYS_JZJL_ZDMSActivity extends AppCompatActivity {
     }
 
     private void initLayout() {
-        mTitleName = (TextView)this.findViewById(R.id.tv_userNameTitle);
-        mZDMC1 = (TextView)this.findViewById(R.id.tv_zdmc1);
-        mZDMC2 = (TextView)this.findViewById(R.id.tv_zdmc2);
-        mZDMC3 = (TextView)this.findViewById(R.id.tv_zdmc3);
-        mZDBM1 = (TextView)this.findViewById(R.id.tv_zdbm1);
-        mZDBM1 = (TextView)this.findViewById(R.id.tv_zdbm2);
-        mZDBM1 = (TextView)this.findViewById(R.id.tv_zdbm3);
+        mTitleName = (TextView) this.findViewById(R.id.tv_userNameTitle);
+        mZDMC1 = (TextView) this.findViewById(R.id.tv_zdmc1);
+        mZDMC2 = (TextView) this.findViewById(R.id.tv_zdmc2);
+        mZDMC3 = (TextView) this.findViewById(R.id.tv_zdmc3);
+        mZDBM1 = (TextView) this.findViewById(R.id.tv_zdbm1);
+        mZDBM1 = (TextView) this.findViewById(R.id.tv_zdbm2);
+        mZDBM1 = (TextView) this.findViewById(R.id.tv_zdbm3);
         mZDMS = (TextView) this.findViewById(R.id.tv_zdms);
 //        mCommit = (TextView)this.findViewById(R.id.tv_commit);
 //        mCommit.setOnClickListener(new ButtonClick());
@@ -130,8 +129,7 @@ public class WDYS_JZJL_ZDMSActivity extends AppCompatActivity {
                     && resultCode == RESULT_OK
                     && data != null) {
                 ProvideBasicsDisease provideBasicsDisease = (ProvideBasicsDisease) data.getSerializableExtra("jkxx");
-                if (provideBasicsDisease != null)
-                {
+                if (provideBasicsDisease != null) {
                     mProvideInteractOrderDiag.setDiagDiseaseCode1(provideBasicsDisease.getDiseaseCode());
                     mProvideInteractOrderDiag.setDiagDiseaseName1(provideBasicsDisease.getDiseaseName());
                     mZDMC1.setText(provideBasicsDisease.getDiseaseName());
@@ -144,9 +142,7 @@ public class WDYS_JZJL_ZDMSActivity extends AppCompatActivity {
                     && resultCode == RESULT_OK
                     && data != null) {
                 ProvideBasicsDisease provideBasicsDisease = (ProvideBasicsDisease) data.getSerializableExtra("jkxx");
-                if (provideBasicsDisease != null)
-
-                {
+                if (provideBasicsDisease != null) {
                     mProvideInteractOrderDiag.setDiagDiseaseCode2(provideBasicsDisease.getDiseaseCode());
                     mProvideInteractOrderDiag.setDiagDiseaseName2(provideBasicsDisease.getDiseaseName());
                     mZDMC2.setText(provideBasicsDisease.getDiseaseName());
@@ -158,39 +154,32 @@ public class WDYS_JZJL_ZDMSActivity extends AppCompatActivity {
                     && resultCode == RESULT_OK
                     && data != null) {
                 ProvideBasicsDisease provideBasicsDisease = (ProvideBasicsDisease) data.getSerializableExtra("jkxx");
-                if (provideBasicsDisease != null)
-                {
+                if (provideBasicsDisease != null) {
                     mProvideInteractOrderDiag.setDiagDiseaseCode3(provideBasicsDisease.getDiseaseCode());
                     mProvideInteractOrderDiag.setDiagDiseaseName3(provideBasicsDisease.getDiseaseName());
                     mZDMC3.setText(provideBasicsDisease.getDiseaseName());
                 }
             }
 
-        }catch (Exception e)
-        {
-            Log.i("yi","yichahahaha");
+        } catch (Exception e) {
+            Log.i("yi", "yichahahaha");
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case 0:
                         cacerProgress();
-                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 0)
-                        {
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            mProvideInteractOrderDiag = JSON.parseObject(netRetEntity.getResJsonData(),ProvideInteractOrderDiag.class);
-                            if (mProvideInteractOrderDiag != null)
-                            {
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 0) {
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            mProvideInteractOrderDiag = JSON.parseObject(netRetEntity.getResJsonData(), ProvideInteractOrderDiag.class);
+                            if (mProvideInteractOrderDiag != null) {
                                 showLayoutDate();
                             }
 
@@ -199,13 +188,10 @@ public class WDYS_JZJL_ZDMSActivity extends AppCompatActivity {
 
                     case 1:
                         cacerProgress();
-                        netRetEntity = JSON.parseObject(mGetImgNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 0)
-                        {
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
+                        netRetEntity = JSON.parseObject(mGetImgNetRetStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 0) {
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                        } else {
 
 
                         }
@@ -214,8 +200,8 @@ public class WDYS_JZJL_ZDMSActivity extends AppCompatActivity {
 
                     case 2:
                         cacerProgress();
-                        netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                        Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -226,7 +212,7 @@ public class WDYS_JZJL_ZDMSActivity extends AppCompatActivity {
      * 设置数据
      */
     private void getData() {
-        getProgressBar("请稍后","正在获取数据。。。");
+        getProgressBar("请稍后", "正在获取数据。。。");
         ProvideInteractOrderDiag provideInteractOrderDiag = new ProvideInteractOrderDiag();
         provideInteractOrderDiag.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideInteractOrderDiag.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
@@ -234,17 +220,17 @@ public class WDYS_JZJL_ZDMSActivity extends AppCompatActivity {
         provideInteractOrderDiag.setOrderCode(mProvideInteractOrderInfo.getOrderCode());
         provideInteractOrderDiag.setRequestClientType("1");
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideInteractOrderDiag);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string,Constant.SERVICEURL+"PatientMyDoctorControlle/searchIndexMyDoctorNotSigningResDiag");
-                    String string01 = Constant.SERVICEURL+"doctorInteractDataControlle/searchMyClinicDetailResOrderDiag";
-                    System.out.println(string+string01);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "PatientMyDoctorControlle/searchIndexMyDoctorNotSigningResDiag");
+                    String string01 = Constant.SERVICEURL + "doctorInteractDataControlle/searchMyClinicDetailResOrderDiag";
+                    System.out.println(string + string01);
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -254,7 +240,7 @@ public class WDYS_JZJL_ZDMSActivity extends AppCompatActivity {
     }
 
 
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -275,14 +261,15 @@ public class WDYS_JZJL_ZDMSActivity extends AppCompatActivity {
             }
         }
     }
+
     private void showLayoutDate() {
-        mTitleName = (TextView)this.findViewById(R.id.tv_userNameTitle);
-        mZDMC1 = (TextView)this.findViewById(R.id.tv_zdmc1);
-        mZDMC2 = (TextView)this.findViewById(R.id.tv_zdmc2);
-        mZDMC3 = (TextView)this.findViewById(R.id.tv_zdmc3);
-        mZDBM1 = (TextView)this.findViewById(R.id.tv_zdbm1);
-        mZDBM2 = (TextView)this.findViewById(R.id.tv_zdbm2);
-        mZDBM3 = (TextView)this.findViewById(R.id.tv_zdbm3);
+        mTitleName = (TextView) this.findViewById(R.id.tv_userNameTitle);
+        mZDMC1 = (TextView) this.findViewById(R.id.tv_zdmc1);
+        mZDMC2 = (TextView) this.findViewById(R.id.tv_zdmc2);
+        mZDMC3 = (TextView) this.findViewById(R.id.tv_zdmc3);
+        mZDBM1 = (TextView) this.findViewById(R.id.tv_zdbm1);
+        mZDBM2 = (TextView) this.findViewById(R.id.tv_zdbm2);
+        mZDBM3 = (TextView) this.findViewById(R.id.tv_zdbm3);
 
         if (mProvideInteractOrderDiag.getDiagDiseaseDesc() == null || "".equals(mProvideInteractOrderDiag.getDiagDiseaseDesc()))
             mZDMS.setText("未设置");
@@ -403,13 +390,11 @@ public class WDYS_JZJL_ZDMSActivity extends AppCompatActivity {
     }
 
 
-
-
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(mContext);
         }
@@ -422,7 +407,7 @@ public class WDYS_JZJL_ZDMSActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }

@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity.home.patient;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -516,7 +517,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
             public void run(){
                 try {
                     String string = new Gson().toJson(provideViewMyDoctorOrderAndTreat);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, www.patient.jykj_zxyl.application.Constant.SERVICEURL+"msgDataControlle/searchPatientMsgInteractOrderInfoDetail");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"msgDataControlle/searchPatientMsgInteractOrderInfoDetail");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
@@ -587,6 +588,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
         }.start();
     }
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override

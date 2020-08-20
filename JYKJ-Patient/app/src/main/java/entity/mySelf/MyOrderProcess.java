@@ -3,9 +3,12 @@ package entity.mySelf;
 import java.io.Serializable;
 import java.util.Date;
 
-public class MyOrderProcess implements Serializable {
+import www.patient.jykj_zxyl.base.base_bean.MultiItemEntity;
+
+public class MyOrderProcess  extends MultiItemEntity implements Serializable {
     private String doctorCode;
     private String doctorName;
+    private String actualPayment;
     private String doctorReceiveShow;
     private Integer flagColor;
     private Integer flagTreatmentState;
@@ -24,6 +27,79 @@ public class MyOrderProcess implements Serializable {
     private String  treatmentTypeName;
     private Date treatmentDate;
     private String treatmentTimeSlotName;
+
+    public String getActualPayment() {
+        return actualPayment;
+    }
+
+    public void setActualPayment(String actualPayment) {
+        this.actualPayment = actualPayment;
+    }
+
+    private String coachUnitCode;
+    private String coachUnitName;
+    private Integer coachValue;
+    private Integer proCount;
+    private String timesCode;
+    private String timesName;
+    private String signNo;
+
+    public String getCoachUnitCode() {
+        return coachUnitCode;
+    }
+
+    public void setCoachUnitCode(String coachUnitCode) {
+        this.coachUnitCode = coachUnitCode;
+    }
+
+    public String getCoachUnitName() {
+        return coachUnitName;
+    }
+
+    public void setCoachUnitName(String coachUnitName) {
+        this.coachUnitName = coachUnitName;
+    }
+
+    public Integer getCoachValue() {
+        return coachValue;
+    }
+
+    public void setCoachValue(Integer coachValue) {
+        this.coachValue = coachValue;
+    }
+
+    public Integer getProCount() {
+        return proCount;
+    }
+
+    public void setProCount(Integer proCount) {
+        this.proCount = proCount;
+    }
+
+    public String getTimesCode() {
+        return timesCode;
+    }
+
+    public void setTimesCode(String timesCode) {
+        this.timesCode = timesCode;
+    }
+
+    public String getTimesName() {
+        return timesName;
+    }
+
+    public void setTimesName(String timesName) {
+        this.timesName = timesName;
+    }
+
+    public String getSignNo() {
+        return signNo;
+    }
+
+    public void setSignNo(String signNo) {
+        this.signNo = signNo;
+    }
+
     public String getDoctorCode() {
         return doctorCode;
     }

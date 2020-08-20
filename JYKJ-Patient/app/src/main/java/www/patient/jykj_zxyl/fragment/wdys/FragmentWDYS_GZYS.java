@@ -21,10 +21,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.allin.commlibrary.CollectionUtils;
+import com.allin.commlibrary.StringUtils;
 import com.google.gson.Gson;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import entity.ProvidePatientBindingMyDoctorInfo;
 import entity.shouye.ProvideViewDoctorExpertRecommend;
@@ -42,6 +51,7 @@ import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeWDYSFQYY
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentWDYS_GZYSdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.base.base_view.LoadingLayoutManager;
 import www.patient.jykj_zxyl.fragment.ylzx.FragmentRMJX;
 import www.patient.jykj_zxyl.fragment.ylzx.FragmentWDSC;
 import www.patient.jykj_zxyl.fragment.ylzx.FragmentYXWX;
@@ -73,14 +83,15 @@ public class FragmentWDYS_GZYS extends Fragment {
 
     private TextView tv_zjtj;
 
-    private         String              mSearchName = "";
-    private         String              mSearchProvice = "";
-    private         String              mSearchCity = "";
-    private         String              mSearchArea = "";
-    private         String              mSearchJGBJ = "";
-    private         String              mSearchYSZC = "";
+    private String mSearchName = "";
+    private String mSearchProvice = "";
+    private String mSearchCity = "";
+    private String mSearchArea = "";
+    private String mSearchJGBJ = "";
+    private String mSearchYSZC = "";
 
-
+    private SmartRefreshLayout mRefreshLayout;//刷新列表
+    private LoadingLayoutManager mLoadingLayout;//重新加载空页面管理
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_wdys_yslb, container, false);
@@ -89,7 +100,7 @@ public class FragmentWDYS_GZYS extends Fragment {
         mApp = (JYKJApplication) getActivity().getApplication();
         initLayout(v);
         initHandler();
-        getDate(this.mSearchName,this.mSearchProvice,this.mSearchCity,this.mSearchArea,this.mSearchJGBJ,this.mSearchYSZC);
+        getDate(this.mSearchName, this.mSearchProvice, this.mSearchCity, this.mSearchArea, this.mSearchJGBJ, this.mSearchYSZC);
         return v;
     }
 
@@ -104,7 +115,7 @@ public class FragmentWDYS_GZYS extends Fragment {
 //        mChoiceDepartmentSText = (TextView)this.findViewById(R.id.tv_activityJoinDoctorsUnion_choiceDepartmentSText);
 //        mChoiceDepartmentFLayout.setOnClickListener(new ButtonClick());
 //        mChoiceDepartmentSLayout.setOnClickListener(new ButtonClick());
-
+        mRefreshLayout = view.findViewById(R.id.refreshLayout);
         mRecyclerView = view.findViewById(R.id.rv);
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -117,7 +128,8 @@ public class FragmentWDYS_GZYS extends Fragment {
         mAdapter.setOnItemClickListener(new FragmentWDYS_GZYSdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
-                startActivity(new Intent(mContext,ZJXQActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommends.get(position)));
+                startActivity(new Intent(mContext, ZJXQActivity.class).putExtra("provideViewDoctorExpertRecommend"
+                        , provideViewDoctorExpertRecommends.get(position)));
             }
 
             @Override
@@ -173,22 +185,22 @@ public class FragmentWDYS_GZYS extends Fragment {
 ////        });
 
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    int lastVisiblePosition = manager.findLastVisibleItemPosition();
-                    if (lastVisiblePosition >= manager.getItemCount() - 1) {
-                        if (loadDate) {
-                            mNumPage++;
-                            getDate(mSearchName,mSearchProvice,mSearchCity,mSearchArea,mSearchJGBJ,mSearchYSZC);
-                        }
-
-                    }
-                }
-            }
-        });
+//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    int lastVisiblePosition = manager.findLastVisibleItemPosition();
+//                    if (lastVisiblePosition >= manager.getItemCount() - 1) {
+//                        if (loadDate) {
+//                            mNumPage++;
+//                            getDate(mSearchName, mSearchProvice, mSearchCity, mSearchArea, mSearchJGBJ, mSearchYSZC);
+//                        }
+//
+//                    }
+//                }
+//            }
+//        });
 
         tv_zjtj = (TextView) view.findViewById(R.id.tv_zjtj);
         tv_zjtj.setOnClickListener(new View.OnClickListener() {
@@ -197,11 +209,49 @@ public class FragmentWDYS_GZYS extends Fragment {
                 startActivity(new Intent(mContext, TJZJActivity.class));
             }
         });
+        mRefreshLayout.setRefreshHeader(new ClassicsHeader(Objects.requireNonNull(this.getContext())));
+        mRefreshLayout.setRefreshFooter(new ClassicsFooter(this.getContext()));
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                mNumPage=1;
+                getDate(mSearchName,
+                        mSearchProvice,
+                        mSearchCity,
+                        mSearchArea,
+                        mSearchJGBJ, mSearchYSZC);
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                mNumPage++;
+                getDate(mSearchName, mSearchProvice, mSearchCity, mSearchArea, mSearchJGBJ, mSearchYSZC);
 
+            }
+        });
+        initLoadingAndRetryManager();
     }
 
     /**
+     * 初始化loading页面
+     */
+    private void initLoadingAndRetryManager() {
+        mLoadingLayout = LoadingLayoutManager.wrap(mRefreshLayout);
+        mLoadingLayout.setRetryListener(v -> {
+            mLoadingLayout.showLoading();
+            mNumPage = 1;
+            getDate(mSearchName, mSearchProvice, mSearchCity, mSearchArea,
+                    mSearchJGBJ,
+                    mSearchYSZC);
+        });
+        mLoadingLayout.showLoading();
+    }
+
+
+    /**
      * 取消关注
+     *
      * @param position
      */
     private void operIndexMyDoctorBindingCancel(int position) {
@@ -214,17 +264,17 @@ public class FragmentWDYS_GZYS extends Fragment {
         provideViewDoctorExpertRecommend.setCollectDoctorCode(provideViewDoctorExpertRecommends.get(position).getDoctorCode());
         provideViewDoctorExpertRecommend.setCollectDoctorName(provideViewDoctorExpertRecommends.get(position).getUserName());
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideViewDoctorExpertRecommend);
-                    String urlStr = Constant.SERVICEURL+"PatientMyDoctorControlle/operIndexMyDoctorCollectCancel";
+                    String urlStr = Constant.SERVICEURL + "PatientMyDoctorControlle/operIndexMyDoctorCollectCancel";
 //                    mNetRetStr = HttpNetService.getUpgradeInfo("jsonDataInfo="+string, urlStr);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"PatientMyDoctorControlle/operIndexMyDoctorCollectCancel");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "PatientMyDoctorControlle/operIndexMyDoctorCollectCancel");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -242,32 +292,52 @@ public class FragmentWDYS_GZYS extends Fragment {
                 switch (msg.what) {
                     case 5:
                         NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 1 && netRetEntity.getResJsonData() != null && !"".equals(netRetEntity.getResJsonData())) {
-                            List<ProvideViewDoctorExpertRecommend> list = JSON.parseArray(netRetEntity.getResJsonData(),ProvideViewDoctorExpertRecommend.class);
-
-                            if (list == null || list.size() == 0)
-                                loadDate = false;
-                            else
-                                provideViewDoctorExpertRecommends.addAll(list);
-                            if (list.size() < mRowNum )
-                            {
-                                loadDate = false;
+                        if (netRetEntity.getResCode() == 1 ) {
+                            String resJsonData = netRetEntity.getResJsonData();
+                            if (StringUtils.isNotEmpty(resJsonData)) {
+                                List<ProvideViewDoctorExpertRecommend> list = JSON.parseArray(netRetEntity.getResJsonData(), ProvideViewDoctorExpertRecommend.class);
+                                if (mNumPage == 1){
+                                    provideViewDoctorExpertRecommends.clear();
+                                }
+                                if (list == null || list.size() == 0)
+                                    loadDate = false;
+                                else
+                                    provideViewDoctorExpertRecommends.addAll(list);
+                                if (list.size() < mRowNum) {
+                                    loadDate = false;
+                                }
+                                mLoadingLayout.showContent();
+                            }else{
+                                if(mNumPage==1){
+                                    mLoadingLayout.showEmpty();
+                                }else{
+                                    mRefreshLayout.finishLoadMore();
+                                }
                             }
+
+                        }else{
+                            mRefreshLayout.finishRefresh();
+                            mRefreshLayout.finishLoadMore();
+                            mLoadingLayout.showError();
                         }
                         mAdapter.setDate(provideViewDoctorExpertRecommends);
                         mAdapter.notifyDataSetChanged();
+                        if(mNumPage==1){
+                            mRefreshLayout.finishRefresh();
+                        }else{
+                            mRefreshLayout.finishLoadMore();
+                        }
                         break;
                     case 6:
-                        netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
+                        netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
                         if (netRetEntity.getResCode() == 0)
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
-                        else
-                        {
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                        else {
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
                             mNumPage = 1;
                             mRowNum = 10;
                             provideViewDoctorExpertRecommends.clear();
-                            getDate(mSearchName,mSearchProvice,mSearchCity,mSearchArea,mSearchJGBJ,mSearchYSZC);
+                            getDate(mSearchName, mSearchProvice, mSearchCity, mSearchArea, mSearchJGBJ, mSearchYSZC);
                         }
                         break;
                 }
@@ -279,8 +349,6 @@ public class FragmentWDYS_GZYS extends Fragment {
      * 搜索
      */
     public void getDate(String searchName, String searchProvince, String searchCity, String searchArea, String searchHospitalType, String searchDoctorTitle) {
-        if (mNumPage == 1)
-            provideViewDoctorExpertRecommends.clear();
         ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend = new ProvideViewDoctorExpertRecommend();
         provideViewDoctorExpertRecommend.setRowNum(mRowNum + "");
         provideViewDoctorExpertRecommend.setPageNum(mNumPage + "");
@@ -340,7 +408,6 @@ public class FragmentWDYS_GZYS extends Fragment {
 
 
     /**
-     *
      * @param mSearchProvice
      * @param mSearchCity
      * @param mSearchArea
@@ -358,6 +425,6 @@ public class FragmentWDYS_GZYS extends Fragment {
         this.mSearchJGBJ = mSearchJGBJ;
         this.mSearchYSZC = mSearchYSZC;
         provideViewDoctorExpertRecommends.clear();
-        getDate(this.mSearchName,this.mSearchProvice,this.mSearchCity,this.mSearchArea,this.mSearchJGBJ,this.mSearchYSZC);
+        getDate(this.mSearchName, this.mSearchProvice, this.mSearchCity, this.mSearchArea, this.mSearchJGBJ, this.mSearchYSZC);
     }
 }

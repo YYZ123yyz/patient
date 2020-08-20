@@ -43,9 +43,8 @@ import entity.yhhd.ProvideGroupConsultationUserInfo;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.activity.LoginActivity;
 import www.patient.jykj_zxyl.activity.MainActivity;
-import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
+import com.hyphenate.easeui.ui.ChatActivity;
 import www.patient.jykj_zxyl.adapter.DorcerFriendExpandableListViewAdapter;
 import www.patient.jykj_zxyl.adapter.MessageInfoRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
@@ -104,6 +103,7 @@ public class FragmentShouYe_HYHD extends Fragment {
         initLayout(v);
         initHandler();
         mApp.gNetWorkTextView = true;
+
         getMessageList();
 
         return v;
