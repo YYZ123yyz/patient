@@ -143,18 +143,7 @@ public class OrderOnGoingFragment extends
         });
     }
 
-    /**
-     * 设置到指定位置
-     * @param pos 位置
-     */
-    private void setCurrentPos(int pos){
-        mRvList.post(new Runnable() {
-            @Override
-            public void run() {
-                mRvList.scrollToPosition(pos);
-            }
-        });
-    }
+
 
     /**
      * 设置适配器
@@ -289,6 +278,7 @@ public class OrderOnGoingFragment extends
         if(pageIndex == 1){
             mLoadingLayout.showEmpty();
         }
+
     }
 
     @Override
@@ -296,6 +286,8 @@ public class OrderOnGoingFragment extends
         if (pageIndex==1) {
             mLoadingLayout.showError();
         }
+        mRefreshLayout.finishLoadMore();
+        mRefreshLayout.finishRefresh();
 
     }
 
@@ -322,11 +314,8 @@ public class OrderOnGoingFragment extends
             mMultiItemEntitys.addAll(dataBeans);
             handleData(mMultiItemEntitys);
             mOrderOnGoingAdapter.setDatas(mMultiItemEntitys);
-            if (dataBeans.size()<pageSize) {
-                mRefreshLayout.finishLoadMore();
-            }
             mOrderOnGoingAdapter.notifyDataSetChanged();
-            setCurrentPos(currentPos);
+            mRefreshLayout.finishLoadMore();
         } else {
             if (pageIndex == 1) {
                 mLoadingLayout.showEmpty();

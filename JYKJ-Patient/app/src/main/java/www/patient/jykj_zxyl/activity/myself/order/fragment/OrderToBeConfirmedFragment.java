@@ -300,10 +300,8 @@ public class OrderToBeConfirmedFragment extends
             mMultiItemEntitys.addAll(dataBeans);
             handleData(mMultiItemEntitys);
             mOrderToBeConfirmedAdapter.setDatas(mMultiItemEntitys);
-            if (dataBeans.size()<pageSize) {
-                mRefreshLayout.finishLoadMore();
-            }
             mOrderToBeConfirmedAdapter.notifyDataSetChanged();
+            mRefreshLayout.finishLoadMore();
         } else {
             if (pageIndex == 1) {
                 mLoadingLayout.showEmpty();
@@ -360,6 +358,7 @@ public class OrderToBeConfirmedFragment extends
         if(pageIndex == 1){
             mLoadingLayout.showEmpty();
         }
+
     }
 
     @Override
@@ -367,6 +366,8 @@ public class OrderToBeConfirmedFragment extends
         if (pageIndex==1) {
             mLoadingLayout.showError();
         }
+        mRefreshLayout.finishLoadMore();
+        mRefreshLayout.finishRefresh();
 
     }
 

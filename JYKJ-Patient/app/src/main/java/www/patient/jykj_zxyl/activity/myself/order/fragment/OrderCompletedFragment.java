@@ -204,10 +204,8 @@ public class OrderCompletedFragment extends AbstractMvpBaseFragment<OrderComplet
             mMultiItemEntitys.addAll(dataBeans);
             handleData(mMultiItemEntitys);
             mOrderComplatedAdapter.setDatas(mMultiItemEntitys);
-            if (dataBeans.size()<pageSize) {
-                mRefreshLayout.finishLoadMore();
-            }
             mOrderComplatedAdapter.notifyDataSetChanged();
+            mRefreshLayout.finishLoadMore();
         } else {
             if (pageIndex == 1) {
                 mLoadingLayout.showEmpty();
@@ -276,6 +274,8 @@ public class OrderCompletedFragment extends AbstractMvpBaseFragment<OrderComplet
         if (pageIndex==1) {
             mLoadingLayout.showError();
         }
+        mRefreshLayout.finishLoadMore();
+        mRefreshLayout.finishRefresh();
 
     }
 }

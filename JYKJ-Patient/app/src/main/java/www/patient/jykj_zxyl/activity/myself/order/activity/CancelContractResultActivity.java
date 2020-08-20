@@ -102,7 +102,6 @@ public class CancelContractResultActivity extends BaseActivity {
         tvRefundMoney=findViewById(R.id.tv_refund_money);
         tvRefundPath=findViewById(R.id.tv_refund_path);
         tvRevokeBtn=findViewById(R.id.tv_revoke_btn);
-        String state = Integer.toString(orderState);
 
 
         addListener();
@@ -194,9 +193,7 @@ public class CancelContractResultActivity extends BaseActivity {
                      orderDetialBean = GsonUtils.fromJson(
                             baseBean.getResJsonData(), OrderDetialBean.class);
                     if (orderDetialBean!=null) {
-                        long terminationTime = orderDetialBean.getTerminationTime();
-                        tvTitleTipDate.setText(DateTimeUtils.formatLongDate(terminationTime,
-                                "yyyy-MM-dd HH:mm:ss"));
+
                         tvRefundMoney.setText(String.format("¥%s", orderDetialBean.getSignPrice()));
                         setLayoutVisible(orderDetialBean.getSignStatus());
                         handleOrderListResult(orderDetialBean);
@@ -221,12 +218,15 @@ public class CancelContractResultActivity extends BaseActivity {
             llStartCancelContractRoot.setVisibility(View.VISIBLE);
             rlRefundRoot.setVisibility(View.VISIBLE);
             rlRefundMoneyRoot.setVisibility(View.GONE);
+            tvTitleTipDate.setText("请耐心等待1-3个工作日");
         }else if(state.equals(OrderStatusEnum.orderAdvenceCancelContractCode)){
             llStartCancelContractRoot.setVisibility(View.GONE);
             rlRefundRoot.setVisibility(View.VISIBLE);
             rlRefundMoneyRoot.setVisibility(View.VISIBLE);
             tvTitleTip.setText("解约成功");
-            tvTitleTipDate.setText(dateTime);
+            long terminationTime = orderDetialBean.getTerminationTime();
+            tvTitleTipDate.setText(DateTimeUtils.formatLongDate(terminationTime,
+                    "yyyy-MM-dd HH:mm"));
         }
     }
 

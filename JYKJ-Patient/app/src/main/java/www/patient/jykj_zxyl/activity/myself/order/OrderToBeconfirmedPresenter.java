@@ -12,6 +12,7 @@ import entity.mySelf.ProvideInteractOrderInfo;
 import www.patient.jykj_zxyl.base.base_bean.BaseBean;
 import www.patient.jykj_zxyl.base.base_bean.UserInfoBaseBean;
 import www.patient.jykj_zxyl.base.base_utils.GsonUtils;
+import www.patient.jykj_zxyl.base.base_utils.StringUtils;
 import www.patient.jykj_zxyl.base.http.ApiHelper;
 import www.patient.jykj_zxyl.base.http.CommonDataObserver;
 import www.patient.jykj_zxyl.base.http.ParameUtil;
@@ -68,10 +69,16 @@ public class OrderToBeconfirmedPresenter extends BasePresenterImpl<OrderToBeConf
                     int resCode = baseBean.getResCode();
                     if (resCode == 1) {
 
-                        List<ProvideInteractOrderInfo> provideInteractOrderInfos =
-                                JSON.parseArray(baseBean.getResJsonData(), ProvideInteractOrderInfo.class);
+                        String resJsonData = baseBean.getResJsonData();
+                        if (StringUtils.isNotEmpty(resJsonData)) {
+                            List<ProvideInteractOrderInfo> provideInteractOrderInfos =
+                                    JSON.parseArray(resJsonData, ProvideInteractOrderInfo.class);
 
-                        mView.getSearchPatientMyOrderResInCompleteResult(provideInteractOrderInfos);
+                            mView.getSearchPatientMyOrderResInCompleteResult(provideInteractOrderInfos);
+                        }else{
+                            mView.showRetry();
+                        }
+
                     }else{
                         mView.showRetry();
                     }
