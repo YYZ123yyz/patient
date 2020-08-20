@@ -56,45 +56,45 @@ import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.Util;
 
 public class MainActivity extends AppCompatActivity {
-    private         Context                     mContext;
-    private         MainActivity                mainActivity;
-    private         JYKJApplication             mApp;
-    private         ViewPager                   mViewPage;
-    private         MyPagerAdapter              mMyPagerAdapter;
-    private         List<Fragment>              mListFragment  = new ArrayList<Fragment>();                     // fragment列表
+    private Context mContext;
+    private MainActivity mainActivity;
+    private JYKJApplication mApp;
+    private ViewPager mViewPage;
+    private MyPagerAdapter mMyPagerAdapter;
+    private List<Fragment> mListFragment = new ArrayList<Fragment>();                     // fragment列表
 
-    private         ImageView                   mImageViewShouYe;                                         //首页图标
-//    private         ImageView                   mImageViewHZGuanLi;                                      //患者管理图标
-    private         ImageView                   mImageViewYHHD;                                            //医患互动图标
-    private         ImageView                   mImageViewYLZX;                                            //医疗资讯图标
-    private         ImageView                   mImageViewMySelf;                                        //我图标
+    private ImageView mImageViewShouYe;                                         //首页图标
+    //    private         ImageView                   mImageViewHZGuanLi;                                      //患者管理图标
+    private ImageView mImageViewYHHD;                                            //医患互动图标
+    private ImageView mImageViewYLZX;                                            //医疗资讯图标
+    private ImageView mImageViewMySelf;                                        //我图标
 
-    private         TextView                    mTextViewShouYE;                                 //首页text
-//    private         TextView                    mTextViewHZGuanLi;                                  //患者管理text
-    private         TextView                    mTextViewYHHD;                                   //医患互动text
-    private         TextView                    mTextViewYLZX;                                   //医疗咨询text
-    private         TextView                    mTextViewSelf;                                      //我text
+    private TextView mTextViewShouYE;                                 //首页text
+    //    private         TextView                    mTextViewHZGuanLi;                                  //患者管理text
+    private TextView mTextViewYHHD;                                   //医患互动text
+    private TextView mTextViewYLZX;                                   //医疗咨询text
+    private TextView mTextViewSelf;                                      //我text
 
-    private         LinearLayout                mLinearLayoutShouYe;                                 //首页布局
-//    private         LinearLayout                mLinearLayoutHZGuanLi;                                  //患者管理布局
-    private         LinearLayout                mLinearLayoutYHHD;                                 //医患互动布局
-    private         LinearLayout                mLinearLayoutYLZX;                                 //医疗资讯布局
-    private         LinearLayout                mLinearLayoutMySelf;                                 //我布局
+    private LinearLayout mLinearLayoutShouYe;                                 //首页布局
+    //    private         LinearLayout                mLinearLayoutHZGuanLi;                                  //患者管理布局
+    private LinearLayout mLinearLayoutYHHD;                                 //医患互动布局
+    private LinearLayout mLinearLayoutYLZX;                                 //医疗资讯布局
+    private LinearLayout mLinearLayoutMySelf;                                 //我布局
 
-    private         FragmentShouYe              mFragmentShouYe;                                 //首页Fragment
-    private         FragmentHZGL                mFragmentHZGL;                                 //患者管理Fragment
+    private FragmentShouYe mFragmentShouYe;                                 //首页Fragment
+    private FragmentHZGL mFragmentHZGL;                                 //患者管理Fragment
 
-    private         FragmentYHHD                mFragmentYHHD;                                 //消息中心Fragment
-    private         FragmentYLZX                mFragmentYLZX;                                       //医疗资讯Fragment
-    private         FragmentMySelf              mFragmentMySelf;                                 //我的Fragment
-    private         int                         mCurrentFragment;                                //当前所在的Fragment
+    private FragmentYHHD mFragmentYHHD;                                 //消息中心Fragment
+    private FragmentYLZX mFragmentYLZX;                                       //医疗资讯Fragment
+    private FragmentMySelf mFragmentMySelf;                                 //我的Fragment
+    private int mCurrentFragment;                                //当前所在的Fragment
 
-    private             String                              mNetRetStr;                 //返回字符串
-    private         Handler                     mHandler;
+    private String mNetRetStr;                 //返回字符串
+    private Handler mHandler;
 
-    public          ProvideMsgPushReminderCount           mProvideMsgPushReminderCount = new ProvideMsgPushReminderCount();         //未读消息数
+    public ProvideMsgPushReminderCount mProvideMsgPushReminderCount = new ProvideMsgPushReminderCount();         //未读消息数
 
-    public                      CallReceiver                    mCallReceiver;
+    public CallReceiver mCallReceiver;
 
 
     /**
@@ -130,11 +130,10 @@ public class MainActivity extends AppCompatActivity {
         Util.getRegionDate(mApp);
 
 
-
     }
 
 
-    public void registHX(){
+    public void registHX() {
         mHandler.sendEmptyMessage(22);
 
     }
@@ -199,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //通过这个SharedPreferences 库得到账号密码，实现重新登录的功能
-                                EMClient.getInstance().login(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mApp.mProvideViewSysUserPatientInfoAndRegion.getQrCode(),new EMCallBack() {//回调
+                                EMClient.getInstance().login(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mApp.mProvideViewSysUserPatientInfoAndRegion.getQrCode(), new EMCallBack() {//回调
                                     @Override
                                     public void onSuccess() {
                                         mHandler.sendEmptyMessage(21);
@@ -223,13 +222,12 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 EMClient.getInstance().logout(true);
-                                for (int i = 0; i < mApp.gActivityList.size(); i++)
-                                {
+                                for (int i = 0; i < mApp.gActivityList.size(); i++) {
                                     mApp.gActivityList.get(i).finish();
                                 }
 
                                 mApp.gActivityList.clear();
-                                startActivity(new Intent(mContext,LoginActivity.class));
+                                startActivity(new Intent(mContext, LoginActivity.class));
                             }
                         });
                         //不关闭写法
@@ -239,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 21:
-                        Toast.makeText(mContext,"登录成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "登录成功", Toast.LENGTH_SHORT).show();
                         break;
                     case 22:
 //                        Toast.makeText(getApplicationContext(),"登录成功",Toast.LENGTH_SHORT).show();
@@ -247,10 +245,10 @@ public class MainActivity extends AppCompatActivity {
 //                        DemoHelper.getInstance().setEaseUIProviders();
                         //注册
                         IntentFilter callFilter = new IntentFilter(EMClient.getInstance().callManager().getIncomingCallBroadcastAction());
-                        if(mCallReceiver == null){
+                        if (mCallReceiver == null) {
                             mCallReceiver = new CallReceiver();
                         }
-                       mContext.registerReceiver(mCallReceiver, callFilter);
+                        mContext.registerReceiver(mCallReceiver, callFilter);
                         System.out.println("进来了");
                         break;
 
@@ -264,9 +262,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
     /**
      * 获取未读消息数量
      */
@@ -277,17 +272,17 @@ public class MainActivity extends AppCompatActivity {
         provideMsgPushReminder.setRowNum("10");
         provideMsgPushReminder.setPageNum("1");
         provideMsgPushReminder.setSearchPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideMsgPushReminder);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string,Constant.SERVICEURL+"msgDataControlle/searchPatientMsgPushReminderListResAllData");
-                    String string01 = Constant.SERVICEURL+"msgDataControlle/searchMsgPushReminderAllCount";
-                    System.out.println(string+string01);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "msgDataControlle/searchPatientMsgPushReminderListResAllData");
+                    String string01 = Constant.SERVICEURL + "msgDataControlle/searchMsgPushReminderAllCount";
+                    System.out.println(string + string01);
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -310,17 +305,17 @@ public class MainActivity extends AppCompatActivity {
     private void initLayout() {
         mLinearLayoutShouYe = (LinearLayout) this.findViewById(R.id.l1_activityMain_ShouYeLayout);
 //        mLinearLayoutHZGuanLi = (LinearLayout)this.findViewById(R.id.l1_activityMain_HZGuanLiLayout);
-        mLinearLayoutYHHD = (LinearLayout)this.findViewById(R.id.l1_activityMain_LayoutHYHD);
-        mLinearLayoutYLZX = (LinearLayout)this.findViewById(R.id.l1_activityMain_LayoutYLZX);
-        mLinearLayoutMySelf = (LinearLayout)this.findViewById(R.id.l1_activityMain_LayoutGRZX);
+        mLinearLayoutYHHD = (LinearLayout) this.findViewById(R.id.l1_activityMain_LayoutHYHD);
+        mLinearLayoutYLZX = (LinearLayout) this.findViewById(R.id.l1_activityMain_LayoutYLZX);
+        mLinearLayoutMySelf = (LinearLayout) this.findViewById(R.id.l1_activityMain_LayoutGRZX);
 
-        mImageViewShouYe =(ImageView) this.findViewById(R.id.iv_activityMain_ImageShouYe);
+        mImageViewShouYe = (ImageView) this.findViewById(R.id.iv_activityMain_ImageShouYe);
 //        mImageViewHZGuanLi = (ImageView) this.findViewById(R.id.iv_activityMain_ImageHZGuanLi);
         mImageViewYHHD = (ImageView) this.findViewById(R.id.iv_activityMain_ImageHYHD);
         mImageViewYLZX = (ImageView) this.findViewById(R.id.iv_activityMain_ImageYLZX);
         mImageViewMySelf = (ImageView) this.findViewById(R.id.iv_activityMain_ImageGRZX);
 
-        mTextViewShouYE =(TextView) this.findViewById(R.id.tv_activityMain_TextShouYe);
+        mTextViewShouYE = (TextView) this.findViewById(R.id.tv_activityMain_TextShouYe);
 //        mTextViewHZGuanLi = (TextView) this.findViewById(R.id.tv_activityMain_TextHZGuanLi);
         mTextViewYHHD = (TextView) this.findViewById(R.id.tv_activityMain_TextHYHD);
         mTextViewYLZX = (TextView) this.findViewById(R.id.tv_activityMain_TextYLZX);
@@ -336,9 +331,8 @@ public class MainActivity extends AppCompatActivity {
         mLinearLayoutMySelf.setOnClickListener(new ButtonClick());
 
         mViewPage = (ViewPager) this.findViewById(R.id.vp_activityMain_viewPage);
-        if (mFragmentShouYe == null)
-        {
-            mFragmentShouYe  = new FragmentShouYe();
+        if (mFragmentShouYe == null) {
+            mFragmentShouYe = new FragmentShouYe();
             mListFragment.add(mFragmentShouYe);
         }
 
@@ -348,26 +342,23 @@ public class MainActivity extends AppCompatActivity {
 //            mListFragment.add(mFragmentHZGL);
 //        }
 
-        if (mFragmentYHHD == null)
-        {
+        if (mFragmentYHHD == null) {
             mFragmentYHHD = new FragmentYHHD();
             mListFragment.add(mFragmentYHHD);
         }
 
-        if (mFragmentYLZX == null)
-        {
+        if (mFragmentYLZX == null) {
             mFragmentYLZX = new FragmentYLZX();
             mListFragment.add(mFragmentYLZX);
         }
 
-        if (mFragmentMySelf == null)
-        {
+        if (mFragmentMySelf == null) {
             mFragmentMySelf = new FragmentMySelf();
             mListFragment.add(mFragmentMySelf);
         }
 
 
-        mMyPagerAdapter = new MyPagerAdapter(this.getSupportFragmentManager(),mListFragment);
+        mMyPagerAdapter = new MyPagerAdapter(this.getSupportFragmentManager(), mListFragment);
         mViewPage.setAdapter(mMyPagerAdapter);
         mViewPage.setCurrentItem(0);
         mViewPage.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -378,9 +369,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                Log.i("score","onPageSelected:"+position);
-                switch(position)
-                {
+                Log.i("score", "onPageSelected:" + position);
+                switch (position) {
                     case 0:
                         mCurrentFragment = 0;
                         setDefaultLayout();
@@ -398,8 +388,8 @@ public class MainActivity extends AppCompatActivity {
 //                        }
 //                        else
 //                        {
-                            mImageViewYHHD.setBackgroundResource(R.mipmap.message_press);
-                            mTextViewYHHD.setTextColor(getResources().getColor(R.color.tabColor_press));
+                        mImageViewYHHD.setBackgroundResource(R.mipmap.message_press);
+                        mTextViewYHHD.setTextColor(getResources().getColor(R.color.tabColor_press));
 //                        }
                         break;
                     case 2:
@@ -435,7 +425,7 @@ public class MainActivity extends AppCompatActivity {
 //        if (mApp.gNewMessageNum > 0)
 //            mImageViewYHHD.setBackgroundResource(R.mipmap.hyhdnews_nomal);
 //        else
-            mImageViewYHHD.setBackgroundResource(R.mipmap.message_nomal);
+        mImageViewYHHD.setBackgroundResource(R.mipmap.message_nomal);
         mImageViewYLZX.setBackgroundResource(R.mipmap.yhq_nomal);
         mImageViewMySelf.setBackgroundResource(R.mipmap.grzx_nomal);
 
@@ -449,6 +439,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * fragment切换
+     *
      * @param currentfragment
      */
     private void changeFragment(int currentfragment) {
@@ -515,16 +506,17 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 跳转到消息中心页面
+     *
      * @param i
      */
-    public void setViewPageIndex(int i,int childFragmentIndex) {
+    public void setViewPageIndex(int i, int childFragmentIndex) {
         mViewPage.setCurrentItem(i);
         if (childFragmentIndex != 0)
             mFragmentYHHD.setViewPagerIndex(childFragmentIndex);
     }
 
 
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -572,16 +564,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void initNotifier(){
+    void initNotifier() {
         notifier = new EaseNotifier(mContext);
     }
 
 
-
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             Intent i = new Intent(Intent.ACTION_MAIN);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.addCategory(Intent.CATEGORY_HOME);
@@ -590,7 +580,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
-
 
 
 }

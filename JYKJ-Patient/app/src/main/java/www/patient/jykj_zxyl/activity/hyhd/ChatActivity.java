@@ -26,18 +26,18 @@ import www.patient.jykj_zxyl.util.ActivityUtil;
  */
 public class ChatActivity extends AppCompatActivity {
 
-    private                 TextView                    mPhoneLogin;                //手机号登录
-    private                 TextView                    mUseRegist;                 //用户注册
-    private                 Button                      mLogin;                     //登录
-    private                 Context                     mContext;
-    private                 ChatActivity                mActivity;
-    private                 EaseTitleBar                titleBar;
-    private                 EaseChatMessageList                messageList;
-    private                 EaseChatInputMenu           inputMenu;
-    private                 JYKJApplication             mApp;
+    private TextView mPhoneLogin;                //手机号登录
+    private TextView mUseRegist;                 //用户注册
+    private Button mLogin;                     //登录
+    private Context mContext;
+    private ChatActivity mActivity;
+    private EaseTitleBar titleBar;
+    private EaseChatMessageList messageList;
+    private EaseChatInputMenu inputMenu;
+    private JYKJApplication mApp;
 
-    private                 String                      doctorUrl;
-    private                 String                      patientUrl;
+    private String doctorUrl;
+    private String patientUrl;
 
 
     @Override
@@ -65,13 +65,12 @@ public class ChatActivity extends AppCompatActivity {
         patientUrl = mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl();
 
 
-
         //传入参数
         Bundle args = new Bundle();
         args.putInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
         args.putString(EaseConstant.EXTRA_USER_ID, userCode);
         args.putString(EaseConstant.EXTRA_USER_NAME, userName);
-        args.putString("date",getIntent().getStringExtra("date"));
+        args.putString("date", getIntent().getStringExtra("date"));
         args.putString("loginDoctorPosition", loginDoctorPosition);
         args.putString("operDoctorCode", operDoctorCode);
         args.putString("operDoctorName", operDoctorName);
@@ -80,10 +79,10 @@ public class ChatActivity extends AppCompatActivity {
         args.putString("doctorUrl", doctorUrl);
         args.putString("userUrl", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
 //        args.putString("userName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        args.putInt(EaseConstant.EXTRA_MESSAGE_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_MESSAGE_NUM,0));
-        args.putLong(EaseConstant.EXTRA_VOICE_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_VOICE_NUM,0));
-        args.putLong(EaseConstant.EXTRA_VEDIO_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_VEDIO_NUM,0));
-        args.putString("chatType",chatType);
+        args.putInt(EaseConstant.EXTRA_MESSAGE_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_MESSAGE_NUM, 0));
+        args.putLong(EaseConstant.EXTRA_VOICE_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_VOICE_NUM, 0));
+        args.putLong(EaseConstant.EXTRA_VEDIO_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_VEDIO_NUM, 0));
+        args.putString("chatType", chatType);
         chatFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().add(R.id.container, chatFragment).commit();
     }
@@ -92,7 +91,7 @@ public class ChatActivity extends AppCompatActivity {
      * 初始化布局
      */
     private void initLayout() {
-        titleBar = (EaseTitleBar)this.findViewById(R.id.title_bar);
+        titleBar = (EaseTitleBar) this.findViewById(R.id.title_bar);
         titleBar.setTitle(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         titleBar.setRightImageResource(R.drawable.ease_mm_title_remove);
 
@@ -226,7 +225,7 @@ public class ChatActivity extends AppCompatActivity {
     /**
      * 点击事件
      */
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -234,7 +233,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         }
     }
-
 
 
 }
