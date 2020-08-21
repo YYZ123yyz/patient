@@ -226,7 +226,10 @@ public abstract class EaseChatRow extends LinearLayout {
                     usernickView.setVisibility(View.VISIBLE);
                 else
                     usernickView.setVisibility(View.GONE);
-                usernickView.setVisibility(View.VISIBLE);
+                if (itemStyle.isShowChatRoom()) {
+                    usernickView.setVisibility(View.VISIBLE);
+                }
+
             }
             if (bubbleLayout != null) {
                 if (message.direct() == Direct.SEND) {

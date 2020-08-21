@@ -141,6 +141,10 @@ public class EaseChatInputMenu extends LinearLayout {
     }
     
 
+    public void showMoreOption(){
+        chatPrimaryMenu.showMoreOption();
+    }
+
     /**
      * register menu item
      * 

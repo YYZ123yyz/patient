@@ -257,7 +257,7 @@ public class EaseMessageAdapter extends BaseAdapter {
 		}
 		
 		if(customRowProvider != null && customRowProvider.getCustomChatRowType(message) > 0){
-		    return customRowProvider.getCustomChatRowType(message) + 13+2;
+		    return customRowProvider.getCustomChatRowType(message) + 13+4;
 		}
 
 		if (message.getType() == EMMessage.Type.TXT) {
@@ -267,10 +267,9 @@ public class EaseMessageAdapter extends BaseAdapter {
                 String messageType = message.getStringAttribute("messageType", "");
                 if (messageType.equals("card")||messageType.equals("terminationOrder")){
                     return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_ORDER_CARD : MESSAGE_TYPE_SEND_ORDER_CARD;
+                }else if(itemStyle!=null&&itemStyle.isShowChatRoom()){
+                    return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_TXT_ROOM : MESSAGE_TYPE_SEND_TXT_ROOM;
                 }
-				if (itemStyle!=null&&itemStyle.isShowChatRoom()) {
-					return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_TXT_ROOM : MESSAGE_TYPE_SEND_TXT_ROOM;
-				}
 
 			}
 			return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_TXT : MESSAGE_TYPE_SENT_TXT;

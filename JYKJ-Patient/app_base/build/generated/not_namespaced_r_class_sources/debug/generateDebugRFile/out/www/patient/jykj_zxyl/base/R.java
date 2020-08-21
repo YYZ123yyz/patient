@@ -1752,23 +1752,22 @@ public final class R {
     public static final class mipmap {
         private mipmap() {}
 
-        public static int arrow_left = 0x7f110001;
-        public static int bg_agreement_normal = 0x7f110002;
-        public static int bg_agreement_press = 0x7f110003;
-        public static int bg_alipay_icon = 0x7f110004;
-        public static int bg_choosed_normal = 0x7f110005;
-        public static int bg_choosed_press = 0x7f110006;
-        public static int bg_dialog_close = 0x7f110007;
-        public static int bg_item_choosed = 0x7f110008;
-        public static int bg_item_normal = 0x7f110009;
-        public static int bg_right_forward = 0x7f11000a;
-        public static int bg_weixin_icon = 0x7f11000b;
-        public static int era = 0x7f11000c;
-        public static int ic_pulltorefresh_arrow_up = 0x7f11000d;
-        public static int icon_loading_empty = 0x7f11000e;
-        public static int icon_loading_error = 0x7f11000f;
-        public static int icon_progress_loading = 0x7f110010;
-        public static int toast_prompt = 0x7f110011;
+        public static int bg_agreement_normal = 0x7f110001;
+        public static int bg_agreement_press = 0x7f110002;
+        public static int bg_alipay_icon = 0x7f110003;
+        public static int bg_choosed_normal = 0x7f110004;
+        public static int bg_choosed_press = 0x7f110005;
+        public static int bg_dialog_close = 0x7f110006;
+        public static int bg_item_choosed = 0x7f110007;
+        public static int bg_item_normal = 0x7f110008;
+        public static int bg_right_forward = 0x7f110009;
+        public static int bg_weixin_icon = 0x7f11000a;
+        public static int era = 0x7f11000b;
+        public static int ic_pulltorefresh_arrow_up = 0x7f11000c;
+        public static int icon_loading_empty = 0x7f11000d;
+        public static int icon_loading_error = 0x7f11000e;
+        public static int icon_progress_loading = 0x7f11000f;
+        public static int toast_prompt = 0x7f110010;
     }
     public static final class string {
         private string() {}

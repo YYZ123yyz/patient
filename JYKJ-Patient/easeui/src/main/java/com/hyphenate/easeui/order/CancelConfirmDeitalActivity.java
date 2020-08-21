@@ -198,7 +198,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
     private void setOrderData(OrderDetialBean signOrderInfoBean){
         mTvCancelContractDesc.setText(signOrderInfoBean.getRefuseRemark());
         mTvSignStartTime.setText(DateUtils.getStringTimeMinute(
-                signOrderInfoBean.getTerminationTime()));
+                signOrderInfoBean.getSignStartTime()));
         mTvSignTimeValue.setText(String.format("%d%s", signOrderInfoBean.getSignDuration()
                 , signOrderInfoBean.getSignDurationUnit()));
         mTvMonitorTypeValue.setText(monitorTypeList.size()+"项");

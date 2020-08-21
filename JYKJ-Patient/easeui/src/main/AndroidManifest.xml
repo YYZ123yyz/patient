@@ -1,5 +1,3 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.hyphenate.easeui">
-
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hyphenate.easeui">
@@ -34,12 +32,6 @@
 
         </activity>
         <activity android:name=".order.RefusedCancelContractActivity"
-            android:screenOrientation="portrait"
-            >
-
-
-        </activity>
-        <activity android:name=".order.CancelContractResultActivity"
             android:screenOrientation="portrait"
             >
 

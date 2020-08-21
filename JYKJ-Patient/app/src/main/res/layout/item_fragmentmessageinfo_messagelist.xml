@@ -7,11 +7,12 @@
     android:id="@+id/li_itemFragmentHYHD_clickLayout"
     android:orientation="horizontal"
     >
-    <ImageView
+    <com.meg7.widget.CircleImageView
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:src="@mipmap/hztx"
         android:layout_marginLeft="10dp"
+        android:scaleType="centerCrop"
         android:id="@+id/iv_itemMessageAdapter_head"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"

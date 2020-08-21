@@ -9,18 +9,24 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.allin.commlibrary.preferences.SavePreferences;
+import com.google.gson.Gson;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.domain.EaseEmojicon;
+import com.hyphenate.easeui.entity.ProvideViewSysUserPatientInfoAndRegion;
 import com.hyphenate.easeui.ui.EaseChatFragment;
+import com.hyphenate.easeui.utils.ActivityUtil;
 import com.hyphenate.easeui.widget.EaseChatInputMenu;
 import com.hyphenate.easeui.widget.EaseChatMessageList;
 import com.hyphenate.easeui.widget.EaseTitleBar;
 
-import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.application.Constant;
-import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.util.ActivityUtil;
+import java.io.Serializable;
+
+import www.patient.jykj_zxyl.base.base_bean.OrderMessage;
+import www.patient.jykj_zxyl.base.base_utils.ActivityStackManager;
+import www.patient.jykj_zxyl.base.base_utils.SharedPreferences_DataSave;
+
 
 /**
  * 聊天界面
@@ -35,22 +41,25 @@ public class ChatActivity extends AppCompatActivity {
     private EaseTitleBar titleBar;
     private EaseChatMessageList messageList;
     private EaseChatInputMenu inputMenu;
-    private JYKJApplication mApp;
-
-
+    private  ProvideViewSysUserPatientInfoAndRegion mProvideViewSysUserPatientInfoAndRegion;
     private String doctorUrl;
     private String patientUrl;
     private String doctorType;//医生类型
+    private OrderMessage orderMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         ActivityUtil.setStatusBarMain(this);
+        ActivityStackManager.getInstance().add(this);
         mContext = this;
         mActivity = this;
-        mApp = (JYKJApplication) getApplication();
         // ActivityUtil.setStatusBar(mActivity);
+        Bundle extras = this.getIntent().getExtras();
+        if (extras!=null) {
+            orderMessage =(OrderMessage)extras.getSerializable("orderMsg");
+        }
         String chatType = getIntent().getStringExtra("chatType");
         doctorType = getIntent().getStringExtra("doctorType");
 //        initLayout();
@@ -62,10 +71,17 @@ public class ChatActivity extends AppCompatActivity {
         String operDoctorCode = getIntent().getStringExtra("operDoctorCode");
         String operDoctorName = getIntent().getStringExtra("operDoctorName");
         String orderCode = getIntent().getStringExtra("orderCode");
-
         //头像
         doctorUrl = getIntent().getStringExtra("doctorUrl");
-        patientUrl = mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl();
+        SharedPreferences_DataSave jykjdocter = new SharedPreferences_DataSave(this, "JYKJDOCTER");
+        String userInfoSuLogin = jykjdocter.getString("viewSysUserDoctorInfoAndHospital", "");
+        try {
+            mProvideViewSysUserPatientInfoAndRegion = new Gson().fromJson(userInfoSuLogin, ProvideViewSysUserPatientInfoAndRegion.class);
+        } catch (Exception e) {
+
+        }
+
+        patientUrl = mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl();
 
 
         //传入参数
@@ -78,9 +94,10 @@ public class ChatActivity extends AppCompatActivity {
         args.putString("operDoctorCode", operDoctorCode);
         args.putString("operDoctorName", operDoctorName);
         args.putString("orderCode", orderCode);
+        args.putSerializable("orderMessage",orderMessage);
 
         args.putString("doctorUrl", doctorUrl);
-        args.putString("userUrl", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+        args.putString("userUrl", mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
 //        args.putString("userName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         args.putInt(EaseConstant.EXTRA_MESSAGE_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_MESSAGE_NUM, 0));
         args.putLong(EaseConstant.EXTRA_VOICE_NUM, getIntent().getIntExtra(EaseConstant.EXTRA_VOICE_NUM, 0));
@@ -97,7 +114,7 @@ public class ChatActivity extends AppCompatActivity {
      */
     private void initLayout() {
         titleBar = (EaseTitleBar) this.findViewById(R.id.title_bar);
-        titleBar.setTitle(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        titleBar.setTitle(mProvideViewSysUserPatientInfoAndRegion.getUserName());
         titleBar.setRightImageResource(R.drawable.ease_mm_title_remove);
 
         messageList = (EaseChatMessageList) this.findViewById(R.id.message_list);

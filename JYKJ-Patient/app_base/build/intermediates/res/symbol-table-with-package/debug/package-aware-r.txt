@@ -1695,7 +1695,6 @@ layout tradition_footer_refresh_layout
 layout tradition_header_refresh_layout
 layout ulti_footer_layout
 layout ulti_header_layout
-mipmap arrow_left
 mipmap bg_agreement_normal
 mipmap bg_agreement_press
 mipmap bg_alipay_icon

@@ -291,7 +291,8 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
         faceNormal.setVisibility(View.INVISIBLE);
         faceChecked.setVisibility(View.VISIBLE);
     }
-    
+
+
 
     @Override
     public void onExtendMenuContainerHide() {
@@ -309,6 +310,13 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
     @Override
     public EditText getEditText() {
         return editText;
+    }
+
+    @Override
+    public void showMoreOption() {
+        buttonSetModeVoice.setVisibility(View.VISIBLE);
+        faceNormal.setVisibility(View.VISIBLE);
+        buttonMore.setVisibility(View.VISIBLE);
     }
 
 }
