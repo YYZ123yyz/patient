@@ -45,4 +45,10 @@
         <item name="android:windowExitAnimation">@anim/anim_exit_from_bottom</item>
     </style>
 
+    <!--ToolBar右边弹出菜单背景色  overlapAncho属性选false可不遮拦Toolbar-->
+    <style name="selfbar.MenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
+        <item name="android:popupBackground">#00FF00</item>
+    </style>
+
 </resources>

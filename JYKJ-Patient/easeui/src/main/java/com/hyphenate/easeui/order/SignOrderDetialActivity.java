@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +28,11 @@ import com.hyphenate.easeui.ui.ChatActivity;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +50,8 @@ import www.patient.jykj_zxyl.base.base_view.BaseToolBar;
 import www.patient.jykj_zxyl.base.base_view.LoadingLayoutManager;
 import www.patient.jykj_zxyl.base.enum_type.OrderStatusEnum;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
+import www.patient.jykj_zxyl.base.wxapi.AliPayEntryActivity;
+import www.patient.jykj_zxyl.base.wxapi.PayResult;
 
 /**
  * Description:订单详情
@@ -176,6 +184,29 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
             public void handleMessage(Message msg) {
                 if (msg.what == SDK_PAY_FLAG) {
                     initData();
+                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                    /**
+                     * 对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                     */
+                    String resultInfo = payResult.getResult();
+                    String resultStatus = payResult.getResultStatus();
+                    Intent intent = new Intent(SignOrderDetialActivity.this, AliPayEntryActivity.class);
+                    intent.putExtra(AliPayEntryActivity.PAY_MESSAGE, resultInfo);
+//                    intent.putExtra("pay_appid", pay_appid);
+//                    intent.putExtra("pay_productid", pay_productid);
+                    if (TextUtils.equals(resultStatus, "9000")) {
+                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+//                        showAlert(WXEntryActivity.this, getString(R.string.pay_success) + payResult);
+                        intent.putExtra(AliPayEntryActivity.PAY_STATE, AliPayEntryActivity.SUCCESS);
+                    } else if (TextUtils.equals(resultStatus, "6001")) {
+//                         用户取消
+                        intent.putExtra(AliPayEntryActivity.PAY_STATE, AliPayEntryActivity.CANCEL);
+                    } else {
+                        // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+//                        showAlert(WXEntryActivity.this, getString(R.string.pay_failed) + payResult);
+                        intent.putExtra(AliPayEntryActivity.PAY_STATE, AliPayEntryActivity.FAILURE);
+                    }
+                    startActivity(intent);
                 }
             }
         };
@@ -574,6 +605,9 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
 
     }
 
+
+
+
     @Override
     public void showEmpty() {
         mLoadingLayoutManager.showEmpty();
@@ -582,5 +616,6 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
     }
 }

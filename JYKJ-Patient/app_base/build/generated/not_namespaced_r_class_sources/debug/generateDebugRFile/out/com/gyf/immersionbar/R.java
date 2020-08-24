@@ -12,8 +12,8 @@ public final class R {
     public static final class id {
         private id() {}
 
-        public static int immersion_fits_layout_overlap = 0x7f0c0052;
-        public static int immersion_navigation_bar_view = 0x7f0c0053;
-        public static int immersion_status_bar_view = 0x7f0c0054;
+        public static int immersion_fits_layout_overlap = 0x7f0c0053;
+        public static int immersion_navigation_bar_view = 0x7f0c0054;
+        public static int immersion_status_bar_view = 0x7f0c0055;
     }
 }

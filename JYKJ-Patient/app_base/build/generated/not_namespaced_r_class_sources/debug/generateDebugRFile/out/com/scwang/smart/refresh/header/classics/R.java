@@ -39,17 +39,17 @@ public final class R {
     public static final class id {
         private id() {}
 
-        public static int srl_classics_arrow = 0x7f0c00d4;
-        public static int srl_classics_center = 0x7f0c00d5;
-        public static int srl_classics_progress = 0x7f0c00d6;
-        public static int srl_classics_title = 0x7f0c00d7;
-        public static int srl_classics_update = 0x7f0c00d8;
+        public static int srl_classics_arrow = 0x7f0c00d5;
+        public static int srl_classics_center = 0x7f0c00d6;
+        public static int srl_classics_progress = 0x7f0c00d7;
+        public static int srl_classics_title = 0x7f0c00d8;
+        public static int srl_classics_update = 0x7f0c00d9;
     }
     public static final class layout {
         private layout() {}
 
-        public static int srl_classics_footer = 0x7f0f0056;
-        public static int srl_classics_header = 0x7f0f0057;
+        public static int srl_classics_footer = 0x7f0f0057;
+        public static int srl_classics_header = 0x7f0f0058;
     }
     public static final class string {
         private string() {}

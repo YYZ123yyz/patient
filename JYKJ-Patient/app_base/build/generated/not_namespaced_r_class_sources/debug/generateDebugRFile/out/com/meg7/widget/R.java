@@ -18,9 +18,9 @@ public final class R {
     public static final class id {
         private id() {}
 
-        public static int circle = 0x7f0c0028;
-        public static int rectangle = 0x7f0c009f;
-        public static int svg = 0x7f0c00df;
+        public static int circle = 0x7f0c0029;
+        public static int rectangle = 0x7f0c00a0;
+        public static int svg = 0x7f0c00e0;
     }
     public static final class styleable {
         private styleable() {}

@@ -1310,6 +1310,7 @@ id auto
 id beginning
 id blocking
 id bottom
+id buttonBarLayout
 id buttonPanel
 id cancel_action
 id center
@@ -1507,6 +1508,7 @@ id text
 id text2
 id textSpacerNoButtons
 id textSpacerNoTitle
+id textView
 id text_input_password_toggle
 id textinput_counter
 id textinput_error
@@ -1663,6 +1665,7 @@ layout dialog_cancel_contract
 layout dialog_loading
 layout fragment_base_list
 layout fragment_sideslip_base_list
+layout include_toolbar_normal
 layout item_dialog_cancel_contract
 layout item_sign_order_coatch
 layout item_sign_order_monitor
@@ -1695,6 +1698,7 @@ layout tradition_footer_refresh_layout
 layout tradition_header_refresh_layout
 layout ulti_footer_layout
 layout ulti_header_layout
+layout wxpay_result_activity
 mipmap bg_agreement_normal
 mipmap bg_agreement_press
 mipmap bg_alipay_icon
@@ -2311,6 +2315,7 @@ style Widget_MaterialComponents_Toolbar
 style Widget_Support_CoordinatorLayout
 style customProgressBar
 style dialog_style_animation
+style selfbar_MenuStyle
 styleable ActionBar background backgroundSplit backgroundStacked contentInsetEnd contentInsetEndWithActions contentInsetLeft contentInsetRight contentInsetStart contentInsetStartWithNavigation customNavigationLayout displayOptions divider elevation height hideOnContentScroll homeAsUpIndicator homeLayout icon indeterminateProgressStyle itemPadding logo navigationMode popupTheme progressBarPadding progressBarStyle subtitle subtitleTextStyle title titleTextStyle
 styleable ActionBarLayout android_layout_gravity
 styleable ActionMenuItemView android_minWidth
