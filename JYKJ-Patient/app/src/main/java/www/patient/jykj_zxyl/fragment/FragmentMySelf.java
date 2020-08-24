@@ -1,6 +1,5 @@
 package www.patient.jykj_zxyl.fragment;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,9 +23,8 @@ import www.patient.jykj_zxyl.activity.myself.order.activity.MyOrderListActivity;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.custom.MyselfItemView;
 import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.activity.home.BloodLogAcitivity;
 import www.patient.jykj_zxyl.activity.myself.MedicationActivity;
-import www.patient.jykj_zxyl.custom.MyselfItemView;
+import www.patient.jykj_zxyl.myappointment.activity.MyAppointmentActivity;
 import www.patient.jykj_zxyl.util.widget.AuthorityJQQDDialog;
 
 
@@ -162,7 +160,8 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(),JDDAActivity.class));
                 break;
             case R.id.myself_recommend://推荐
-                startActivity(new Intent(getActivity(), ShareActivity.class));
+          //      startActivity(new Intent(getActivity(), ShareActivity.class));
+                startActivity(new Intent(getActivity(), MyAppointmentActivity.class));
                 break;
 
             case R.id.myself_blood://血压

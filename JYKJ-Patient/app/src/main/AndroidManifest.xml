@@ -527,7 +527,7 @@
         <!--首页=》》 血压监控-->
         <activity
             android:name=".activity.home.BloodMonitorActivity"
-            android:windowSoftInputMode="stateHidden|stateUnchanged"/>
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <!--首页=》》 血压趋势-->
         <activity
             android:name=".activity.home.TrendActivity"
@@ -555,6 +555,10 @@
         <!--首页=》》 我的医生 == 》更多-->
         <activity
             android:name=".activity.home.patient.WDYSActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
+        <!--取消预约-->
+        <activity
+            android:name=".myappointment.activity.AncelAppointmentActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
 
         <!--首页=》》 我的医生 == 》就诊记录列表-->
@@ -608,7 +612,10 @@
         <activity
             android:name=".activity.myself.MyOrderActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
-
+        <!--我的预约-->
+        <activity
+            android:name=".myappointment.activity.MyAppointmentActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
         <!--首页=》》 个人中心  ==> 建档档案-->
         <activity
             android:name=".activity.home.myself.JDDAActivity"
@@ -725,9 +732,9 @@
         <activity
             android:name="com.tencent.rtmp.video.TXScreenCapture$TXScreenCaptureAssistantActivity"
             android:theme="@android:style/Theme.Translucent" />
-        <activity android:name=".activity.myself.OrderDetialActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".activity.myself.OrderDetialActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".activity.myself.order.activity.MyOrderListActivity"
             android:screenOrientation="portrait"
             />
