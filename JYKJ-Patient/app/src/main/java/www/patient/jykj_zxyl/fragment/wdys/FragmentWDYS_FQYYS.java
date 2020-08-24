@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.fragment.wdys;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,32 +20,37 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.allin.commlibrary.CollectionUtils;
+import com.allin.commlibrary.StringUtils;
 import com.google.gson.Gson;
 import com.hyphenate.easeui.EaseConstant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import entity.ProvidePatientBindingMyDoctorInfo;
-import entity.ProvideViewMyDoctorSigning;
 import entity.shouye.ProvideViewDoctorExpertRecommend;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
-import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJLActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJLListActivity;
 import www.patient.jykj_zxyl.activity.home.patient.ZJXQ_ZJBDActivity;
-import www.patient.jykj_zxyl.activity.home.twjz.WDZS_WZXQActivity;
-import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
-import www.patient.jykj_zxyl.activity.myself.UserAuthenticationActivity;
+
+import com.hyphenate.easeui.ui.ChatActivity;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeWDYSFQYYSAdapter;
 import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
-import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
-import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeWDYSFQYYSAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.base.base_view.LoadingLayoutManager;
 
 
 /**
@@ -77,7 +83,8 @@ public class FragmentWDYS_FQYYS extends Fragment {
     private String mSearchArea = "";
     private String mSearchJGBJ = "";
     private String mSearchYSZC = "";
-
+    private SmartRefreshLayout mRefreshLayout;//刷新列表
+    private LoadingLayoutManager mLoadingLayout;//重新加载空页面管理
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -109,7 +116,7 @@ public class FragmentWDYS_FQYYS extends Fragment {
 //        mChoiceDepartmentSText = (TextView)this.findViewById(R.id.tv_activityJoinDoctorsUnion_choiceDepartmentSText);
 //        mChoiceDepartmentFLayout.setOnClickListener(new ButtonClick());
 //        mChoiceDepartmentSLayout.setOnClickListener(new ButtonClick());
-
+        mRefreshLayout = view.findViewById(R.id.refreshLayout);
         mRecyclerView = view.findViewById(R.id.rv);
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -212,22 +219,22 @@ public class FragmentWDYS_FQYYS extends Fragment {
 
             }
         });
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    int lastVisiblePosition = manager.findLastVisibleItemPosition();
-                    if (lastVisiblePosition >= manager.getItemCount() - 1) {
-                        if (loadDate) {
-                            mNumPage++;
-                            getDate(mSearchName, mSearchProvice, mSearchCity, mSearchArea, mSearchJGBJ, mSearchYSZC);
-                        }
-
-                    }
-                }
-            }
-        });
+//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    int lastVisiblePosition = manager.findLastVisibleItemPosition();
+//                    if (lastVisiblePosition >= manager.getItemCount() - 1) {
+//                        if (loadDate) {
+//                            mNumPage++;
+//                            getDate(mSearchName, mSearchProvice, mSearchCity, mSearchArea, mSearchJGBJ, mSearchYSZC);
+//                        }
+//
+//                    }
+//                }
+//            }
+//        });
 
         tv_zjtj = (TextView) view.findViewById(R.id.tv_zjtj);
         tv_zjtj.setOnClickListener(new View.OnClickListener() {
@@ -237,6 +244,43 @@ public class FragmentWDYS_FQYYS extends Fragment {
             }
         });
 
+        mRefreshLayout.setRefreshHeader(new ClassicsHeader(Objects.requireNonNull(this.getContext())));
+        mRefreshLayout.setRefreshFooter(new ClassicsFooter(this.getContext()));
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                mNumPage=1;
+                getDate(mSearchName,
+                       mSearchProvice,
+                        mSearchCity,
+                        mSearchArea,
+                        mSearchJGBJ, mSearchYSZC);
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                mNumPage++;
+                getDate(mSearchName, mSearchProvice, mSearchCity, mSearchArea, mSearchJGBJ, mSearchYSZC);
+
+            }
+        });
+        initLoadingAndRetryManager();
+    }
+
+    /**
+     * 初始化loading页面
+     */
+    private void initLoadingAndRetryManager() {
+        mLoadingLayout = LoadingLayoutManager.wrap(mRefreshLayout);
+        mLoadingLayout.setRetryListener(v -> {
+            mLoadingLayout.showLoading();
+            mNumPage = 1;
+            getDate(mSearchName, mSearchProvice, mSearchCity, mSearchArea,
+                    mSearchJGBJ,
+                    mSearchYSZC);
+        });
+        mLoadingLayout.showLoading();
     }
 
     /**
@@ -274,6 +318,7 @@ public class FragmentWDYS_FQYYS extends Fragment {
     }
 
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override
@@ -282,19 +327,40 @@ public class FragmentWDYS_FQYYS extends Fragment {
                 switch (msg.what) {
                     case 5:
                         NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 1 && netRetEntity.getResJsonData() != null && !"".equals(netRetEntity.getResJsonData())) {
-                            List<ProvidePatientBindingMyDoctorInfo> list = JSON.parseArray(netRetEntity.getResJsonData(), ProvidePatientBindingMyDoctorInfo.class);
-
-                            if (list == null || list.size() == 0)
-                                loadDate = false;
-                            else
-                                providePatientBindingMyDoctorInfos.addAll(list);
-                            if (list.size() < mRowNum) {
-                                loadDate = false;
+                        if (netRetEntity.getResCode() == 1 ) {
+                            String resJsonData = netRetEntity.getResJsonData();
+                            if (StringUtils.isNotEmpty(resJsonData)) {
+                                List<ProvidePatientBindingMyDoctorInfo> list = JSON.parseArray(netRetEntity.getResJsonData(), ProvidePatientBindingMyDoctorInfo.class);
+                                if (mNumPage == 1){
+                                    providePatientBindingMyDoctorInfos.clear();
+                                }
+                                if (list == null || list.size() == 0)
+                                    loadDate = false;
+                                else
+                                    providePatientBindingMyDoctorInfos.addAll(list);
+                                if (list.size() < mRowNum) {
+                                    loadDate = false;
+                                }
+                                mLoadingLayout.showContent();
+                            }else{
+                                if(mNumPage==1){
+                                    mLoadingLayout.showEmpty();
+                                }else{
+                                    mRefreshLayout.finishLoadMore();
+                                }
                             }
+                        }else{
+                            mRefreshLayout.finishRefresh();
+                            mRefreshLayout.finishLoadMore();
+                            mLoadingLayout.showError();
                         }
                         mAdapter.setDate(providePatientBindingMyDoctorInfos);
                         mAdapter.notifyDataSetChanged();
+                        if(mNumPage==1){
+                            mRefreshLayout.finishRefresh();
+                        }else{
+                            mRefreshLayout.finishLoadMore();
+                        }
                         break;
                     case 6:
                         netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
@@ -317,8 +383,7 @@ public class FragmentWDYS_FQYYS extends Fragment {
      * 搜索
      */
     public void getDate(String searchName, String searchProvince, String searchCity, String searchArea, String searchHospitalType, String searchDoctorTitle) {
-        if (mNumPage == 1)
-            providePatientBindingMyDoctorInfos.clear();
+
         ProvidePatientBindingMyDoctorInfo providePatientBindingMyDoctorInfo = new ProvidePatientBindingMyDoctorInfo();
         providePatientBindingMyDoctorInfo.setRowNum(mRowNum + "");
         providePatientBindingMyDoctorInfo.setPageNum(mNumPage + "");

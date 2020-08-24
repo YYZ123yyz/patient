@@ -1,23 +1,11 @@
 package www.patient.jykj_zxyl.activity.myself;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.StrictMode;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
@@ -29,26 +17,20 @@ import com.allen.library.utils.ToastUtils;
 import com.google.gson.Gson;
 
 import entity.mySelf.*;
-import entity.patientapp.Photo_Info;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import okhttp3.RequestBody;
 import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.ImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_utils.StringUtils;
 import www.patient.jykj_zxyl.base.http.ApiHelper;
+import www.patient.jykj_zxyl.base.http.ParameUtil;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.util.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 public class CommentActivity extends AppCompatActivity {
     private CommentActivity mActivity;
@@ -143,7 +125,7 @@ public class CommentActivity extends AppCompatActivity {
 //        SubDataTask subDataTask = new SubDataTask(subbean);
 //        subDataTask.execute();
 
-        HashMap<String, Object> hashMap = ParameUtil.buildBaseParam(this);
+        HashMap<String, Object> hashMap = ParameUtil.buildBasePatientParam(this);
         if (mComment!=null) {
             hashMap.put("commentId",mComment.getCommentId()+"");
         }else{

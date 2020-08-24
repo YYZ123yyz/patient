@@ -4,7 +4,9 @@ package www.patient.jykj_zxyl.base.http;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import www.patient.jykj_zxyl.base.base_bean.BaseBean;
 
 /**
@@ -33,7 +35,6 @@ public interface ApiService {
     Observable<String> operDelPatientConditionDiseaseRecord(@Body RequestBody requestBody);
 
     //服药记录
-
     @POST("/PatientConditionControlle/operUpdPatientConditionTakingMedicineState")
     Observable<String> operUpdPatientConditionTakingMedicineState(@Body RequestBody requestBody);
     //提交诊后留言
@@ -44,8 +45,65 @@ public interface ApiService {
     //提交留言图片
     @POST("/patientMyOrderControlle/operPatientMyOrderResMessageImg")
     Observable<String> operPatientMyOrderResMessageImg(@Body RequestBody requestBody);
+
     //提交订单评价
     @POST("/patientMyOrderControlle/operPatientMyOrderResComment")
     Observable<String> operPatientMyOrderResComment(@Body RequestBody requestBody);
 
+    //搜索订单详情
+    @POST("/doctorSignControlle/searchSignPatientDoctorOrder")
+    Observable<String> searchSignPatientDoctorOrder(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+
+    //患者订单操作
+    @POST("/patientSignControlle/operSignOrderStatus")
+    Observable<String> operSignOrderStatus(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //获取解约原因列表
+    @POST("/basicDataController/getBasicsDomain")
+    Observable<String> getBasicsDomain(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //患者解约提交
+    @POST("/patientSignControlle/operTerminationSumbit")
+    Observable<String> operTerminationSumbit(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //患者发起支付接口
+    @POST("/patientSignControlle/operPatientOrderPay")
+    Observable<String> operPatientOrderPay(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //患者订单操作
+    @POST("/patientSignControlle/serchSignInfoByPatientCode")
+    Observable<String> serchSignInfoByPatientCode(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //订单列表未完成
+    @POST("/patientMyOrderControlle/searchPatientMyOrderResIncomplete")
+    Observable<String> searchPatientMyOrderResIncomplete(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //订单进行中
+    @POST("/patientMyOrderControlle/searchPatientMyOrderResOngoing")
+    Observable<String> searchPatientMyOrderResOngoing(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //订单已完成
+    @POST("/patientMyOrderControlle/searchPatientMyOrderResCompleted")
+    Observable<String> searchPatientMyOrderResCompleted(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //我的订单
+    @POST("/patientMyOrderControlle/searchPatientMyOrderResMessageContent")
+    Observable<String> searchPatientMyOrderResMessageContent(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //订单数据评价
+    @POST("/patientMyOrderControlle/searchPatientMyOrderResComment")
+    Observable<String> searchPatientMyOrderResComment(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //患者端获取签约订单信息接口
+    @POST("/patientSignControlle/searchSignPatientDoctorOrder")
+    Observable<String> searchSignPatientDoctorOrder2(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //撤销解约流程
+    @POST("/patientSignControlle/operTerminationRevoke")
+    Observable<String> operTerminationRevoke(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //退款申请文字提交
+    @POST("/patientMyOrderControlle/operPatientMyOrderResRefund")
+    Observable<String> operPatientMyOrderResRefund(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //退款申请图片部分
+    @POST("/patientMyOrderControlle/operPatientMyOrderResRefundImg")
+    Observable<String> operPatientMyOrderResRefundImg(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //获取医生或者患者信息
+    @POST("/patientDoctorCommonDataController/getUserInfoList")
+    Observable<String> getUserInfoList(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //未完成订单删除
+    @POST("/msgDataControlle/operDelPatientMsgInteractOrderInfo")
+    Observable<String> operDelPatientMsgInteractOrderInfo(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //解约确认
+    @POST("/patientSignControlle/operTerminationConfim")
+    Observable<String> operTerminationConfim(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
 }
+

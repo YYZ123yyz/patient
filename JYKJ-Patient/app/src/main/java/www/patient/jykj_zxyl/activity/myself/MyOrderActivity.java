@@ -28,6 +28,7 @@ import www.patient.jykj_zxyl.fragment.myself.FragmentMyOrderAl;
 import www.patient.jykj_zxyl.fragment.myself.FragmentMyOrderNo;
 import www.patient.jykj_zxyl.fragment.myself.FragmentMyOrderOn;
 import www.patient.jykj_zxyl.util.ActivityUtil;
+import www.patient.jykj_zxyl.util.MyViewPager;
 
 /**
  * 个人中心 ==> 我的订单
@@ -47,7 +48,7 @@ public class MyOrderActivity extends AppCompatActivity {
 
     private RelativeLayout ri_back;
 
-    private ViewPager pager;
+    private MyViewPager pager;
     private FragmentAdapter fragmentAdapter;
     private List<Fragment> fragmentList;
     private TabLayout tabLayout;
@@ -115,7 +116,7 @@ public class MyOrderActivity extends AppCompatActivity {
             }
         });
 
-        pager = (ViewPager) this.findViewById(R.id.page);
+        pager = (MyViewPager) this.findViewById(R.id.page);
         tabLayout = (TabLayout) this.findViewById(R.id.tab_layout);
 
         fragmentList = new ArrayList<>();
@@ -128,6 +129,7 @@ public class MyOrderActivity extends AppCompatActivity {
         fragmentList.add(new FragmentMyOrderAl());
         fragmentAdapter = new FragmentAdapter(mActivity.getSupportFragmentManager(), fragmentList, mTitles);
         pager.setAdapter(fragmentAdapter);
+        pager.setScrollble(false);
         tabLayout.setupWithViewPager(pager);//与ViewPage建立关系
     }
 

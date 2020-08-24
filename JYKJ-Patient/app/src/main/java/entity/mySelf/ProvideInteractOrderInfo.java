@@ -2,13 +2,16 @@ package entity.mySelf;
 
 import java.util.Date;
 
+import www.patient.jykj_zxyl.base.base_bean.MultiItemEntity;
+
 /**
  * 【医患互动】
  * 患者就诊-订单信息
  * 
  * @author JiaQ
  */
-public class ProvideInteractOrderInfo implements java.io.Serializable {
+public class ProvideInteractOrderInfo extends
+		MultiItemEntity implements java.io.Serializable {
 	private Integer orderId;//订单编号
 	private String orderCode;//订单关联编码
 	private String treatmentSerialNum;//就诊流水号
@@ -38,7 +41,71 @@ public class ProvideInteractOrderInfo implements java.io.Serializable {
 	private Date treatmentDate;//就诊日期(音视频就诊需要)
 	private String treatmentTimeSlot;//就诊时间段(音视频就诊需要)
 	private String treatmentLinkPhone;//就诊联系电话(电话就诊需要)
-	
+
+	private String coachUnitCode;
+	private String coachUnitName;
+	private Integer coachValue;
+	private Integer proCount;
+	private String timesCode;
+	private String timesName;
+	private String signNo;
+
+	public String getSignNo() {
+		return signNo;
+	}
+
+	public void setSignNo(String signNo) {
+		this.signNo = signNo;
+	}
+
+	public String getCoachUnitCode() {
+		return coachUnitCode;
+	}
+
+	public void setCoachUnitCode(String coachUnitCode) {
+		this.coachUnitCode = coachUnitCode;
+	}
+
+	public String getCoachUnitName() {
+		return coachUnitName;
+	}
+
+	public void setCoachUnitName(String coachUnitName) {
+		this.coachUnitName = coachUnitName;
+	}
+
+	public Integer getCoachValue() {
+		return coachValue;
+	}
+
+	public void setCoachValue(Integer coachValue) {
+		this.coachValue = coachValue;
+	}
+
+	public Integer getProCount() {
+		return proCount;
+	}
+
+	public void setProCount(Integer proCount) {
+		this.proCount = proCount;
+	}
+
+	public String getTimesCode() {
+		return timesCode;
+	}
+
+	public void setTimesCode(String timesCode) {
+		this.timesCode = timesCode;
+	}
+
+	public String getTimesName() {
+		return timesName;
+	}
+
+	public void setTimesName(String timesName) {
+		this.timesName = timesName;
+	}
+
 	/****************************** 【非对称属性】 ******************************/
 	private String treatmentTypeName;//就诊(治疗)类型名称
 	private String paymentModeName;//支付方式名称

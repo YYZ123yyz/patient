@@ -237,7 +237,7 @@ public class MedicationRecordActivity extends Activity {
             public void run() {
                 try {
                     String string = new Gson().toJson(operUpdPatientConditionTakingMedicineStateParement);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, www.patient.jykj_zxyl.application.Constant.SERVICEURL + "PatientConditionControlle/operUpdPatientConditionTakingMedicineState");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "PatientConditionControlle/operUpdPatientConditionTakingMedicineState");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
@@ -270,7 +270,7 @@ public class MedicationRecordActivity extends Activity {
             public void run() {
                 try {
                     String string = new Gson().toJson(operUpdPatientConditionTakingMedicineStateParement);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, www.patient.jykj_zxyl.application.Constant.SERVICEURL + "PatientConditionControlle/operUpdPatientConditionTakingMedicineState");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "PatientConditionControlle/operUpdPatientConditionTakingMedicineState");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);

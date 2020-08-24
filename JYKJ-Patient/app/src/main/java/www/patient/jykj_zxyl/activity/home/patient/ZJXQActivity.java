@@ -159,13 +159,15 @@ public class ZJXQActivity extends AppCompatActivity {
 
     private ImageView iv_dz;          //点赞
     private ImageView iv_sc;          //收藏
+    private LinearLayout ll_right_more;//右上角点击按钮
 
     private void initView() {
         iv_dz = (ImageView) this.findViewById(R.id.iv_dz);
         iv_sc = (ImageView) this.findViewById(R.id.iv_sc);
+        ll_right_more=this.findViewById(R.id.ll_right_more);
         iv_dz.setOnClickListener(new ButtonClick());
         iv_sc.setOnClickListener(new ButtonClick());
-
+        ll_right_more.setOnClickListener(new ButtonClick());
         tv_nopl = (TextView) this.findViewById(R.id.tv_nopl);
         tv_bd = (TextView) this.findViewById(R.id.tv_bd);
         tv_bd.setOnClickListener(new ButtonClick());
@@ -578,6 +580,12 @@ public class ZJXQActivity extends AppCompatActivity {
                 case R.id.tv_bd:
                     startActivity(new Intent(mContext, ZJXQ_ZJBDActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend));
                     break;
+                case R.id.ll_right_more:
+
+                    startActivity(new Intent(mContext, DoctorDetialSettingActivity.class).putExtra("doctorCode",provideViewDoctorExpertRecommend.getDoctorCode()));
+
+                    break;
+                    default:
 
             }
         }

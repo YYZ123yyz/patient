@@ -1,7 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hyphenate.easeui"
-    >
-
+    package="com.hyphenate.easeui">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application>
+
+        <activity android:name="com.hyphenate.easeui.order.SignOrderDetialActivity"
+            android:screenOrientation="portrait"
+            >
+
+
+        </activity>
+        <activity android:name=".order.CancelConfirmDeitalActivity"
+            android:screenOrientation="portrait"
+            >
+
+
+        </activity>
+        <activity android:name=".order.RefusedOrderActivity"
+            android:screenOrientation="portrait"
+            >
+
+
+        </activity>
+
+        <activity android:name=".order.CancelContractActivity"
+            android:screenOrientation="portrait"
+            >
+
+
+        </activity>
+        <activity android:name=".order.RefusedCancelContractActivity"
+            android:screenOrientation="portrait"
+            >
+
+
+        </activity>
+        <activity android:name=".order.CancelContractResultActivity"
+            android:screenOrientation="portrait"
+            >
+
+
+        </activity>
+        <activity android:name=".ui.ChatActivity"
+            android:screenOrientation="portrait"
+            >
+
+        </activity>
+
+    </application>
+
 </manifest>

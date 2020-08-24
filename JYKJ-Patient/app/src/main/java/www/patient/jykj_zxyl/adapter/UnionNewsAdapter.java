@@ -31,7 +31,7 @@ public class UnionNewsAdapter extends RecyclerView.Adapter<UnionNewsAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_union_news_list,parent,false);
-        UnionNewsAdapter.ViewHolder vh = new UnionNewsAdapter.ViewHolder(view);
+        ViewHolder vh = new ViewHolder(view);
         return vh;
     }
 

@@ -498,7 +498,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        receiveBroadCast = new LoginActivity.ReceiveBroadCast();
+        receiveBroadCast = new ReceiveBroadCast();
         IntentFilter filter = new IntentFilter();
         filter.addAction("authlogin");
         getBaseContext().registerReceiver(receiveBroadCast, filter);

@@ -31,7 +31,7 @@ import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJL_ZDMSActivity;
 import www.patient.jykj_zxyl.activity.home.wdzs.ProvideViewInteractOrderTreatmentAndPatientInterrogation;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.util.ParameUtil;
+import www.patient.jykj_zxyl.base.http.ParameUtil;
 
 /**
  * 问诊详情

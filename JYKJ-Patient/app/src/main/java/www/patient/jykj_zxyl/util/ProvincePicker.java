@@ -41,7 +41,7 @@ import www.patient.jykj_zxyl.util.widget.adapters.ArrayWheelAdapter;
 
 
 public class ProvincePicker extends Dialog implements
-		android.view.View.OnClickListener, OnWheelChangedListener {
+		View.OnClickListener, OnWheelChangedListener {
 	private JYKJApplication mApp;
 	private CreateUnionActivity mCreateActivity;
 	private JoinDoctorsUnionActivity mJoinUnionActivity;

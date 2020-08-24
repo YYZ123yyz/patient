@@ -147,8 +147,8 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         }
 
         parameters.setJpegQuality(100); // 设置照片质量
-        if (parameters.getSupportedFocusModes().contains(android.hardware.Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
-            parameters.setFocusMode(android.hardware.Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);// 连续对焦模式
+        if (parameters.getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);// 连续对焦模式
         }
 
         mCamera.cancelAutoFocus();//自动对焦。

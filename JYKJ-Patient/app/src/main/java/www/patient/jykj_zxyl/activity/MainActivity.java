@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -23,12 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.allin.commlibrary.preferences.SavePreferences;
 import com.google.gson.Gson;
-import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.hyhd.DemoHelper;
 import com.hyphenate.easeui.hyhd.model.CallReceiver;
 import com.hyphenate.easeui.model.EaseNotifier;
@@ -40,8 +35,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import entity.ProvideMsgPushReminder;
 import entity.home.newsMessage.ProvideMsgPushReminderCount;
@@ -60,9 +53,7 @@ import www.patient.jykj_zxyl.fragment.FragmentMySelf;
 import www.patient.jykj_zxyl.fragment.FragmentShouYe;
 import www.patient.jykj_zxyl.fragment.FragmentYHHD;
 import www.patient.jykj_zxyl.fragment.FragmentYLZX;
-import www.patient.jykj_zxyl.service.MessageReciveService;
 import www.patient.jykj_zxyl.util.ActivityUtil;
-import www.patient.jykj_zxyl.util.Util;
 
 public class MainActivity extends AppCompatActivity {
     private Context mContext;

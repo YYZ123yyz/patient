@@ -32,22 +32,22 @@ import www.patient.jykj_zxyl.application.JYKJApplication;
 public class ZJXQ_ZJBDActivity extends AppCompatActivity {
     private LinearLayout llBack;
 
-    public          ProgressDialog              mDialogProgress =null;
+    public ProgressDialog mDialogProgress = null;
 
-    private         Context                     mContext;                                       //
+    private Context mContext;                                       //
     private ZJXQ_ZJBDActivity mActivity;
-    private         JYKJApplication             mApp;
+    private JYKJApplication mApp;
 
-    private         String                      mNetRetStr;                 //返回字符串
-    private         String                      mNetRetPLStr;                 //返回字符串
-    private         Handler                     mHandler;
-    private         EditText                    bdsq;
-    private         TextView                    tj;
+    private String mNetRetStr;                 //返回字符串
+    private String mNetRetPLStr;                 //返回字符串
+    private Handler mHandler;
+    private EditText bdsq;
+    private TextView tj;
 
-    private         String                      mUrl;                   //url
-    private         String                      mDoctorQRCode;          //医生二维码
+    private String mUrl;                   //url
+    private String mDoctorQRCode;          //医生二维码
 
-    private         ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend;
+    private ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend;
 
     private void initView() {
 
@@ -55,8 +55,8 @@ public class ZJXQ_ZJBDActivity extends AppCompatActivity {
 
         llBack.setOnClickListener(new ButtonClick());
 
-        bdsq = (EditText)this.findViewById(R.id.bdsq);
-        tj = (TextView)this.findViewById(R.id.tj);
+        bdsq = (EditText) this.findViewById(R.id.bdsq);
+        tj = (TextView) this.findViewById(R.id.tj);
         tj.setOnClickListener(new ButtonClick());
     }
 
@@ -67,14 +67,12 @@ public class ZJXQ_ZJBDActivity extends AppCompatActivity {
         mContext = this;
         mActivity = this;
         mApp = (JYKJApplication) getApplication();
-        provideViewDoctorExpertRecommend = (ProvideViewDoctorExpertRecommend)getIntent().getSerializableExtra("provideViewDoctorExpertRecommend");
+        provideViewDoctorExpertRecommend = (ProvideViewDoctorExpertRecommend) getIntent().getSerializableExtra("provideViewDoctorExpertRecommend");
         mUrl = getIntent().getStringExtra("url");
         mDoctorQRCode = getIntent().getStringExtra("doctorQRCode");
         initView();
         initHandler();
     }
-
-
 
 
     private void initHandler() {
@@ -84,8 +82,8 @@ public class ZJXQ_ZJBDActivity extends AppCompatActivity {
                 switch (msg.what) {
                     case 0:
                         cacerProgress();
-                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                        Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
                         ZJXQ_ZJBDActivity.this.finish();
                         break;
 
@@ -95,12 +93,11 @@ public class ZJXQ_ZJBDActivity extends AppCompatActivity {
     }
 
 
-
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(this);
         }
@@ -113,14 +110,14 @@ public class ZJXQ_ZJBDActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }
     }
 
 
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -151,17 +148,17 @@ public class ZJXQ_ZJBDActivity extends AppCompatActivity {
         doctorBindParment.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         doctorBindParment.setDoctorQrCode(mDoctorQRCode);
         doctorBindParment.setApplyReason(bdsq.getText().toString());
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
 
                     String string = new Gson().toJson(doctorBindParment);
-                    String url = Constant.SERVICEURL+mUrl;
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, url);
+                    String url = Constant.SERVICEURL + mUrl;
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, url);
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -182,23 +179,22 @@ public class ZJXQ_ZJBDActivity extends AppCompatActivity {
         doctorBindParment.setOperPatientLinkPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
         doctorBindParment.setBindingDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
         doctorBindParment.setBindingDoctorName(provideViewDoctorExpertRecommend.getUserName());
-        if (bdsq.getText().toString() == null || "".equals(bdsq.getText().toString()))
-        {
-            Toast.makeText(mContext,"请填写绑定申请",Toast.LENGTH_SHORT).show();
+        if (bdsq.getText().toString() == null || "".equals(bdsq.getText().toString())) {
+            Toast.makeText(mContext, "请填写绑定申请", Toast.LENGTH_SHORT).show();
         }
         doctorBindParment.setBindingApplyInfo(bdsq.getText().toString());
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(doctorBindParment);
-                    String urlStr = Constant.SERVICEURL+"patientSearchDoctorControlle/operIndexExpertRecommendDoctorBinding";
+                    String urlStr = Constant.SERVICEURL + "patientSearchDoctorControlle/operIndexExpertRecommendDoctorBinding";
 //                    mNetRetStr = HttpNetService.getUpgradeInfo("jsonDataInfo="+string, urlStr);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"patientSearchDoctorControlle/operIndexExpertRecommendDoctorBinding");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "patientSearchDoctorControlle/operIndexExpertRecommendDoctorBinding");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }

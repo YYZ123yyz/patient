@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:id="@+id/ll_item_root"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48.6dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:text="频率时长"
+            android:id="@+id/tv_item_name"
+            android:textColor="@color/color_000000"
+            android:textSize="15sp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_item_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:text="七天"
+            android:textColor="@color/color_666666"
+            android:textSize="15sp">
+
+        </TextView>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_f7f7f7"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48.6dp"
+        android:visibility="gone"
+        android:background="@color/color_f8f8f8"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:text="频次"
+            android:id="@+id/tv_sign_rate_text"
+            android:textColor="@color/color_000000"
+            android:textSize="15sp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_sign_rate_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:text="4次/月"
+            android:textColor="@color/color_666666"
+            android:textSize="15sp">
+
+        </TextView>
+    </RelativeLayout>
+</LinearLayout>

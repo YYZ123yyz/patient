@@ -23,7 +23,7 @@ public class MedicationSettingAdapter extends RecyclerView.Adapter<MedicationSet
     private List<ProvidePatientConditionTakingMedicine> mData;
     private Context mContext;
 
-    private MedicationSettingAdapter.OnItemClickListener mOnItemClickListener;           //用户资料点击事件
+    private OnItemClickListener mOnItemClickListener;           //用户资料点击事件
 
     public interface OnItemClickListener{
         void onClick(int position);

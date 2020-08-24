@@ -18,12 +18,19 @@ import android.widget.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import com.alibaba.fastjson.JSON;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.observer.StringObserver;
 import com.allen.library.utils.ToastUtils;
 import com.google.gson.Gson;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import entity.mySelf.conditions.QueryHistCond;
 import entity.patientInfo.ProvidePatientConditionDiseaseRecord;
@@ -34,12 +41,13 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.jyzl.JWBSDetailActivity;
 import www.patient.jykj_zxyl.activity.home.myself.JWBSActivity;
 import www.patient.jykj_zxyl.activity.home.myself.JWBSLRBSActivity;
+import www.patient.jykj_zxyl.activity.myself.order.fragment.OrderToBeConfirmedFragment;
 import www.patient.jykj_zxyl.adapter.myself.JDDA_JWBS_BRTXAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_view.SlideRecyclerView;
 import www.patient.jykj_zxyl.base.http.ApiHelper;
-import www.patient.jykj_zxyl.util.ParameUtil;
+import www.patient.jykj_zxyl.base.http.ParameUtil;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.util.IConstant;
 import www.patient.jykj_zxyl.util.INetAddress;
@@ -71,7 +79,7 @@ public class FragmentJWBS_BRTX extends Fragment {
     private LinearLayout mBCJL;                                //选择病程记录
     private RelativeLayout mBack;
     private List<ProvidePatientConditionDiseaseRecord> mProvidePatientConditionDiseaseRecords = new ArrayList<>();
-
+    private SmartRefreshLayout mRefreshLayout;//刷新列表
     private JDDA_JWBS_BRTXAdapter mJDDA_JWBS_BRTXAdapter;
 
     private TextView tv_xzbs;
@@ -88,6 +96,7 @@ public class FragmentJWBS_BRTX extends Fragment {
         mApp = (JYKJApplication) getActivity().getApplication();
         initLayout(v);
         initHandler();
+        addListener();
         //setData();
         return v;
     }
@@ -101,6 +110,24 @@ public class FragmentJWBS_BRTX extends Fragment {
         setData();
     }
 
+    private void addListener(){
+        mRefreshLayout.setRefreshHeader(new ClassicsHeader(Objects.requireNonNull(this.getContext())));
+        mRefreshLayout.setRefreshFooter(new ClassicsFooter(this.getContext()));
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+
+            }
+
+        });
+    }
+
     /**
      * 初始化界面
      */
@@ -112,16 +139,17 @@ public class FragmentJWBS_BRTX extends Fragment {
                 mActivity.onBackPressed();
             }
         });*/
+        mRefreshLayout = view.findViewById(R.id.refreshLayout);
         tv_xzbs = (TextView) view.findViewById(R.id.tv_szbs);
         tv_xzbs.setOnClickListener(new ButtonClick());
         mRecycleView =  view.findViewById(R.id.rv_activityPatientLaber_patientLaber);
 
         //创建默认的线性LayoutManager
         layoutManager = new LinearLayoutManager(mContext);
-        layoutManager.setOrientation(LinearLayout.VERTICAL);
+        //layoutManager.setOrientation(LinearLayout.VERTICAL);
         mRecycleView.setLayoutManager(layoutManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-        mRecycleView.setHasFixedSize(true);
+       // mRecycleView.setHasFixedSize(true);
         //创建并设置Adapter
         mJDDA_JWBS_BRTXAdapter = new JDDA_JWBS_BRTXAdapter(mProvidePatientConditionDiseaseRecords, mContext);
         mRecycleView.setAdapter(mJDDA_JWBS_BRTXAdapter);

@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.activity.home;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -399,6 +400,7 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("HandlerLeak")
     private void initHandler() {
         mHandler = new Handler() {
             @Override

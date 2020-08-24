@@ -12,9 +12,8 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 
-import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
+import com.hyphenate.easeui.ui.ChatActivity;
 import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 

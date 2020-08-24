@@ -424,8 +424,11 @@
 
         <!--患医互动==》聊天页面-->
         <activity
-            android:name=".activity.hyhd.ChatActivity"
-            android:windowSoftInputMode="stateHidden|stateUnchanged" />
+            android:name="com.hyphenate.easeui.ui.ChatActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"
+
+
+            />
 
         <!--患医互动==》新建群聊页面-->
         <activity
@@ -727,6 +730,29 @@
         <activity
             android:name=".activity.myself.OrderDetialActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activity.myself.order.activity.MyOrderListActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".activity.home.patient.DoctorDetialSettingActivity"
+            android:screenOrientation="portrait"
+           />
+        <activity android:name=".activity.myself.order.activity.RefundActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity android:name=".activity.myself.order.activity.RefundResultActivity"
+            android:screenOrientation="portrait"
+            >
+
+
+        </activity>
+        <activity android:name=".activity.myself.order.activity.CancelContractResultActivity"
+            android:screenOrientation="portrait"
+            >
+
+
+        </activity>
+
         <!-- 设置环信应用的AppKey -->
         <!--<meta-data android:name="EASEMOB_APPKEY"  android:value="Your AppKey" />-->
         <meta-data

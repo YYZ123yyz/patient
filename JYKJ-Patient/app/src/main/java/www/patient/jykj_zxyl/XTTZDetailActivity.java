@@ -124,7 +124,7 @@ public class XTTZDetailActivity extends AppCompatActivity {
             public void run(){
                 try {
                     String string = new Gson().toJson(provideMsgPushReminder);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, www.patient.jykj_zxyl.application.Constant.SERVICEURL+"msgDataControlle/operUpdPatientMsgState");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"msgDataControlle/operUpdPatientMsgState");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);

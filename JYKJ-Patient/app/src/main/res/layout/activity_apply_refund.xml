@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f6f6f6"
+    android:orientation="vertical">
+
+    <include layout="@layout/item_toolbar">
+
+    </include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_round_ffffff_5"
+
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:text="退款原因"
+            android:textColor="@color/color_000000"
+            android:textSize="15sp">
+
+
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/rl_choose_root"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:drawableEnd="@mipmap/bg_right_forward"
+                android:text="请选择"
+                android:id="@+id/tv_refund_reason"
+                android:textColor="@color/color_999999"
+                android:textSize="15sp">
+
+
+            </TextView>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_round_ffffff_5"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:text="退款金额"
+                android:textColor="@color/color_000000"
+                android:textSize="15sp"
+
+                >
+
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:text="9"
+                android:id="@+id/tv_price_value"
+                android:textColor="@color/color_D00000"
+                android:textSize="15sp">
+
+
+            </TextView>
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginEnd="5dp"
+            android:id="@+id/tv_refund_msg"
+            android:text="不可修改，最多60">
+
+
+        </TextView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_refund_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="14dp"
+                android:text="退款说明:"
+                android:textColor="@color/color_000000"
+                android:textSize="15sp">
+
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/ed_refund_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/tv_refund_desc"
+                android:background="@null"
+                android:textSize="15sp">
+
+
+            </EditText>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_round_ffffff_5"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="11dp"
+            android:text="上传凭证"
+            android:textColor="@color/color_000000"
+            android:textSize="15sp">
+
+
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:text="可上传凭证(最多3张)"
+            android:textColor="@color/color_999999"
+            android:textSize="13sp">
+
+
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_add_img_btn"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="34dp"
+                android:layout_marginBottom="21dp"
+                android:src="@mipmap/bg_add_img">
+
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/iv_img_one"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:layout_marginTop="34dp"
+                android:layout_marginBottom="21dp"
+                android:layout_marginStart="10dp"
+
+                >
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/iv_img_two"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:layout_marginTop="34dp"
+                android:layout_marginBottom="21dp"
+                android:layout_marginStart="10dp"
+
+                >
+
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/iv_img_three"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:layout_marginTop="34dp"
+                android:layout_marginBottom="21dp"
+                android:layout_marginStart="10dp"
+
+                >
+
+            </ImageView>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/rv_activityPublish_Image"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_round_799dfe_17"
+        android:text="提交"
+        android:layout_marginTop="80dp"
+        android:id="@+id/tv_submit_btn"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:paddingTop="9.5dp"
+        android:layout_marginBottom="50dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="9.5dp"
+        android:paddingStart="102dp"
+        android:paddingEnd="102dp"
+
+        >
+
+
+    </TextView>
+
+</LinearLayout>
