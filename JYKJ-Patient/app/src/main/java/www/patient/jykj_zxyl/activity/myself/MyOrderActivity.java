@@ -126,7 +126,6 @@ public class MyOrderActivity extends AppCompatActivity {
         fragmentList.add(new FragmentMyOrderNo());
         fragmentList.add(new FragmentMyOrderOn());
         fragmentList.add(new FragmentMyOrderAl());
-
         fragmentAdapter = new FragmentAdapter(mActivity.getSupportFragmentManager(), fragmentList, mTitles);
         pager.setAdapter(fragmentAdapter);
         tabLayout.setupWithViewPager(pager);//与ViewPage建立关系
