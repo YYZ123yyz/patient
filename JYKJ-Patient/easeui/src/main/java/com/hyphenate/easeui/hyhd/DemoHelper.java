@@ -606,7 +606,7 @@ public class DemoHelper {
             }
         });
         //register incoming call receiver
-//        appContext.registerReceiver(callReceiver, callFilter);
+        appContext.registerReceiver(callReceiver, callFilter);
         //register connection listener
         EMClient.getInstance().addConnectionListener(connectionListener);
         //register group and contact event listener
