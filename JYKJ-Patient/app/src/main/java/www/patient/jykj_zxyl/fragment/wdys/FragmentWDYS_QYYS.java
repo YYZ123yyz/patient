@@ -19,28 +19,22 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.ui.ChatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import entity.ProvideViewInteractPatientComment;
 import entity.ProvideViewMyDoctorSigning;
 import entity.ProvideViewMyDoctorSigningRenewal;
 import entity.XYEntiy;
-import entity.service.GetInteractOrderCodeGenerate;
-import entity.shouye.ProvideViewDoctorExpertRecommend;
 import entity.wdzs.ProvideInteractPatientInterrogation;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WZXXOrderActivity;
-import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeWDYSQYYSAdapter;
 import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
-import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
-import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeWDYSQYYSAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 
@@ -140,7 +134,7 @@ public class FragmentWDYS_QYYS extends Fragment {
 
 
                 Intent intent = new Intent();
-                intent.setClass(mContext,ChatActivity.class);
+                intent.setClass(mContext, ChatActivity.class);
                 intent.putExtra("userCode",provideViewMyDoctorSignings.get(position).getDoctorCode());
                 intent.putExtra("userName",provideViewMyDoctorSignings.get(position).getUserName());
                 intent.putExtra("doctorUrl",provideViewMyDoctorSignings.get(position).getUserLogoUrl());

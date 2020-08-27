@@ -20,29 +20,21 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
-import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.ui.ChatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import entity.ProvidePatientBindingMyDoctorInfo;
-import entity.ProvideViewMyDoctorSigning;
 import entity.shouye.ProvideViewDoctorExpertRecommend;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
-import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJLActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJLListActivity;
 import www.patient.jykj_zxyl.activity.home.patient.ZJXQ_ZJBDActivity;
-import www.patient.jykj_zxyl.activity.home.twjz.WDZS_WZXQActivity;
-import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
-import www.patient.jykj_zxyl.activity.myself.UserAuthenticationActivity;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeWDYSFQYYSAdapter;
 import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
-import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
-import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeWDYSFQYYSAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 
@@ -174,7 +166,7 @@ public class FragmentWDYS_FQYYS extends Fragment {
             @Override
             public void onClick(int position) {
                 Intent intent = new Intent();
-                intent.setClass(mContext,ChatActivity.class);
+                intent.setClass(mContext, ChatActivity.class);
                 intent.putExtra("userCode",providePatientBindingMyDoctorInfos.get(position).getDoctorCode());
                 intent.putExtra("userName",providePatientBindingMyDoctorInfos.get(position).getUserName());
 //                intent.putExtra("chatType","twjz");
