@@ -60,7 +60,7 @@ public class OrderDetialActivity extends BaseActivity {
     protected void initView() {
         super.initView();
         mBaseToolBar = findViewById(R.id.toolbar);
-        txtMainTitle.setText("订单详情");
+      //  txtMainTitle.setText("订单详情");
         //添加监听
         addListener();
     }

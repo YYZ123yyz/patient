@@ -23,6 +23,7 @@ public class DateUtils {
 
 
 
+
     /*
      * 将时间戳转换为时间
      */
@@ -50,9 +51,15 @@ public class DateUtils {
 
     public static String getStringTimeMinute(Long time){
         Date date = new Date(time);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd ");
         return sdf.format(date);
     }
+
+//    public static String getStringTime(Long time){
+//        Date date = new Date(time);
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
+//        return sdf.format(date);
+//    }
 
     public static int getAgeFromBirthTime(String birthTimeString) {
         // 先截取到字符串中的年、月、日
@@ -213,7 +220,7 @@ public class DateUtils {
     public static String getDeviceTimeOfSSS() {
         String date = "";
         try {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             date = df.format(new Date());
         } catch (Exception e) {
             e.printStackTrace();
@@ -263,7 +270,7 @@ public class DateUtils {
     public static String getDeviceTimeOfYM() {
         String date = "";
         try {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
+            SimpleDateFormat df = new SimpleDateFormat("MM-dd");
             date = df.format(new Date());
         } catch (Exception e) {
             e.printStackTrace();

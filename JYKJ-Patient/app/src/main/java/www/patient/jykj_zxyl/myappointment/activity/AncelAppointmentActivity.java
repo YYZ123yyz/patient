@@ -1,12 +1,10 @@
 package www.patient.jykj_zxyl.myappointment.activity;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,147 +13,251 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.hyphenate.easeui.hyhd.model.Constant;
-import com.hyphenate.easeui.netService.HttpNetService;
-import com.hyphenate.easeui.netService.entity.NetRetEntity;
+import com.allen.library.utils.ToastUtils;
+import com.hyphenate.easeui.ui.ChatActivity;
 
-import java.util.HashMap;
+import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.base.base_bean.BaseReasonBean;
+import www.patient.jykj_zxyl.base.base_bean.OrderDetialBean;
+import www.patient.jykj_zxyl.base.base_bean.OrderMessage;
+import www.patient.jykj_zxyl.base.base_bean.ReservePatientCommitBean;
+import www.patient.jykj_zxyl.base.base_bean.ReservePatientDoctorInfoBean;
+import www.patient.jykj_zxyl.base.base_bean.ReservePatientListBean;
+import www.patient.jykj_zxyl.base.base_utils.ActivityStackManager;
+import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
+import www.patient.jykj_zxyl.myappointment.Contract.ReservationContract;
+import www.patient.jykj_zxyl.myappointment.Presenter.ResevationPresenter;
 import www.patient.jykj_zxyl.myappointment.dialog.CancelContractDialog;
 import www.patient.jykj_zxyl.util.ActivityUtil;
 
-public class AncelAppointmentActivity extends Activity  implements View.OnClickListener{
-    @BindView(R.id.ll_back)
-    LinearLayout llBack;
-    @BindView(R.id.rl)
-    RelativeLayout rl;
-    @BindView(R.id.tv_name)
-    TextView tvName;
-    @BindView(R.id.lin_Detect)
-    LinearLayout linDetect;
-    @BindView(R.id.ed_termination)
-    EditText edTermination;
-    @BindView(R.id.btn_send)
-    Button btnSend;
-    private MyAppointmentActivity mActivity;
+/*
+* 取消预约
+* */
+public class AncelAppointmentActivity extends AbstractMvpBaseActivity<ReservationContract.View,
+        ResevationPresenter> implements ReservationContract.View{
+
+    private AncelAppointmentActivity mActivity;
     private JYKJApplication mApp;
     private Context mContext;
-    private Handler mHandler;
-    private String mNetRetStr;
     public ProgressDialog mDialogProgress = null;
     private CancelContractDialog cancelContractDialog;
+    private String ed;
+    private String reserveCode;
+    private BaseReasonBean mCancelContractBean;
+    private LinearLayout llBack;
+    private RelativeLayout rl;
+    private TextView tvName;
+    private LinearLayout linDetect;
+    private Button btnSend;
+    private EditText edTermination;
+    private String reserveCode1;
+    private String doctorName;
+    private String doctorCode;
+    private OrderDetialBean orderDetialBean;
+    private String doctorUrl;
+    private String signCode;
+    private String appointment;
+    private String endTime;
+    private String aClass;
+    private String type;
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.ancelappointment_layout);
+    protected void onBeforeSetContentLayout() {
+        super.onBeforeSetContentLayout();
         ButterKnife.bind(this);
-        mContext = this;
         mApp = (JYKJApplication) getApplication();
-        ActivityUtil.setStatusBarMain(mActivity);
+        mActivity=AncelAppointmentActivity.this;
         cancelContractDialog = new CancelContractDialog(this);
-        initLayout();
-        initHandler();
-    }
 
-    private void initHandler() {
-   mHandler=new Handler(){
-       @Override
-       public void handleMessage(Message msg) {
-           super.handleMessage(msg);
-           switch (msg.what){
-               case 1:
-
-                   break;
-               case R.id.btn_send:
-                   commit();
-                   break;
-               case R.id.lin_Detect:
-                   cancelContractDialog.show();
-                   break;
-           }
-       }
-   };
-    }
-
-    private void commit() {
-        getProgressBar("请稍候...", "正在获取数据");
-        new Thread() {
-            public void run() {
-                try {
-                    HashMap<String, String> map = new HashMap<>();
-                    map.put("loginDoctorPosition", "108.93425^34.23053");
-                    map.put("mainDoctorCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserCode());
-                    map.put("mainDoctorName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-//                    map.put("signCode", orderId);
-//                    map.put("signNo", singNO);
-//                    map.put("mainPatientCode", patientCode);
-//                    map.put("mainUserName", nickName);
-//                    // 	解约原因分类编码
-//                    map.put("refuseReasonClassCode", mCancelContractBean.getAttrCode() + "");
-//                    // 	解约原因分类名称
-//                    map.put("refuseReasonClassName", mCancelContractBean.getAttrName());
-//                    map.put("refuseRemark", ed_termination.getText().toString());
-//                    map.put("confimresult", "0");
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(map),
-                            Constant.SERVICEURL + "doctorSignControlle/operTerminationConfim");
-                    Log.e("tag", "run: 取消预约" + mNetRetStr);
-                } catch (Exception e) {
-                    NetRetEntity retEntity = new NetRetEntity();
-                    retEntity.setResCode(0);
-
-                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
-                    mNetRetStr = new Gson().toJson(retEntity);
-                    e.printStackTrace();
-                }
-
-                mHandler.sendEmptyMessage(1);
-            }
-        }.start();
-    }
-
-    private void initLayout() {
-        //提交
-        btnSend.setOnClickListener(this);
-        llBack.setOnClickListener(this);
-        linDetect.setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.ll_back:
+    protected int setLayoutId() {
+        return R.layout.ancelappointment_layout;
+    }
+    @Override
+    protected void initView() {
+        super.initView();
+        ActivityUtil.setStatusBarMain(mActivity);
+        Intent intent = getIntent();
+        reserveCode = intent.getStringExtra("reserveCode");
+        doctorName = intent.getStringExtra("doctorName");
+        doctorCode = intent.getStringExtra("doctorCode");
+        doctorUrl = intent.getStringExtra("doctorUrl");
+        signCode = intent.getStringExtra("SignCode");
+//        //预约时间
+        appointment = intent.getStringExtra("Appointment");
+//        //结束时间
+        endTime = intent.getStringExtra("endTime");
+        //预约项目
+        aClass = intent.getStringExtra("class");
+        //预约类型
+        type = intent.getStringExtra("type");
+        llBack = findViewById(R.id.ll_back);
+        rl = findViewById(R.id.rl);
+        tvName = findViewById(R.id.tv_name);
+        linDetect = findViewById(R.id.lin_Detect);
+        edTermination = findViewById(R.id.ed_termination);
+        btnSend = findViewById(R.id.btn_send);
+        ed = edTermination.getText().toString();
+        addListener();
+    }
+    @Override
+    protected void initData() {
+        super.initData();
+        mPresenter.sendSearchSignPatientDoctorOrderRequest(reserveCode,doctorCode,doctorName);
+    }
+
+
+
+    private void addListener() {
+        llBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 finish();
-                break;
+            }
+        });
+        linDetect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelContractDialog.show();
+
+            }
+        });
+        cancelContractDialog.setOnClickItemListener(new CancelContractDialog.OnClickItemListener() {
+            @Override
+            public void onClickItem(BaseReasonBean cancelContractBean) {
+                tvName.setText(cancelContractBean.getAttrName());
+                Log.e("", "onClickItem: "+cancelContractBean.getAttrName() );
+                mCancelContractBean = cancelContractBean;
+            }
+        });
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                        mPresenter.sendReservationCancelRequest(mApp.loginDoctorPosition,mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),reserveCode,mCancelContractBean.getAttrCode()+"",mCancelContractBean.getAttrName(),ed);
+            }
+        });
+
+    }
+
+    @Override
+    public void getReservationTiteResult(List<ReservePatientDoctorInfoBean> reservePatientDoctorInfoBean) {
+
+    }
+
+    @Override
+    public void getReservationListResult(List<ReservePatientListBean> reservePatientListBeans) {
+
+    }
+
+    @Override
+    public void getReservationListResultError(String msg) {
+
+    }
+
+    @Override
+    public void getReservationCommitConfimResult(String confim, String msg) {
+
+    }
+
+    @Override
+    public void getReservationCommitIdCardCheckResult(String msg) {
+
+    }
+
+    @Override
+    public void getReservationCommitResult(ReservePatientCommitBean reservePatientCommitBeans) {
+
+    }
+
+    @Override
+    public void getReservationCommitResultError(String msg) {
+
+    }
+
+    @Override
+    public void getReservationDailog() {
+
+    }
+
+
+    @Override
+    public void getReservationClassResult(List<BaseReasonBean> baseReasonBeans) {
+
+    }
+
+    @Override
+    public void getReservationIDCardResult(String msg) {
+
+    }
+
+    @Override
+    public void getReservationIDCardResultError(String msg) {
+
+    }
+
+    /**
+     *  取消预约成功
+     */
+    @Override
+    public void getReservationCancelResult(boolean isSucess, String msg) {
+        if (isSucess) {
+            if (ActivityStackManager.getInstance().exists(ChatActivity.class)) {
+                ActivityStackManager.getInstance().finish(ChatActivity.class);
+            }
+            this.finish();
+            Intent intent = new Intent();
+            intent.setClass(this, ChatActivity.class);
+            intent.putExtra("userCode", doctorName);
+            intent.putExtra("userName", doctorCode);
+            intent.putExtra("doctorUrl",doctorUrl );
+            intent.putExtra("patientUrl", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+            intent.putExtra("operDoctorName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+            Bundle bundle=new Bundle();
+            OrderMessage card = getOrderMessage("appointment", "2");
+            card.setImageUrl( mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+            bundle.putSerializable("orderMsg", card);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }else{
+            ToastUtils.showToast(msg);
         }
     }
 
     /**
-     * 获取进度条
-     * 获取进度条
-     * 获取进度条
+     * 获取订单信息
+     * @param messageType 消息类型
+     * @param orderType 操作类型
+     * @return orderMessage
      */
+    private OrderMessage getOrderMessage(String messageType, String orderType) {
 
-    public void getProgressBar(String title, String progressPrompt) {
-        if (mDialogProgress == null) {
-            mDialogProgress = new ProgressDialog(this);
-        }
-        mDialogProgress.setTitle(title);
-        mDialogProgress.setMessage(progressPrompt);
-        mDialogProgress.setCancelable(false);
-        mDialogProgress.show();
+        OrderMessage orderMessage=  new OrderMessage(signCode,messageType,orderType,appointment,endTime,aClass,type);
+
+        return orderMessage;
+
     }
+
 
     /**
-     * 取消进度条
+     *
+     * @param orderDetialBean 订单信息
      */
-    public void cacerProgress() {
-        if (mDialogProgress != null) {
-            mDialogProgress.dismiss();
-        }
+    @Override
+    public void getSearchSignPatientDoctorOrderResult(OrderDetialBean orderDetialBean) {
+        this.orderDetialBean=orderDetialBean;
+    //    handleOrderListResult(orderDetialBean);
+
     }
+
+    @Override
+    public void showLoading(int code) {
+
+    }
+
 }

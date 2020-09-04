@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import entity.shouye.ProvideViewDoctorExpertRecommend;
@@ -42,18 +43,18 @@ import www.patient.jykj_zxyl.application.JYKJApplication;
  * Created by admin on 2016/6/1.
  */
 public class FragmentShouYe_ZJTJ extends Fragment {
-    private             Context                             mContext;
-    private             Handler                             mHandler;
+    private Context mContext;
+    private Handler mHandler;
     private MainActivity mActivity;
-    private             JYKJApplication                     mApp;
-    private             RecyclerView                        mRecyclerView;
-    private             LinearLayout                        mTJZJMore;                          //推荐专家更多
+    private JYKJApplication mApp;
+    private RecyclerView mRecyclerView;
+    private LinearLayout mTJZJMore;                          //推荐专家更多
     private FragmentHomeTJZJAdapter mAdapter;
-    private             List<ProvideViewDoctorExpertRecommend> provideViewDoctorExpertRecommendList = new ArrayList<>();            //获取到的专家数据
-    private             String                              mNetRetStr;                 //返回字符串
-    private             View                                mView;
+    private List<ProvideViewDoctorExpertRecommend> provideViewDoctorExpertRecommendList = new ArrayList<>();            //获取到的专家数据
+    private String mNetRetStr;                 //返回字符串
+    private View mView;
 
-    private             TextView                            more;                           //查看更多
+    private TextView more;                           //查看更多
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,79 +66,82 @@ public class FragmentShouYe_ZJTJ extends Fragment {
         initHandler();
         mView = v;
         //获取推荐专家
-        getRecommendDoctor();
+        getVideo();
         return v;
     }
 
     /**
-     * 获取推荐专家
+     * 获取视频列表
      */
-    private void getRecommendDoctor(){
-        ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend = new ProvideViewDoctorExpertRecommend();
-        provideViewDoctorExpertRecommend.setLoginPatientPosition(mApp.loginDoctorPosition);
-        provideViewDoctorExpertRecommend.setRequestClientType("1");
-        provideViewDoctorExpertRecommend.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        provideViewDoctorExpertRecommend.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        provideViewDoctorExpertRecommend.setShowNum("1");
+    private void getVideo() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("rowNum", "10");
+        map.put("pageNum", "1");
+        map.put("loginDoctorPosition", "108.93425^34.23053");
+//        map.put("operDoctorCode", mApp.mViewSysUserDoctorInfoAndHospital.getDoctorCode());
+//        map.put("operDoctorName", mApp.mViewSysUserDoctorInfoAndHospital.getUserName());
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
-                    String string = new Gson().toJson(provideViewDoctorExpertRecommend);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"patientSearchDoctorControlle/searchIndexExpertRecommendDoctorShow");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(map), Constant.SERVICEURL + "doctorPersonalSetControlle/searchBasicsSystemHelpResList");
+
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
+
                 }
-                mHandler.sendEmptyMessage(0);
+
+                mHandler.sendEmptyMessage(1);
             }
         }.start();
     }
-
 
 
     /**
      * 初始化界面
      */
     private void initLayout(View view) {
-        more = (TextView)view.findViewById(R.id.more);
-        more.setOnClickListener(new ButtonClick());
+//        more = (TextView) view.findViewById(R.id.more);
+//        more.setOnClickListener(new ButtonClick());
         mRecyclerView = view.findViewById(R.id.tjzj_rv);
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(manager);
-        mAdapter = new FragmentHomeTJZJAdapter(provideViewDoctorExpertRecommendList,mContext);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new FragmentHomeTJZJAdapter.OnItemClickListener() {
-            @Override
-            public void onClick(int position) {
-                startActivity(new Intent(mContext,ZJXQActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommendList.get(position)));
-            }
+         //VideoAdapter
 
-            @Override
-            public void onLongClick(int position) {
 
-            }
-        });
+//        mAdapter = new FragmentHomeTJZJAdapter(provideViewDoctorExpertRecommendList, mContext);
+//        mRecyclerView.setAdapter(mAdapter);
+
+//        mAdapter.setOnItemClickListener(new FragmentHomeTJZJAdapter.OnItemClickListener() {
+//            @Override
+//            public void onClick(int position) {
+//                startActivity(new Intent(mContext, ZJXQActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommendList.get(position)));
+//            }
+//
+//            @Override
+//            public void onLongClick(int position) {
+//
+//            }
+//        });
     }
 
 
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case 0:
-                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
                         if (netRetEntity.getResCode() == 0)
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
-                        else
-                        {
-                            provideViewDoctorExpertRecommendList = JSON.parseArray(netRetEntity.getResJsonData(),ProvideViewDoctorExpertRecommend.class);
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                        else {
+                            provideViewDoctorExpertRecommendList = JSON.parseArray(netRetEntity.getResJsonData(), ProvideViewDoctorExpertRecommend.class);
                             setDoctorExpertRecommend();
                         }
                         break;
@@ -148,28 +152,27 @@ public class FragmentShouYe_ZJTJ extends Fragment {
 
     /**
      * 设置推荐专家数据
+     *
      * @param
      */
     public void setDoctorExpertRecommend() {
-            mAdapter.setDate(provideViewDoctorExpertRecommendList);
-            mAdapter.notifyDataSetChanged();
+        mAdapter.setDate(provideViewDoctorExpertRecommendList);
+        mAdapter.notifyDataSetChanged();
     }
 
 
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
 
-                case R.id.more:
-                    startActivity(new Intent(mContext,TJZJActivity.class));
-                    break;
+//                case R.id.more:
+//                    startActivity(new Intent(mContext, TJZJActivity.class));
+//                    break;
 
             }
         }
     }
-
-
 
 
 }

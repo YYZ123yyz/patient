@@ -27,7 +27,9 @@ import java.util.List;
 import java.util.Objects;
 
 import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.myappointment.adapter.CancelContractAdapter;
+import www.patient.jykj_zxyl.base.base_adapter.CancelContractAdapter;
+import www.patient.jykj_zxyl.base.base_bean.BaseReasonBean;
+import www.patient.jykj_zxyl.myappointment.adapter.CancelAdapter;
 import www.patient.jykj_zxyl.myappointment.bean.CancelContractBean;
 
 
@@ -41,18 +43,19 @@ public class CancelContractDialog extends Dialog {
     private ImageView ivCloseBtn;
 
     private CancelContractAdapter cancelContractAdapter;
-    private List<CancelContractBean> cancelContractBeans;
+    private List<BaseReasonBean> cancelContractBeans;
     private OnClickItemListener onClickItemListener;
 
     private String mNetRetStr;
     private Handler mHandler;
+    private CancelAdapter cancelAdapter;
 
     public void setOnClickItemListener(OnClickItemListener onClickItemListener) {
         this.onClickItemListener = onClickItemListener;
     }
 
     public CancelContractDialog(@NonNull Context context) {
-        super(context, R.style.MyimgCommonDialog);
+        super(context, R.style.MyDialog);
         setCanceledOnTouchOutside(true);//禁止点击空白区域消失
         Objects.requireNonNull(this.getWindow()).setDimAmount(0f);//核心代码 解决了无法去除遮罩
         init(context);
@@ -70,18 +73,18 @@ public class CancelContractDialog extends Dialog {
                 switch (msg.what) {
                     case 2:
                         if (mNetRetStr != null && !mNetRetStr.equals("")) {
-                            cancelContractBeans = JSON.parseArray(JSON.parseObject(mNetRetStr, NetRetEntity.class).getResJsonData(), CancelContractBean.class);
-                            cancelContractAdapter = new CancelContractAdapter(cancelContractBeans, mContext);
+                            cancelContractBeans = JSON.parseArray(JSON.parseObject(mNetRetStr, NetRetEntity.class).getResJsonData(), BaseReasonBean.class);
+                            cancelAdapter = new CancelAdapter(cancelContractBeans, mContext);
                             mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-                            mRecyclerView.setAdapter(cancelContractAdapter);
-                            cancelContractAdapter.setOnItemClickListener(new CancelContractAdapter.OnItemClickListener() {
+                            mRecyclerView.setAdapter(cancelAdapter);
+                            cancelAdapter.setOnItemClickListener(new CancelAdapter.OnItemClickListener() {
                                 @Override
                                 public void onClick(int position) {
-                                    cancelContractBeans.get(position).setChoice(!cancelContractBeans.get(position).isChoice());
-                                    cancelContractAdapter.setDate(cancelContractBeans);
-                                    cancelContractAdapter.notifyDataSetChanged();
+                                    cancelContractBeans.get(position).setChoosed(!cancelContractBeans.get(position).isChoosed());
+                                    cancelAdapter.setDate(cancelContractBeans);
+                                    cancelAdapter.notifyDataSetChanged();
                                     if (onClickItemListener != null) {
-                                        CancelContractBean cancelContractBean = cancelContractBeans.get(position);
+                                        BaseReasonBean cancelContractBean = cancelContractBeans.get(position);
                                         onClickItemListener.onClickItem(cancelContractBean);
                                     }
                                 }
@@ -119,12 +122,12 @@ public class CancelContractDialog extends Dialog {
 
     private void duration() {
         final HashMap<String, String> map = new HashMap<>();
-        map.put("baseCode", "90003");
+        map.put("baseCode", "900061");
         new Thread() {
             public void run() {
                 try {
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(map), com.hyphenate.easeui.hyhd.model.Constant.SERVICEURL + "basicDataController/getBasicsDomainArray");
-                    Log.e("TAG", "run: 拒绝原因 " + mNetRetStr);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(map), com.hyphenate.easeui.hyhd.model.Constant.SERVICEURL + "basicDataController/getBasicsDomain");
+                    Log.e("TAG", "run: 取消预约原因 " + mNetRetStr);
                 } catch (Exception e) {
                     com.hyphenate.easeui.netService.entity.NetRetEntity retEntity = new com.hyphenate.easeui.netService.entity.NetRetEntity();
                     retEntity.setResCode(0);
@@ -139,16 +142,16 @@ public class CancelContractDialog extends Dialog {
         }.start();
     }
 
-//    /**
-//     * 设置数据
-//     *
-//     * @param datas 数据列表
-//     */
-//    public void setData(List<CancelContractBean> datas) {
-//        cancelContractBeans = datas;
-//        cancelContractBeans.get(0).setChoosed(true);
-//
-//    }
+    /**
+     * 设置数据
+     *
+     * @param datas 数据列表
+     */
+    public void setData(List<BaseReasonBean> datas) {
+        cancelContractBeans = datas;
+        cancelContractBeans.get(0).setChoosed(true);
+
+    }
 
     /**
      * 添加监听
@@ -160,31 +163,12 @@ public class CancelContractDialog extends Dialog {
                 CancelContractDialog.this.dismiss();
             }
         });
-
-//            @Override
-//            public void onItemClick(RecyclerView.ViewHolder viewHolder, int i) {
-//                if (!CollectionUtils.isEmpty(cancelContractBeans)) {
-//                    for (int i1 = 0; i1 < cancelContractBeans.size(); i1++) {
-//                        if(i==i1){
-//                            cancelContractBeans.get(i1).setChoosed(true);
-//                        }else{
-//                            cancelContractBeans.get(i1).setChoosed(false);
-//                        }
-//                    }
-//                }
-//                cancelContractAdapter.notifyDataSetChanged();
-//                if (onClickItemListener!=null) {
-//                    CancelContractBean cancelContractBean = cancelContractBeans.get(i);
-//                    onClickItemListener.onClickItem(cancelContractBean);
-//                }
-//            }
-//        });
     }
 
 
     public interface OnClickItemListener {
 
-        void onClickItem(CancelContractBean cancelContractBean);
+        void onClickItem(BaseReasonBean cancelContractBean);
     }
 
 }

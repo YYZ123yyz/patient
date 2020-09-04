@@ -37,11 +37,10 @@ public class MyAppointmentActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myappointment_layout);
-        ButterKnife.bind(this);
         mContext = this;
         mApp = (JYKJApplication) getApplication();
-        mActivity=MyAppointmentActivity.this;
-        ActivityUtil.setStatusBarMain(mActivity);
+        mActivity = MyAppointmentActivity.this;
+        ActivityUtil.setStatusBarMain(this);
         initLayout();
     }
 
@@ -64,10 +63,10 @@ public class MyAppointmentActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-         switch (v.getId()){
-             case R.id.ri_back:
-                 finish();
-                 break;
-         }
+        switch (v.getId()) {
+            case R.id.ri_back:
+                finish();
+                break;
+        }
     }
 }

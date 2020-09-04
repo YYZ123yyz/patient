@@ -51,7 +51,7 @@ android {
         }
 
         //您自己的keystore信息
-        debug {
+        norelease  {
             storeFile file("../xianjiuyipatient.jks")
             storePassword "jiuyihtnpatient"
             keyAlias "xianjiuyipatient"
@@ -155,6 +155,7 @@ dependencies {
     // 支付宝SDK AAR 包所需的配置
     implementation fileTree(include: ['*.aar'], dir: 'libs')
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -195,4 +196,5 @@ dependencies {
         all*.exclude group: 'com.android.support',module: 'support-v13'
         all*.exclude group: 'com.google.code.gson'
     }
+    implementation 'cn.yc:YCStatusBarLib:1.4.3'
 }

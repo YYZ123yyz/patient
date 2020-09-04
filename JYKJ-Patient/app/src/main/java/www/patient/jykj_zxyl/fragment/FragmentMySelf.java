@@ -1,12 +1,17 @@
 package www.patient.jykj_zxyl.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
+import www.patient.jykj_zxyl.activity.MainActivity;
 import www.patient.jykj_zxyl.activity.home.BloodLogAcitivity;
 import www.patient.jykj_zxyl.activity.home.myself.JDDAActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
@@ -25,6 +31,7 @@ import www.patient.jykj_zxyl.custom.MyselfItemView;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.myself.MedicationActivity;
 import www.patient.jykj_zxyl.myappointment.activity.MyAppointmentActivity;
+import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.widget.AuthorityJQQDDialog;
 
 
@@ -50,20 +57,25 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
     private LinearLayout  tv_wdye,li_yhq,li_jf;
     ImageView discountBtn;
     ImageView gradeBtn;
+    private MainActivity mActivity;
+    private MyselfItemView myself_yy_btn;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_activitymain_myselffragment, container, false);
         mContext = getContext();
+        mActivity = (MainActivity) getActivity();
         mApp = (JYKJApplication) mContext.getApplicationContext();
+        ActivityUtil.setStatusBarMain(mActivity);
         initLayout(v);
         initListener();
         return v;
     }
 
+
     private void initLayout(View v) {
+        myself_yy_btn = v.findViewById(R.id.myself_yy_btn);
         tv_wdye = v.findViewById(R.id.tv_wdye);
-
-
         li_yhq = v.findViewById(R.id.li_yhq);
         li_jf = v.findViewById(R.id.li_jf);
         li_jf.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +124,7 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
         tv_wdye.setOnClickListener(this);
         discountBtn.setOnClickListener(this);
         gradeBtn.setOnClickListener(this);
+        myself_yy_btn.setOnClickListener(this);
     }
 
     @Override
@@ -160,10 +173,11 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(),JDDAActivity.class));
                 break;
             case R.id.myself_recommend://推荐
-          //      startActivity(new Intent(getActivity(), ShareActivity.class));
-                startActivity(new Intent(getActivity(), MyAppointmentActivity.class));
+                startActivity(new Intent(getActivity(), ShareActivity.class));
                 break;
-
+            case R.id.myself_yy_btn:
+                   startActivity(new Intent(getActivity(), MyAppointmentActivity.class));
+                break;
             case R.id.myself_blood://血压
                 startActivity(new Intent(getActivity(), BloodLogAcitivity.class));
                 break;

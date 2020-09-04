@@ -57,6 +57,7 @@ import www.patient.jykj_zxyl.base.base_bean.MainMessage;
 import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_DDXX;
 import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_HYHD;
 import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_XTTZ;
+import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.NestedExpandaleListView;
 import www.patient.jykj_zxyl.util.Util;
 
@@ -122,6 +123,7 @@ public class FragmentYHHD extends Fragment {
         mContext = getContext();
         mActivity = (MainActivity) getActivity();
         mApp = (JYKJApplication) getActivity().getApplication();
+        ActivityUtil.setStatusBarMain(mActivity);
         initLayout(v);
         initHandler();
         EventBus.getDefault().register(this);

@@ -280,8 +280,8 @@ public class TJZJActivity extends AppCompatActivity {
                     case 10:
                         netRetEntity = new Gson().fromJson(mNetJGBJRetStr, NetRetEntity.class);
                         if (netRetEntity.getResCode() == 1) {
-                           mProvideBasicsDominJGBJ = JSON.parseArray(netRetEntity.getResJsonData(),ProvideBasicsDomain.class);
-                           mJGBJtAdapter.setDate(mProvideBasicsDominJGBJ);
+                            mProvideBasicsDominJGBJ = JSON.parseArray(netRetEntity.getResJsonData(),ProvideBasicsDomain.class);
+                            mJGBJtAdapter.setDate(mProvideBasicsDominJGBJ);
                         }
                         break;
                     case 11:
@@ -302,7 +302,7 @@ public class TJZJActivity extends AppCompatActivity {
                         netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
                         if (netRetEntity.getResCode() == 0)
                         {
-                           Toast.makeText(mContext,"定位失败，请手动选择区域",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext,"定位失败，请手动选择区域",Toast.LENGTH_SHORT).show();
                         }
                         else
                         {

@@ -233,33 +233,5 @@
         android:layout_width="match_parent"
         android:layout_height="15dp"
         android:orientation="horizontal"/>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:background="@color/writeColor"
-        android:layout_height="80dp">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:layout_width="80dp"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:background="@color/pBackColor"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="我是有底线的"
-                android:layout_gravity="center_vertical"
-                android:textColor="#ff666666"
-                android:textSize="15sp"
-                />
-            <LinearLayout
-                android:layout_width="80dp"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:background="@color/pBackColor"/>
-        </LinearLayout>
-    </RelativeLayout>
+
 </LinearLayout>

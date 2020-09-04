@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 //import com.orhanobut.logger.Logger;
+import com.hyphenate.easeui.utils.ActivityUtil;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -56,7 +57,6 @@ import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
-import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.util.HttpUtil;
 import www.patient.jykj_zxyl.util.HttpUtils;
@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
         mActivity = this;
         mApp = (JYKJApplication) getApplication();
         mApp.gActivityList.add(this);
-        ActivityUtil.setStatusBarMain(mActivity);
+        ActivityUtil.setStatusBar(mActivity);
         initLayout();
 
         initHandler();

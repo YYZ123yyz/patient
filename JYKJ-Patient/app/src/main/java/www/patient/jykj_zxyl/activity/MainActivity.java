@@ -22,6 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.hyhd.DemoHelper;
@@ -43,6 +46,7 @@ import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.base.base_bean.MainMessage;
 import www.patient.jykj_zxyl.base.base_utils.BadgeUtil;
 import www.patient.jykj_zxyl.service.MessageReciveService;
+import www.patient.jykj_zxyl.util.CircleImageView;
 import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.Constant;
@@ -66,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     //    private         ImageView                   mImageViewHZGuanLi;                                      //患者管理图标
     private ImageView mImageViewYHHD;                                            //医患互动图标
     private ImageView mImageViewYLZX;                                            //医疗资讯图标
-    private ImageView mImageViewMySelf;                                        //我图标
+    private CircleImageView mImageViewMySelf;                                        //我图标
     private TextView mTvUnreadBtn;
     private TextView mTextViewShouYE;                                 //首页text
     //    private         TextView                    mTextViewHZGuanLi;                                  //患者管理text
@@ -109,9 +113,8 @@ public class MainActivity extends AppCompatActivity {
         mContext = this;
         mainActivity = this;
         EventBus.getDefault().register(this);
-        ActivityUtil.setStatusBarMain(mainActivity);
         mApp = (JYKJApplication) getApplication();
-
+     //   ActivityUtil.setStatusBarMain(mainActivity);
         mApp.gMainActivity = this;
         mApp.gActivityList.add(this);
         //登录环信
@@ -317,13 +320,23 @@ public class MainActivity extends AppCompatActivity {
 //        mImageViewHZGuanLi = (ImageView) this.findViewById(R.id.iv_activityMain_ImageHZGuanLi);
         mImageViewYHHD = (ImageView) this.findViewById(R.id.iv_activityMain_ImageHYHD);
         mImageViewYLZX = (ImageView) this.findViewById(R.id.iv_activityMain_ImageYLZX);
-        mImageViewMySelf = (ImageView) this.findViewById(R.id.iv_activityMain_ImageGRZX);
+        mImageViewMySelf = (CircleImageView) this.findViewById(R.id.iv_activityMain_ImageGRZX);
+        try {
+            int avatarResId = Integer.parseInt(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+            Glide.with(mContext).load(avatarResId).into(mImageViewMySelf);
+        } catch (Exception e) {
+            //use default avatar
+            Glide.with(mContext).load(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl())
+                    .apply(RequestOptions.placeholderOf(R.mipmap.nhtx)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(mImageViewMySelf);
+        }
         mTvUnreadBtn=this.findViewById(R.id.tv_unread_btn);
         mTextViewShouYE = (TextView) this.findViewById(R.id.tv_activityMain_TextShouYe);
 //        mTextViewHZGuanLi = (TextView) this.findViewById(R.id.tv_activityMain_TextHZGuanLi);
         mTextViewYHHD = (TextView) this.findViewById(R.id.tv_activityMain_TextHYHD);
         mTextViewYLZX = (TextView) this.findViewById(R.id.tv_activityMain_TextYLZX);
-        mTextViewSelf = (TextView) this.findViewById(R.id.tv_activityMain_TextGRZX);
+      //  mTextViewSelf = (TextView) this.findViewById(R.id.tv_activityMain_TextGRZX);
         setDefaultLayout();
         mImageViewShouYe.setBackgroundResource(R.mipmap.sy_press);
         mTextViewShouYE.setTextColor(getResources().getColor(R.color.tabColor_press));
@@ -404,8 +417,8 @@ public class MainActivity extends AppCompatActivity {
                     case 3:
                         mCurrentFragment = 3;
                         setDefaultLayout();
-                        mImageViewMySelf.setBackgroundResource(R.mipmap.grzx_press);
-                        mTextViewSelf.setTextColor(getResources().getColor(R.color.tabColor_press));
+                   //     mImageViewMySelf.setBackgroundResource(R.mipmap.grzx_press);
+                   //     mTextViewSelf.setTextColor(getResources().getColor(R.color.tabColor_press));
                         break;
 
                 }
@@ -430,13 +443,13 @@ public class MainActivity extends AppCompatActivity {
 //        else
         mImageViewYHHD.setBackgroundResource(R.mipmap.message_nomal);
         mImageViewYLZX.setBackgroundResource(R.mipmap.yhq_nomal);
-        mImageViewMySelf.setBackgroundResource(R.mipmap.grzx_nomal);
+     //   mImageViewMySelf.setBackgroundResource(R.mipmap.grzx_nomal);
 
         mTextViewShouYE.setTextColor(getResources().getColor(R.color.tabColor_nomal));
 //        mTextViewHZGuanLi.setTextColor(getResources().getColor(R.color.tabColor_nomal));
         mTextViewYHHD.setTextColor(getResources().getColor(R.color.tabColor_nomal));
         mTextViewYLZX.setTextColor(getResources().getColor(R.color.tabColor_nomal));
-        mTextViewSelf.setTextColor(getResources().getColor(R.color.tabColor_nomal));
+    //    mTextViewSelf.setTextColor(getResources().getColor(R.color.tabColor_nomal));
     }
 
 

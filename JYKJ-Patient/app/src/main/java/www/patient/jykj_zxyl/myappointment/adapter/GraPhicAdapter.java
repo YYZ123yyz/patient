@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -20,12 +20,12 @@ import www.patient.jykj_zxyl.myappointment.bean.CancelContractBean;
  * Description:
 
  */
-public class CancelContractAdapter extends RecyclerView.Adapter<CancelContractAdapter.ViewHolder> {
+public class GraPhicAdapter extends RecyclerView.Adapter<GraPhicAdapter.ViewHolder> {
 
     private List<CancelContractBean> datas;
     private Context mContext;
     private OnItemClickListener mOnItemClickListener;
-    public CancelContractAdapter(List<CancelContractBean> datas, Context mContext) {
+    public GraPhicAdapter(List<CancelContractBean> datas, Context mContext) {
         this.datas = datas;
         this.mContext=mContext;
     }
@@ -38,7 +38,7 @@ public class CancelContractAdapter extends RecyclerView.Adapter<CancelContractAd
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dialog_cancel_contract,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_graphic,
                 parent, false);
         return new ViewHolder(view);
     }
@@ -46,18 +46,7 @@ public class CancelContractAdapter extends RecyclerView.Adapter<CancelContractAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
-        holder.mTvCancelContractText.setText(datas.get(position).getAttrName());
-        if (datas.get(position).isChoice()) {
-            holder.mIvItemChoosed.setImageResource(R.mipmap.bg_item_choosed);
-        }else{
-            holder.mIvItemChoosed.setImageResource(R.mipmap.bg_item_normal);
-        }
-        holder.li_clickLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mOnItemClickListener.onClick(position);
-            }
-        });
+
     }
     //重新设置数据
     public void setDate(List<CancelContractBean> list) {
@@ -70,14 +59,15 @@ public class CancelContractAdapter extends RecyclerView.Adapter<CancelContractAd
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView mTvCancelContractText;
-        private ImageView mIvItemChoosed;
-          private RelativeLayout li_clickLayout;
+        private TextView tv_name,tv_time;
+        private ImageView graphic_image;
+          private LinearLayout lin_graphic;
         public ViewHolder(View view) {
             super(view);
-            mTvCancelContractText = view.findViewById(R.id.tv_cancel_contact_text);
-            mIvItemChoosed = view.findViewById(R.id.iv_item_choosed);
-            li_clickLayout = view.findViewById(R.id.li_clickLayout);
+            tv_name = view.findViewById(R.id.tv_name);
+            tv_time = view.findViewById(R.id.tv_time);
+            graphic_image = view.findViewById(R.id.graphic_image);
+            lin_graphic = view.findViewById(R.id.lin_graphic);
         }
     }
 

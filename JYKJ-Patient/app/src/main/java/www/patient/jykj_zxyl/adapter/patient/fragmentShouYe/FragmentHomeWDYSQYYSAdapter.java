@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.adapter.patient.fragmentShouYe;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import www.patient.jykj_zxyl.util.Util;
 public class FragmentHomeWDYSQYYSAdapter extends RecyclerView.Adapter<FragmentHomeWDYSQYYSAdapter.ViewHolder> {
     public List<ProvideViewMyDoctorSigning> datas = new ArrayList<>();
     private OnItemClickXYListener mOnItemClickXYListener;           //
+    private OnItemClickYYListener mOnItemClickYYListener;
     private OnItemClickZXListener mOnItemClickZXListener;           //
     private Context mContext;
     private OnItemClickListener mOnItemClickListener;
@@ -57,7 +59,7 @@ public class FragmentHomeWDYSQYYSAdapter extends RecyclerView.Adapter<FragmentHo
      * @param position
      */
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, @SuppressLint("RecyclerView") final int position) {
         try {
             int avatarResId = Integer.parseInt(datas.get(position).getUserLogoUrl());
             Glide.with(mContext).load(avatarResId).into(viewHolder.mUserHeard);
@@ -82,9 +84,9 @@ public class FragmentHomeWDYSQYYSAdapter extends RecyclerView.Adapter<FragmentHo
         else
             viewHolder.mUserHospital.setText(datas.get(position).getHospitalInfoName());
         if (datas.get(position).getGoodAtRealm() == null || "".equals(datas.get(position).getGoodAtRealm()))
-            viewHolder.mUserGoodAtRealm.setText("未设置");
+            viewHolder.mUserGoodAtRealm.setText("擅长:  "+"未设置");
         else
-            viewHolder.mUserGoodAtRealm.setText(datas.get(position).getGoodAtRealm());
+            viewHolder.mUserGoodAtRealm.setText("擅长:  "+datas.get(position).getGoodAtRealm());
         if (datas.get(position).getLimitSigningExpireDate() == null || "".equals(datas.get(position).getLimitSigningExpireDate()))
             viewHolder.tv_dqsj.setText("未设置");
         else
@@ -95,6 +97,14 @@ public class FragmentHomeWDYSQYYSAdapter extends RecyclerView.Adapter<FragmentHo
                 @Override
                 public void onClick(View view) {
                     mOnItemClickXYListener.onClick(position);
+                }
+            });
+        }
+        if (mOnItemClickYYListener != null) {
+            viewHolder.tv_reservation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnItemClickYYListener.onClick(position);
                 }
             });
         }
@@ -150,7 +160,7 @@ public class FragmentHomeWDYSQYYSAdapter extends RecyclerView.Adapter<FragmentHo
         public TextView mUserGoodAtRealm;                          //
         public TextView tv_dqsj;                          //
         public TextView tv_xy;                          //
-        public TextView tv_zx;                          //
+        public TextView tv_zx,tv_reservation;                          //
 
 
         public ViewHolder(View view) {
@@ -164,10 +174,16 @@ public class FragmentHomeWDYSQYYSAdapter extends RecyclerView.Adapter<FragmentHo
             tv_xy = (TextView) view.findViewById(R.id.tv_xy);
             tv_dqsj = (TextView) view.findViewById(R.id.tv_dqsj);
             tv_zx = (TextView) view.findViewById(R.id.tv_zx);
+            tv_reservation = (TextView) view.findViewById(R.id.tv_reservation);
 
         }
     }
 
+    public interface OnItemClickYYListener {
+        void onClick(int position);
+
+        void onLongClick(int position);
+    }
 
     public interface OnItemClickXYListener {
         void onClick(int position);
@@ -200,4 +216,9 @@ public class FragmentHomeWDYSQYYSAdapter extends RecyclerView.Adapter<FragmentHo
     public void setmOnItemClickListener(OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
+
+    public void setOnItemClickYYListener(OnItemClickYYListener mOnItemClickYYListener) {
+        this.mOnItemClickYYListener = mOnItemClickYYListener;
+    }
+
 }

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pBackColor"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/groabColor">
+
+        <LinearLayout
+            android:id="@+id/ll_back"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:id="@+id/iv_back_left"
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/arrow_left" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="预约"
+            android:textColor="@color/writeColor"
+            android:textSize="10pt" />
+
+    </RelativeLayout>
+    <!--时间选择器-->
+     <LinearLayout
+         android:orientation="horizontal"
+         android:layout_width="match_parent"
+         android:layout_height="100dp">
+         <ImageView
+             android:layout_marginLeft="7dp"
+             android:layout_marginRight="7dp"
+             android:layout_gravity="center_vertical"
+             android:id="@+id/left_img"
+             android:layout_weight="1"
+             android:src="@mipmap/left"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"/>
+         <android.support.v7.widget.RecyclerView
+             android:background="@drawable/bg_lrbs_zsedit"
+             android:id="@+id/reservation_rv"
+             android:layout_weight="1"
+             android:layout_gravity="center_vertical"
+             android:layout_width="314dp"
+             android:layout_height="60dp"/>
+         <ImageView
+             android:layout_marginRight="7dp"
+             android:layout_marginLeft="7dp"
+             android:layout_gravity="center_vertical"
+             android:id="@+id/right_img"
+             android:layout_weight="1"
+             android:src="@mipmap/right"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"/>
+     </LinearLayout>
+     <!--类型选择-->
+    <LinearLayout
+       android:paddingLeft="@dimen/dp10"
+        android:id="@+id/lin_class"
+        android:background="#fff"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:layout_gravity="center"
+            android:text="预约就诊类型:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Spinner
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center"
+            android:id="@+id/spinnerplanet"
+            android:dropDownVerticalOffset="43dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+<!--        <ImageView-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:src="@mipmap/bottom"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"/>-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/class_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+         <TextView
+             android:id="@+id/commit"
+             android:layout_marginBottom="31dp"
+             android:gravity="center"
+             android:layout_gravity="center"
+             android:textColor="#FFFFFF"
+             android:text="预约"
+             android:background="@mipmap/bg2"
+             android:layout_width="232dp"
+             android:layout_height="33dp"/>
+</LinearLayout>

@@ -108,22 +108,16 @@
                 android:gravity="center"
                 android:layout_width="65dp"
                 android:layout_height="25dp"
-                android:background="@drawable/bg_advisory"
                 android:layout_marginTop="10dp"
-                android:text="咨询"
                 android:id="@+id/tv_zx"
-                android:textColor="#7A9EFF"
                 />
             <TextView
                 android:layout_marginLeft="15dp"
                 android:gravity="center"
                 android:layout_width="65dp"
                 android:layout_height="25dp"
-                android:background="@drawable/bg_advisory"
                 android:layout_marginTop="10dp"
-                android:text="续约"
                 android:id="@+id/tv_xy"
-                android:textColor="#7A9EFF"
                 />
             <TextView
                 android:layout_marginLeft="15dp"
