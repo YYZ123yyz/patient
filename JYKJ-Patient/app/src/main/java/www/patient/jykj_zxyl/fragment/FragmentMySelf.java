@@ -129,14 +129,16 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
                             .diskCacheStrategy(DiskCacheStrategy.ALL))
                     .into(iv_fragmentMyself_userHeadImage);
         }
-        if(null!= mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() && 1==mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus()){
-            if(null!=mApp.mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias()){
-                tv_fragmentMySelf_nameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias());
-            }
-        }else {
-            if (mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName() != null)
-                tv_fragmentMySelf_nameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        }
+//        if(null!= mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() && 1==mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus()){
+//            if(null!=mApp.mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias()){
+//                tv_fragmentMySelf_nameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias());
+//            }
+//        }else {
+//            if (mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName() != null)
+//                tv_fragmentMySelf_nameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+//        }
+        if (mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName() != null)
+            tv_fragmentMySelf_nameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
     }
 
     @Override

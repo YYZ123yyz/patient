@@ -409,6 +409,7 @@
         android:paddingLeft="10dp"
         android:id="@+id/zf_weixin"
         android:paddingRight="10dp"
+        android:visibility="gone"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"

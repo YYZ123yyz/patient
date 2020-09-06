@@ -265,12 +265,13 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         super.onResume();
 //        getProgressBar("请稍候","正在加载数据。。。");
         //获取最近一次血压数据
-        if(null!=mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() && 1==mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus()){
-            mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias());
-        }else{
-            mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        }
+//        if(null!=mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() && 1==mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus()){
+//            mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias());
+//        }else{
+//            mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+//        }
 
+        mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         try {
             int avatarResId = Integer.parseInt(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
             Glide.with(mContext).load(avatarResId).into(mHeard);
