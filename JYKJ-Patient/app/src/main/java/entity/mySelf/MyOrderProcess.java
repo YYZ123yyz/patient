@@ -38,8 +38,8 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
 
     private String coachUnitCode;
     private String coachUnitName;
-    private Integer coachValue;
-    private Integer proCount;
+    private int coachValue;
+    private int proCount;
     private String timesCode;
     private String timesName;
     private String signNo;
@@ -60,19 +60,19 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
         this.coachUnitName = coachUnitName;
     }
 
-    public Integer getCoachValue() {
+    public int getCoachValue() {
         return coachValue;
     }
 
-    public void setCoachValue(Integer coachValue) {
+    public void setCoachValue(int coachValue) {
         this.coachValue = coachValue;
     }
 
-    public Integer getProCount() {
+    public int getProCount() {
         return proCount;
     }
 
-    public void setProCount(Integer proCount) {
+    public void setProCount(int proCount) {
         this.proCount = proCount;
     }
 

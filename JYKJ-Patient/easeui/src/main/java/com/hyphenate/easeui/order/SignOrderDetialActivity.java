@@ -594,7 +594,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         tvSignStartTimeValue.setText(DateUtils.getLongYYYYMMDD(
                 orderDetialData.getSignStartTime()));
         tvSignTimeValue.setText(String.format("%d个月", orderDetialData.getSignDuration()));
-        tvTotalPriceValue.setText(String.format("¥%s", orderDetialData.getSignPrice()));
+        tvTotalPriceValue.setText(String.format("¥%s元", orderDetialData.getSignPrice()));
         mTvPatientAge.setText(orderDetialData.getAge()+"");
         tvRateTimeValue.setText(orderDetialData.getDetectRate()+""+orderDetialData.getDetectRateUnitName());
     }

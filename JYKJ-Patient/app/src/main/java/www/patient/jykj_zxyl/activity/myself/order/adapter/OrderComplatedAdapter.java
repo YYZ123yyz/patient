@@ -94,8 +94,10 @@ public class OrderComplatedAdapter extends MultiItemRecycleViewAdapter<MultiItem
                         mTvMonitorValue.setText("六项");
                     }
                 }
+
                 mTvCoachValue.setText(String.format("%d次/%s",
-                        parbean1.getCoachValue(), parbean1.getCoachUnitName()));
+                        parbean1.getCoachValue(), StringUtils.isNotEmpty(
+                                parbean1.getCoachUnitName())?parbean1.getCoachUnitName():"一月"));
                 mTvSignTimeValue.setText(parbean1.getTimesName());
                 llItemRoot.setOnClickListener(new View.OnClickListener() {
                     @Override
