@@ -1755,26 +1755,45 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
      */
     private void sendOrderCardMsg( OrderMessage msg) {
         String msgContent="";
+
         String messageType = msg.getMessageType();
         if (messageType.equals("card")) {
             msgContent="[签约订单]";
         }else if(messageType.equals("terminationOrder")){
             msgContent="[解约订单]";
+        }else if(messageType.equals("appointment")){
+            msgContent="[取消预约订单]";
         }
         //发送扩展消息
         EMMessage message = EMMessage.createTxtSendMessage(msgContent,toChatUsername);
-        //增加自己的属性
-        message.setAttribute("messageType",msg.getMessageType());
         message.setAttribute("orderId",msg.getOrderId());
-        message.setAttribute("coach",msg.getCoach());
-        message.setAttribute("signUpTime",msg.getSignUpTime());
-        message.setAttribute("singNo",msg.getSingNo());
-        message.setAttribute("price",msg.getPrice());
-        message.setAttribute("monitoringType",msg.getMonitoringType());
-        message.setAttribute("orderType",msg.getOrderType());
-        message.setAttribute("nickName", mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        message.setAttribute("imageUrl", mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
-        message.setAttribute("isPatient",msg.getIsPatient());
+        message.setAttribute("messageType",msg.getMessageType());
+        switch (messageType){
+            case "card":
+            case "terminationOrder":
+                //增加自己的属性
+                message.setAttribute("coach",msg.getCoach());
+                message.setAttribute("signUpTime",msg.getSignUpTime());
+                message.setAttribute("singNo",msg.getSingNo());
+                message.setAttribute("price",msg.getPrice());
+                message.setAttribute("monitoringType",msg.getMonitoringType());
+                message.setAttribute("orderType",msg.getOrderType());
+                message.setAttribute("nickName", mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                message.setAttribute("imageUrl", mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+                message.setAttribute("isPatient",msg.getIsPatient());
+                break;
+            case "appointment":
+                message.setAttribute("startTime: ",msg.getStartTime());
+                message.setAttribute("cancelTime: ",msg.getCancelTime());
+                message.setAttribute("appointMentProject: ",msg.getAppointMentProject());
+                message.setAttribute("appointMentType: ",msg.getAppointMentType());
+                message.setAttribute("monitoringType",msg.getMonitoringType());
+                message.setAttribute("nickName", mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                message.setAttribute("imageUrl", mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+                break;
+        }
+
+
         //设置群聊和聊天室发送消息
         if (chatType == EaseConstant.CHATTYPE_GROUP){
             message.setChatType(ChatType.GroupChat);

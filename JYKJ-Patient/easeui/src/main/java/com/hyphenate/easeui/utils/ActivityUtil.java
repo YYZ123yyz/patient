@@ -1,5 +1,6 @@
 package com.hyphenate.easeui.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Build;
 import android.support.annotation.ColorInt;
@@ -60,7 +61,8 @@ public class ActivityUtil {
     }
 
 
-    public static void setStatusBarMain(Activity activity,@ColorInt int color) {
+    @SuppressLint("ResourceType")
+    public static void setStatusBarMain(Activity activity, @ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Window window = activity.getWindow();
             //取消状态栏透明

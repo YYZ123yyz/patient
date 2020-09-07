@@ -36,7 +36,17 @@
                 android:id="@+id/userName"
                 android:textColor="@color/blackColor"
                 android:text="李医生"/>
-            <ImageView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="8pt"
+                android:textColor="@color/textColor_vo"
+                android:id="@+id/userTitle"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="主任医生|心内科"/>
+            <!--<ImageView
                 android:layout_width="25dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center_vertical"
@@ -50,7 +60,7 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/iv_jz"
                 android:layout_marginLeft="10dp"
-                android:background="@mipmap/wdys_jz"/>
+                android:background="@mipmap/wdys_jz"/>-->
 
         </LinearLayout>
         <LinearLayout
@@ -72,19 +82,19 @@
             android:textColor="@color/textColor_vo"
             android:text="中国医学科学学院阜外医院"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="解绑"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:id="@+id/tv_jb"
-            android:visibility="visible"
-            android:background="@drawable/bd_wdys_xy"
-            android:textColor="#ffffffff"
-            android:textSize="7pt"/>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="解绑"-->
+<!--            android:paddingLeft="10dp"-->
+<!--            android:paddingRight="10dp"-->
+<!--            android:id="@+id/tv_jb"-->
+<!--            android:visibility="visible"-->
+<!--            android:background="@drawable/bd_wdys_xy"-->
+<!--            android:textColor="#ffffffff"-->
+<!--            android:textSize="7pt"/>-->
 
-            <TextView
+           <!-- <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="申请绑定"
@@ -94,19 +104,10 @@
                 android:visibility="gone"
                 android:background="@drawable/wdys_sqbd"
                 android:textColor="#ffffffff"
-                android:textSize="7pt"/>
+                android:textSize="7pt"/>-->
 
         </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="8pt"
-            android:textColor="@color/textColor_vo"
-            android:id="@+id/userTitle"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="5dp"
-            android:text="主任医生|心内科"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -124,33 +125,41 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bd_wdys_zx"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="咨询"
-                android:id="@+id/tv_zx"
-                android:textColor="#ffe6302c"
-                android:layout_marginBottom="15dp"
-                android:textSize="7pt"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bd_wdys_zx"
+                android:textColor="#7A9EFF"
+                android:layout_width="95dp"
+                android:layout_height="25dp"
+                android:background="@drawable/bg_advisory"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="就诊记录"
                 android:id="@+id/tv_jzjl"
-                android:textColor="#ffe6302c"
+                android:gravity="center"
                 android:layout_marginBottom="15dp"
                 android:textSize="7pt"
                 />
+            <TextView
+                android:id="@+id/tv_zx"
+                android:layout_width="65dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_advisory"
+                android:gravity="center"
+                android:text="咨询"
+                android:textColor="#7A9EFF" />
+
+            <TextView
+                android:id="@+id/tv_reservation"
+                android:layout_width="65dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_advisory"
+                android:gravity="center"
+                android:text="预约"
+                android:textColor="#7A9EFF" />
         </LinearLayout>
 
     </LinearLayout>

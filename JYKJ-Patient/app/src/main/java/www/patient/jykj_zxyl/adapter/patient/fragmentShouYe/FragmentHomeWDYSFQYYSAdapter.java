@@ -90,46 +90,46 @@ public class FragmentHomeWDYSFQYYSAdapter extends RecyclerView.Adapter<FragmentH
         //医患绑定状态
         if (datas.get(position).getFlagBindingState() != null && datas.get(position).getFlagBindingState() == 1)
         {
-            viewHolder.iv_bind.setVisibility(View.VISIBLE);
-            viewHolder.tv_jb.setVisibility(View.VISIBLE);
+         //   viewHolder.iv_bind.setVisibility(View.VISIBLE);
+          //  viewHolder.tv_jb.setVisibility(View.VISIBLE);
             viewHolder.tv_zx.setVisibility(View.VISIBLE);
-            viewHolder.tv_sqbd.setVisibility(View.GONE);
+          //  viewHolder.tv_sqbd.setVisibility(View.GONE);
             viewHolder.tv_jzjl.setVisibility(View.GONE);
         }
         if (datas.get(position).getFlagBindingState() != null && datas.get(position).getFlagBindingState() == 0)
         {
-            viewHolder.iv_bind.setVisibility(View.GONE);
-            viewHolder.tv_jb.setVisibility(View.GONE);
+          //  viewHolder.iv_bind.setVisibility(View.GONE);
+      //      viewHolder.tv_jb.setVisibility(View.GONE);
             viewHolder.tv_zx.setVisibility(View.GONE);
-            viewHolder.tv_sqbd.setVisibility(View.VISIBLE);
+        //    viewHolder.tv_sqbd.setVisibility(View.VISIBLE);
             viewHolder.tv_jzjl.setVisibility(View.GONE);
         }
 
         if (datas.get(position).getFlagTreatmentState() != null && datas.get(position).getFlagTreatmentState() == 1)
         {
-            viewHolder.iv_jz.setVisibility(View.VISIBLE);
+         //   viewHolder.iv_jz.setVisibility(View.VISIBLE);
             viewHolder.tv_jzjl.setVisibility(View.VISIBLE);
         }
         else
         {
-            viewHolder.iv_jz.setVisibility(View.GONE);
+         //   viewHolder.iv_jz.setVisibility(View.GONE);
             viewHolder.tv_jzjl.setVisibility(View.GONE);
 //            viewHolder.tv_zx.setVisibility(View.GONE);
         }
 
-        if (mOnItemClickXYListener != null)
-        {
-            viewHolder.tv_jb.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mOnItemClickXYListener.onClick(position);
-                }
-            });
-        }
+//        if (mOnItemClickXYListener != null)
+//        {
+//            viewHolder.tv_jb.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    mOnItemClickXYListener.onClick(position);
+//                }
+//            });
+//        }
 
         if (mOnItemClickSQBDListener != null)
         {
-            viewHolder.tv_sqbd.setOnClickListener(new View.OnClickListener() {
+            viewHolder.tv_reservation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mOnItemClickSQBDListener.onClick(position);
@@ -184,7 +184,7 @@ public class FragmentHomeWDYSFQYYSAdapter extends RecyclerView.Adapter<FragmentH
             public TextView         tv_jb;                          //
             public TextView         tv_sqbd;                          //
             public TextView         tv_zx;                          //
-            public TextView         tv_jzjl;                          //
+            public TextView         tv_jzjl,tv_reservation;                          //
 
             public ImageView        iv_bind;
             public ImageView        iv_jz;
@@ -197,12 +197,13 @@ public class FragmentHomeWDYSFQYYSAdapter extends RecyclerView.Adapter<FragmentH
                 mUserTitle = (TextView)view.findViewById(R.id.userTitle);
                 mUserHospital = (TextView)view.findViewById(R.id.userHospital);
                 mUserGoodAtRealm = (TextView)view.findViewById(R.id.userGoodAtRealm);
-                tv_jb = (TextView)view.findViewById(R.id.tv_jb);
-                tv_sqbd = (TextView)view.findViewById(R.id.tv_sqbd);
+        //        tv_jb = (TextView)view.findViewById(R.id.tv_jb);
+             //   tv_sqbd = (TextView)view.findViewById(R.id.tv_sqbd);
                 tv_zx = (TextView)view.findViewById(R.id.tv_zx);
                 tv_jzjl = (TextView)view.findViewById(R.id.tv_jzjl);
-                iv_bind = (ImageView)view.findViewById(R.id.iv_bind);
-                iv_jz = (ImageView)view.findViewById(R.id.iv_jz);
+            //    iv_bind = (ImageView)view.findViewById(R.id.iv_bind);
+            //    iv_jz = (ImageView)view.findViewById(R.id.iv_jz);
+                tv_reservation=view.findViewById(R.id.tv_reservation);
             }
         }
 
