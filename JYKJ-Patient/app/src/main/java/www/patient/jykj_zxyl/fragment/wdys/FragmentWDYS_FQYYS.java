@@ -119,7 +119,7 @@ public class FragmentWDYS_FQYYS extends Fragment {
         mAdapter = new FragmentHomeWDYSFQYYSAdapter(providePatientBindingMyDoctorInfos,mContext);
         mRecyclerView.setAdapter(mAdapter);
         //解绑
-        mAdapter.setOnItemClickXYListener(new FragmentHomeWDYSFQYYSAdapter.OnItemClickXYListener() {
+      /*  mAdapter.setOnItemClickXYListener(new FragmentHomeWDYSFQYYSAdapter.OnItemClickXYListener() {
             @Override
             public void onClick(int position) {
                 // 下面的参数上下文 对话框里面一般都用this
@@ -150,17 +150,18 @@ public class FragmentWDYS_FQYYS extends Fragment {
             public void onLongClick(int position) {
 
             }
-        });
+        });*/
 
         //申请绑定
         mAdapter.setOnItemClickSQBDListener(new FragmentHomeWDYSFQYYSAdapter.OnItemClickSQBDListener() {
             @Override
             public void onClick(int position) {
+
 //                Toast.makeText(mContext,"申请绑定",Toast.LENGTH_SHORT).show();
-                ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend = new ProvideViewDoctorExpertRecommend();
-                provideViewDoctorExpertRecommend.setDoctorCode(providePatientBindingMyDoctorInfos.get(position).getDoctorCode());
-                provideViewDoctorExpertRecommend.setUserName(providePatientBindingMyDoctorInfos.get(position).getUserName());
-                startActivity(new Intent(mContext,ZJXQ_ZJBDActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommend));
+//                ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend = new ProvideViewDoctorExpertRecommend();
+//                provideViewDoctorExpertRecommend.setDoctorCode(providePatientBindingMyDoctorInfos.get(position).getDoctorCode());
+//                provideViewDoctorExpertRecommend.setUserName(providePatientBindingMyDoctorInfos.get(position).getUserName());
+//                startActivity(new Intent(mContext,ZJXQ_ZJBDActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommend));
             }
 
             @Override

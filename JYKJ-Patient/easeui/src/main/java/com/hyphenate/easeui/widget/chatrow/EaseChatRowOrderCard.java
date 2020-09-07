@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
+import com.google.gson.Gson;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.order.CancelConfirmDeitalActivity;
@@ -68,6 +69,16 @@ public class EaseChatRowOrderCard extends EaseChatRow {
     private RelativeLayout rlSignOrderRoot;
 
     private ProvideViewSysUserPatientInfoAndRegion mProvideViewSysUserPatientInfoAndRegion;
+    private RelativeLayout rl_class;
+    private TextView tv_class;
+    private TextView tv_class_vlaue;
+    private TextView tv_monitor_type;
+    private TextView tv_coach_rate;
+    private TextView tv_sign_time;
+    private String startTime;
+    private String cancelTime;
+    private String appointMentProject;
+    private String appointMentType;
 
     public EaseChatRowOrderCard(Context context, EMMessage message,
                                 int position, BaseAdapter adapter) {
@@ -100,6 +111,14 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         rlSignOrderRoot = findViewById(R.id.rl_sign_order_root);
         mTvCancelContractAgreeBtn = findViewById(R.id.tv_cancel_contract_agree_btn);
         mTvCancelContractRefuseBtn = findViewById(R.id.tv_cancel_contract_refuse_btn);
+         //预约类型
+        rl_class = findViewById(R.id.rl_class);
+        tv_class = findViewById(R.id.tv_class);
+        tv_class_vlaue = findViewById(R.id.tv_class_vlaue);
+        //预约修改的文字
+        tv_monitor_type = findViewById(R.id.tv_monitor_type);
+        tv_coach_rate = findViewById(R.id.tv_coach_rate);
+        tv_sign_time = findViewById(R.id.tv_sign_time);
 
         addListener();
     }
@@ -186,19 +205,29 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         messageType = message.getStringAttribute("messageType", "");
         singNO = message.getStringAttribute("singNo", "");
         imageUrl = message.getStringAttribute("imageUrl", "");
+        startTime = message.getStringAttribute("startTime", "");
+        cancelTime = message.getStringAttribute("cancelTime", "");
+        appointMentProject = message.getStringAttribute("appointMentProject", "");
+        appointMentType = message.getStringAttribute("appointMentType", "");
         mTvMonitValue.setText(monitoringType);
         mTvCoachRateValue.setText(coach);
         mTvSignTimeValue.setText(signUpTime);
+        tv_class_vlaue.setText("");
         mTvPriceValue.setText(String.format("¥%s", price));
         orderType = message.getStringAttribute("orderType", "");//1已同意 2 修改 3 拒绝（由患者操作发起时会携带此参数）
         if (messageType.equals("terminationOrder")) {
             mTvCardTitle.setText("解约订单");
         } else if (messageType.equals("card")) {
             mTvCardTitle.setText("签约订单");
+        }else if(messageType.equals("medicalRecord")){
+            mTvCardTitle.setText("病历");
+        }else if(messageType.equals("appointment")){
+            mTvCardTitle.setText("解约订单");
         }
         EMMessage.Direct direct = message.direct();
         if (direct == EMMessage.Direct.SEND) {
             if (messageType.equals("card")) {
+                 rl_class.setVisibility(GONE);
                 switch (orderType) {
                     case "1":
                         ivStampIcon.setVisibility(View.VISIBLE);
@@ -217,7 +246,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                     default:
                 }
             } else if (messageType.equals("terminationOrder")) {
-
+                rl_class.setVisibility(GONE);
                 switch (orderType) {
                     case "1":
                         ivStampIcon.setVisibility(View.VISIBLE);
@@ -239,6 +268,29 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                         break;
                 }
 
+            }
+            //预约
+            else if(messageType.equals("appointment")){
+                switch (orderType) {
+                    case "1":
+                        ivStampIcon.setVisibility(View.VISIBLE);
+                        ivStampIcon.setImageResource(R.mipmap.bg_agree_stamp);
+                        mTvOperMsg.setText("您已预约成功");
+                        break;
+                    case "2":
+                        ivStampIcon.setVisibility(GONE);
+                        mTvPriceValue.setVisibility(GONE);
+                        tv_monitor_type.setText("预约时间");
+                        tv_coach_rate.setText("取消时间");
+                        tv_sign_time.setText("预约项目");
+                        mTvMonitValue.setText(startTime);
+                        mTvCoachRateValue.setText(cancelTime);
+                        mTvSignTimeValue.setText(appointMentProject);
+                        tv_class_vlaue.setText(appointMentType);
+                      //  ivStampIcon.setImageResource(R.mipmap.bg_agree_stamp);
+                        mTvOperMsg.setText("您已取消预约");
+                        break;
+                }
             }
 
         } else if (direct == EMMessage.Direct.RECEIVE) {
@@ -283,6 +335,8 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 mTvUpdateBtn.setVisibility(View.VISIBLE);
                 rlCancelContractOrderRoot.setVisibility(View.GONE);
                 rlSignOrderRoot.setVisibility(View.VISIBLE);
+            }else if(messageType.equals("medicalRecord")){
+
             }
 
 

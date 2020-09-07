@@ -239,7 +239,7 @@ public class WDYSActivity extends BaseActivity {
         fragmentList = new ArrayList<>();
         mTitles = new ArrayList<>();
         mTitles.add("签约医生");
-        mTitles.add("非签约医生");
+        mTitles.add("就诊医生");
         mTitles.add("关注医生");
 
         mFragmentWDYS_QYYS = new FragmentWDYS_QYYS();

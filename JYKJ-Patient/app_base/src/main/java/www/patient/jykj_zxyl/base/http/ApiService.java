@@ -105,5 +105,23 @@ public interface ApiService {
     //解约确认
     @POST("/patientSignControlle/operTerminationConfim")
     Observable<String> operTerminationConfim(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //可预约页面头部查询
+    @POST("/reservePatientDoctorControll/searchReserveInfoTitleByDoctor")
+    Observable<String> resevationTitle(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //可预约列表查询
+    @POST("/reservePatientDoctorControll/searchReserveInfoByDoctorInfo")
+    Observable<String> resevationList(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //预约提交
+    @POST("/reservePatientDoctorControll/operReserveSubmit")
+    Observable<String> resevationSubmit(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //身份证
+    @POST("/reservePatientDoctorControll/operUserInfo")
+    Observable<String> resevationIDCard(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //我的预约列表
+    @POST("/reservePatientDoctorControll/searchReserveList")
+    Observable<String> myResevationMyList(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //取消预约
+    @POST("/reservePatientDoctorControll/operCancelReserve")
+    Observable<String> cancelResevation(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
 }
 

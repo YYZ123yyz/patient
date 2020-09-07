@@ -133,7 +133,7 @@ public class FragmentWDYS_QYYS extends Fragment {
             }
         });
         //续约
-      /*  mAdapter.setOnItemClickXYListener(new FragmentHomeWDYSQYYSAdapter.OnItemClickXYListener() {
+        mAdapter.setOnItemClickXYListener(new FragmentHomeWDYSQYYSAdapter.OnItemClickXYListener() {
             @Override
             public void onClick(int position) {
                 mXYChoiceIndex = position;
@@ -146,9 +146,9 @@ public class FragmentWDYS_QYYS extends Fragment {
             public void onLongClick(int position) {
 
             }
-        });*/
+        });
         //咨询
-      /*  mAdapter.setOnItemClickZXListener(new FragmentHomeWDYSQYYSAdapter.OnItemClickZXListener() {
+        mAdapter.setOnItemClickZXListener(new FragmentHomeWDYSQYYSAdapter.OnItemClickZXListener() {
             @Override
             public void onClick(int position) {
                 if (provideViewMyDoctorSignings.get(position).getFlagSigningBtn() == 0) {
@@ -179,7 +179,7 @@ public class FragmentWDYS_QYYS extends Fragment {
             public void onLongClick(int position) {
 
             }
-        });*/
+        });
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
