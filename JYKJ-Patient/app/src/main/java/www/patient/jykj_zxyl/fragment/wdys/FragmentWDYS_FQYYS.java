@@ -45,6 +45,7 @@ import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeWDYSFQYYSAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.myappointment.activity.ReservationActivity;
 
 
 /**
@@ -152,10 +153,12 @@ public class FragmentWDYS_FQYYS extends Fragment {
             }
         });*/
 
-        //申请绑定
-        mAdapter.setOnItemClickSQBDListener(new FragmentHomeWDYSFQYYSAdapter.OnItemClickSQBDListener() {
+        //
+               mAdapter.setOnItemClickSQBDListener(new FragmentHomeWDYSFQYYSAdapter.OnItemClickSQBDListener() {
+
             @Override
             public void onClick(int position) {
+                startActivity(new Intent(mContext, ReservationActivity.class));
 
 //                Toast.makeText(mContext,"申请绑定",Toast.LENGTH_SHORT).show();
 //                ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend = new ProvideViewDoctorExpertRecommend();

@@ -85,8 +85,8 @@ public class FragmentWDYS_GZYSdapter extends RecyclerView.Adapter<FragmentWDYS_G
         if (datas.get(position).getGoodAtRealm() == null || "".equals(datas.get(position).getGoodAtRealm()))
             viewHolder.mUserGoodAtRealm.setText("未设置");
         else
-            viewHolder.mUserGoodAtRealm.setText(datas.get(position).getGoodAtRealm());
-        if (datas.get(position).getImgTextPriceShow() == null || "".equals(datas.get(position).getImgTextPriceShow()))
+            viewHolder.mUserGoodAtRealm.setText("擅长:  "+datas.get(position).getGoodAtRealm());
+     /*   if (datas.get(position).getImgTextPriceShow() == null || "".equals(datas.get(position).getImgTextPriceShow()))
             viewHolder.imgTextPrice.setText("未设置");
         else
             viewHolder.imgTextPrice.setText("￥" + datas.get(position).getImgTextPriceShow());
@@ -126,9 +126,9 @@ public class FragmentWDYS_GZYSdapter extends RecyclerView.Adapter<FragmentWDYS_G
             viewHolder.signingSumNum.setText("未设置");
         else
             viewHolder.signingSumNum.setText(datas.get(position).getSigningSumNum() + "人咨询");
+*/
 
-
-        if (datas.get(position).getFlagImgText() != null && datas.get(position).getFlagImgText() == 1)
+       /* if (datas.get(position).getFlagImgText() != null && datas.get(position).getFlagImgText() == 1)
             viewHolder.mImgTWJZ.setBackgroundResource(R.mipmap.tw_p);
         else
             viewHolder.mImgTWJZ.setBackgroundResource(R.mipmap.tw_d);
@@ -151,9 +151,9 @@ public class FragmentWDYS_GZYSdapter extends RecyclerView.Adapter<FragmentWDYS_G
         if (datas.get(position).getFlagSigning() != null && datas.get(position).getFlagSigning() == 1)
             viewHolder.mImgQYJZ.setBackgroundResource(R.mipmap.qy_p);
         else
-            viewHolder.mImgQYJZ.setBackgroundResource(R.mipmap.qy_d);
+            viewHolder.mImgQYJZ.setBackgroundResource(R.mipmap.qy_d);*/
 
-        if (mOnItemClickListener != null) {
+      /*  if (mOnItemClickListener != null) {
             viewHolder.mClickLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -169,7 +169,7 @@ public class FragmentWDYS_GZYSdapter extends RecyclerView.Adapter<FragmentWDYS_G
                     return false;
                 }
             });
-        }
+        }*/
 
 
         if (mOnItemClickQXGZListener != null) {
@@ -239,22 +239,22 @@ public class FragmentWDYS_GZYSdapter extends RecyclerView.Adapter<FragmentWDYS_G
             mUserTitle = (TextView) view.findViewById(R.id.userTitle);
             mUserHospital = (TextView) view.findViewById(R.id.userHospital);
             mUserGoodAtRealm = (TextView) view.findViewById(R.id.userGoodAtRealm);
-            imgTextPrice = (TextView) view.findViewById(R.id.imgTextPrice);
-            imgTextSumNum = (TextView) view.findViewById(R.id.imgTextSumNum);
-            phonePriceStr = (TextView) view.findViewById(R.id.phonePriceStr);
-            phoneSumNum = (TextView) view.findViewById(R.id.phoneSumNum);
-            audioPrice = (TextView) view.findViewById(R.id.audioPrice);
-            audioSumNum = (TextView) view.findViewById(R.id.audioSumNum);
-            videoPrice = (TextView) view.findViewById(R.id.videoPrice);
-            videoSumNum = (TextView) view.findViewById(R.id.videoSumNum);
-            signingPrice = (TextView) view.findViewById(R.id.signingPrice);
-            signingSumNum = (TextView) view.findViewById(R.id.signingSumNum);
+//            imgTextPrice = (TextView) view.findViewById(R.id.imgTextPrice);
+//            imgTextSumNum = (TextView) view.findViewById(R.id.imgTextSumNum);
+//            phonePriceStr = (TextView) view.findViewById(R.id.phonePriceStr);
+//            phoneSumNum = (TextView) view.findViewById(R.id.phoneSumNum);
+//            audioPrice = (TextView) view.findViewById(R.id.audioPrice);
+//            audioSumNum = (TextView) view.findViewById(R.id.audioSumNum);
+//            videoPrice = (TextView) view.findViewById(R.id.videoPrice);
+//            videoSumNum = (TextView) view.findViewById(R.id.videoSumNum);
+//            signingPrice = (TextView) view.findViewById(R.id.signingPrice);
+//            signingSumNum = (TextView) view.findViewById(R.id.signingSumNum);
 
-            mImgTWJZ = (ImageView) view.findViewById(R.id.img_tvjz);
+          /*  mImgTWJZ = (ImageView) view.findViewById(R.id.img_tvjz);
             mImgDHJZ = (ImageView) view.findViewById(R.id.img_dhjz);
             mImgYYJZ = (ImageView) view.findViewById(R.id.img_yyjz);
             mImgSPJZ = (ImageView) view.findViewById(R.id.img_spjz);
-            mImgQYJZ = (ImageView) view.findViewById(R.id.img_qyjz);
+            mImgQYJZ = (ImageView) view.findViewById(R.id.img_qyjz);*/
 
             tv_qxgz = (TextView) view.findViewById(R.id.tv_qxgz);
 

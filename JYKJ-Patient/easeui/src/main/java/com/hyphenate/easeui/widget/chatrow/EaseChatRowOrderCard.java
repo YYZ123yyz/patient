@@ -79,6 +79,9 @@ public class EaseChatRowOrderCard extends EaseChatRow {
     private String cancelTime;
     private String appointMentProject;
     private String appointMentType;
+    private TextView tv_patient_class;
+    private TextView tv_patient_class_vlaue;
+    private RelativeLayout patient_rl;
 
     public EaseChatRowOrderCard(Context context, EMMessage message,
                                 int position, BaseAdapter adapter) {
@@ -119,7 +122,10 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         tv_monitor_type = findViewById(R.id.tv_monitor_type);
         tv_coach_rate = findViewById(R.id.tv_coach_rate);
         tv_sign_time = findViewById(R.id.tv_sign_time);
-
+       //问诊资料  患者类型
+        tv_patient_class = findViewById(R.id.tv_patient_class);
+        tv_patient_class_vlaue = findViewById(R.id.tv_patient_class_vlaue);
+        patient_rl = findViewById(R.id.patient_rl);
         addListener();
     }
 
@@ -336,7 +342,17 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 rlCancelContractOrderRoot.setVisibility(View.GONE);
                 rlSignOrderRoot.setVisibility(View.VISIBLE);
             }else if(messageType.equals("medicalRecord")){
-
+                String userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
+                String nickName = message.getStringAttribute("nickName", "");
+                patient_rl.setVisibility(VISIBLE);
+                tv_monitor_type.setText("患者");
+                tv_coach_rate.setText("就诊结束时间");
+                tv_sign_time.setText("就诊医生");
+                mTvMonitValue.setText(userName);
+                //预约结束时间
+                mTvCoachRateValue.setText("");
+                mTvSignTimeValue.setText(nickName);
+                tv_patient_class_vlaue.setText(appointMentType);
             }
 
 

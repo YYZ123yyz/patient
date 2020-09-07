@@ -125,7 +125,7 @@ public class FragmentWDYS_GZYS extends Fragment {
         mAdapter = new FragmentWDYS_GZYSdapter(provideViewDoctorExpertRecommends, mContext);
         mRecyclerView.setAdapter(mAdapter);
 
-        mAdapter.setOnItemClickListener(new FragmentWDYS_GZYSdapter.OnItemClickListener() {
+      /*  mAdapter.setOnItemClickListener(new FragmentWDYS_GZYSdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
                 startActivity(new Intent(mContext, ZJXQActivity.class).putExtra("provideViewDoctorExpertRecommend"
@@ -136,7 +136,7 @@ public class FragmentWDYS_GZYS extends Fragment {
             public void onLongClick(int position) {
 
             }
-        });
+        });*/
 
         mAdapter.setOnItemClickQXGZListener(new FragmentWDYS_GZYSdapter.OnItemClickQXGZListener() {
             @Override

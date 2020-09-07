@@ -124,6 +124,8 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
     private String mainDoctorCode;
     private String viewTimesPeriod;
     private ProvideInteractPatientInterrogation mProvideInteractPatientInterrogation = new ProvideInteractPatientInterrogation();
+    private String reserveStatus;
+
     @Override
     protected int setLayoutId() {
         return R.layout.activity_reservation;
@@ -207,16 +209,21 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
         reservation_successDialog.setOnClickListener(new Reservation_SuccessDialog.OnClickListener() {
             @Override
             public void onClickSucessBtn() {
-                //确认
-                Intent intent = new Intent();
-                intent.setClass(context, WZXXOrderActivity.class);
-                intent.putExtra("orderID", orderCode);
-                intent.putExtra("orderType", reserveProjectCode);
-                intent.putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend);
-                intent.putExtra("provideDoctorSetSchedulingInfoGroupDate", provideDoctorSetSchedulingInfoGroupDate);
-                intent.putExtra("provideInteractPatientInterrogation", mProvideInteractPatientInterrogation);
-                startActivity(intent);
-                reservation_successDialog.dismiss();
+                if(reserveStatus.equals("10")){
+                    Intent intent = new Intent(ReservationActivity.this, MyAppointmentActivity.class);
+                    startActivity(intent);
+                }else{
+                    //确认
+                    Intent intent = new Intent();
+                    intent.setClass(context, WZXXOrderActivity.class);
+                    intent.putExtra("orderID", orderCode);
+                    intent.putExtra("orderType", reserveProjectCode);
+                    intent.putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend);
+                    intent.putExtra("provideDoctorSetSchedulingInfoGroupDate", provideDoctorSetSchedulingInfoGroupDate);
+                    intent.putExtra("provideInteractPatientInterrogation", mProvideInteractPatientInterrogation);
+                    startActivity(intent);
+                    reservation_successDialog.dismiss();
+                }
             }
         });
     }
@@ -362,6 +369,7 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
     @Override
     public void getReservationCommitResult(ReservePatientCommitBean reservePatientCommitBeans) {
         if (reservePatientCommitBeans != null) {
+            reserveStatus = reservePatientCommitBeans.getReserveStatus();
             reserveRosterDateCode = reservePatientCommitBeans.getReserveRosterDateCode();
             orderCode = reservePatientCommitBeans.getOrderCode();
             reserveProjectCode = reservePatientCommitBeans.getReserveProjectCode();

@@ -142,6 +142,35 @@
 
                         </TextView>
                     </RelativeLayout>
+                    <!--患者类型-->
+                    <RelativeLayout
+                        android:id="@+id/patient_rl"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18.5dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginEnd="18.5dp">
+
+                        <TextView
+                            android:id="@+id/tv_patient_class"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="患者类型"
+                            android:textColor="@color/color_616266"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/tv_patient_class_vlaue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:textColor="@color/color_303133"
+                            android:textSize="13sp">
+
+
+                        </TextView>
+                    </RelativeLayout>
 
                     <TextView
                         android:id="@+id/tv_price_vlaue"

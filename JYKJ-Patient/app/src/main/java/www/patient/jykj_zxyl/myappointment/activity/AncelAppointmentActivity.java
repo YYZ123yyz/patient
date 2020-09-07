@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.allen.library.utils.ToastUtils;
 import com.hyphenate.easeui.ui.ChatActivity;
@@ -103,7 +105,6 @@ public class AncelAppointmentActivity extends AbstractMvpBaseActivity<Reservatio
         linDetect = findViewById(R.id.lin_Detect);
         edTermination = findViewById(R.id.ed_termination);
         btnSend = findViewById(R.id.btn_send);
-        ed = edTermination.getText().toString();
         addListener();
     }
     @Override
@@ -139,6 +140,14 @@ public class AncelAppointmentActivity extends AbstractMvpBaseActivity<Reservatio
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ed = edTermination.getText().toString();
+                if(TextUtils.isEmpty(ed)){
+                    ToastUtils.showToast("解约描述不能为空");
+                    return;
+                }if(TextUtils.isEmpty(mCancelContractBean.getAttrName())){
+                    ToastUtils.showToast("解约原因不能为空");
+                    return;
+                }
                         mPresenter.sendReservationCancelRequest(mApp.loginDoctorPosition,mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),reserveCode,mCancelContractBean.getAttrCode()+"",mCancelContractBean.getAttrName(),ed);
             }
         });
@@ -206,7 +215,7 @@ public class AncelAppointmentActivity extends AbstractMvpBaseActivity<Reservatio
      */
     @Override
     public void getReservationCancelResult(boolean isSucess, String msg) {
-        if (isSucess) {
+        if (isSucess==true) {
             if (ActivityStackManager.getInstance().exists(ChatActivity.class)) {
                 ActivityStackManager.getInstance().finish(ChatActivity.class);
             }
@@ -225,7 +234,7 @@ public class AncelAppointmentActivity extends AbstractMvpBaseActivity<Reservatio
             intent.putExtras(bundle);
             startActivity(intent);
         }else{
-            ToastUtils.showToast(msg);
+            Toast.makeText(this, "提交失败", Toast.LENGTH_SHORT).show();
         }
     }
 
