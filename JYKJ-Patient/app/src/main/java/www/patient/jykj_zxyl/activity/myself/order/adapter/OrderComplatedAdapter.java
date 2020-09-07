@@ -21,6 +21,7 @@ import entity.mySelf.MyOrderProcess;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.adapter.myself.MyOrderAlRecycleAdapter;
 import www.patient.jykj_zxyl.base.base_bean.MultiItemEntity;
+import www.patient.jykj_zxyl.base.base_utils.StringUtils;
 import www.patient.jykj_zxyl.base.enum_type.OrderStatusEnum;
 import www.patient.jykj_zxyl.util.DateUtils;
 import www.patient.jykj_zxyl.util.StrUtils;
@@ -68,7 +69,13 @@ public class OrderComplatedAdapter extends MultiItemRecycleViewAdapter<MultiItem
                         rlOrderComplateRoot.setVisibility(View.GONE);
                     }
                 }
-                mTvPriceValue.setText(String.format("¥%s", parbean1.getActualPayment()));
+                String actualPayment = parbean1.getActualPayment();
+                if (StringUtils.isNotEmpty(actualPayment)) {
+                    mTvPriceValue.setText(String.format("¥%s", actualPayment));
+                }else{
+                    mTvPriceValue.setText(String.format("¥%s", "0"));
+                }
+
                 mTvOrderType.setText(parbean1.getTreatmentTypeName());
                 mTvOrderTime.setText(DateUtils.getStringTimeMinute(parbean1.getOrderDate().getTime()));
                 Integer coachValue = parbean1.getProCount();
@@ -87,8 +94,10 @@ public class OrderComplatedAdapter extends MultiItemRecycleViewAdapter<MultiItem
                         mTvMonitorValue.setText("六项");
                     }
                 }
+
                 mTvCoachValue.setText(String.format("%d次/%s",
-                        parbean1.getCoachValue(), parbean1.getCoachUnitName()));
+                        parbean1.getCoachValue(), StringUtils.isNotEmpty(
+                                parbean1.getCoachUnitName())?parbean1.getCoachUnitName():"一月"));
                 mTvSignTimeValue.setText(parbean1.getTimesName());
                 llItemRoot.setOnClickListener(new View.OnClickListener() {
                     @Override

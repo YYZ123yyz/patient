@@ -76,7 +76,7 @@
             android:layout_marginBottom="30dp">
 
             <TextView
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_corner_button"
@@ -87,11 +87,12 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:gravity="center"
+                android:textSize="12sp"
                 android:drawableLeft="@mipmap/icon_scan_white"
                 android:textColor="@color/writeColor"/>
 
             <TextView
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_corner_button"
@@ -99,15 +100,16 @@
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:id="@+id/tv_fx"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:gravity="center"
+                android:textSize="12sp"
                 android:drawableLeft="@mipmap/icon_share_white"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="15dp"
                 android:textColor="@color/writeColor"/>
 
             <TextView
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_corner_button"
@@ -115,12 +117,12 @@
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:id="@+id/tv_save_img"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:gravity="center"
                 android:drawableLeft="@mipmap/icon_share_white"
-                android:layout_marginLeft="20dp"
-                android:textSize="6pt"
+                android:layout_marginLeft="15dp"
+                android:textSize="12sp"
                 android:textColor="@color/writeColor"/>
 
         </LinearLayout>

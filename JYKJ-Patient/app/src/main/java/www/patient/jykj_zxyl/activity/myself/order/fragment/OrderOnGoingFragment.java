@@ -64,6 +64,7 @@ public class OrderOnGoingFragment extends
     private List<MultiItemEntity> mMultiItemEntitys;//多布局内容列表
     private JYKJApplication mApp;
     private  MyOrderProcess myOrderProcess;
+    private boolean isJumpIm;
     private int currentPos;
     @Override
     protected int setLayoutId() {
@@ -169,6 +170,7 @@ public class OrderOnGoingFragment extends
 
             @Override
             public void onClickConsult(int pos) {
+                isJumpIm=true;
                 myOrderProcess = (MyOrderProcess) mMultiItemEntitys.get(pos);
                 mPresenter.sendGetUserListRequest(myOrderProcess.getDoctorCode());
 
@@ -331,6 +333,7 @@ public class OrderOnGoingFragment extends
         if (ActivityStackManager.getInstance().exists(ChatActivity.class)) {
             ActivityStackManager.getInstance().finish(ChatActivity.class);
         }
+
         OrderMessage terminationOrder = getOrderMessage("terminationOrder", "1",myOrderProcess);
         Intent intent = new Intent();
         intent.setClass(Objects.requireNonNull(this.getContext()), ChatActivity.class);
@@ -341,10 +344,13 @@ public class OrderOnGoingFragment extends
         intent.putExtra("operDoctorName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         terminationOrder.setImageUrl(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
         Bundle bundle=new Bundle();
-        bundle.putSerializable("orderMsg",terminationOrder);
-        intent.putExtras(bundle);
+        if(!isJumpIm){
+            bundle.putSerializable("orderMsg",terminationOrder);
+            intent.putExtras(bundle);
+        }
 
         startActivity(intent);
+        isJumpIm=false;
     }
 
     /**
