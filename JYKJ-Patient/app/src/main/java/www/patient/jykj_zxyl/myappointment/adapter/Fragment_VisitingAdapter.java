@@ -120,7 +120,7 @@ public class Fragment_VisitingAdapter extends RecyclerView.Adapter<Fragment_Visi
 //                        mOnItemClickDataListener.onClick(position);
 //                    }
 //                });
-            } else if (reserveStatus.equals("20") || reserveStatus.equals("30")) {
+            } else if (reserveStatus.equals("20") || reserveStatus.equals("30")||reserveStatus.equals("40")) {
              //   viewHolder.visiting_data.setVisibility(View.GONE);
                 viewHolder.visiting_cancelappointment.setText("查看病历");
                 viewHolder.visiting_cancelappointment.setTextColor(Color.parseColor("#ffffff"));

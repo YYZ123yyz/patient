@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.allen.library.utils.ToastUtils;
 import com.hyphenate.easeui.ui.ChatActivity;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -228,9 +230,9 @@ public class AncelAppointmentActivity extends AbstractMvpBaseActivity<Reservatio
             intent.putExtra("patientUrl", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
             intent.putExtra("operDoctorName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
             Bundle bundle=new Bundle();
-            OrderMessage card = getOrderMessage("appointment", "2");
-            card.setImageUrl( mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
-            bundle.putSerializable("orderMsg", card);
+            OrderMessage appointment = getOrderMessage("appointment", "2");
+            appointment.setImageUrl( mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+            bundle.putSerializable("orderMsg", appointment);
             intent.putExtras(bundle);
             startActivity(intent);
         }else{

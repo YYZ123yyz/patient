@@ -50,7 +50,7 @@ public class Reservation_List_Adapter extends RecyclerView.Adapter<Reservation_L
         String start = DateUtils.getStringTime1(startTimes);
         String end = DateUtils.getStringTime1(endTimes);
         holder.item_title.setText(reservePatientListBean.getViewTimesPeriod() + " "
-                + start + "-" + " " + end + reservePatientListBean.getSourceTypeName());
+                + start + "-" + " " + end + reservePatientListBean.getReserveTypeName());
 
         holder.item_lin.setOnClickListener(new View.OnClickListener() {
             @Override

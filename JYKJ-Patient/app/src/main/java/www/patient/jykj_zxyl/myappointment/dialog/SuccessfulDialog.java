@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,7 +49,11 @@ public class SuccessfulDialog extends Dialog {
         this.setContentView(R.layout.success_layout);
         successfulDialog = SuccessfulDialog.this;
         img = findViewById(R.id.img);
-
+        RotateAnimation animation = new RotateAnimation(0, 360);
+        animation.setDuration(100000);//设定转一圈的时间
+        animation.setRepeatCount(Animation.INFINITE);//设定无限循环
+        animation.setRepeatMode(Animation.RESTART);
+        img.startAnimation(animation);
     }
 
 }

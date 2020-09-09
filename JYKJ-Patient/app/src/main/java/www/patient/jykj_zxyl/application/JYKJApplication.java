@@ -65,6 +65,7 @@ public class JYKJApplication extends Application {
     public ImageLoader imageLoader = ImageLoader.getInstance();
     public DisplayImageOptions mImageOptions;                                                // DisplayImageOptions是用于设置图片显示的类
 
+
     public SharedPreferences_DataSave m_persist;                                                //数据存储
 
     public UserInfo mLoginUserInfo;                         //登录需要的用户信息
@@ -359,6 +360,8 @@ public class JYKJApplication extends Application {
         m_persist = new SharedPreferences_DataSave(this, "JYKJDOCTER");
         m_persist.putString("loginUserInfo", new Gson().toJson(mLoginUserInfo));
         m_persist.putString("viewSysUserDoctorInfoAndHospital", new Gson().toJson(mProvideViewSysUserPatientInfoAndRegion));
+
+     //   m_persist.putString("gBasicDate",gBasicDate);
         ExtEaseUtils.getInstance().setNickName(mProvideViewSysUserPatientInfoAndRegion.getUserName());
         ExtEaseUtils.getInstance().setImageUrl(mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
         ExtEaseUtils.getInstance().setUserId(mProvideViewSysUserPatientInfoAndRegion.getPatientCode());

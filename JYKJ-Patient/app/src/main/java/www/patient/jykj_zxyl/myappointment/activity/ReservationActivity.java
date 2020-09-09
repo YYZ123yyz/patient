@@ -209,10 +209,10 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
         reservation_successDialog.setOnClickListener(new Reservation_SuccessDialog.OnClickListener() {
             @Override
             public void onClickSucessBtn() {
-                if(reserveStatus.equals("10")){
+                if (reserveStatus.equals("10")) {
                     Intent intent = new Intent(ReservationActivity.this, MyAppointmentActivity.class);
                     startActivity(intent);
-                }else{
+                } else {
                     //确认
                     Intent intent = new Intent();
                     intent.setClass(context, WZXXOrderActivity.class);
@@ -326,7 +326,7 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
     }
 
     /**
-     * 确认订单
+     * 您有已签约的服务
      *
      * @param confim 确认Id
      * @param msg
@@ -334,6 +334,7 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
     @Override
     public void getReservationCommitConfimResult(String confim, String msg) {
         commitconfim = confim;
+
     }
 
     /**
@@ -388,7 +389,7 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
             mApp.gPayOrderCode = orderCode;
             mProvideInteractPatientInterrogation.setDoctorCode(mainDoctorCode);
             mProvideInteractPatientInterrogation.setDoctorName(mainDoctorName);
-            float price =reservePatientCommitBeans.getOrderAndSignPrice();
+            float price = reservePatientCommitBeans.getOrderAndSignPrice();
             if (reserveProjectCode.equals("1")) {
                 provideViewDoctorExpertRecommend.setImgTextPrice(price);
             } else if (reserveProjectCode.equals("2")) {
@@ -402,8 +403,6 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
             Date date = DateUtils.getDate(s);
             provideDoctorSetSchedulingInfoGroupDate.setWorkDate(date);
             provideDoctorSetSchedulingInfoGroupDate.setChoice(true);
-//            List<ProvideDoctorSetSchedulingInfoGroupTime> groupTimeList = provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList();
-//            groupTimeList.get(0).getDayTimeSlot()
         }
         mHandler.sendEmptyMessageDelayed(200, 1000);
         successfulDialog.show();
@@ -483,24 +482,6 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
     public void getReservationDailog() {
 
     }
-
-//    @SuppressLint("HandlerLeak")
-//    private Handler handler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            if (msg.what == 100) {
-//                if (count > 0) {
-////                    num = successfulDialog.findViewById(R.id.success_num);
-////                    num.setText(count+"");
-//                    count--;
-//                    handler.sendEmptyMessageDelayed(100, 1000);
-//                } else {
-//                    successfulDialog.dismiss();
-//                }
-//            }
-//        }
-//    };
 
     //预约中
     private void reservation_success() {

@@ -63,6 +63,7 @@
                     </TextView>
 
                     <RelativeLayout
+                        android:id="@+id/rl_one"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="18.5dp"
@@ -88,8 +89,16 @@
 
                         </TextView>
                     </RelativeLayout>
-
+                    <TextView
+                        android:visibility="gone"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="12.5dp"
+                        android:textColor="#616166"
+                        android:text="\u3000您已预约成功，为了方便您就诊请先填写问诊资料！"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
                     <RelativeLayout
+                        android:id="@+id/rl_two"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="18.5dp"
@@ -117,6 +126,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/rl_three"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="18.5dp"
@@ -199,7 +209,23 @@
 
 
                     </TextView>
-
+                 <RelativeLayout
+                     android:visibility="gone"
+                     android:id="@+id/rl_immediately"
+                 android:layout_gravity="center_horizontal"
+                     android:layout_marginStart="18.5dp"
+                     android:layout_marginTop="21.5dp"
+                     android:layout_marginEnd="18.5dp"
+                     android:layout_marginBottom="8dp"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content">
+                      <TextView
+                        android:gravity="center" android:background="@drawable/bg_immediately"
+                          android:textColor="#fff"
+                          android:text="立即填写"
+                          android:layout_width="77dp"
+                          android:layout_height="25dp"/>
+                 </RelativeLayout>
                     <RelativeLayout
                         android:id="@+id/rl_cancel_contract_order_root"
                         android:layout_width="match_parent"

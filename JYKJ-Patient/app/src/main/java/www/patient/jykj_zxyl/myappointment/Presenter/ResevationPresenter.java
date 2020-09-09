@@ -202,16 +202,17 @@ public class ResevationPresenter extends BasePresenterImpl<ReservationContract.V
                 })).subscribe(new CommonDataObserver() {
             @Override
             protected void onSuccessResult(BaseBean baseBean) {
-                int resCode = baseBean.getResCode();
-                if (resCode == 1) {
-                    String resJsonData = baseBean.getResJsonData();
-                    Log.e("TAG", "onSuccessResult: "+resJsonData );
-                List<BaseReasonBean> mCancelContractBeans
-                            = GsonUtils.jsonToList(resJsonData, BaseReasonBean.class);
-                    if (mView != null) {
+                if (mView != null) {
+                    int resCode = baseBean.getResCode();
+                    if (resCode == 1) {
+                        String resJsonData = baseBean.getResJsonData();
+                        Log.e("TAG", "onSuccessResult: "+resJsonData );
+                        List<BaseReasonBean> mCancelContractBeans
+                                = GsonUtils.jsonToList(resJsonData, BaseReasonBean.class);
                         mView.getReservationClassResult(mCancelContractBeans);
                     }
                 }
+
 
             }
 

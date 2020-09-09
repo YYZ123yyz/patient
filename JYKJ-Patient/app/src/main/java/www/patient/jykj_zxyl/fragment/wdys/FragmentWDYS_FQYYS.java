@@ -177,8 +177,8 @@ public class FragmentWDYS_FQYYS extends Fragment {
         mAdapter.setOnItemClickZXListener(new FragmentHomeWDYSFQYYSAdapter.OnItemClickZXListener() {
             @Override
             public void onClick(int position) {
-                Intent intent = new Intent();
-                intent.setClass(mContext,ChatActivity.class);
+                Intent intent = new Intent(mContext,ChatActivity.class);
+              //  intent.setClass();
                 intent.putExtra("userCode",providePatientBindingMyDoctorInfos.get(position).getDoctorCode());
                 intent.putExtra("userName",providePatientBindingMyDoctorInfos.get(position).getUserName());
 //                intent.putExtra("chatType","twjz");

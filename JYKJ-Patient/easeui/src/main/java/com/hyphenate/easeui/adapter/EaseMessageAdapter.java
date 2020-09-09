@@ -23,7 +23,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.allin.commlibrary.CollectionUtils;
-import com.baidu.platform.comapi.map.A;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;

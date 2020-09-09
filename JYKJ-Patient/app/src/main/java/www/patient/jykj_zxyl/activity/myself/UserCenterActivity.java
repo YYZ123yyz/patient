@@ -381,16 +381,16 @@ public class UserCenterActivity extends AppCompatActivity {
                 case R.id.tv_activityUserCenter_commit:
                     commit();
                     break;
-                case R.id.iv_sex_man:
-                    mProvideViewSysUserPatientInfoAndRegion.setGender(1);
-                    iv_sex_man.setBackgroundResource(R.mipmap.sex_choiceno);
-                    iv_sex_woman.setBackgroundResource(R.mipmap.sex_nochoice);
-                    break;
-                case R.id.iv_sex_woman:
-                    mProvideViewSysUserPatientInfoAndRegion.setGender(2);
-                    iv_sex_man.setBackgroundResource(R.mipmap.sex_nochoice);
-                    iv_sex_woman.setBackgroundResource(R.mipmap.sex_choiceno);
-                    break;
+                    case R.id.iv_sex_man:
+                        mProvideViewSysUserPatientInfoAndRegion.setGender(1);
+                        iv_sex_man.setBackgroundResource(R.mipmap.sex_choiceno);
+                        iv_sex_woman.setBackgroundResource(R.mipmap.sex_nochoice);
+                        break;
+                    case R.id.iv_sex_woman:
+                        mProvideViewSysUserPatientInfoAndRegion.setGender(2);
+                        iv_sex_man.setBackgroundResource(R.mipmap.sex_nochoice);
+                        iv_sex_woman.setBackgroundResource(R.mipmap.sex_choiceno);
+                        break;
             }
         }
     }

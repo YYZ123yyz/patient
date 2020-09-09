@@ -15,10 +15,12 @@ import com.allen.library.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.order.AncelAppActivity;
 import com.hyphenate.easeui.order.CancelConfirmDeitalActivity;
 import com.hyphenate.easeui.order.RefusedCancelContractActivity;
 import com.hyphenate.easeui.order.RefusedOrderActivity;
 import com.hyphenate.easeui.order.SignOrderDetialActivity;
+import com.hyphenate.easeui.ui.WZXXActivity;
 import com.hyphenate.easeui.widget.EaseImageView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -82,6 +84,17 @@ public class EaseChatRowOrderCard extends EaseChatRow {
     private TextView tv_patient_class;
     private TextView tv_patient_class_vlaue;
     private RelativeLayout patient_rl;
+    private String endTime;
+    private String patientType;
+    private String opStatus;
+    private String receiveTime;
+    private String surplusTimes;
+    private String userName;
+    private String nickName;
+    private RelativeLayout rl_one;
+    private RelativeLayout rl_two;
+    private RelativeLayout rl_three;
+    private RelativeLayout rl_immediately;
 
     public EaseChatRowOrderCard(Context context, EMMessage message,
                                 int position, BaseAdapter adapter) {
@@ -114,7 +127,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         rlSignOrderRoot = findViewById(R.id.rl_sign_order_root);
         mTvCancelContractAgreeBtn = findViewById(R.id.tv_cancel_contract_agree_btn);
         mTvCancelContractRefuseBtn = findViewById(R.id.tv_cancel_contract_refuse_btn);
-         //预约类型
+        //预约类型
         rl_class = findViewById(R.id.rl_class);
         tv_class = findViewById(R.id.tv_class);
         tv_class_vlaue = findViewById(R.id.tv_class_vlaue);
@@ -122,10 +135,16 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         tv_monitor_type = findViewById(R.id.tv_monitor_type);
         tv_coach_rate = findViewById(R.id.tv_coach_rate);
         tv_sign_time = findViewById(R.id.tv_sign_time);
-       //问诊资料  患者类型
+        //问诊资料  患者类型
         tv_patient_class = findViewById(R.id.tv_patient_class);
         tv_patient_class_vlaue = findViewById(R.id.tv_patient_class_vlaue);
         patient_rl = findViewById(R.id.patient_rl);
+        //问诊资料
+        rl_one = findViewById(R.id.rl_one);
+        rl_two = findViewById(R.id.rl_two);
+        rl_three = findViewById(R.id.rl_three);
+        //立即填写
+        rl_immediately = findViewById(R.id.rl_immediately);
         addListener();
     }
 
@@ -215,25 +234,47 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         cancelTime = message.getStringAttribute("cancelTime", "");
         appointMentProject = message.getStringAttribute("appointMentProject", "");
         appointMentType = message.getStringAttribute("appointMentType", "");
+        //病历就诊结束时间
+        endTime = message.getStringAttribute("endTime", "");
+        //病历签约类型
+        patientType = message.getStringAttribute("patientType", "");
+        //病历操作状态
+        opStatus = message.getStringAttribute("opStatus", "");
+        //病历
+        //病历 接诊时间
+        receiveTime = message.getStringAttribute("receiveTime", "");
+        //病历 图文 剩余次数
+        surplusTimes = message.getStringAttribute("surplusTimes", "");
         mTvMonitValue.setText(monitoringType);
         mTvCoachRateValue.setText(coach);
         mTvSignTimeValue.setText(signUpTime);
-        tv_class_vlaue.setText("");
         mTvPriceValue.setText(String.format("¥%s", price));
         orderType = message.getStringAttribute("orderType", "");//1已同意 2 修改 3 拒绝（由患者操作发起时会携带此参数）
         if (messageType.equals("terminationOrder")) {
             mTvCardTitle.setText("解约订单");
         } else if (messageType.equals("card")) {
             mTvCardTitle.setText("签约订单");
-        }else if(messageType.equals("medicalRecord")){
+        } else if (messageType.equals("medicalRecord")) {
             mTvCardTitle.setText("病历");
-        }else if(messageType.equals("appointment")){
-            mTvCardTitle.setText("解约订单");
+        } else if (messageType.equals("appointment")) {
+            mTvCardTitle.setText("取消预约");
+        } else if (messageType.equals("receiveTreatment")) {
+            if (appointMentProject.equals("10")) {
+                mTvCardTitle.setText("图文");
+            } else if (appointMentProject.equals("20")) {
+                mTvCardTitle.setText("音频");
+            } else if (appointMentProject.equals("30")) {
+                mTvCardTitle.setText("视频");
+            } else if (appointMentProject.equals("40")) {
+                mTvCardTitle.setText("电话");
+            }
+        } else if (messageType.equals("consultation")) {
+            mTvCardTitle.setText("问诊资料");
         }
         EMMessage.Direct direct = message.direct();
         if (direct == EMMessage.Direct.SEND) {
             if (messageType.equals("card")) {
-                 rl_class.setVisibility(GONE);
+                rl_class.setVisibility(GONE);
                 switch (orderType) {
                     case "1":
                         ivStampIcon.setVisibility(View.VISIBLE);
@@ -276,7 +317,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
 
             }
             //预约
-            else if(messageType.equals("appointment")){
+            else if (messageType.equals("appointment")) {
                 switch (orderType) {
                     case "1":
                         ivStampIcon.setVisibility(View.VISIBLE);
@@ -293,7 +334,6 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                         mTvCoachRateValue.setText(cancelTime);
                         mTvSignTimeValue.setText(appointMentProject);
                         tv_class_vlaue.setText(appointMentType);
-                      //  ivStampIcon.setImageResource(R.mipmap.bg_agree_stamp);
                         mTvOperMsg.setText("您已取消预约");
                         break;
                 }
@@ -341,21 +381,58 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 mTvUpdateBtn.setVisibility(View.VISIBLE);
                 rlCancelContractOrderRoot.setVisibility(View.GONE);
                 rlSignOrderRoot.setVisibility(View.VISIBLE);
-            }else if(messageType.equals("medicalRecord")){
-                String userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
-                String nickName = message.getStringAttribute("nickName", "");
+            }
+            //病历
+            else if (messageType.equals("medicalRecord")) {
+                userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
+                nickName = message.getStringAttribute("nickName", "");
                 patient_rl.setVisibility(VISIBLE);
                 tv_monitor_type.setText("患者");
                 tv_coach_rate.setText("就诊结束时间");
                 tv_sign_time.setText("就诊医生");
                 mTvMonitValue.setText(userName);
                 //预约结束时间
-                mTvCoachRateValue.setText("");
+                mTvCoachRateValue.setText(endTime);
                 mTvSignTimeValue.setText(nickName);
-                tv_patient_class_vlaue.setText(appointMentType);
+                tv_patient_class_vlaue.setText(patientType);
             }
-
-
+            //医生已接诊
+            else if (messageType.equals("receiveTreatment")) {
+                mTvOperReceivedMsg.setText("医生已接诊");
+                //图文
+                if (appointMentProject.equals("10")) {
+                    patient_rl.setVisibility(VISIBLE);
+                    tv_monitor_type.setText("接诊时间");
+                    tv_coach_rate.setText("结束时间");
+                    tv_sign_time.setText("接诊医生");
+                    tv_patient_class.setText("剩余次数");
+                    //赋值
+                    mTvMonitValue.setText(receiveTime);
+                    //预约结束时间
+                    mTvCoachRateValue.setText(endTime);
+                    mTvSignTimeValue.setText(nickName);
+                    tv_patient_class_vlaue.setText(surplusTimes);
+                } else {
+                    //音视频电话  显示
+                    patient_rl.setVisibility(GONE);
+                    tv_monitor_type.setText("接诊时间");
+                    tv_coach_rate.setText("接诊医生");
+                    tv_sign_time.setText("剩余时长");
+                    //赋值
+                    mTvMonitValue.setText(receiveTime);
+                    //接诊医生
+                    mTvCoachRateValue.setText(nickName);
+                    mTvSignTimeValue.setText(surplusTimes);
+                }
+            }
+            //问诊资料
+            else if (messageType.equals("consultation")) {
+                 rl_one.setVisibility(GONE);
+                 rl_two.setVisibility(GONE);
+                 rl_three.setVisibility(GONE);
+                rlSignOrderRoot.setVisibility(GONE);
+                rl_immediately.setVisibility(INVISIBLE);
+            }
         }
         setBtnOperStatus();
 
@@ -368,10 +445,10 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         if (message.direct() == EMMessage.Direct.RECEIVE) {
             mTvAgreeBtn.setOnClickListener(v -> {
                 Object tag = mTvAgreeBtn.getTag();
-                if (tag!=null) {
+                if (tag != null) {
                     String string = tag.toString();
                     int i = Integer.parseInt(string);
-                    if(i==1){
+                    if (i == 1) {
                         String patientCode = mProvideViewSysUserPatientInfoAndRegion.getPatientCode();
                         String userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
                         String nickName = message.getStringAttribute("nickName", "");
@@ -392,10 +469,10 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             });
             mTvUpdateBtn.setOnClickListener(v -> {
                 Object tag = mTvUpdateBtn.getTag();
-                if (tag!=null) {
+                if (tag != null) {
                     String string = tag.toString();
                     int i = Integer.parseInt(string);
-                    if (i==1) {
+                    if (i == 1) {
                         if (messageType.equals("card")) {
 
                             String patientCode = mProvideViewSysUserPatientInfoAndRegion.getPatientCode();
@@ -431,24 +508,29 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             });
             mTvRefuseBtn.setOnClickListener(v -> {
 
-                if (message.direct() == EMMessage.Direct.RECEIVE ) {
+                if (message.direct() == EMMessage.Direct.RECEIVE) {
                     Object tag = mTvRefuseBtn.getTag();
-                    if (tag!=null) {
+                    if (tag != null) {
                         String string = tag.toString();
                         int i = Integer.parseInt(string);
-                        if (i==1) {
+                        if (i == 1) {
                             if (messageType.equals("card")) {
                                 String nickName = message.getStringAttribute("nickName", "");
                                 Bundle bundle = new Bundle();
                                 bundle.putString("orderId", orderId);
-                                bundle.putString("operDoctorCode",message.getFrom());
-                                bundle.putString("operDoctorName",nickName);
+                                bundle.putString("operDoctorCode", message.getFrom());
+                                bundle.putString("operDoctorName", nickName);
                                 startActivity(RefusedOrderActivity.class, bundle);
 
                             } else if (messageType.equals("terminationOrder")) {
                                 EventBus.getDefault().post(new OrderMessage(orderId, singNO, monitoringType, coach
                                         , signUpTime, price, messageType, "2"));
+                            } else if (messageType.equals("appointment")) {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("orderId", orderId);
+                                startActivity(AncelAppActivity.class, bundle);
                             }
+
                         }
                     }
 
@@ -458,10 +540,10 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             });
             mTvCancelContractAgreeBtn.setOnClickListener(v -> {
                 Object tag = mTvCancelContractAgreeBtn.getTag();
-                if (tag!=null) {
+                if (tag != null) {
                     String string = tag.toString();
                     int i = Integer.parseInt(string);
-                    if (i==1) {
+                    if (i == 1) {
                         String patientCode = mProvideViewSysUserPatientInfoAndRegion.getPatientCode();
                         String userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
                         String nickName = message.getStringAttribute("nickName", "");
@@ -485,20 +567,25 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             });
             mTvCancelContractRefuseBtn.setOnClickListener(v -> {
                 Object tag = mTvCancelContractAgreeBtn.getTag();
-                if (tag!=null) {
+                if (tag != null) {
                     String string = tag.toString();
                     int i = Integer.parseInt(string);
-                    if (i==1) {
+                    if (i == 1) {
                         String nickName = message.getStringAttribute("nickName", "");
                         Bundle bundle = new Bundle();
                         bundle.putString("orderId", orderId);
-                        bundle.putString("operDoctorCode",message.getFrom());
-                        bundle.putString("operDoctorName",nickName);
+                        bundle.putString("operDoctorCode", message.getFrom());
+                        bundle.putString("operDoctorName", nickName);
                         startActivity(RefusedCancelContractActivity.class, bundle);
                     }
                 }
 
 
+            });
+            //立即填写
+            rl_immediately.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                startActivity(WZXXActivity.class,bundle);
             });
         }
 
@@ -507,15 +594,15 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             if (messageType.equals("card")) {
                 Bundle bundle = new Bundle();
                 bundle.putString("signCode", orderId);
-                bundle.putString("operDoctorCode",message.getFrom());
-                bundle.putString("operDoctorName",nickName);
+                bundle.putString("operDoctorCode", message.getFrom());
+                bundle.putString("operDoctorName", nickName);
                 startActivity(SignOrderDetialActivity.class, bundle);
             } else if (messageType.equals("terminationOrder")) {
 
                 if (!orderType.equals("3")) {
                     Bundle bundle1 = new Bundle();
-                    bundle1.putString("operDoctorCode",message.getFrom());
-                    bundle1.putString("operDoctorName",nickName);
+                    bundle1.putString("operDoctorCode", message.getFrom());
+                    bundle1.putString("operDoctorName", nickName);
                     bundle1.putString("orderId", orderId);
                     startActivity(CancelConfirmDeitalActivity.class, bundle1);
                 }

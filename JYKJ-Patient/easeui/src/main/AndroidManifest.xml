@@ -5,44 +5,25 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application>
-
-        <activity android:name="com.hyphenate.easeui.order.SignOrderDetialActivity"
-            android:screenOrientation="portrait"
-            >
-
-
-        </activity>
-        <activity android:name=".order.CancelConfirmDeitalActivity"
-            android:screenOrientation="portrait"
-            >
-
-
-        </activity>
-        <activity android:name=".order.RefusedOrderActivity"
-            android:screenOrientation="portrait"
-            >
-
-
-        </activity>
-
-        <activity android:name=".order.CancelContractActivity"
-            android:screenOrientation="portrait"
-            >
-
-
-        </activity>
-        <activity android:name=".order.RefusedCancelContractActivity"
-            android:screenOrientation="portrait"
-            >
-
-
-        </activity>
-        <activity android:name=".ui.ChatActivity"
-            android:screenOrientation="portrait"
-            >
-
-        </activity>
-
+        <activity android:name=".ui.WZXXActivity"></activity>
+        <activity
+            android:name=".order.SignOrderDetialActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".order.CancelConfirmDeitalActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".order.RefusedOrderActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".order.CancelContractActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".order.RefusedCancelContractActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.ChatActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
