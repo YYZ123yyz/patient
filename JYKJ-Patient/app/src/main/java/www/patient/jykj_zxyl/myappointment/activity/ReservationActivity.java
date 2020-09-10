@@ -204,13 +204,13 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
             @Override
             public void onClick(View v) {
                 //预约提交
-                if (TextUtils.isEmpty(format)) {
+                if (TextUtils.isEmpty(deviceTimeOfYM)) {
                     Toast.makeText(ReservationActivity.this, "请选择预约时间", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mPresenter.sendReservationCommitRequest(mApp.loginDoctorPosition, "1", userCode,
                         userName, mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),
-                        mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), reserveDateRosterCode, status, format, 1 + "",
+                        mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), reserveDateRosterCode, status, deviceTimeOfYM, 1 + "",
                         selectedItem, blockNo + "", "");
             }
         });
@@ -262,9 +262,10 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
                     Date date = new Date(ReservationActivity.this.times);
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
                     format = sdf.format(date);
+                    deviceTimeOfYM=format;
                     listBean.clear();
                     mPresenter.sendReservationListRequest(mApp.loginDoctorPosition, userCode, userName,
-                            format, 1);
+                            deviceTimeOfYM, 1);
                 }
             });
             currentDatePos = getCurrentDatePos(reservePatientDoctorInfoBean);
@@ -357,7 +358,7 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
             public void onClick(View v) {
                 mPresenter.sendReservationCommitRequest(mApp.loginDoctorPosition, "1", userCode,
                         userName, mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),
-                        mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), reserveDateRosterCode, status, format, 1 + "",
+                        mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), reserveDateRosterCode, status, deviceTimeOfYM, 1 + "",
                         selectedItem, blockNo + "", confim);
                 appDialog.dismiss();
             }

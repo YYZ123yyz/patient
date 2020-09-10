@@ -50,7 +50,7 @@ public class SuccessfulDialog extends Dialog {
         successfulDialog = SuccessfulDialog.this;
         img = findViewById(R.id.img);
         RotateAnimation animation = new RotateAnimation(0, 360);
-        animation.setDuration(100000);//设定转一圈的时间
+        animation.setDuration(300000);//设定转一圈的时间
         animation.setRepeatCount(Animation.INFINITE);//设定无限循环
         animation.setRepeatMode(Animation.RESTART);
         img.startAnimation(animation);

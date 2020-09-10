@@ -61,7 +61,6 @@ public class Fragment_CompletedAdapter extends RecyclerView.Adapter<Fragment_Com
      */
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, @SuppressLint("RecyclerView") final int position) {
-// iv_stamp_icon,iv_failure_icon,iv_cancel_icon;
         String reserveStatus = datas.get(position).getReserveStatus();
         if(!TextUtils.isEmpty(reserveStatus)){
             if(reserveStatus.equals("30")){
@@ -144,7 +143,6 @@ public class Fragment_CompletedAdapter extends RecyclerView.Adapter<Fragment_Com
     public int getItemCount() {
 
         return datas.size();
-//            return 10;
     }
 
 

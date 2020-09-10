@@ -55,6 +55,7 @@ public class ResevationListPresenter extends BasePresenterImpl<ReservationListCo
                     int resCode = baseBean.getResCode();
                     if (resCode == 1) {
                         String resJsonData = baseBean.getResJsonData();
+                        Log.e("TAG", "onSuccessResult:就诊中 "+resJsonData );
                         List<MyReservationListBean> myReservationListBeans = GsonUtils.jsonToList(resJsonData, MyReservationListBean.class);
                         mView.getMyReservationListResult(myReservationListBeans);
                     }
