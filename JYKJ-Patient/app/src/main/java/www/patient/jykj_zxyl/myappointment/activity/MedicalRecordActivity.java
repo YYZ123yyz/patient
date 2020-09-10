@@ -14,6 +14,7 @@ import www.patient.jykj_zxyl.util.ActivityUtil;
 * */
 public class MedicalRecordActivity extends AppCompatActivity {
 
+    //临床诊断适配器  Item_ClinicalAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

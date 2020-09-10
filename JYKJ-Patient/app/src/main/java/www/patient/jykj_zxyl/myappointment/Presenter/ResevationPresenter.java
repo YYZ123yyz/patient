@@ -170,6 +170,9 @@ public class ResevationPresenter extends BasePresenterImpl<ReservationContract.V
                             }else if(status.equals("2")){
                                 mView.getReservationCommitIdCardCheckResult(reservePatientCommitBean.getMessage());
                             }
+                            else if(status.equals("3")){
+                            mView.getReservationunpaidResultError(reservePatientCommitBean);
+                            }
                         }else{
                             mView.getReservationCommitResult(reservePatientCommitBean);
                         }

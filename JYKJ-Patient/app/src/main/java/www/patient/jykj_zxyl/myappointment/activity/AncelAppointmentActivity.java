@@ -192,6 +192,11 @@ public class AncelAppointmentActivity extends AbstractMvpBaseActivity<Reservatio
     }
 
     @Override
+    public void getReservationunpaidResultError(ReservePatientCommitBean reservePatientCommitBeans) {
+
+    }
+
+    @Override
     public void getReservationDailog() {
 
     }

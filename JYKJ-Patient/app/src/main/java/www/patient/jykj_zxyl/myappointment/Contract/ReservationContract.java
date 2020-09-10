@@ -46,7 +46,10 @@ public class ReservationContract {
          * 提交失败
          */
         void getReservationCommitResultError(String msg);
-
+        /**
+         * 有未支付的订单
+         */
+        void getReservationunpaidResultError(ReservePatientCommitBean reservePatientCommitBeans);
         /**
          * 预约中的dialog
          * @param

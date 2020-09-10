@@ -140,6 +140,11 @@ public class VerifiedActivity extends AbstractMvpBaseActivity<ReservationContrac
     }
 
     @Override
+    public void getReservationunpaidResultError(ReservePatientCommitBean reservePatientCommitBeans) {
+
+    }
+
+    @Override
     public void getReservationDailog() {
 
     }
@@ -196,5 +201,10 @@ public class VerifiedActivity extends AbstractMvpBaseActivity<ReservationContrac
             Toast.makeText(VerifiedActivity.this, "请输入正确的身份证号", Toast.LENGTH_SHORT).show();
             return false;
         }
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }

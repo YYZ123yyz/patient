@@ -200,7 +200,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#fff"
                 android:orientation="vertical">
 
                <!-- <LinearLayout
@@ -232,6 +231,7 @@
 
                 <!--临床诊断-->
                 <LinearLayout
+                    android:background="#fff"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -275,6 +275,7 @@
 
                 <!--病史-->
                 <LinearLayout
+                    android:background="#fff"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -305,6 +306,7 @@
                         android:layout_height="1dp"
                         android:background="#C7C7C7" />
                     <TextView
+                        android:layout_marginBottom="10dp"
                         android:visibility="gone"
                         android:id="@+id/medicalhistory"
                         android:layout_width="wrap_content"
@@ -323,8 +325,9 @@
 
                 <!--既往病史-->
                 <LinearLayout
+                    android:background="#fff"
                     android:layout_width="match_parent"
-                    android:layout_height="57dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <LinearLayout
                         android:orientation="horizontal"
@@ -354,65 +357,51 @@
                         android:background="#C7C7C7" />
                     <TextView
                         android:visibility="gone"
+                        android:layout_marginBottom="10dp"
                         android:id="@+id/past"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="10dp"
-                        android:text="2222222"
+                        android:text="66666666666666666"
                         android:textColor="#666666" />
                 </LinearLayout>
 
 
-
-
-                <!--查体情况-->
+                <!--过敏史-->
                 <LinearLayout
+                    android:background="#fff"
                     android:layout_width="match_parent"
-                    android:layout_height="57dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
-
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:drawablePadding="10dp"
+                            android:text="过敏史"
+                            android:textColor="#000" />
+                        <ImageView
+                            android:id="@+id/dispaly_examination"
+                            android:layout_marginRight="10dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@mipmap/dispaly"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#C7C7C7" />
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:drawableLeft="@mipmap/physical"
-                        android:drawablePadding="10dp"
-                        android:text="查体"
-                        android:textColor="#000" />
-
-                    <TextView
-                        android:id="@+id/physical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="36dp"
-                        android:layout_marginTop="5dp"
-                        android:text="2222222"
-                        android:textColor="#333333" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#C7C7C7" />
-                <!--检查项目-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="57dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:drawableLeft="@mipmap/examin"
-                        android:drawablePadding="10dp"
-                        android:text="治疗建议"
-                        android:textColor="#000" />
-
-                    <TextView
+                        android:visibility="gone"
+                        android:layout_marginBottom="10dp"
                         android:id="@+id/examination"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -422,28 +411,42 @@
                         android:textColor="#333333" />
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#C7C7C7" />
-                <!--临床诊断-->
+
+                <!--查体情况-->
                 <LinearLayout
+                    android:background="#fff"
                     android:layout_width="match_parent"
-                    android:layout_height="57dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:drawablePadding="10dp"
+                            android:text="查体"
+                            android:textColor="#000" />
+                        <ImageView
+                            android:id="@+id/dispaly_physical"
+                            android:layout_marginRight="10dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@mipmap/dispaly"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#C7C7C7" />
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:drawableLeft="@mipmap/inspection"
-                        android:drawablePadding="10dp"
-                        android:text="检查检验"
-                        android:textColor="#000" />
-
-                    <TextView
-                        android:id="@+id/inspection"
+                        android:visibility="gone"
+                        android:id="@+id/physical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="36dp"
@@ -452,14 +455,122 @@
                         android:textColor="#333333" />
                 </LinearLayout>
 
+                <!--临床诊断-->
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+                        <TextView
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:drawablePadding="10dp"
+                            android:text="临床诊断"
+                            android:textColor="#000" />
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#C7C7C7" />
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/clinical_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#C7C7C7" />
 
+
+            <!--治疗建议-->
+                <LinearLayout
+                    android:background="#fff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:drawablePadding="10dp"
+                            android:text="治疗建议"
+                            android:textColor="#000" />
+                        <ImageView
+                            android:id="@+id/dispaly_treatment"
+                            android:layout_marginRight="10dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@mipmap/dispaly"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#C7C7C7" />
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/treatment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="36dp"
+                        android:layout_marginTop="5dp"
+                        android:text="2222222"
+                        android:textColor="#333333" />
+                </LinearLayout>
+
+                <!--检查检验-->
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+                        <TextView
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:drawablePadding="10dp"
+                            android:text="检查检验"
+                            android:textColor="#000" />
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#C7C7C7" />
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/Inspection_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
             </LinearLayout>
 
-            <LinearLayout
+           <!-- <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -504,9 +615,9 @@
                     android:id="@+id/drug_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-            </LinearLayout>
+            </LinearLayout>-->
 
-            <LinearLayout
+        <!--    <LinearLayout
                 android:id="@+id/lin_doctor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -525,39 +636,96 @@
                     android:layout_marginRight="42.5dp"
                     android:text="医生签名:"
                     android:textColor="#000" />
+            </LinearLayout>-->
+
+            <!--处方笺-->
+            <LinearLayout
+                android:background="#fff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:drawablePadding="10dp"
+                        android:text="处方笺"
+                        android:textColor="#000" />
+                    <ImageView
+                        android:id="@+id/dispaly_fullpayment"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/dispaly"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#C7C7C7" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:text="药品名称"
+                        android:textColor="#000"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="规格"
+                        android:layout_marginLeft="150dp"
+                        android:layout_weight="1"
+                        android:textColor="#000"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="数量"
+                        android:textColor="#000"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="单价(元)"
+                        android:textColor="#000"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:id="@+id/fullpayment_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
+
 
             <LinearLayout
                 android:visibility="gone"
-                android:id="@+id/fullpayment"
+                android:id="@+id/lin_fullpayment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:background="#fff"
                 android:orientation="vertical">
-
-                <www.patient.jykj_zxyl.custom.MyselfItemView
-                    android:id="@+id/stack"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    app:text_title="处方栈" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/result_minor_text" />
-
-                <www.patient.jykj_zxyl.custom.MyselfItemView
-                    android:id="@+id/single"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    app:text_title="检查检验单" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/result_minor_text" />
-
                 <Button
                     android:id="@+id/share"
                     android:layout_width="232dp"
