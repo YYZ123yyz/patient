@@ -122,7 +122,7 @@ public class FragmentWDYS_QYYS extends Fragment {
                 intent.putExtra("userCode", provideViewMyDoctorSignings.get(position).getDoctorCode());
                 intent.putExtra("userName", provideViewMyDoctorSignings.get(position).getUserName());
                 intent.putExtra("loginDoctorPosition", mApp.loginDoctorPosition);
-                intent.putExtra("status", "1");
+                intent.putExtra("status", "2");
                 intent.putExtra("linPhone", provideViewMyDoctorSignings.get(position).getLinkPhone());
                 startActivity(intent);
 

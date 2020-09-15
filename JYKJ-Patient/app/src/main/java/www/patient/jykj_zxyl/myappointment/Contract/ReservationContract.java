@@ -1,5 +1,7 @@
 package www.patient.jykj_zxyl.myappointment.Contract;
 
+import android.app.Activity;
+
 import java.util.List;
 
 import www.patient.jykj_zxyl.activity.myself.order.RefusedOrderContract;
@@ -116,13 +118,12 @@ public class ReservationContract {
         );
 
         //取消预约
-        void sendReservationCancelRequest(String loginPatientPosition,
-                                          String mainPatientCode,
-                                          String mainPatientName,
+        void sendReservationCancelRequest(
                                           String reserveCode,
                                           String cancelReserveCode,
                                           String cancelReserveName,
-                                          String cancelReserveRemark
+                                          String cancelReserveRemark,
+                                          Activity activity
         );
         /**
          * 发送获取订单信息接口

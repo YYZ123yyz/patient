@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -106,6 +107,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
     private static final int SDK_PAY_FLAG = 3;
     private String pay_appid;
     private String pay_productid;
+    private LinearLayout ll_back;
 
     private void initView() {
         zf_weixin = (LinearLayout) this.findViewById(R.id.zf_weixin);
@@ -218,7 +220,9 @@ public class WZXXOrderActivity extends AppCompatActivity {
         mWXZF = (ImageView) this.findViewById(R.id.wxzf);
         mZFBZF = (ImageView) this.findViewById(R.id.zfbzf);
         mCommit = (TextView) this.findViewById(R.id.commit);
+        ll_back = findViewById(R.id.ll_back);
         mCommit.setOnClickListener(new ButtonClick());
+        ll_back.setOnClickListener(new ButtonClick());
         setZFModel();
     }
 
@@ -352,6 +356,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
             public void run() {
                 try {
                     String string = new Gson().toJson(provideInteractOrderInfo);
+                    Log.e("TAG", "run: "+string);
                     mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(provideInteractOrderInfo), Constant.SERVICEURL + "PatientMyDoctorControlle/operIndexMyDoctorSigningRenewal");
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
                 } catch (Exception e) {
@@ -370,6 +375,8 @@ public class WZXXOrderActivity extends AppCompatActivity {
      * 生成支付订单
      */
     private void commit() {
+        /*{"couponsHaveCode":"0","flagPayType":"1","integralDeductionMoney":"0","integralHaveCode":"0","loginPatientPosition":"20.154455^23.41548512","operPatientCode":"ae0b55c6be7f4b1588f0ea73b8653d26","operPatientName":"A～杨","patientCode":"ae0b55c6be7f4b1588f0ea73b8653d26","patientName":"A～杨","priceDiscountCoupon":0.0,"priceDiscountIntegral":0.0,"requestClientType":"1","treatmentType":0}
+        * */
         ProvideInteractOrderInfo provideInteractOrderInfo = new ProvideInteractOrderInfo();
         provideInteractOrderInfo.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideInteractOrderInfo.setRequestClientType("1");
@@ -413,25 +420,25 @@ public class WZXXOrderActivity extends AppCompatActivity {
 
         switch (Integer.valueOf(mOrderType)) {
             case 2:
-//                provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
-//                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++) {
-//                    if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
-//                        provideInteractOrderInfo.setTreatmentTimeSlot(provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).getDayTimeSlot());
-//                }
+                provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
+                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++) {
+                    if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
+                        provideInteractOrderInfo.setTreatmentTimeSlot(provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).getDayTimeSlot());
+                }
                 break;
             case 3:
-//                provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
-//                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++) {
-//                    if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
-//                        provideInteractOrderInfo.setTreatmentTimeSlot(provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).getDayTimeSlot());
-//                }
+                provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
+                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++) {
+                    if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
+                        provideInteractOrderInfo.setTreatmentTimeSlot(provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).getDayTimeSlot());
+                }
                 break;
             case 5:
-//                provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
-//                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++) {
-//                    if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
-//                        provideInteractOrderInfo.setTreatmentTimeSlot(provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).getDayTimeSlot());
-//                }
+                provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
+                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++) {
+                    if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
+                        provideInteractOrderInfo.setTreatmentTimeSlot(provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).getDayTimeSlot());
+                }
                 break;
         }
 
@@ -447,6 +454,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
                 try {
                     String string = new Gson().toJson(provideInteractOrderInfo);
                     mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(provideInteractOrderInfo), Constant.SERVICEURL + "patientInteractDataControlle/operInteractOrderInfoGenerate");
+                    Log.e("TAG", "run: "+string );
 //                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideInteractOrderInfo),"http://192.168.3.15:8081/jyJXTWeiChat/weiChatPayDemo");
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
 

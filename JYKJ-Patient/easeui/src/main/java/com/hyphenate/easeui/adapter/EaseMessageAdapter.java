@@ -146,7 +146,12 @@ public class EaseMessageAdapter extends BaseAdapter {
                 EMMessage emMessage = list.get(i);
                 String messageType = emMessage.getStringAttribute("messageType"
                         , "");
-                if (messageType.equals("terminationOrder")||messageType.equals("card")) {
+                if (messageType.equals("terminationOrder")
+                        ||messageType.equals("card")
+                        ||messageType.equals("appointment")
+                        ||messageType.equals("appointment")
+                        ||messageType.equals("medicalRecord")
+                        ||messageType.equals("receiveTreatment")) {
                     cards.add(i);
                 }
 
@@ -156,7 +161,11 @@ public class EaseMessageAdapter extends BaseAdapter {
             EMMessage emMessage = list.get(i);
             String messageType = emMessage.getStringAttribute("messageType"
                     , "");
-            if (messageType.equals("terminationOrder")||messageType.equals("card")) {
+            if (messageType.equals("terminationOrder")||messageType.equals("card")
+                    ||messageType.equals("appointment")
+                    ||messageType.equals("medicalRecord")
+                    ||messageType.equals("receiveTreatment")
+            ) {
 
                 if (isLastData(cards,i)) {
                     emMessage.setAttribute("isValid",true);
@@ -264,7 +273,11 @@ public class EaseMessageAdapter extends BaseAdapter {
 		        return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_EXPRESSION : MESSAGE_TYPE_SENT_EXPRESSION;
 		    }else{
                 String messageType = message.getStringAttribute("messageType", "");
-                if (messageType.equals("card")||messageType.equals("terminationOrder")){
+                if (messageType.equals("card")||messageType.equals("terminationOrder")
+                        ||messageType.equals("appointment")
+                        ||messageType.equals("medicalRecord")
+                        ||messageType.equals("receiveTreatment")
+                ){
                     return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_ORDER_CARD : MESSAGE_TYPE_SEND_ORDER_CARD;
                 }else if(itemStyle!=null&&itemStyle.isShowChatRoom()){
                     return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_TXT_ROOM : MESSAGE_TYPE_SEND_TXT_ROOM;
@@ -307,7 +320,12 @@ public class EaseMessageAdapter extends BaseAdapter {
             }else{
 				String messageType = message.getStringAttribute("messageType", "");
 				if (messageType
-						.equals("card")||messageType.equals("terminationOrder")) {
+						.equals("card")
+                        ||messageType.equals("terminationOrder")
+                        ||messageType.equals("appointment")
+                        ||messageType.equals("medicalRecord")
+                        ||messageType.equals("receiveTreatment")
+                ) {
 					presenter = new EaseChatOrderPresenter();
 				}else{
 					if (itemStyle.isShowChatRoom()) {

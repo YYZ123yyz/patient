@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,7 +38,6 @@ public class SuccessfulDialog extends Dialog {
         setCanceledOnTouchOutside(false);
         Window window = getWindow();
         window.setGravity(Gravity.CENTER);
-        window.getDecorView().setPadding(24, 0, 24, 80);
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -49,11 +49,14 @@ public class SuccessfulDialog extends Dialog {
         this.setContentView(R.layout.success_layout);
         successfulDialog = SuccessfulDialog.this;
         img = findViewById(R.id.img);
-        RotateAnimation animation = new RotateAnimation(0, 360);
-        animation.setDuration(300000);//设定转一圈的时间
-        animation.setRepeatCount(Animation.INFINITE);//设定无限循环
-        animation.setRepeatMode(Animation.RESTART);
-        img.startAnimation(animation);
+        RotateAnimation rotate  = new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        LinearInterpolator lin = new LinearInterpolator();
+        rotate.setInterpolator(lin);
+        rotate.setDuration(2000);//设置动画持续周期
+        rotate.setRepeatCount(-1);//设置重复次数
+        rotate.setFillAfter(true);//动画执行完后是否停留在执行完的状态
+        rotate.setStartOffset(10);//执行前的等待时间
+        img.setAnimation(rotate);
     }
 
 }

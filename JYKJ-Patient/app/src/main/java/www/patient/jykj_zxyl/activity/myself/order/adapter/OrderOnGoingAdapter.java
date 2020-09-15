@@ -190,25 +190,30 @@ public class OrderOnGoingAdapter extends MultiItemRecycleViewAdapter<MultiItemEn
                         }
                     }
                 });
-                switch (parbean.getFlagColor()) {
-                    case 0:
-                        break;
-                    case 1:
-                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_red));
-                        break;
-                    case 2:
-                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_orange));
-                        break;
-                    case 3:
-                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_yellow));
-                        break;
-                    case 4:
-                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_blue));
-                        break;
-                    case 5:
-                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_green));
-                        break;
+                if(parbean.getFlagColor()==null){
+
+                }else{
+                    switch (parbean.getFlagColor()) {
+                        case 0:
+                            break;
+                        case 1:
+                            process_state.setTextColor(mContext.getResources().getColor(R.color.color_red));
+                            break;
+                        case 2:
+                            process_state.setTextColor(mContext.getResources().getColor(R.color.color_orange));
+                            break;
+                        case 3:
+                            process_state.setTextColor(mContext.getResources().getColor(R.color.color_yellow));
+                            break;
+                        case 4:
+                            process_state.setTextColor(mContext.getResources().getColor(R.color.color_blue));
+                            break;
+                        case 5:
+                            process_state.setTextColor(mContext.getResources().getColor(R.color.color_green));
+                            break;
+                    }
                 }
+
                 if (null != parbean.getOrderDate()) {
                     order_date.setText(DateUtils.fomrDateSeflFormat(parbean.getOrderDate(), "yyyy-MM-dd HH:mm"));
                 }

@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.myappointment.Presenter;
 
+import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import www.patient.jykj_zxyl.base.base_bean.BaseBean;
 import www.patient.jykj_zxyl.base.base_bean.BaseReasonBean;
+import www.patient.jykj_zxyl.base.base_bean.DoctorInfoBean;
 import www.patient.jykj_zxyl.base.base_bean.OrderDetialBean;
 import www.patient.jykj_zxyl.base.base_bean.ReservePatientCommitBean;
 import www.patient.jykj_zxyl.base.base_bean.ReservePatientDoctorInfoBean;
@@ -34,7 +36,7 @@ public class ResevationPresenter extends BasePresenterImpl<ReservationContract.V
         implements ReservationContract.Presenter {
     @Override
     protected Object[] getRequestTags() {
-        return new Object[0];
+        return new Object[]{SEND_SEARCH_SIGN_PATIENT_DOCTOR_ORDER_REQUEST_TAG};
     }
     /**获取订单详情信息*/
     private static final String SEND_SEARCH_SIGN_PATIENT_DOCTOR_ORDER_REQUEST_TAG="send_search_sign_patient_doctor_order_request_tag";
@@ -64,11 +66,16 @@ public class ResevationPresenter extends BasePresenterImpl<ReservationContract.V
         ).subscribe(new CommonDataObserver() {
             @Override
             protected void onSuccessResult(BaseBean baseBean) {
-                String resJsonData = baseBean.getResJsonData();
-                List<ReservePatientDoctorInfoBean> reservePatientDoctorInfoBeans = GsonUtils.jsonToList(resJsonData, ReservePatientDoctorInfoBean.class);
                 if (mView != null) {
-                    mView.getReservationTiteResult(reservePatientDoctorInfoBeans);
+                    int resCode = baseBean.getResCode();
+                    if(resCode==1){
+                        String resJsonData = baseBean.getResJsonData();
+                        Log.e("TAG", "头部: "+resJsonData );
+                        List<ReservePatientDoctorInfoBean> reservePatientDoctorInfoBeans = GsonUtils.jsonToList(resJsonData, ReservePatientDoctorInfoBean.class);
+                            mView.getReservationTiteResult(reservePatientDoctorInfoBeans);
+                    }
                 }
+
             }
         });
     }
@@ -106,7 +113,7 @@ public class ResevationPresenter extends BasePresenterImpl<ReservationContract.V
                     int resCode = baseBean.getResCode();
                     if(resCode==1){
                         String resJsonData = baseBean.getResJsonData();
-                        Log.e("TAG", "onSuccessResult:列表 "+resJsonData );
+                        Log.e("TAG", "条件查询 "+resJsonData );
                         List<ReservePatientListBean> reservePatientListBeans = GsonUtils.jsonToList(resJsonData, ReservePatientListBean.class);
                         mView.getReservationListResult(reservePatientListBeans);
                     }else{
@@ -161,7 +168,6 @@ public class ResevationPresenter extends BasePresenterImpl<ReservationContract.V
                     int resCode = baseBean.getResCode();
                     if(resCode==1){
                         String resJsonData = baseBean.getResJsonData();
-                        Log.e("TAG", "预约成功: "+resJsonData );
                         ReservePatientCommitBean reservePatientCommitBean = GsonUtils.fromJson(resJsonData, ReservePatientCommitBean.class);
                         String status = reservePatientCommitBean.getStatus();
                         if (StringUtils.isNotEmpty(status)) {
@@ -261,11 +267,10 @@ public class ResevationPresenter extends BasePresenterImpl<ReservationContract.V
 
     //取消
     @Override
-    public void sendReservationCancelRequest(String loginPatientPosition, String mainPatientCode, String mainPatientName, String reserveCode, String cancelReserveCode, String cancelReserveName, String cancelReserveRemark) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("loginPatientPosition", loginPatientPosition);
-        map.put("mainPatientCode", mainPatientCode);
-        map.put("mainPatientName", mainPatientName);
+    public void sendReservationCancelRequest(String reserveCode, String cancelReserveCode,
+                                             String cancelReserveName, String cancelReserveRemark,
+                                             Activity activity) {
+        HashMap<String, Object> map = ParameUtil.buildBasePatientParam(activity);
         map.put("reserveCode", reserveCode);
         map.put("cancelReserveCode", cancelReserveCode);
         map.put("cancelReserveName", cancelReserveName);

@@ -158,7 +158,13 @@ public class FragmentWDYS_FQYYS extends Fragment {
 
             @Override
             public void onClick(int position) {
-                startActivity(new Intent(mContext, ReservationActivity.class));
+                Intent intent = new Intent(mActivity, ReservationActivity.class);
+                intent.putExtra("userCode", providePatientBindingMyDoctorInfos.get(position).getDoctorCode());
+                intent.putExtra("userName", providePatientBindingMyDoctorInfos.get(position).getUserName());
+                intent.putExtra("loginDoctorPosition", mApp.loginDoctorPosition);
+                intent.putExtra("status", "1");
+                intent.putExtra("linPhone", providePatientBindingMyDoctorInfos.get(position).getLinkPhone());
+                startActivity(intent);
 
 //                Toast.makeText(mContext,"申请绑定",Toast.LENGTH_SHORT).show();
 //                ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend = new ProvideViewDoctorExpertRecommend();

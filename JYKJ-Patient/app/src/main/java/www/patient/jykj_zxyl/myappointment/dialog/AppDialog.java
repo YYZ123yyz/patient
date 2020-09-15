@@ -16,7 +16,6 @@ public class AppDialog extends Dialog {
         setCanceledOnTouchOutside(false);
         Window window = getWindow();
         window.setGravity(Gravity.CENTER);
-        window.getDecorView().setPadding(24, 0, 24, 80);
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;

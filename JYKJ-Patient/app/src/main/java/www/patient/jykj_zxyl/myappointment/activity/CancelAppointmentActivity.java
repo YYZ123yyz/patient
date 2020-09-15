@@ -1,6 +1,5 @@
 package www.patient.jykj_zxyl.myappointment.activity;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,8 +16,6 @@ import android.widget.Toast;
 
 import com.allen.library.utils.ToastUtils;
 import com.hyphenate.easeui.ui.ChatActivity;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -41,10 +38,10 @@ import www.patient.jykj_zxyl.util.ActivityUtil;
 /*
 * 取消预约
 * */
-public class AncelAppointmentActivity extends AbstractMvpBaseActivity<ReservationContract.View,
+public class CancelAppointmentActivity extends AbstractMvpBaseActivity<ReservationContract.View,
         ResevationPresenter> implements ReservationContract.View{
 
-    private AncelAppointmentActivity mActivity;
+    private CancelAppointmentActivity mActivity;
     private JYKJApplication mApp;
     private Context mContext;
     public ProgressDialog mDialogProgress = null;
@@ -74,7 +71,7 @@ public class AncelAppointmentActivity extends AbstractMvpBaseActivity<Reservatio
         super.onBeforeSetContentLayout();
         ButterKnife.bind(this);
         mApp = (JYKJApplication) getApplication();
-        mActivity=AncelAppointmentActivity.this;
+        mActivity= CancelAppointmentActivity.this;
         cancelContractDialog = new CancelContractDialog(this);
 
     }
@@ -87,20 +84,23 @@ public class AncelAppointmentActivity extends AbstractMvpBaseActivity<Reservatio
     protected void initView() {
         super.initView();
         ActivityUtil.setStatusBarMain(mActivity);
-        Intent intent = getIntent();
-        reserveCode = intent.getStringExtra("reserveCode");
-        doctorName = intent.getStringExtra("doctorName");
-        doctorCode = intent.getStringExtra("doctorCode");
-        doctorUrl = intent.getStringExtra("doctorUrl");
-        signCode = intent.getStringExtra("SignCode");
+        Bundle extras = this.getIntent().getExtras();
+        if (extras!=null) {
+            reserveCode = extras.getString("reserveCode");
+            doctorName = extras.getString("doctorName");
+            doctorCode = extras.getString("doctorCode");
+            doctorUrl = extras.getString("doctorUrl");
+            signCode = extras.getString("SignCode");
 //        //预约时间
-        appointment = intent.getStringExtra("Appointment");
+            appointment = extras.getString("Appointment");
 //        //结束时间
-        endTime = intent.getStringExtra("endTime");
-        //预约项目
-        aClass = intent.getStringExtra("class");
-        //预约类型
-        type = intent.getStringExtra("type");
+            endTime = extras.getString("endTime");
+            //预约项目
+            aClass = extras.getString("class");
+            //预约类型
+            type = extras.getString("type");
+        }
+
         llBack = findViewById(R.id.ll_back);
         rl = findViewById(R.id.rl);
         tvName = findViewById(R.id.tv_name);
@@ -150,7 +150,8 @@ public class AncelAppointmentActivity extends AbstractMvpBaseActivity<Reservatio
                     ToastUtils.showToast("解约原因不能为空");
                     return;
                 }
-                        mPresenter.sendReservationCancelRequest(mApp.loginDoctorPosition,mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),reserveCode,mCancelContractBean.getAttrCode()+"",mCancelContractBean.getAttrName(),ed);
+                        mPresenter.sendReservationCancelRequest(reserveCode,
+                                mCancelContractBean.getAttrCode()+"",mCancelContractBean.getAttrName(),ed,CancelAppointmentActivity.this);
             }
         });
 
@@ -222,7 +223,7 @@ public class AncelAppointmentActivity extends AbstractMvpBaseActivity<Reservatio
      */
     @Override
     public void getReservationCancelResult(boolean isSucess, String msg) {
-        if (isSucess==true) {
+        if (isSucess) {
             if (ActivityStackManager.getInstance().exists(ChatActivity.class)) {
                 ActivityStackManager.getInstance().finish(ChatActivity.class);
             }
@@ -240,6 +241,7 @@ public class AncelAppointmentActivity extends AbstractMvpBaseActivity<Reservatio
             bundle.putSerializable("orderMsg", appointment);
             intent.putExtras(bundle);
             startActivity(intent);
+            finish();
         }else{
             Toast.makeText(this, "提交失败", Toast.LENGTH_SHORT).show();
         }

@@ -1762,7 +1762,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         }else if(messageType.equals("terminationOrder")){
             msgContent="[解约订单]";
         }else if(messageType.equals("appointment")){
-            msgContent="[取消预约订单]";
+            msgContent="[取消预约]";
         }
         //发送扩展消息
         EMMessage message = EMMessage.createTxtSendMessage(msgContent,toChatUsername);
@@ -1783,10 +1783,11 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 message.setAttribute("isPatient",msg.getIsPatient());
                 break;
             case "appointment":
-                message.setAttribute("startTime: ",msg.getStartTime());
-                message.setAttribute("cancelTime: ",msg.getCancelTime());
-                message.setAttribute("appointMentProject: ",msg.getAppointMentProject());
-                message.setAttribute("appointMentType: ",msg.getAppointMentType());
+                message.setAttribute("orderType",msg.getOrderType());
+                message.setAttribute("startTime",msg.getStartTime());
+                message.setAttribute("cancelTime",msg.getCancelTime());
+                message.setAttribute("appointMentProject",msg.getAppointMentProject());
+                message.setAttribute("appointMentType",msg.getAppointMentType());
                 message.setAttribute("monitoringType",msg.getMonitoringType());
                 message.setAttribute("nickName", mProvideViewSysUserPatientInfoAndRegion.getUserName());
                 message.setAttribute("imageUrl", mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());

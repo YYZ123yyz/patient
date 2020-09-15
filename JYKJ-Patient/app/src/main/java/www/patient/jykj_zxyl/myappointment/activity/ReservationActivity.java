@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -191,7 +192,6 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
         //预约头部查询
         mPresenter.sendReservationTiteRequest(mApp.loginDoctorPosition, userCode, userName);
         //列表查询
-        listBean.clear();
         mPresenter.sendReservationListRequest(mApp.loginDoctorPosition, userCode, userName,
                 deviceTimeOfYM, 1);
     }
@@ -214,24 +214,29 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
                         selectedItem, blockNo + "", "");
             }
         });
+        //预约成功的确定按钮
         reservation_successDialog.setOnClickListener(new Reservation_SuccessDialog.OnClickListener() {
             @Override
             public void onClickSucessBtn() {
-                if (reserveStatus.equals("10")) {
-                    Intent intent = new Intent(ReservationActivity.this, MyAppointmentActivity.class);
-                    startActivity(intent);
-                } else {
+                if(status.equals("1")){
                     //确认
                     Intent intent = new Intent();
-                    intent.setClass(context, MyAppointmentActivity.class);
-                   /* intent.putExtra("orderID", orderCode);
+                    intent.setClass(context, WZXXOrderActivity.class);
+                    intent.putExtra("orderID", orderCode);
                     intent.putExtra("orderType", reserveProjectCode);
                     intent.putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend);
                     intent.putExtra("provideDoctorSetSchedulingInfoGroupDate", provideDoctorSetSchedulingInfoGroupDate);
-                    intent.putExtra("provideInteractPatientInterrogation", mProvideInteractPatientInterrogation);*/
+                    intent.putExtra("provideInteractPatientInterrogation", mProvideInteractPatientInterrogation);
                     startActivity(intent);
                     reservation_successDialog.dismiss();
                 }
+               else{
+                    Intent intent = new Intent(ReservationActivity.this, MyAppointmentActivity.class);
+                    startActivity(intent);
+                    reservation_successDialog.dismiss();
+                }
+
+
             }
         });
     }
@@ -293,7 +298,6 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
     @Override
     public void getReservationListResult(List<ReservePatientListBean> reservePatientListBeans) {
         if (reservePatientListBeans != null) {
-            listBean.clear();
             listBean.addAll(reservePatientListBeans);
             reservation_list_adapter = new Reservation_List_Adapter(listBean);
             class_rv.setAdapter(reservation_list_adapter);
@@ -418,7 +422,6 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
             mApp.gPayOrderCode = orderCode;
             mProvideInteractPatientInterrogation.setDoctorCode(mainDoctorCode);
             mProvideInteractPatientInterrogation.setDoctorName(mainDoctorName);
-            Log.e("TAG", "getReservationCommitResult: "+mProvideInteractPatientInterrogation.getDoctorName() );
             float price = reservePatientCommitBeans.getOrderAndSignPrice();
             if (reserveProjectCode.equals("1")) {
                 provideViewDoctorExpertRecommend.setImgTextPrice(price);
@@ -490,6 +493,38 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
     @Override
     public void getReservationunpaidResultError(ReservePatientCommitBean reservePatientCommitBeans) {
         if(reservePatientCommitBeans!=null){
+             mainDoctorCode = reservePatientCommitBeans.getReservePatientDoctorInfo().getMainDoctorCode();
+            Log.e("TAG", "未 "+mainDoctorCode );
+            mainDoctorName=  reservePatientCommitBeans.getReservePatientDoctorInfo().getMainDoctorName();
+            Log.e("TAG", "未 "+mainDoctorName );
+            orderCode = reservePatientCommitBeans.getReservePatientDoctorInfo().getOrderCode();
+            Log.e("TAG", "未 "+orderCode );
+            int treatmentType = reservePatientCommitBeans.getReservePatientDoctorInfo().getTreatmentType();
+            Log.e("TAG", "未 "+treatmentType );
+            //医生code
+            provideViewDoctorExpertRecommend.setDoctorCode(reservePatientCommitBeans.getReservePatientDoctorInfo().getMainDoctorCode());
+            provideViewDoctorExpertRecommend.setUserName(mainDoctorName);
+            //   provideViewDoctorExpertRecommend.setLinkPhone(linPhone);
+            mApp.gPayOrderCode = orderCode;
+            mProvideInteractPatientInterrogation.setDoctorCode(mainDoctorCode);
+            mProvideInteractPatientInterrogation.setDoctorName(mainDoctorName);
+            float price =
+                    (float) reservePatientCommitBeans.getReservePatientDoctorInfo().getOrderAndSignPrice();
+            Log.e("TAG", "未 "+price );
+            if (treatmentType==1) {
+                provideViewDoctorExpertRecommend.setImgTextPrice(price);
+            } else if (treatmentType==2) {
+                provideViewDoctorExpertRecommend.setAudioPrice(price);
+            } else if (treatmentType==3) {
+                provideViewDoctorExpertRecommend.setVideoPrice(price);
+            } else if (treatmentType==4) {
+                provideViewDoctorExpertRecommend.setSigningPrice(price);
+            }
+            String ss = DateUtils.stampToDate(reservePatientCommitBeans.getReservePatientDoctorInfo().getReserveConfigStart());
+            Log.e("TAG", "未 "+ss );
+            Date date = DateUtils.getDate(ss);
+            provideDoctorSetSchedulingInfoGroupDate.setWorkDate(date);
+            provideDoctorSetSchedulingInfoGroupDate.setChoice(true);
             appDialog.show();
             TextView tv = appDialog.findViewById(R.id.appdialog_tv);
             tv.setText(reservePatientCommitBeans.getMessage());
@@ -536,6 +571,7 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
                     handler.sendEmptyMessageDelayed(100, 1000);
                 } else {
                     successfulDialog.dismiss();
+                    errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     errorDialog.show();
                     errorDialog.findViewById(R.id.lin_back).setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -555,6 +591,7 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
 
     //预约中
     private void reservation_success() {
+        successfulDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         successfulDialog.show();
         handler.sendEmptyMessageDelayed(100, 1000);
     }
@@ -588,7 +625,7 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
                     int select = (int) selectedItemId;
                     //预约查询列表查询
                     mPresenter.sendReservationListRequest(mApp.loginDoctorPosition, userCode, userName,
-                            format, select);
+                            deviceTimeOfYM, select);
 
 
                 }
