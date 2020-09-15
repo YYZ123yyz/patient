@@ -1,0 +1,885 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:zhy="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".myappointment.activity.ApplicationFormActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/groabColor">
+
+        <RelativeLayout
+            android:id="@+id/ri_back"
+            android:layout_width="60dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/arrow_left" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="病历"
+            android:textColor="@color/writeColor"
+            android:textSize="10pt" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:background="#799DFE"
+                android:orientation="horizontal">
+
+                <www.patient.jykj_zxyl.util.CircleImageView
+                    android:id="@+id/userHead"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@mipmap/docter_heard" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/userName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="李医生"
+                            android:textStyle="bold"
+                            android:textColor="@color/encode_view"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/usergendder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:gravity="center"
+                            android:text="性别"
+                            android:textColor="@color/encode_view"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/userage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:gravity="center"
+                            android:text="年龄"
+                            android:textColor="@color/encode_view"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="门诊号:"
+                                android:textColor="@color/encode_view"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/userDoctro"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="yyz"
+                                android:textColor="@color/encode_view"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="申请时间:"
+                                android:textColor="@color/encode_view"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/userDepartment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="科室"
+                                android:textColor="@color/encode_view"
+                                android:textSize="12sp" />
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="申请单号:"
+                            android:textColor="@color/encode_view"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/Department"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="科室"
+                            android:textColor="@color/encode_view"
+                            android:textSize="12sp" />
+
+
+
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:drawableLeft="@mipmap/iv_diagnois"
+                    android:layout_weight="1"
+                    android:drawablePadding="4dp"
+                    android:text="临床诊断"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:textColor="@color/textColor_black" />
+
+                <TextView
+                    android:id="@+id/chief"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="2222222"
+                    android:textSize="14sp"
+                    android:textColor="@color/textColor_black"
+                   />
+
+            </LinearLayout>
+
+            <View
+                style="@style/div_h"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:drawableLeft="@mipmap/iv_com"
+                    android:layout_weight="1"
+                    android:drawablePadding="4dp"
+                    android:text="主诉"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:textColor="@color/textColor_black" />
+
+                <TextView
+                    android:id="@+id/tv_com"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="2222222"
+                    android:textSize="14sp"
+                    android:textColor="@color/textColor_black"
+                    />
+
+            </LinearLayout>
+
+            <View
+                style="@style/div_h"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:drawableLeft="@mipmap/iv_record"
+                    android:layout_weight="1"
+                    android:drawablePadding="4dp"
+                    android:text="病史"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:textColor="@color/textColor_black" />
+
+                <TextView
+                    android:id="@+id/tv_record"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="2222222"
+                    android:textSize="14sp"
+                    android:textColor="@color/textColor_black"
+                    />
+
+            </LinearLayout>
+
+            <View
+                style="@style/div_h"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:drawableLeft="@mipmap/iv_look"
+                    android:layout_weight="1"
+                    android:drawablePadding="4dp"
+                    android:text="查看情况"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:textColor="@color/textColor_black" />
+
+                <TextView
+                    android:id="@+id/tv_look"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="2222222"
+                    android:textSize="14sp"
+                    android:textColor="@color/textColor_black"
+                    />
+
+            </LinearLayout>
+
+            <View
+                style="@style/div_h"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="心脏 检查申请单"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    />
+
+                <View
+                    style="@style/div_h"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:paddingLeft="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        android:id="@+id/do_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="执行科室 : "
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="b超室"
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        android:layout_toRightOf="@+id/do_type"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/pay_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="260元"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="45dp"
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="金额 : "
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        android:layout_toLeftOf="@+id/pay_money"
+                        />
+
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/div_h"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:drawableLeft="@mipmap/iv_com"
+                        android:layout_weight="1"
+                        android:drawablePadding="4dp"
+                        android:text="检查项目"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="@color/textColor_black" />
+
+                    <TextView
+                        android:id="@+id/heat_cheak_pro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="2222222"
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/div_h"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:drawableLeft="@mipmap/iv_com"
+                        android:layout_weight="1"
+                        android:drawablePadding="4dp"
+                        android:text="检查部位"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="@color/textColor_black" />
+
+                    <TextView
+                        android:id="@+id/heat_cheak_part"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="2222222"
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/div_h"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:drawableLeft="@mipmap/iv_com"
+                        android:layout_weight="1"
+                        android:drawablePadding="4dp"
+                        android:text="检查目的"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="@color/textColor_black" />
+
+                    <TextView
+                        android:id="@+id/heat_cheak_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="2222222"
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/div_h"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:paddingLeft="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        android:id="@+id/request_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="申请科室 : "
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="b超室"
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        android:layout_toRightOf="@+id/request_type"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/request_doctor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="260元"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="45dp"
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="申请医生 : "
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        android:layout_toLeftOf="@+id/request_doctor"
+                        />
+
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/div_h"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="准备工作"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:paddingLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="血常规 检查申请单"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    />
+
+                <View
+                    style="@style/div_h"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:paddingLeft="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        android:id="@+id/blood_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="执行科室 : "
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="b超室"
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        android:layout_toRightOf="@+id/blood_type"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/pay_money_blood"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="260元"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="45dp"
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="金额 : "
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        android:layout_toLeftOf="@+id/pay_money_blood"
+                        />
+
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/div_h"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:drawableLeft="@mipmap/iv_com"
+                        android:layout_weight="1"
+                        android:drawablePadding="4dp"
+                        android:text="标本"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="@color/textColor_black" />
+
+                    <TextView
+                        android:id="@+id/blood_cheak_pro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="2222222"
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/div_h"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:drawableLeft="@mipmap/iv_com"
+                        android:drawablePadding="4dp"
+                        android:text="检验项目"
+                        android:textColor="@color/textColor_black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/blood_cheak_part"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="2222222"
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/div_h"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:drawableLeft="@mipmap/iv_com"
+                        android:layout_weight="1"
+                        android:drawablePadding="4dp"
+                        android:text="检验目的"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="@color/textColor_black" />
+
+                    <TextView
+                        android:id="@+id/blood_cheak_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="2222222"
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/div_h"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:paddingLeft="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        android:id="@+id/request_type_blood"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="申请科室 : "
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="b超室"
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        android:layout_toRightOf="@+id/request_type_blood"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/request_doctor_blood"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="260元"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="45dp"
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="申请医生 : "
+                        android:textSize="14sp"
+                        android:textColor="@color/textColor_black"
+                        android:layout_toLeftOf="@+id/request_doctor_blood"
+                        />
+
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/div_h"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="准备工作"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:paddingLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/lin_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="120dp"
+                android:layout_marginBottom="60dp">
+
+                <View
+                    android:id="@+id/center_part"
+                    android:layout_width="1dp"
+                    android:layout_centerInParent="true"
+                    android:layout_height="1dp"/>
+
+                <Button
+                    android:id="@+id/download"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/bg_paid"
+                    android:layout_toLeftOf="@+id/center_part"
+                    android:layout_marginRight="40dp"
+                    android:text="付费"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/confirm"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/bg_paid"
+                    android:layout_toRightOf="@+id/center_part"
+                    android:layout_marginLeft="40dp"
+                    android:text="分享并下载"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

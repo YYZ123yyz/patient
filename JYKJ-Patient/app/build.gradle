@@ -197,4 +197,5 @@ dependencies {
         all*.exclude group: 'com.google.code.gson'
     }
     implementation 'cn.yc:YCStatusBarLib:1.4.3'
+    implementation 'com.hyman:flowlayout-lib:1.1.2'
 }
