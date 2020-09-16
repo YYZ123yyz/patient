@@ -149,7 +149,6 @@ public class EaseMessageAdapter extends BaseAdapter {
                 if (messageType.equals("terminationOrder")
                         ||messageType.equals("card")
                         ||messageType.equals("appointment")
-                        ||messageType.equals("appointment")
                         ||messageType.equals("medicalRecord")
                         ||messageType.equals("receiveTreatment")) {
                     cards.add(i);

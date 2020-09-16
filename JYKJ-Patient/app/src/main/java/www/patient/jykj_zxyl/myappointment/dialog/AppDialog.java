@@ -14,7 +14,7 @@ public class AppDialog extends Dialog {
     public AppDialog(@NonNull Context context) {
         super(context, R.style.MyCommonDialog);
         setCanceledOnTouchOutside(false);
-        Window window = getWindow();
+        Window window = this.getWindow();
         window.setGravity(Gravity.CENTER);
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
