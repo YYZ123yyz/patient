@@ -433,13 +433,14 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
      * @param orderType 操作类型
      * @return orderMessage
      */
+    @SuppressLint("DefaultLocale")
     private OrderMessage getOrderMessage(String messageType, String orderType) {
-        @SuppressLint("DefaultLocale")
+
         String  monitorRate= String.format("一次/%d%s", orderDetialData.getDetectRate(),
                 orderDetialData.getDetectRateUnitName());
         OrderMessage orderMessage = new OrderMessage(orderDetialData.getSignCode(),orderDetialData.getSignNo(),
-                monitorTypeList.size() + "项", monitorRate,
-                orderDetialData.getSignDuration()+orderDetialData.getSignDurationUnit()
+                String.format("%d项", monitorTypeList.size()), monitorRate,
+                String.format("%d个%s", orderDetialData.getSignDuration(), orderDetialData.getSignDurationUnit())
                 , orderDetialData.getSignPrice() + "", messageType, orderType);
         return orderMessage;
 
