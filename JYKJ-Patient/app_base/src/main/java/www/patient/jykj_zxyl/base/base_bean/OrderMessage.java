@@ -27,6 +27,54 @@ public class OrderMessage implements Serializable {
     private String appointMentProject;
     private String appointMentType;
 
+    private String  endTime;
+    private String  patientType;
+    private String  opStatus;
+
+    //医生已接诊
+    private String receiveTime;
+    private String surplusTimes;
+
+    public String getReceiveTime() {
+        return receiveTime;
+    }
+
+    public void setReceiveTime(String receiveTime) {
+        this.receiveTime = receiveTime;
+    }
+
+    public String getSurplusTimes() {
+        return surplusTimes;
+    }
+
+    public void setSurplusTimes(String surplusTimes) {
+        this.surplusTimes = surplusTimes;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getPatientType() {
+        return patientType;
+    }
+
+    public void setPatientType(String patientType) {
+        this.patientType = patientType;
+    }
+
+    public String getOpStatus() {
+        return opStatus;
+    }
+
+    public void setOpStatus(String opStatus) {
+        this.opStatus = opStatus;
+    }
+
     public String getStatusType() {
         return statusType;
     }

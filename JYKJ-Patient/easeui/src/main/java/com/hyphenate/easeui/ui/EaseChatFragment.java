@@ -1791,6 +1791,15 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 message.setAttribute("nickName", mProvideViewSysUserPatientInfoAndRegion.getUserName());
                 message.setAttribute("imageUrl", mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
                 break;
+            case "medicalRecord":
+                message.setAttribute("endTime",msg.getEndTime());
+                message.setAttribute("patientType",msg.getPatientType());
+                message.setAttribute("opStatus",msg.getOpStatus());
+                break;
+            case "receiveTreatment" :
+                message.setAttribute("receiveTime",msg.getReceiveTime());
+                message.setAttribute("surplusTimes",msg.getSurplusTimes());
+                break;
         }
 
 

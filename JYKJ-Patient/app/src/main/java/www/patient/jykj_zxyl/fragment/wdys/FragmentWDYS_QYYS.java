@@ -35,6 +35,7 @@ import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WZXXOrderActivity;
+import www.patient.jykj_zxyl.activity.home.patient.ZJXQActivity;
 import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeWDYSQYYSAdapter;
 import www.patient.jykj_zxyl.R;
@@ -172,7 +173,7 @@ public class FragmentWDYS_QYYS extends Fragment {
                 intent.putExtra(EaseConstant.EXTRA_VOICE_NUM, provideViewMyDoctorSignings.get(position).getLimitAudio());           //音频时长（单位：秒）
                 intent.putExtra(EaseConstant.EXTRA_VEDIO_NUM, provideViewMyDoctorSignings.get(position).getLimitVideo());           //视频时长（单位：秒）
                 startActivity(intent);
-//                startActivity(new Intent(mContext,ZJXQActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommendList.get(position)));
+               // startActivity(new Intent(mContext, ZJXQActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommendList.get(position)));
             }
 
             @Override

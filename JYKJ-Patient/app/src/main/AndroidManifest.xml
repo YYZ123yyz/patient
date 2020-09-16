@@ -68,6 +68,7 @@
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 首页 -->
         <activity
             android:name=".activity.SplashActivity"
+            android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -284,7 +285,7 @@
             android:name=".activity.home.tjhz.IDCardScanningActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 患医互动==》聊天页面 -->
         <activity
-            android:name="com.hyphenate.easeui.ui.ChatActivity"
+            android:name=".activity.hyhd.ChatActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 患医互动==》新建群聊页面 -->
         <activity
             android:name=".activity.hyhd.NewChatGroupActivity"

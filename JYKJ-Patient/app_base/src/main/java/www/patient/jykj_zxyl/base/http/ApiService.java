@@ -123,5 +123,8 @@ public interface ApiService {
     //取消预约
     @POST("/reservePatientDoctorControll/operCancelReserve")
     Observable<String> cancelResevation(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //取消预约详情
+    @POST("/reservePatientDoctorControll/searchReserveInfo ")
+    Observable<String> cancelApp(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
 }
 

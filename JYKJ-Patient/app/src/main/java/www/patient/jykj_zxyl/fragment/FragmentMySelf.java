@@ -27,6 +27,8 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.BloodLogAcitivity;
 import www.patient.jykj_zxyl.activity.myself.MedicationActivity;
 import www.patient.jykj_zxyl.custom.MyselfItemView;
+import www.patient.jykj_zxyl.myappointment.activity.MyAppointmentActivity;
+import www.patient.jykj_zxyl.myappointment.activity.ReservationActivity;
 import www.patient.jykj_zxyl.util.widget.AuthorityJQQDDialog;
 
 
@@ -52,6 +54,8 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
     private LinearLayout  tv_wdye,li_yhq,li_jf;
     ImageView discountBtn;
     ImageView gradeBtn;
+    private MyselfItemView myself_yy_btn;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_activitymain_myselffragment, container, false);
@@ -64,7 +68,7 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
 
     private void initLayout(View v) {
         tv_wdye = v.findViewById(R.id.tv_wdye);
-
+        myself_yy_btn = v.findViewById(R.id.myself_yy_btn);
 
         li_yhq = v.findViewById(R.id.li_yhq);
         li_jf = v.findViewById(R.id.li_jf);
@@ -114,6 +118,7 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
         tv_wdye.setOnClickListener(this);
         discountBtn.setOnClickListener(this);
         gradeBtn.setOnClickListener(this);
+        myself_yy_btn.setOnClickListener(this);
     }
 
     @Override
@@ -144,6 +149,9 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.myself_yy_btn:
+                startActivity(new Intent(getActivity(), MyAppointmentActivity.class));
+                break;
             case R.id.iv_fragmentMyself_userHeadImage:
                 startActivity(new Intent(getActivity(), UserCenterActivity.class));
                 break;

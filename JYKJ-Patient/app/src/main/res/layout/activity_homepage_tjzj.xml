@@ -108,7 +108,7 @@
                       android:layout_height="wrap_content"
                       android:layout_marginLeft="5dp"
 
-                      android:text=""
+                      android:text="全部"
                       android:id="@+id/tv_activityJoinDoctorsUnion_choiceRegionText"
                       android:textColor="#ff799dfe"
                       android:textSize="17sp"

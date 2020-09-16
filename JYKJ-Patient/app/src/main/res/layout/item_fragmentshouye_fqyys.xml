@@ -126,13 +126,11 @@
             android:orientation="horizontal">
             <TextView
                 android:textColor="#7A9EFF"
-                android:layout_width="95dp"
+                android:layout_width="80dp"
                 android:layout_height="25dp"
                 android:background="@drawable/bg_advisory"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:text="就诊记录"
                 android:id="@+id/tv_jzjl"
                 android:gravity="center"

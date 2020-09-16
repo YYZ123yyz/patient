@@ -26,6 +26,15 @@ public class ReservePatientCommitBean extends BaseStatusBean{
     private long reserveTimes;
     private int treatmentType;
     private int viewReserveToDoctorCount;
+    private String reserveStatus;
+
+    public String getReserveStatus() {
+        return reserveStatus;
+    }
+
+    public void setReserveStatus(String reserveStatus) {
+        this.reserveStatus = reserveStatus;
+    }
 
     public String getMainDoctorCode() {
         return mainDoctorCode;
