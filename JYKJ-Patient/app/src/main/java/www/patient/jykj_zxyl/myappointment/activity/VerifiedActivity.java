@@ -26,6 +26,7 @@ import www.patient.jykj_zxyl.activity.myself.order.RefundApplyContract;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_bean.BaseBean;
 import www.patient.jykj_zxyl.base.base_bean.BaseReasonBean;
+import www.patient.jykj_zxyl.base.base_bean.DoctorInfoBean;
 import www.patient.jykj_zxyl.base.base_bean.OrderDetialBean;
 import www.patient.jykj_zxyl.base.base_bean.ReservePatientCommitBean;
 import www.patient.jykj_zxyl.base.base_bean.ReservePatientDoctorInfoBean;
@@ -139,6 +140,13 @@ public class VerifiedActivity extends AbstractMvpBaseActivity<ReservationContrac
 
     }
 
+
+
+    @Override
+    public void getReservationunpaidResultError(ReservePatientCommitBean reservePatientCommitBeans) {
+
+    }
+
     @Override
     public void getReservationDailog() {
 
@@ -196,5 +204,10 @@ public class VerifiedActivity extends AbstractMvpBaseActivity<ReservationContrac
             Toast.makeText(VerifiedActivity.this, "请输入正确的身份证号", Toast.LENGTH_SHORT).show();
             return false;
         }
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }

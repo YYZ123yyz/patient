@@ -48,27 +48,29 @@ public class Item_Reservation_List_Adapter extends RecyclerView.Adapter<Item_Res
         if(itemTimesBean!=null){
             holder.item_time.setText(itemTimesBean.getHoursMins());
             holder.item_number.setText("剩余 "+itemTimesBean.getOverCount());
-            if (itemTimesBean.getSelectState()) {
-                holder.item_lin.setBackgroundColor(Color.parseColor("#799DFE"));
-                holder.item_time.setTextColor(Color.parseColor("#ffffff"));
-                holder.item_number.setTextColor(Color.parseColor("#ffffff"));
-            } else {
-                holder.item_lin.setBackgroundColor(Color.parseColor("#F5F5F5"));
-                holder.item_time.setTextColor(R.color.transparent);
+            if(itemTimesBean.getOverCount()==0){
+                holder.item_number.setTextColor(Color.parseColor("#ff666666"));
+            }else{
                 holder.item_number.setTextColor(Color.parseColor("#0DBB00"));
+                if (itemTimesBean.getSelectState()) {
+                    holder.item_lin.setBackgroundColor(Color.parseColor("#799DFE"));
+                    holder.item_time.setTextColor(Color.parseColor("#ffffff"));
+                    holder.item_number.setTextColor(Color.parseColor("#ffffff"));
+                } else {
+                    holder.item_lin.setBackgroundColor(Color.parseColor("#F5F5F5"));
+                    holder.item_time.setTextColor(R.color.transparent);
+                    holder.item_number.setTextColor(Color.parseColor("#0DBB00"));
+                }
+                holder.item_lin.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onClickListener != null) {
+                            onClickListener.onClick(v, position);
+                        }
+                    }
+                });
             }
         }
-
-
-        holder.item_lin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onClickListener != null) {
-                    onClickListener.onClick(v, position);
-                }
-            }
-        });
-
     }
 
     @Override

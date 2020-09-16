@@ -67,6 +67,7 @@
             android:name=".activity.ForgetPwdActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 首页 -->
         <activity
+            android:exported="true"
             android:name=".activity.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -99,6 +100,7 @@
         <activity android:name=".activity.myself.setting.UpdateVersionShowActivity" /> <!-- 设置 == > 客服热线 -->
         <activity android:name=".activity.myself.setting.ServiceHotlineActivity" /> <!-- 个人资料 -->
         <activity
+            android:exported="true"
             android:name=".activity.myself.UserCenterActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 用户认证 -->
         <activity
@@ -368,7 +370,7 @@
             android:name=".activity.home.patient.WDYSActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 取消预约 -->
         <activity
-            android:name=".myappointment.activity.AncelAppointmentActivity"
+            android:name=".myappointment.activity.CancelAppointmentActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 首页=》》 我的医生 == 》就诊记录列表 -->
         <activity
             android:name=".activity.home.patient.WDYS_JZJLListActivity"
@@ -513,7 +515,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".base.wxapi.AliPayEntryActivity"
-            android:screenOrientation="portrait" /> <!-- 设置环信应用的AppKey -->
+            android:screenOrientation="portrait" />
+        <activity android:name=".myappointment.activity.CheckListActivity" />
+        <activity android:name=".myappointment.activity.PrescriptionDetActivity" /> <!-- 设置环信应用的AppKey -->
         <!-- <meta-data android:name="EASEMOB_APPKEY"  android:value="Your AppKey" /> -->
         <meta-data
             android:name="EASEMOB_APPKEY"

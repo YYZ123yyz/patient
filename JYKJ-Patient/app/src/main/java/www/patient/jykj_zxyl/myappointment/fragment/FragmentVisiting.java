@@ -1,40 +1,26 @@
 package www.patient.jykj_zxyl.myappointment.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.activity.myself.MyOrderActivity;
-import www.patient.jykj_zxyl.activity.myself.OrderDetialActivity;
+import www.patient.jykj_zxyl.activity.myself.order.activity.RefundActivity;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_bean.MyReservationListBean;
-import www.patient.jykj_zxyl.base.base_bean.ReservePatientDoctorInfoBean;
-import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseFragment;
-import www.patient.jykj_zxyl.custom.SwipeRecyclerView;
-import www.patient.jykj_zxyl.myappointment.Contract.ReservationContract;
 import www.patient.jykj_zxyl.myappointment.Contract.ReservationListContract;
 import www.patient.jykj_zxyl.myappointment.Presenter.ResevationListPresenter;
-import www.patient.jykj_zxyl.myappointment.Presenter.ResevationPresenter;
-import www.patient.jykj_zxyl.myappointment.activity.AncelAppointmentActivity;
+import www.patient.jykj_zxyl.myappointment.activity.CancelAppointmentActivity;
 import www.patient.jykj_zxyl.myappointment.activity.MedicalRecordActivity;
 import www.patient.jykj_zxyl.myappointment.adapter.Fragment_VisitingAdapter;
-import www.patient.jykj_zxyl.util.ActivityUtil;
+import www.patient.jykj_zxyl.util.DateUtils;
 
 public class FragmentVisiting extends AbstractMvpBaseFragment <ReservationListContract.View,
         ResevationListPresenter> implements ReservationListContract.View {
@@ -85,26 +71,32 @@ public class FragmentVisiting extends AbstractMvpBaseFragment <ReservationListCo
                        fragment_visitingAdapter.setOnItemClickXYListener(new Fragment_VisitingAdapter.OnItemClickXYListener() {
                            @Override
                            public void onClick(int position) {
-                               Intent intent = new Intent(getContext(), AncelAppointmentActivity.class);
-                               intent.putExtra("reserveCode",reserveCode);
-                               intent.putExtra("doctorName",myReservationListBeans.get(position).getMainDoctorName());
-                               intent.putExtra("doctorCode",myReservationListBeans.get(position).getMainDoctorCode());
-                               intent.putExtra("doctorUrl",myReservationListBeans.get(position).getDoctorLogoUrl());
+                               Bundle bundle=new Bundle();
+                               bundle.putString("reserveCode",reserveCode);
+                               bundle.putString("doctorName",myReservationListBeans.get(position).getMainDoctorName());
+                               Intent intent = new Intent(getContext(), CancelAppointmentActivity.class);
+                               bundle.putString("doctorCode",myReservationListBeans.get(position).getMainDoctorCode());
+                               bundle.putString("doctorUrl",myReservationListBeans.get(position).getDoctorLogoUrl());
                                //订单编号
-                               intent.putExtra("SignCode",myReservationListBeans.get(position).getReserveCode());
+                               bundle.putString("SignCode",myReservationListBeans.get(position).getReserveCode());
+                               long reserveConfigStart = myReservationListBeans.get(position).getReserveConfigStart();
+                               String s = DateUtils.stampToDate(reserveConfigStart);
                                //预约时间
-                               intent.putExtra("Appointment",myReservationListBeans.get(position).getReserveConfigStart());
+                               bundle.putString("Appointment",s);
                                //结束时间
-                               intent.putExtra("endTime",myReservationListBeans.get(position).getReserveConfigEnd());
+                               long reserveConfigEnd = myReservationListBeans.get(position).getReserveConfigEnd();
+                               String ss = DateUtils.stampToDate(reserveConfigEnd);
+                               bundle.putString("endTime",ss);
                                //预约项目
-                               intent.putExtra("class",myReservationListBeans.get(position).getReserveProjectName());
+                               bundle.putString("class",myReservationListBeans.get(position).getReserveProjectName());
                                int treatmentType = myReservationListBeans.get(position).getTreatmentType();
                                if(treatmentType==1){
-                                   intent.putExtra("type","一次性就诊");
+                                   bundle.putString("type","一次性就诊");
                                }else {
-                                   intent.putExtra("type","签约就诊");
+                                   bundle.putString("type","签约就诊");
                                }
                                startActivity(intent);
+                               startActivity(CancelAppointmentActivity.class,bundle,100);
                            }
 
                            @Override

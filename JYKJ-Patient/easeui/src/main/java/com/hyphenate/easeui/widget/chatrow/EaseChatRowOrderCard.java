@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -318,25 +319,16 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             }
             //预约
             else if (messageType.equals("appointment")) {
-                switch (orderType) {
-                    case "1":
-                        ivStampIcon.setVisibility(View.VISIBLE);
-                        ivStampIcon.setImageResource(R.mipmap.bg_agree_stamp);
-                        mTvOperMsg.setText("您已预约成功");
-                        break;
-                    case "2":
-                        ivStampIcon.setVisibility(GONE);
-                        mTvPriceValue.setVisibility(GONE);
-                        tv_monitor_type.setText("预约时间");
-                        tv_coach_rate.setText("取消时间");
-                        tv_sign_time.setText("预约项目");
-                        mTvMonitValue.setText(startTime);
-                        mTvCoachRateValue.setText(cancelTime);
-                        mTvSignTimeValue.setText(appointMentProject);
-                        tv_class_vlaue.setText(appointMentType);
-                        mTvOperMsg.setText("您已取消预约");
-                        break;
-                }
+                ivStampIcon.setVisibility(GONE);
+                mTvPriceValue.setVisibility(GONE);
+                tv_monitor_type.setText("预约时间");
+                tv_coach_rate.setText("取消时间");
+                tv_sign_time.setText("预约项目");
+                mTvMonitValue.setText(startTime);
+                mTvCoachRateValue.setText(cancelTime);
+                mTvSignTimeValue.setText(appointMentProject);
+                tv_class_vlaue.setText(appointMentType);
+                mTvOperMsg.setText("您已取消预约");
             }
 
         } else if (direct == EMMessage.Direct.RECEIVE) {

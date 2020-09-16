@@ -366,7 +366,7 @@ public class OrderOnGoingFragment extends
                 myOrderProcess.getCoachValue(), myOrderProcess.getCoachUnitName());
         OrderMessage orderMessage = new OrderMessage(myOrderProcess.getOrderCode(),myOrderProcess.getSignNo(),
                 myOrderProcess.getProCount() + "项",
-                coatch, myOrderProcess.getTimesName(),myOrderProcess.getActualPayment() + "", messageType, orderType);
+                coatch, myOrderProcess.getTimesCode()+"个月",myOrderProcess.getActualPayment() + "", messageType, orderType);
         return orderMessage;
 
     }

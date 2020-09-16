@@ -26,6 +26,7 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.base.base_bean.MyReservationListBean;
 import www.patient.jykj_zxyl.util.DateUtils;
 
+import static www.patient.jykj_zxyl.R.drawable.bg_addmedicbutton;
 import static www.patient.jykj_zxyl.R.drawable.bg_advisory;
 
 /**
@@ -120,11 +121,12 @@ public class Fragment_VisitingAdapter extends RecyclerView.Adapter<Fragment_Visi
 //                        mOnItemClickDataListener.onClick(position);
 //                    }
 //                });
-            } else if (reserveStatus.equals("20") || reserveStatus.equals("30")||reserveStatus.equals("40")) {
+            }
+            else if (reserveStatus.equals("20") || reserveStatus.equals("30")) {
              //   viewHolder.visiting_data.setVisibility(View.GONE);
                 viewHolder.visiting_cancelappointment.setText("查看病历");
                 viewHolder.visiting_cancelappointment.setTextColor(Color.parseColor("#ffffff"));
-                viewHolder.visiting_cancelappointment.setBackgroundResource(bg_advisory);
+                viewHolder.visiting_cancelappointment.setBackgroundResource(bg_addmedicbutton);
 
                 if (mOnItemClickZXListener != null) {
                     viewHolder.visiting_cancelappointment.setOnClickListener(new View.OnClickListener() {

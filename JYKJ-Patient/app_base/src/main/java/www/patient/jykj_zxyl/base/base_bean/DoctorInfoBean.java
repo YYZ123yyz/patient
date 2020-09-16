@@ -1,21 +1,17 @@
 package www.patient.jykj_zxyl.base.base_bean;
 
-import java.io.Serializable;
-
-public class BaseStatusBean implements Serializable {
-    private String status;
-    private String message;
-    private String confim;
-   private String   mainDoctorCode;
-   private String   mainDoctorName;
-   private String   mainPatientCode;
-   private String   mainPatientName;
-   private int   orderAndSignPrice;
-    private String   orderCode;
-    private String   reserveCode;
+public class DoctorInfoBean {
+    private String mainDoctorCode;
+    private String mainDoctorName;
+    private String mainPatientCode;
+    private String mainPatientName;
+    private int orderAndSignPrice;
+    private String orderCode;
+    private String reserveCode;
     private long reserveConfigStart;
     private long reserveTimes;
-    private int treatmentType;
+    private int reserveType;
+    private int  treatmentType;
 
     public String getMainDoctorCode() {
         return mainDoctorCode;
@@ -89,35 +85,19 @@ public class BaseStatusBean implements Serializable {
         this.reserveTimes = reserveTimes;
     }
 
+    public int getReserveType() {
+        return reserveType;
+    }
+
+    public void setReserveType(int reserveType) {
+        this.reserveType = reserveType;
+    }
+
     public int getTreatmentType() {
         return treatmentType;
     }
 
     public void setTreatmentType(int treatmentType) {
         this.treatmentType = treatmentType;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getConfim() {
-        return confim;
-    }
-
-    public void setConfim(String confim) {
-        this.confim = confim;
     }
 }

@@ -285,7 +285,7 @@ public class OrderToBeConfirmedFragment extends
                 provideInteractOrderInfo.getCoachValue(), provideInteractOrderInfo.getCoachUnitName());
         OrderMessage orderMessage = new OrderMessage(provideInteractOrderInfo.getOrderCode(),provideInteractOrderInfo.getSignNo(),
                 provideInteractOrderInfo.getProCount() + "项",
-                coatch, provideInteractOrderInfo.getTimesName(),provideInteractOrderInfo.getActualPayment() + "", messageType, orderType);
+                coatch, provideInteractOrderInfo.getTimesCode()+"个月",provideInteractOrderInfo.getActualPayment() + "", messageType, orderType);
         return orderMessage;
 
     }

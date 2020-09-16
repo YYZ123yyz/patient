@@ -227,8 +227,8 @@ public class WDYSActivity extends BaseActivity {
 
         tv_cz = (TextView) this.findViewById(R.id.tv_cz);
         tv_qd = (TextView) this.findViewById(R.id.tv_qd);
-        tv_zdj = (EditText) this.findViewById(R.id.tv_zdj);
-        tv_zgj = (EditText) this.findViewById(R.id.tv_zgj);
+       /* tv_zdj = (EditText) this.findViewById(R.id.tv_zdj);
+        tv_zgj = (EditText) this.findViewById(R.id.tv_zgj);*/
 
         tv_cz.setOnClickListener(new ButtonClick());
         tv_qd.setOnClickListener(new ButtonClick());
@@ -454,8 +454,8 @@ public class WDYSActivity extends BaseActivity {
 
                     break;
                 case R.id.tv_cz:
-                    tv_zdj.setText("");
-                    tv_zgj.setText("");
+                   /* tv_zdj.setText("");
+                    tv_zgj.setText("");*/
                     for (int i = 0; i < mProvideBasicsDominJGBJ.size(); i++) {
                         mProvideBasicsDominJGBJ.get(i).setChoice(false);
                         mJGBJtAdapter.setDate(mProvideBasicsDominJGBJ);
