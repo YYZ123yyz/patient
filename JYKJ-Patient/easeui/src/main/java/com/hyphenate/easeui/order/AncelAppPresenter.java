@@ -19,7 +19,7 @@ import www.patient.jykj_zxyl.base.mvp.BasePresenterImpl;
 public class AncelAppPresenter extends BasePresenterImpl<AncelAppContract.View>
         implements AncelAppContract.Presenter {
     @Override
-    public void sendAncelAppRequest(String loginPatientPosition, String mainPatientCode, String mainPatientName, String reserveCode) {
+    public void sendAncelAppRequest(String loginPatientPosition, String mainPatientCode, String mainPatientName, String reserveCode) {  
         HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
         hashMap.put("loginPatientPosition",ParameUtil.loginDoctorPosition);
         hashMap.put("mainPatientCode",mainPatientCode);
