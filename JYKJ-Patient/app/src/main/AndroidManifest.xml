@@ -67,7 +67,6 @@
             android:name=".activity.ForgetPwdActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 首页 -->
         <activity
-            android:exported="true"
             android:name=".activity.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait">
