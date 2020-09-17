@@ -558,6 +558,7 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
                     intent.putExtra("provideInteractPatientInterrogation", mProvideInteractPatientInterrogation);
                     startActivity(intent);
                     appDialog.dismiss();
+                    finish();
                 }
             });
         }
