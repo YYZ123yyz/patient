@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.zhy.view.flowlayout.FlowLayout;
@@ -14,9 +15,12 @@ import com.zhy.view.flowlayout.TagFlowLayout;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import butterknife.OnClick;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
+import www.patient.jykj_zxyl.presenter.MedicalRecordPresenter;
 import www.patient.jykj_zxyl.util.ActivityUtil;
+import www.patient.jykj_zxyl.view.MedicalRecordView;
 
 /*
 * 病历
@@ -24,42 +28,35 @@ import www.patient.jykj_zxyl.util.ActivityUtil;
 * Drug_Rv_Adapter
 *
 * */
-public class MedicalRecordActivity extends AppCompatActivity {
+public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecordView, MedicalRecordPresenter> {
 
-    private TagFlowLayout diagFlow;
-    private TagFlowLayout checkFlow;
-    private TagFlowLayout prescrFlow;
+    @BindView(R.id.id_flowlayout)
+    TagFlowLayout diagFlow; //临床诊断
+    @BindView(R.id.flowlayout_check)
+    TagFlowLayout checkFlow;//检查检验
+    @BindView(R.id.flowlayout_prescr)
+    TagFlowLayout prescrFlow;//处方笺
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ActivityUtil.setStatusBarMain(this);
-        setContentView(R.layout.activity_medical_record);
-        ButterKnife.bind(this);
-        initView();
-        initData();
+    protected int setLayoutId() {
+        return R.layout.activity_medical_record;
     }
 
-    private void initView() {
-        diagFlow= findViewById(R.id.id_flowlayout);
-        checkFlow= findViewById(R.id.flowlayout_check);
-        prescrFlow= findViewById(R.id.flowlayout_prescr);
-        findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    @OnClick({R.id.confirm,R.id.download,R.id.lin_chief,R.id.lin_history,
+            R.id.lin_past,R.id.lin_examination,R.id.lin_look,R.id.lin_suggest})
+    public void onClick(View view){
+        switch (view.getId()) {
+            case R.id.confirm:
                 startActivity(new Intent(MedicalRecordActivity.this,CheckListActivity.class));
-            }
-        });
-        findViewById(R.id.download).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                break;
+            case R.id.download:
                 startActivity(new Intent(MedicalRecordActivity.this,PrescriptionDetActivity.class));
-            }
-        });
-
+                break;
+        }
     }
 
-    private void initData() {
+
+    protected void initData() {
         LayoutInflater mInflater = LayoutInflater.from(this);
 
         ArrayList<String> diagStrngs = new ArrayList<>();
@@ -112,6 +109,11 @@ public class MedicalRecordActivity extends AppCompatActivity {
                 return tv;
             }
         });
+
+    }
+
+    @Override
+    public void showLoading(int code) {
 
     }
 }

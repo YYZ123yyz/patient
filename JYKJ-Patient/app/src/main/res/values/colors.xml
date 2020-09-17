@@ -62,4 +62,5 @@
     <color name="div_color">#F2F2F2</color>
     //背景色
     <color name="gray_flow">#E0E0E0</color>
+    <color name="blue_bind_equ">#799DFE</color>
 </resources>
