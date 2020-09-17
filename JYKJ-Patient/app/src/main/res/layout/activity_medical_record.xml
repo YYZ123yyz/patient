@@ -245,13 +245,13 @@
                     style="@style/div_h"/>
 
                 <LinearLayout
+                    android:id="@+id/lin_chief"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#fff"
                     android:orientation="vertical">
 
                     <LinearLayout
-
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:orientation="horizontal">
@@ -292,6 +292,7 @@
 
                 <!--病史-->
                 <LinearLayout
+                    android:id="@+id/lin_history"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#fff"
@@ -331,6 +332,7 @@
 
                 <!--既往病史-->
                 <LinearLayout
+                    android:id="@+id/lin_past"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#fff"
@@ -388,6 +390,7 @@
                     style="@style/div_h"/>
                 <!--过敏史-->
                 <LinearLayout
+                    android:id="@+id/lin_examination"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#fff"
@@ -445,6 +448,7 @@
 
                 <!--查体情况-->
                 <LinearLayout
+                    android:id="@+id/lin_look"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#fff"
@@ -532,6 +536,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/lin_suggest"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:orientation="horizontal">

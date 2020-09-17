@@ -103,6 +103,6 @@ dependencies {
     api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     api 'cn.bingoogolapple:bga-swipeitemlayout:1.0.4'
     api 'cn.bingoogolapple:bga-adapter:1.0.9@aar'
-
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
 
 }

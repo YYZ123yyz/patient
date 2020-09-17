@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="camera_permission_required">本功能需要相机权限！</string>
     <string name="action_settings" translatable="false">Settings</string>
     <!--<string name="app_name">环信DEMO</string>-->
@@ -95,7 +95,7 @@
     <string name="setting">设置</string>
     <string name="now_refresh_list">正在加载数据</string>
     <string name="Application_and_notify">申请与通知</string>
-    <!--<string name="save_new_nickname">保存</string>-->
+    <string name="save_new_nickname">保存</string>
     <!--<string name="nickname_description">设置此昵称以后，在与iOS客户端demo聊天过程中，iOS一侧会显示此昵称而不是环信ID，如果对方使用安卓客户端则此设置不生效</string>-->
     <string name="group_chat">群聊</string>
     <!--<string name="chat_room">聊天室</string>-->
@@ -472,4 +472,6 @@
     <string name="feedback_tit">反馈意见</string>
     <string name="question_desp">问题描述</string>
     <string name="link_style">联系方式</string>
+    <string name="empty_equip">暂无绑定设备</string>
+    <string name="bind_equip">绑定设备</string>
 </resources>
