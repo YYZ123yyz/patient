@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,12 +31,13 @@ public class Reservation_SuccessDialog extends Dialog {
     public Reservation_SuccessDialog(@NonNull Context context) {
         super(context, R.style.MyCommonDialog);
         setCanceledOnTouchOutside(false);
-        Window window = getWindow();
+        Window window = this.getWindow();
         window.setGravity(Gravity.CENTER);
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(lp);
+
     //    init(context);
     }
 

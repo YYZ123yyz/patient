@@ -374,6 +374,18 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 rlCancelContractOrderRoot.setVisibility(View.GONE);
                 rlSignOrderRoot.setVisibility(View.VISIBLE);
             }
+            //医生发的预约
+            else if (messageType.equals("appointment")) {
+                ivStampIcon.setVisibility(GONE);
+                mTvPriceValue.setVisibility(GONE);
+                tv_monitor_type.setText("预约时间");
+                tv_coach_rate.setText("取消时间");
+                tv_sign_time.setText("预约项目");
+                mTvMonitValue.setText(startTime);
+                mTvCoachRateValue.setText(cancelTime);
+                mTvSignTimeValue.setText(appointMentProject);
+                tv_class_vlaue.setText(appointMentType);
+            }
             //病历
             else if (messageType.equals("medicalRecord")) {
                 userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
@@ -466,7 +478,6 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                     int i = Integer.parseInt(string);
                     if (i == 1) {
                         if (messageType.equals("card")) {
-
                             String patientCode = mProvideViewSysUserPatientInfoAndRegion.getPatientCode();
                             String userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
                             String nickName = message.getStringAttribute("nickName", "");
@@ -483,7 +494,8 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                                                 }
 
                                             }
-                                            EventBus.getDefault().post(new OrderMessage(orderId, singNO, monitoringType, coach
+                                            EventBus.getDefault().post(new OrderMessage(orderId,
+                                                    singNO, monitoringType, coach
                                                     , signUpTime, price, messageType, "2"));
                                         } else {
                                             ToastUtils.showToast(msg);
@@ -495,6 +507,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                         }
                     }
                 }
+
 
 
             });
@@ -515,12 +528,9 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                                 startActivity(RefusedOrderActivity.class, bundle);
 
                             } else if (messageType.equals("terminationOrder")) {
-                                EventBus.getDefault().post(new OrderMessage(orderId, singNO, monitoringType, coach
+                                EventBus.getDefault().post(new OrderMessage(orderId,
+                                        singNO, monitoringType, coach
                                         , signUpTime, price, messageType, "2"));
-                            } else if (messageType.equals("appointment")) {
-                                Bundle bundle = new Bundle();
-                                bundle.putString("orderId", orderId);
-                                startActivity(AncelAppActivity.class, bundle);
                             }
 
                         }
@@ -601,7 +611,11 @@ public class EaseChatRowOrderCard extends EaseChatRow {
 
 
             }
-
+            else if (messageType.equals("appointment")) {
+                Bundle bundle = new Bundle();
+                bundle.putString("orderId", orderId);
+                startActivity(AncelAppActivity.class, bundle);
+            }
 
         });
 

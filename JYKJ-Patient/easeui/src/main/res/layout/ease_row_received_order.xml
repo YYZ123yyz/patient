@@ -181,7 +181,35 @@
 
                         </TextView>
                     </RelativeLayout>
+                    <!--最后一行的-->
+                    <RelativeLayout
+                        android:id="@+id/rl_class"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18.5dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginEnd="18.5dp">
 
+                        <TextView
+                            android:id="@+id/tv_class"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="预约类型"
+                            android:textColor="@color/color_616266"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/tv_class_vlaue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="一年"
+                            android:textColor="@color/color_303133"
+                            android:textSize="13sp">
+
+
+                        </TextView>
+                    </RelativeLayout>
                     <TextView
                         android:id="@+id/tv_price_vlaue"
                         android:layout_width="wrap_content"

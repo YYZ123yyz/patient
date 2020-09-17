@@ -13,6 +13,7 @@ import entity.mySelf.CommentInfo;
 import entity.mySelf.MyOrderProcess;
 import entity.mySelf.ZhlyDetailInfo;
 import www.patient.jykj_zxyl.base.base_bean.BaseBean;
+import www.patient.jykj_zxyl.base.base_utils.StringUtils;
 import www.patient.jykj_zxyl.base.http.ApiHelper;
 import www.patient.jykj_zxyl.base.http.CommonDataObserver;
 import www.patient.jykj_zxyl.base.http.ParameUtil;
@@ -65,12 +66,17 @@ public class OrderCompletedPresenter extends BasePresenterImpl<OrderCompletedCon
                 if (mView!=null) {
                     int resCode = baseBean.getResCode();
                     if (resCode==1) {
-                        List<MyOrderProcess> myOrderProcesses =
-                                JSON.parseArray(baseBean.getResJsonData(), MyOrderProcess.class);
-                        mView.getSearchPatientMyOrderCompleteResult(myOrderProcesses);
+                        String resJsonData = baseBean.getResJsonData();
+                        if (StringUtils.isNotEmpty(resJsonData)) {
+                            List<MyOrderProcess> myOrderProcesses =
+                                    JSON.parseArray(resJsonData, MyOrderProcess.class);
+                            mView.getSearchPatientMyOrderCompleteResult(myOrderProcesses);
+                        }else{
+                            mView.showEmpty();
+                        }
 
                     }else{
-                        mView.showRetry();
+                        mView.showEmpty();
                     }
                 }
             }

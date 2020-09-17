@@ -3,6 +3,7 @@ package www.patient.jykj_zxyl.activity.myself.order.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -194,7 +195,10 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                 TextView pay_btn = viewHolder.getView(R.id.pay_btn);
                 TextView find_doc_btn = viewHolder.getView(R.id.find_doc_btn);
                 TextView mTvDelete = viewHolder.getView(R.id.tv_delete);
-                mDate.setText(DateUtils.getStringTimeMinute(parbean.getOrderDate().getTime()));
+//                String stringTimeMinute = DateUtils.fomrDateSeflFormat(parbean.getOrderDate(),"yyyy-MM-dd");
+//                if(!TextUtils.isEmpty(stringTimeMinute)){
+//                    mDate.setText(stringTimeMinute);
+//                }
                 mSurPrice.setText(String.format("[%s]", parbean.getFlagOrderStateName()));
                 price.setText(parbean.getOrderShowContent());
                 mSuType.setText(parbean.getTreatmentTypeName());

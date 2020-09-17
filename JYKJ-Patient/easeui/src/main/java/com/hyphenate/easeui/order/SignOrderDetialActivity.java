@@ -33,6 +33,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -324,6 +325,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
                 return false;
             }
         };
+        layoutManager.setOrientation(LinearLayout.VERTICAL);
         mRvMonitorList.setLayoutManager(layoutManager);
         mRvMonitorList.setAdapter(mMonitorOrderDetialAdapter);
     }
@@ -339,6 +341,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
                 return false;
             }
         };
+        layoutManager.setOrientation(LinearLayout.VERTICAL);
         mRvCoatchList.setLayoutManager(layoutManager);
         mRvCoatchList.setAdapter(mCoatchOrderDetialAdapter);
     }
@@ -595,7 +598,9 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         tvSignStartTimeValue.setText(DateUtils.getLongYYYYMMDD(
                 orderDetialData.getSignStartTime()));
         tvSignTimeValue.setText(String.format("%d个月", orderDetialData.getSignDuration()));
-        tvTotalPriceValue.setText(String.format("¥%s", orderDetialData.getSignPrice()));
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+        String format = decimalFormat.format(orderDetialData.getSignPrice());
+        tvTotalPriceValue.setText(String.format("¥%s", format));
         mTvPatientAge.setText(orderDetialData.getAge()+"");
         tvRateTimeValue.setText(orderDetialData.getDetectRate()+""+orderDetialData.getDetectRateUnitName());
     }

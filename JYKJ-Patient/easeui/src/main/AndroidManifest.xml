@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.hyphenate.easeui">
 
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -23,6 +24,8 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.ChatActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".order.AncelAppActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 

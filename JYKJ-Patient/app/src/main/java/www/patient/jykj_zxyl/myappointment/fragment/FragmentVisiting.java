@@ -74,7 +74,6 @@ public class FragmentVisiting extends AbstractMvpBaseFragment <ReservationListCo
                                Bundle bundle=new Bundle();
                                bundle.putString("reserveCode",reserveCode);
                                bundle.putString("doctorName",myReservationListBeans.get(position).getMainDoctorName());
-                               Intent intent = new Intent(getContext(), CancelAppointmentActivity.class);
                                bundle.putString("doctorCode",myReservationListBeans.get(position).getMainDoctorCode());
                                bundle.putString("doctorUrl",myReservationListBeans.get(position).getDoctorLogoUrl());
                                //订单编号
@@ -95,7 +94,6 @@ public class FragmentVisiting extends AbstractMvpBaseFragment <ReservationListCo
                                }else {
                                    bundle.putString("type","签约就诊");
                                }
-                               startActivity(intent);
                                startActivity(CancelAppointmentActivity.class,bundle,100);
                            }
 

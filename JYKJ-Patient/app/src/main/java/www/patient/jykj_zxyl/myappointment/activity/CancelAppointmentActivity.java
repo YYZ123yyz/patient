@@ -230,11 +230,12 @@ public class CancelAppointmentActivity extends AbstractMvpBaseActivity<Reservati
             this.finish();
             Intent intent = new Intent();
             intent.setClass(this, ChatActivity.class);
-            intent.putExtra("userCode", doctorName);
-            intent.putExtra("userName", doctorCode);
+            intent.putExtra("userCode", doctorCode);
+            intent.putExtra("userName", doctorName);
             intent.putExtra("doctorUrl",doctorUrl );
             intent.putExtra("patientUrl", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
             intent.putExtra("operDoctorName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+
             Bundle bundle=new Bundle();
             OrderMessage appointment = getOrderMessage("appointment", "2");
             appointment.setImageUrl( mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());

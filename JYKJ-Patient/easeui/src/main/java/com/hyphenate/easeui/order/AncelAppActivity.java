@@ -45,7 +45,7 @@ public class AncelAppActivity extends AbstractMvpBaseActivity<AncelAppContract.V
     private RelativeLayout rl;
     private TextView tvName;
     private LinearLayout linDetect;
-    private EditText edTermination;
+    private TextView edTermination;
     private ProvideViewSysUserPatientInfoAndRegion mProvideViewSysUserPatientInfoAndRegion;
     private String orderId;
 
