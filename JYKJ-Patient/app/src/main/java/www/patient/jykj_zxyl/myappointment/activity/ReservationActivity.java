@@ -132,6 +132,7 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
     private TextView tv_cancel;
     private TextView appdialog_tv;
     private int treatmentType;
+    private List<ReservePatientListBean.ItemTimesBean> itemTimes;
 
     @Override
     protected int setLayoutId() {
@@ -206,6 +207,10 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
                 //预约提交
                 if (TextUtils.isEmpty(deviceTimeOfYM)) {
                     Toast.makeText(ReservationActivity.this, "请选择预约时间", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(reserveDateRosterCode)){
+                    Toast.makeText(ReservationActivity.this, "请选择时间段", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mPresenter.sendReservationCommitRequest(mApp.loginDoctorPosition, "1", userCode,
@@ -307,8 +312,9 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
                 public void onClick(View view, int position) {
                     viewTimesPeriod = listBean.get(position).getViewTimesPeriod();
                     item_reservation_list_adapter = new Item_Reservation_List_Adapter(listBean.get(position).getItemTimes());
+                    itemTimes = listBean.get(position).getItemTimes();
                     item_reservation_list_adapter.setPosition(position);
-                    item_reservation_list_adapter.setDate(listBean.get(position).getItemTimes());
+                    item_reservation_list_adapter.setDate(itemTimes);
                     item_reservation_list_adapter.notifyDataSetChanged();
                 }
 
