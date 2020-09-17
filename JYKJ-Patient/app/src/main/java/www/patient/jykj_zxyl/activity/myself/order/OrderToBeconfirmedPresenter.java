@@ -76,7 +76,7 @@ public class OrderToBeconfirmedPresenter extends BasePresenterImpl<OrderToBeConf
 
                             mView.getSearchPatientMyOrderResInCompleteResult(provideInteractOrderInfos);
                         }else{
-                            mView.showRetry();
+                            mView.showEmpty();
                         }
 
                     }else{

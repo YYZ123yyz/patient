@@ -385,7 +385,6 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 mTvCoachRateValue.setText(cancelTime);
                 mTvSignTimeValue.setText(appointMentProject);
                 tv_class_vlaue.setText(appointMentType);
-                mTvOperMsg.setVisibility(GONE);
             }
             //病历
             else if (messageType.equals("medicalRecord")) {
