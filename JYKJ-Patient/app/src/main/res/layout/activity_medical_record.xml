@@ -245,13 +245,15 @@
                     style="@style/div_h"/>
 
                 <LinearLayout
-                    android:id="@+id/lin_chief"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#fff"
+                    android:animateLayoutChanges="true"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/lin_chief"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:orientation="horizontal">
@@ -275,27 +277,47 @@
                             android:src="@mipmap/dispaly" />
                     </LinearLayout>
 
-                    <View
-                        style="@style/div_h"/>
 
-                    <TextView
-                        android:id="@+id/chief"
-                        android:layout_width="wrap_content"
+
+
+                    <LinearLayout
+                        android:id="@+id/lin_chief_msg"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:text="2222222"
-                        android:textColor="#666666"
-                        android:visibility="gone" />
+                        android:orientation="vertical"
+
+                        android:visibility="gone"
+                        >
+
+                        <View
+                            style="@style/div_h"/>
+
+                        <TextView
+                            android:id="@+id/chief"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="2222222"
+                            android:textColor="@color/textColor_vo"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+
+
+
                 </LinearLayout>
 
-
+                <View
+                    style="@style/div_h"/>
                 <!--病史-->
                 <LinearLayout
                     android:id="@+id/lin_history"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#fff"
+                    android:animateLayoutChanges="true"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -322,7 +344,29 @@
                             android:src="@mipmap/dispaly" />
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/lin_medicalhistoryf_msg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
 
+                        android:visibility="gone"
+                        >
+
+                        <View
+                            style="@style/div_h"/>
+
+                        <TextView
+                            android:id="@+id/medicalhistory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="2222222"
+                            android:textColor="@color/textColor_vo"
+                            android:visibility="visible" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -336,6 +380,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#fff"
+                    android:animateLayoutChanges="true"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -394,6 +439,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#fff"
+                    android:animateLayoutChanges="true"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -452,6 +498,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#fff"
+                    android:animateLayoutChanges="true"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -493,6 +540,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="36dp"
                             android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
                             android:text="2222222"
                             android:textColor="#333333"
                              />
@@ -533,7 +581,13 @@
                     <View
                         style="@style/div_h"/>
 
-
+                    <LinearLayout
+                        android:id="@+id/lin_suggest_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#fff"
+                        android:animateLayoutChanges="true"
+                        android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/lin_suggest"
@@ -575,10 +629,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="36dp"
                             android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
                             android:text="2222222"
                             android:textColor="#333333"
                              />
 
+                    </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>

@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.myappointment.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import entity.HealthListBean;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.activity.home.patient.BloodEntryActivity;
+import www.patient.jykj_zxyl.activity.myself.MedicationSettingsActivity;
 import www.patient.jykj_zxyl.activity.myself.order.RefundApplyContract;
 import www.patient.jykj_zxyl.adapter.HealthListAdapter;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
@@ -81,10 +84,10 @@ public class HealthActivity extends AbstractMvpBaseActivity<HealthView, HelathPr
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (position) {
                     case 0:
-
+                        startActivity(new Intent(HealthActivity.this, BloodEntryActivity.class));
                         break;
                     case 1:
-
+                        startActivity(new Intent(HealthActivity.this, MedicationSettingsActivity.class));
                         break;
                 }
             }

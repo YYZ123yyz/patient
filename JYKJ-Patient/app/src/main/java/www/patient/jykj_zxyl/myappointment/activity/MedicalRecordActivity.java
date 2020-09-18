@@ -5,7 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhy.view.flowlayout.FlowLayout;
@@ -20,14 +23,15 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
 import www.patient.jykj_zxyl.presenter.MedicalRecordPresenter;
 import www.patient.jykj_zxyl.util.ActivityUtil;
+import www.patient.jykj_zxyl.util.ToastUtils;
 import www.patient.jykj_zxyl.view.MedicalRecordView;
 
 /*
-* 病历
-*
-* Drug_Rv_Adapter
-*
-* */
+ * 病历
+ *
+ * Drug_Rv_Adapter
+ *
+ * */
 public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecordView, MedicalRecordPresenter> {
 
     @BindView(R.id.id_flowlayout)
@@ -36,25 +40,59 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
     TagFlowLayout checkFlow;//检查检验
     @BindView(R.id.flowlayout_prescr)
     TagFlowLayout prescrFlow;//处方笺
+    @BindView(R.id.lin_chief_msg)
+    LinearLayout chiefMsg;
+    @BindView(R.id.dispaly_Chief)
+    ImageView ivChief;
 
     @Override
     protected int setLayoutId() {
         return R.layout.activity_medical_record;
     }
 
-    @OnClick({R.id.confirm,R.id.download,R.id.lin_chief,R.id.lin_history,
-            R.id.lin_past,R.id.lin_examination,R.id.lin_look,R.id.lin_suggest})
-    public void onClick(View view){
+    @OnClick({R.id.confirm, R.id.download, R.id.lin_chief, R.id.lin_history,
+            R.id.lin_past, R.id.lin_examination, R.id.lin_look, R.id.lin_suggest})
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.confirm:
-                startActivity(new Intent(MedicalRecordActivity.this,CheckListActivity.class));
+                startActivity(new Intent(MedicalRecordActivity.this, CheckListActivity.class));
                 break;
             case R.id.download:
-                startActivity(new Intent(MedicalRecordActivity.this,PrescriptionDetActivity.class));
+                startActivity(new Intent(MedicalRecordActivity.this, PrescriptionDetActivity.class));
+                break;
+            case R.id.lin_chief:
+
+                chiefMsg.setVisibility(chiefMsg.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                if (chiefMsg.getVisibility() ==View.VISIBLE ){
+                    showAnimation(ivChief);
+                }else{
+                    endAnimation(ivChief);
+                }
                 break;
         }
     }
 
+    public void showAnimation(View view) {
+
+        float centerX = view.getWidth() / 2.0f;
+        final float centerY = view.getHeight() / 2.0f;
+        RotateAnimation rotateAnimation = new RotateAnimation(0, 180, centerX,
+                centerY);
+        rotateAnimation.setDuration(200 );
+        rotateAnimation.setFillAfter(true);
+        view.startAnimation(rotateAnimation);
+    }
+
+    public void endAnimation(View view) {
+
+        float centerX = view.getWidth() / 2.0f;
+        final float centerY = view.getHeight() / 2.0f;
+        RotateAnimation rotateAnimation = new RotateAnimation(180, 360, centerX,
+                centerY);
+        rotateAnimation.setDuration(200 );
+        rotateAnimation.setFillAfter(true);
+        view.startAnimation(rotateAnimation);
+    }
 
     protected void initData() {
         LayoutInflater mInflater = LayoutInflater.from(this);
