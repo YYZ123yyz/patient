@@ -60,8 +60,8 @@ public class ParameUtil {
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("loginDoctorPosition",loginDoctorPosition);
         paramMap.put("requestClientType","1");
-        paramMap.put("operatorCode",mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        paramMap.put("operatorName",mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        paramMap.put("operatorCode",mProvideViewSysUserPatientInfoAndRegion.getPatientCode());//7b5d2d0205164f12974a3e228f5a6083  mProvideViewSysUserPatientInfoAndRegion.getPatientCode()
+        paramMap.put("operatorName",mProvideViewSysUserPatientInfoAndRegion.getUserName());//贾青  mProvideViewSysUserPatientInfoAndRegion.getUserName()
         return paramMap;
     }
 

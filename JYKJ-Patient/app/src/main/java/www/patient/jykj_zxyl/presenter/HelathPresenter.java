@@ -12,4 +12,7 @@ public class HelathPresenter extends BasePresenterImpl<HealthView> {
     protected Object[] getRequestTags() {
         return new Object[0];
     }
+
+
+
 }
