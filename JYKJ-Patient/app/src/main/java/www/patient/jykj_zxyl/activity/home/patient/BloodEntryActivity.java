@@ -179,7 +179,7 @@ public class BloodEntryActivity extends AppCompatActivity implements View.OnClic
                     bloodMonitorInfo.setPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
                     bloodMonitorInfo.setHighPressureNum(highBlood);
                     bloodMonitorInfo.setLowPressureNum(lowBlood);
-                    bloodMonitorInfo.setHeartRateNum(rateNum);
+                    bloodMonitorInfo.setHeartRateNum("0");
                     String jsonString = JSON.toJSONString(bloodMonitorInfo);
                     mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + jsonString, Constant.SERVICEURL + "PatientConditionControlle/operUpdPatientConditionBloodPressureRecord");
                     netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);

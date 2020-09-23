@@ -1,68 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
-    android:orientation="horizontal"
     android:layout_marginRight="10dp"
-    android:layout_height="71dp">
-           <ImageView
-               android:layout_gravity="center_vertical"
-               android:src="@mipmap/health_xy"
-               android:id="@+id/item_health_image"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"/>
+    android:paddingBottom="10dp"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/background_health"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/item_health_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:src="@mipmap/health_xy" />
+
     <LinearLayout
-        android:layout_marginTop="14dp"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:layout_marginRight="15dp"
-            android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp">
+
             <TextView
-                android:textSize="17sp"
-                android:textColor="#000000"
-                android:text="血压"
                 android:id="@+id/item_health_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="血压"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
             <TextView
-                android:layout_weight="1"
+                android:id="@+id/tv_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="mmhg"
-                android:textSize="13sp"
-                android:textColor="#999999"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:textColor="#000"
-                android:text="130"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_marginRight="15dp"
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
                 android:layout_weight="1"
-                android:textSize="17sp"
-                android:textColor="#000000"
-                android:text="今天20:00"
+                android:text="mmhg"
+                android:textColor="@color/textColor_vt"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="130"
+                android:textSize="15sp"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
                 android:id="@+id/item_health_time"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:text="今天20:00"
+                android:textColor="@color/textColor_vt"
+                android:textSize="12sp" />
+
             <TextView
-                android:gravity="center"
-                android:background="@drawable/bg_paid"
-                android:textColor="#fff"
-                android:text="记录数据"
                 android:layout_width="100dp"
-                android:layout_height="28dp"/>
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_paid"
+                android:gravity="center"
+                android:text="记录数据"
+                android:textSize="15sp"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/white" />
         </LinearLayout>
 
     </LinearLayout>

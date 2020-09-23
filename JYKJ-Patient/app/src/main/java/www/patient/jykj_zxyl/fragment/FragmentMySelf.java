@@ -54,7 +54,7 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
     private LinearLayout  tv_wdye,li_yhq,li_jf;
     ImageView discountBtn;
     ImageView gradeBtn;
-    private MyselfItemView myself_yy_btn;
+    private MyselfItemView myself_yy_btn,myEquipment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,6 +69,7 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
     private void initLayout(View v) {
         tv_wdye = v.findViewById(R.id.tv_wdye);
         myself_yy_btn = v.findViewById(R.id.myself_yy_btn);
+        myEquipment= v.findViewById(R.id.my_equipment);
 
         li_yhq = v.findViewById(R.id.li_yhq);
         li_jf = v.findViewById(R.id.li_jf);
@@ -119,6 +120,7 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
         discountBtn.setOnClickListener(this);
         gradeBtn.setOnClickListener(this);
         myself_yy_btn.setOnClickListener(this);
+        myEquipment.setOnClickListener(this);
     }
 
     @Override
@@ -192,6 +194,9 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
                 break;
             case R.id.gradeBtn:
                 alertWillpub();
+                break;
+            case R.id.my_equipment://我的设备
+                startActivity(new Intent(getActivity(),MyEquipmentActivity.class));
                 break;
         }
     }

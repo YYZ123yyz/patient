@@ -126,5 +126,13 @@ public interface ApiService {
     //取消预约详情
     @POST("/reservePatientDoctorControll/searchReserveInfo ")
     Observable<String> cancelApp(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+
+    //获取病历详情
+    @POST("/medicalRecordControlle/searchPatientMedicalRecordDetail")
+    Observable<String> getPatientRecordDet(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+
+    //确认病历
+    @POST("/medicalRecordControlle/operPatientMedicalRecordConfirm")
+    Observable<String> confirmPatientRecordDet(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
 }
 

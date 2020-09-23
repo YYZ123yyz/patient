@@ -106,10 +106,12 @@ dependencies {
     api 'cn.bingoogolapple:bga-adapter:1.0.9@aar'
     //添加数据库GreenDao
     api 'org.greenrobot:greendao:3.2.2'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
 
-greendao {
-    schemaVersion 1
-    daoPackage 'www.patient.jykj_zxyl.base.base_db.dao'
-    targetGenDir 'src/main/java'
-}
+//    greendao {
+//        schemaVersion 1
+//        daoPackage 'www.patient.jykj_zxyl.base.base_db.dao'
+//        targetGenDir 'src/main/java'
+//    }
+
 }

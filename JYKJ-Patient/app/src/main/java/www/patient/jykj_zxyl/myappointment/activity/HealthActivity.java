@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.myappointment.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,61 +9,102 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.hyphenate.easeui.hyhd.model.Constant;
 import com.hyphenate.easeui.netService.HttpNetService;
 import com.hyphenate.easeui.netService.entity.NetRetEntity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import entity.HealthListBean;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.activity.home.patient.BloodEntryActivity;
+import www.patient.jykj_zxyl.activity.myself.MedicationSettingsActivity;
 import www.patient.jykj_zxyl.activity.myself.order.RefundApplyContract;
+import www.patient.jykj_zxyl.adapter.HealthListAdapter;
+import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
+import www.patient.jykj_zxyl.myappointment.adapter.HealthAdapter;
+import www.patient.jykj_zxyl.presenter.HelathPresenter;
+import www.patient.jykj_zxyl.presenter.MedicalRecordPresenter;
+import www.patient.jykj_zxyl.util.ToastUtils;
+import www.patient.jykj_zxyl.view.HealthView;
+import www.patient.jykj_zxyl.view.MedicalRecordView;
 
 /*
  * 信息录入入口
  * */
-public class HealthActivity extends AppCompatActivity implements View.OnClickListener {
+public class HealthActivity extends AbstractMvpBaseActivity<HealthView, HelathPresenter> {
 
-
-    private LinearLayoutManager layoutManager;
     private String mNetRetStr;
- private Handler mHandler;
+    private Handler mHandler;
     private ImageView ivBack;
     private RecyclerView healthRv;
-
+    private String[] types={"血压","服药"};
+    private int[] ivSrc ={R.mipmap.iv_pre,R.mipmap.iv_med};
+    private String[] unit ={"mmhg","小时"};
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_health);
-        ButterKnife.bind(this);
-        Window window = getWindow();
-        View decorView = window.getDecorView();
-        int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-        decorView.setSystemUiVisibility(option);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
-        initView();
+    protected void initData() {
+        super.initData();
         data();
         initHandler();
+
+        initRecycle();
+    }
+
+    private void initRecycle() {
+        ArrayList<HealthListBean> healthListBeans = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            HealthListBean healthListBean = new HealthListBean();
+            healthListBean.setType(types[i]);
+            healthListBean.setIvSrc(ivSrc[i]);
+            healthListBean.setUnit(unit[i]);
+            healthListBean.setTime("今天20:00");
+            healthListBean.setData("130");
+            healthListBeans.add(healthListBean);
+        }
+
+        HealthListAdapter healthListAdapter = new HealthListAdapter(R.layout.item_health, healthListBeans);
+        healthRv.setAdapter(healthListAdapter);
+
+        healthListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (position) {
+                    case 0:
+                        startActivity(new Intent(HealthActivity.this, BloodEntryActivity.class));
+                        break;
+                    case 1:
+                        startActivity(new Intent(HealthActivity.this, MedicationSettingsActivity.class));
+                        break;
+                }
+            }
+        });
+    }
+
+    @Override
+    protected int setLayoutId() {
+        return R.layout.activity_health;
     }
 
     private void initHandler() {
-        mHandler=new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                switch (msg.what){
+                switch (msg.what) {
                     case 1:
                         break;
                 }
@@ -97,20 +139,25 @@ public class HealthActivity extends AppCompatActivity implements View.OnClickLis
         }.start();
     }
 
-    private void initView() {
-        ivBack = findViewById(R.id.iv_back);
-        healthRv = findViewById(R.id.health_rv);
-        layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayout.VERTICAL);
-        healthRv.setLayoutManager(layoutManager);
+    protected void initView() {
+        ivBack = (ImageView) findViewById(R.id.iv_back);
+        healthRv = (RecyclerView) findViewById(R.id.health_rv);
+        healthRv.setLayoutManager(new LinearLayoutManager(this));
+
+    }
+
+
+    @OnClick({R.id.iv_back})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+        }
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-//            case R.id.iv_back:
-//                finish();
-//                break;
-        }
+    public void showLoading(int code) {
+
     }
 }

@@ -516,7 +516,9 @@
             android:name=".base.wxapi.AliPayEntryActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".myappointment.activity.CheckListActivity" />
-        <activity android:name=".myappointment.activity.PrescriptionDetActivity" /> <!-- 设置环信应用的AppKey -->
+        <activity android:name=".myappointment.activity.PrescriptionDetActivity" />
+        <activity android:name=".activity.myself.MyEquipmentActivity" />
+        <activity android:name=".activity.myself.AddEquipmentActivity" /> <!-- 设置环信应用的AppKey -->
         <!-- <meta-data android:name="EASEMOB_APPKEY"  android:value="Your AppKey" /> -->
         <meta-data
             android:name="EASEMOB_APPKEY"
