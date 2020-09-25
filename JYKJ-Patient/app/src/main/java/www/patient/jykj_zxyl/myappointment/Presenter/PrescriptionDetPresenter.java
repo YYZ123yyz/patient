@@ -11,6 +11,7 @@ import www.patient.jykj_zxyl.base.base_bean.BaseBean;
 import www.patient.jykj_zxyl.base.base_bean.CheckListBean;
 import www.patient.jykj_zxyl.base.base_bean.PrescriptionDetBean;
 import www.patient.jykj_zxyl.base.base_utils.GsonUtils;
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 import www.patient.jykj_zxyl.base.http.ApiHelper;
 import www.patient.jykj_zxyl.base.http.CommonDataObserver;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
@@ -51,6 +52,7 @@ public class PrescriptionDetPresenter  extends BasePresenterImpl<PrescriptionDet
                     int resCode = baseBean.getResCode();
                     if (resCode == 1) {
                         String resJsonData = baseBean.getResJsonData();
+                        LogUtils.e("解析处方笺"+resJsonData);
                         PrescriptionDetBean prescriptionDetBean = GsonUtils.fromJson(resJsonData, PrescriptionDetBean.class);
                         mView.getPrescriptionDetSucess(prescriptionDetBean);
                     }

@@ -79,7 +79,7 @@ public class Item_PrescriptionAdapter extends RecyclerView.Adapter<Item_Prescrip
             tvSpecification=view.findViewById(R.id.tv_specification);
             tvFrequency=view.findViewById(R.id.tv_frequency);
             tvUseFrequencyName=view.findViewById(R.id.tv_useFrequencyName);
-            useNumName=view.findViewById(R.id.useNumName);
+//            useNumName=view.findViewById(R.id.useNumName);
         }
     }
 

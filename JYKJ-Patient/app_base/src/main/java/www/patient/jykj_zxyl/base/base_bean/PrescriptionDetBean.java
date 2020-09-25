@@ -250,6 +250,15 @@ public class PrescriptionDetBean implements Serializable {
             private String useFrequencyName;
             private int useNum;
             private String useNumName;
+            private int type;
+
+            public int getType() {
+                return type;
+            }
+
+            public void setType(int type) {
+                this.type = type;
+            }
 
             public double getDrugAmount() {
                 return drugAmount;

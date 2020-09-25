@@ -18,11 +18,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.base.base_bean.MedicalRecordBean;
 import www.patient.jykj_zxyl.base.base_bean.PrescriptionDetBean;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
 import www.patient.jykj_zxyl.myappointment.Contract.PrescriptionDetContract;
 import www.patient.jykj_zxyl.myappointment.Presenter.PrescriptionDetPresenter;
 import www.patient.jykj_zxyl.myappointment.adapter.Item_PrescriptionAdapter;
+import www.patient.jykj_zxyl.myappointment.adapter.PrescriptionAdapter;
 import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.DateUtils;
 
@@ -71,7 +73,9 @@ public class PrescriptionDetActivity extends AbstractMvpBaseActivity<Prescriptio
     private JYKJApplication mApp;
     private Item_PrescriptionAdapter item_prescriptionAdapter;
     private LinearLayoutManager layoutManager;
-
+    private static final int DRUG_TYPE_NOMAL = 0;
+    private static final int DRUG_TYPE_START = 1;
+    private static final int DRUG_TYPE_END = 2;
     @Override
     protected int setLayoutId() {
         return R.layout.activity_prescription_det;
@@ -81,20 +85,18 @@ public class PrescriptionDetActivity extends AbstractMvpBaseActivity<Prescriptio
     protected void initView() {
         super.initView();
         ActivityUtil.setStatusBarMain(this);
-        mApp = (JYKJApplication) getApplication();
-        Intent intent = getIntent();
-        recordCode = intent.getStringExtra("recordCode");
-        layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayout.VERTICAL);
-        myRecycleview.setLayoutManager(layoutManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         myRecycleview.setHasFixedSize(true);
 
+        myRecycleview.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
     protected void initData() {
         super.initData();
+        mApp = (JYKJApplication) getApplication();
+        Intent intent = getIntent();
+        recordCode = intent.getStringExtra("recordCode");
         //    mPresenter.sendPrescriptionDetRequest(mApp.loginDoctorPosition,"1",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),recordCode);
         mPresenter.sendPrescriptionDetRequest("123123^123123213", "1",
                 "4dcc513a5dd34fa09a7a229a175e5c11", "Pan", "0101202009181608445105661560");
@@ -134,13 +136,32 @@ public class PrescriptionDetActivity extends AbstractMvpBaseActivity<Prescriptio
             tvDoctrosignature.setText(prescriptionDetBean.getDoctorName());
             //金额
             drugMoney.setText(prescriptionDetBean.getPrescribeSumAmount()+"");
+
+
             List<PrescriptionDetBean.InteractOrderPrescribeListBean> interactOrderPrescribeList = prescriptionDetBean.getInteractOrderPrescribeList();
+            List<PrescriptionDetBean.InteractOrderPrescribeListBean.PrescribeInfoBean> prescribeInfoBeans = new ArrayList<>();
             for (int i = 0; i < interactOrderPrescribeList.size(); i++) {
-                list.addAll(interactOrderPrescribeList);
+
+                List<PrescriptionDetBean.InteractOrderPrescribeListBean.PrescribeInfoBean> prescribeInfo = interactOrderPrescribeList.get(i).getPrescribeInfo();
+                if (prescribeInfo.size() > 1) { //有一组
+                    for (int j = 0; j < prescribeInfo.size(); j++) {
+                        if (j == 0) { //一组开头
+                            prescribeInfo.get(j).setType(DRUG_TYPE_START);
+                        } else if (j == (prescribeInfo.size()) - 1) {//一组结尾
+                            prescribeInfo.get(j).setType(DRUG_TYPE_END);
+                        } else {//中间
+                            prescribeInfo.get(j).setType(DRUG_TYPE_NOMAL);
+                        }
+                    }
+                } else { //没有一组
+                    prescribeInfo.get(0).setType(DRUG_TYPE_NOMAL);
+                }
+                prescribeInfoBeans.addAll(prescribeInfo);
             }
-            //   new Item_PrescriptionAdapter(prescriptionDetBean.getInteractOrderPrescribeList().get(0).getPrescribeInfo())
-            item_prescriptionAdapter = new Item_PrescriptionAdapter(list, this);
-            myRecycleview.setAdapter(item_prescriptionAdapter);
+
+
+            PrescriptionAdapter prescriptionAdapter = new PrescriptionAdapter(R.layout.item_recyclerview, prescribeInfoBeans);
+            myRecycleview.setAdapter(prescriptionAdapter);
         }
     }
 

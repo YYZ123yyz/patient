@@ -61,6 +61,7 @@ public class ChatActivity extends AbstractMvpBaseActivity<CheckContract.View, Ch
     private String doctorType;//医生类型
     private OrderMessage orderMessage;
     private EaseChatFragment chatFragment;
+    private int isReserveing =0;
 
     @Override
     protected int setLayoutId() {
@@ -100,8 +101,9 @@ public class ChatActivity extends AbstractMvpBaseActivity<CheckContract.View, Ch
     @Override
     protected void onPause() {
         super.onPause();
-
-        mPresenter.submitData(RetrofitUtil.encodeParam(getParamsHashMap(1)));
+        if (isReserveing ==1){
+            mPresenter.submitData(RetrofitUtil.encodeParam(getParamsHashMap(1)));
+        }
     }
 
     /**
@@ -256,7 +258,7 @@ public class ChatActivity extends AbstractMvpBaseActivity<CheckContract.View, Ch
 //            e.printStackTrace();
 //        }
 
-
+        isReserveing = bean.getIsReserveing();
         ActivityUtil.setStatusBarMain(this);
         ActivityStackManager.getInstance().add(this);
         mContext = this;
