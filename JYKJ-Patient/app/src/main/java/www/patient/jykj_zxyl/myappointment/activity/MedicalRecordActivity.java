@@ -43,7 +43,6 @@ import www.patient.jykj_zxyl.util.ToastUtils;
  * */
 public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecordContract.View, MedicalRecordPresenter>
         implements MedicalRecordContract.View {
-    private String gennder;
     @BindView(R.id.id_flowlayout)
     TagFlowLayout diagFlow; //临床诊断
     @BindView(R.id.flowlayout_check)
@@ -198,18 +197,7 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
         Glide.with(MedicalRecordActivity.this).load(bean.getPatientLogoUrl()).into(userHead);
 
         patientName.setText(bean.getPatientName());
-        switch (bean.getPatientGender()) {
-            case 0:
-                gennder = "未知";
-                break;
-            case 1:
-                gennder = "男";
-                break;
-            case 2:
-                gennder = "女";
-                break;
-        }
-        userGennder.setText(gennder);
+        userGennder.setText(bean.getPatientGender() == 0 ? "未知" : (bean.getPatientGender() == 1 ? "男" : "女"));
         userAger.setText(String.valueOf(bean.getPatientAge()));
         userDoc.setText(bean.getDoctorName());
         userdepartMent.setText(bean.getTreatmentCardNum());
@@ -247,9 +235,9 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
                     for (int j = 0; j < prescribeInfo.size(); j++) {
                         if (j == 0) { //一组开头
                             prescribeInfo.get(j).setType(DRUG_TYPE_START);
-                        } else if (j == (prescribeInfo.size())-1){//一组结尾
+                        } else if (j == (prescribeInfo.size()) - 1) {//一组结尾
                             prescribeInfo.get(j).setType(DRUG_TYPE_END);
-                        }else {//中间
+                        } else {//中间
                             prescribeInfo.get(j).setType(DRUG_TYPE_NOMAL);
                         }
                     }

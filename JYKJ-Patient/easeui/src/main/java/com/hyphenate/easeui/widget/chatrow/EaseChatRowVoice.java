@@ -5,6 +5,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hyphenate.chat.EMClient;
@@ -14,6 +15,8 @@ import com.hyphenate.chat.EMVoiceMessageBody;
 import com.hyphenate.easeui.R;
 import com.hyphenate.util.EMLog;
 
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
+
 public class EaseChatRowVoice extends EaseChatRowFile {
     private static final String TAG = "EaseChatRowVoice";
 
@@ -22,9 +25,14 @@ public class EaseChatRowVoice extends EaseChatRowFile {
     private ImageView readStatusView;
 
     private AnimationDrawable voiceAnimation;
-
+    private TextView allNum;
+    private TextView remainNum;
+    private int test = 0;
+    private LinearLayout linNum;
+    private EMMessage myMessage;
     public EaseChatRowVoice(Context context, EMMessage message, int position, BaseAdapter adapter) {
         super(context, message, position, adapter);
+        this.myMessage =message;
     }
 
     @Override
@@ -38,6 +46,10 @@ public class EaseChatRowVoice extends EaseChatRowFile {
         voiceImageView = ((ImageView) findViewById(R.id.iv_voice));
         voiceLengthView = (TextView) findViewById(R.id.tv_length);
         readStatusView = (ImageView) findViewById(R.id.iv_unread_voice);
+
+        allNum = (TextView) findViewById(R.id.all_num);
+        remainNum = (TextView) findViewById(R.id.remain_num);
+        linNum = (LinearLayout) findViewById(R.id.lin_num);
     }
 
     @Override
@@ -75,6 +87,8 @@ public class EaseChatRowVoice extends EaseChatRowFile {
             } else {
                 progressBar.setVisibility(View.INVISIBLE);
             }
+        } else {
+
         }
 
         // To avoid the item is recycled by listview and slide to this item again but the animation is stopped.
@@ -84,12 +98,33 @@ public class EaseChatRowVoice extends EaseChatRowFile {
         }
     }
 
+
+    public void setLinVi(int i){
+        linNum.setVisibility(i % 2 == 0? VISIBLE :GONE);
+    }
+
     @Override
     protected void onViewUpdate(EMMessage msg) {
         super.onViewUpdate(msg);
 
         // Only the received message has the attachment download status.
         if (message.direct() == EMMessage.Direct.SEND) {
+            boolean isReserveing = message.getBooleanAttribute("isReserveing", false);
+            if (message.direct() == EMMessage.Direct.SEND && isReserveing) {
+                long msgTime = message.getMsgTime();
+                long reserveConfigStart = message.getLongAttribute("reserveConfigStart", 0);
+                long reserveConfigEnd = message.getLongAttribute("reserveConfigEnd", 0);
+                int sumDuration = message.getIntAttribute("sumDuration", 0);
+                LogUtils.e("消息时间  "+msgTime);
+                LogUtils.e("预约开始  "+reserveConfigStart);
+                LogUtils.e("预约结束  "+reserveConfigEnd);
+                LogUtils.e("剩余次数  "+sumDuration);
+                linNum.setVisibility((msgTime > reserveConfigStart && reserveConfigEnd > msgTime) ? VISIBLE : GONE);
+                allNum.setText("您一共有5次机会");
+                remainNum.setText(String.format("您还有%d次机会", sumDuration));
+            }else {
+                linNum.setVisibility(GONE);
+            }
             return;
         }
 

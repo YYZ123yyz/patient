@@ -7,6 +7,8 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRowBigExpression;
 
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
+
 /**
  * Created by zhangsong on 17-10-12.
  */
