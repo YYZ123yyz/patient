@@ -2,12 +2,17 @@ package www.patient.jykj_zxyl.myappointment.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,6 +69,8 @@ public class PrescriptionDetActivity extends AbstractMvpBaseActivity<Prescriptio
     TextView tvDepartment;
     private String recordCode;
     private JYKJApplication mApp;
+    private Item_PrescriptionAdapter item_prescriptionAdapter;
+    private LinearLayoutManager layoutManager;
 
     @Override
     protected int setLayoutId() {
@@ -77,6 +84,12 @@ public class PrescriptionDetActivity extends AbstractMvpBaseActivity<Prescriptio
         mApp = (JYKJApplication) getApplication();
         Intent intent = getIntent();
         recordCode = intent.getStringExtra("recordCode");
+        layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayout.VERTICAL);
+        myRecycleview.setLayoutManager(layoutManager);
+        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        myRecycleview.setHasFixedSize(true);
+
     }
 
     @Override
@@ -90,6 +103,7 @@ public class PrescriptionDetActivity extends AbstractMvpBaseActivity<Prescriptio
     @Override
     public void getPrescriptionDetSucess(PrescriptionDetBean prescriptionDetBean) {
         if (prescriptionDetBean != null) {
+          List<PrescriptionDetBean.InteractOrderPrescribeListBean> list=  new ArrayList<>();
             //姓名
             tvName.setText(prescriptionDetBean.getPatientName());
             //性别
@@ -120,7 +134,13 @@ public class PrescriptionDetActivity extends AbstractMvpBaseActivity<Prescriptio
             tvDoctrosignature.setText(prescriptionDetBean.getDoctorName());
             //金额
             drugMoney.setText(prescriptionDetBean.getPrescribeSumAmount()+"");
-         //   new Item_PrescriptionAdapter(prescriptionDetBean.getInteractOrderPrescribeList().get(0).getPrescribeInfo())
+            List<PrescriptionDetBean.InteractOrderPrescribeListBean> interactOrderPrescribeList = prescriptionDetBean.getInteractOrderPrescribeList();
+            for (int i = 0; i < interactOrderPrescribeList.size(); i++) {
+                list.addAll(interactOrderPrescribeList);
+            }
+            //   new Item_PrescriptionAdapter(prescriptionDetBean.getInteractOrderPrescribeList().get(0).getPrescribeInfo())
+            item_prescriptionAdapter = new Item_PrescriptionAdapter(list, this);
+            myRecycleview.setAdapter(item_prescriptionAdapter);
         }
     }
 

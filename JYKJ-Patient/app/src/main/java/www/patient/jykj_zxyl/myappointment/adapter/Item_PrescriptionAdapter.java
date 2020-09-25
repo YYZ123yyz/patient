@@ -22,16 +22,7 @@ import www.patient.jykj_zxyl.base.base_bean.PrescriptionDetBean;
  */
 public class Item_PrescriptionAdapter extends RecyclerView.Adapter<Item_PrescriptionAdapter.ViewHolder> {
 
-    @BindView(R.id.tv_name)
-    TextView tvName;
-    @BindView(R.id.tv_specification)
-    TextView tvSpecification;
-    @BindView(R.id.tv_frequency)
-    TextView tvFrequency;
-    @BindView(R.id.tv_useFrequencyName)
-    TextView tvUseFrequencyName;
-    @BindView(R.id.useNumName)
-    TextView useNumName;
+
     private List<PrescriptionDetBean.InteractOrderPrescribeListBean> datas;
     private Context mContext;
     private OnItemClickListener mOnItemClickListener;
@@ -57,10 +48,10 @@ public class Item_PrescriptionAdapter extends RecyclerView.Adapter<Item_Prescrip
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         PrescriptionDetBean.InteractOrderPrescribeListBean interactOrderPrescribeListBean = datas.get(position);
-        PrescriptionDetBean.InteractOrderPrescribeListBean.PrescribeInfoBean prescribeInfoBean = interactOrderPrescribeListBean.getPrescribeInfo().get(position);
-        tvName.setText(prescribeInfoBean.getDrugName());
-        tvSpecification.setText(prescribeInfoBean.getDrugAmountName());
-        tvFrequency.setText(prescribeInfoBean.getUseNumName());
+        List<PrescriptionDetBean.InteractOrderPrescribeListBean.PrescribeInfoBean> prescribeInfo = interactOrderPrescribeListBean.getPrescribeInfo();
+        holder.tvName.setText(prescribeInfo.get(0).getDrugName());
+        holder.tvSpecification.setText(prescribeInfo.get(0).getDrugAmountName());
+        holder.tvFrequency.setText(prescribeInfo.get(0).getUseNumName());
 
     }
 
@@ -75,14 +66,20 @@ public class Item_PrescriptionAdapter extends RecyclerView.Adapter<Item_Prescrip
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+      private  TextView tvName;
+        private    TextView tvSpecification;
+        private   TextView tvFrequency;
+        private TextView tvUseFrequencyName;
+        private  TextView useNumName;
 
-        private TextView mTvCancelContractText;
-        private ImageView mIvItemChoosed;
-        private RelativeLayout li_clickLayout;
 
         public ViewHolder(View view) {
             super(view);
-
+            tvName=view.findViewById(R.id.tv_name);
+            tvSpecification=view.findViewById(R.id.tv_specification);
+            tvFrequency=view.findViewById(R.id.tv_frequency);
+            tvUseFrequencyName=view.findViewById(R.id.tv_useFrequencyName);
+            useNumName=view.findViewById(R.id.useNumName);
         }
     }
 
