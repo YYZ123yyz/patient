@@ -80,7 +80,6 @@ import www.patient.jykj_zxyl.activity.myself.couponFragment.FragmentAdapter;
 import www.patient.jykj_zxyl.activity.patient_home.KSWYSActivity;
 import www.patient.jykj_zxyl.base.base_db.DbManager;
 import www.patient.jykj_zxyl.base.base_db.entity.CheckDoctorNumEntity;
-import www.patient.jykj_zxyl.base.base_db.entity.CheckNumEntity;
 import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
 import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_Graphic;

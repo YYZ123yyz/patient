@@ -31,7 +31,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.allen.library.utils.ToastUtils;
-import com.blankj.utilcode.util.SPUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hyphenate.EMCallBack;
@@ -100,7 +99,6 @@ import www.patient.jykj_zxyl.base.base_bean.OrderMessage;
 import www.patient.jykj_zxyl.base.base_bean.ProvideViewSysUserPatientInfoAndRegion;
 import www.patient.jykj_zxyl.base.base_db.DbManager;
 import www.patient.jykj_zxyl.base.base_db.entity.CheckDoctorNumEntity;
-import www.patient.jykj_zxyl.base.base_db.entity.CheckNumEntity;
 import www.patient.jykj_zxyl.base.base_utils.GsonUtils;
 import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 import www.patient.jykj_zxyl.base.base_utils.SharedPreferences_DataSave;
@@ -1301,7 +1299,6 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 DbManager.getInstance().getCheckDocNumEntityService().inSeartData(checkDoctorNumEntity);
             }
 
-            SPUtils.getInstance().put("checksum_duration", sumDuration);
 //            OrderAbstractDetialBean orderAbstractDetialBean = new OrderAbstractDetialBean();
 //
 //            ArrayList<OrderAbstractDetialBean> orderAbstractDetialBeans = new ArrayList<>();

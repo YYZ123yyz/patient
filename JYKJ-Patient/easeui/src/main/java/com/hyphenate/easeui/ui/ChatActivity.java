@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.allen.library.utils.ToastUtils;
 import com.allin.commlibrary.preferences.SavePreferences;
-import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
+
 import com.google.gson.Gson;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
@@ -24,7 +24,7 @@ import com.hyphenate.easeui.widget.EaseChatInputMenu;
 import com.hyphenate.easeui.widget.EaseChatMessageList;
 import com.hyphenate.easeui.widget.EaseTitleBar;
 
-import org.jetbrains.annotations.NotNull;
+
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -34,7 +34,6 @@ import www.patient.jykj_zxyl.base.base_bean.CheckNumBean;
 import www.patient.jykj_zxyl.base.base_bean.OrderMessage;
 import www.patient.jykj_zxyl.base.base_db.DbManager;
 import www.patient.jykj_zxyl.base.base_db.entity.CheckDoctorNumEntity;
-import www.patient.jykj_zxyl.base.base_db.entity.CheckNumEntity;
 import www.patient.jykj_zxyl.base.base_utils.ActivityStackManager;
 import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 import www.patient.jykj_zxyl.base.base_utils.SharedPreferences_DataSave;
@@ -81,7 +80,6 @@ public class ChatActivity extends AbstractMvpBaseActivity<CheckContract.View, Ch
 
     }
 
-    @NotNull
     private HashMap<String, Object> getParamsHashMap(int type) {
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("loginPatientPosition", "123123^123123213");
@@ -317,7 +315,6 @@ public class ChatActivity extends AbstractMvpBaseActivity<CheckContract.View, Ch
         args.putLong("reserveConfigEnd",bean.getReserveConfigEnd());//Long.valueOf("1601019524000")
         args.putInt("allNum",bean.getSumDuration());
         args.putInt("sumDuration",bean.getSumDuration()-bean.getUseDuration());
-        SPUtils.getInstance().put("checksum_duration",bean.getSumDuration());
         args.putInt("isReserveing",bean.getIsReserveing());
 
 //        CheckNumEntity checkNumEntity1 = new CheckNumEntity();
@@ -336,7 +333,7 @@ public class ChatActivity extends AbstractMvpBaseActivity<CheckContract.View, Ch
 
     @Override
     public void getDataFiled(String msg) {
-        ToastUtils.showShort(msg);
+        ToastUtils.showToast(msg);
     }
 
     @Override

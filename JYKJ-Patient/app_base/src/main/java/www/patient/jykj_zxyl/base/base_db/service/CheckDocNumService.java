@@ -5,9 +5,7 @@ import org.greenrobot.greendao.AbstractDao;
 import java.util.List;
 
 import www.patient.jykj_zxyl.base.base_db.dao.CheckDoctorNumEntityDao;
-import www.patient.jykj_zxyl.base.base_db.dao.CheckNumEntityDao;
 import www.patient.jykj_zxyl.base.base_db.entity.CheckDoctorNumEntity;
-import www.patient.jykj_zxyl.base.base_db.entity.CheckNumEntity;
 
 /**
  * Created by G on 2020/9/25 15:22

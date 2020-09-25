@@ -3,7 +3,6 @@ package www.patient.jykj_zxyl.base.base_db;
 
 import www.patient.jykj_zxyl.base.base_db.service.ArticleEntityService;
 import www.patient.jykj_zxyl.base.base_db.service.CheckDocNumService;
-import www.patient.jykj_zxyl.base.base_db.service.CheckNumService;
 import www.patient.jykj_zxyl.base.base_db.service.PublishContentService;
 import www.patient.jykj_zxyl.base.base_db.service.StationEntryService;
 import www.patient.jykj_zxyl.base.base_db.service.UploadFileService;
@@ -36,7 +35,6 @@ public class DbManager {
     /**
      * 病历检查service
      */
-    private CheckNumService checkNumService;
 
 
     private CheckDocNumService checkDocNumService;
@@ -70,13 +68,7 @@ public class DbManager {
      * 获取病历检查service
      * @return
      */
-    public CheckNumService getCheckNumEntityService() {
-        if (checkNumService == null) {
-            checkNumService = new CheckNumService(DbCore.getDaoSession()
-                    .getCheckNumEntityDao());
-        }
-        return checkNumService;
-    }
+
 
     public CheckDocNumService getCheckDocNumEntityService() {
         if (checkDocNumService == null) {
