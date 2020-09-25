@@ -107,7 +107,7 @@ dependencies {
     //添加数据库GreenDao
     api 'org.greenrobot:greendao:3.2.2'
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
-
+    api  'com.blankj:utilcode:1.28.0'
 //    greendao {
 //        schemaVersion 1
 //        daoPackage 'www.patient.jykj_zxyl.base.base_db.dao'

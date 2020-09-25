@@ -12,6 +12,8 @@ import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRowText;
 import com.hyphenate.exceptions.HyphenateException;
 
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
+
 /**
  * Created by zhangsong on 17-10-12.
  */
@@ -27,7 +29,6 @@ public class EaseChatTextPresenter extends EaseChatRowPresenter {
     @Override
     public void onBubbleClick(EMMessage message) {
         super.onBubbleClick(message);
-
         if (!EaseDingMessageHelper.get().isDingMessage(message)) {
             return;
         }

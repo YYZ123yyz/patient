@@ -78,6 +78,10 @@ import www.patient.jykj_zxyl.activity.myself.MedicationRecordActivity;
 import www.patient.jykj_zxyl.activity.myself.MedicationSettingsActivity;
 import www.patient.jykj_zxyl.activity.myself.couponFragment.FragmentAdapter;
 import www.patient.jykj_zxyl.activity.patient_home.KSWYSActivity;
+import www.patient.jykj_zxyl.base.base_db.DbManager;
+import www.patient.jykj_zxyl.base.base_db.entity.CheckDoctorNumEntity;
+import www.patient.jykj_zxyl.base.base_db.entity.CheckNumEntity;
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
 import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_Graphic;
 import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_WDYS;
@@ -827,6 +831,11 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         //     port_layout = view.findViewById(R.id.port_layout);
         //     sweem_layout = view.findViewById(R.id.sweem_layout);
         //     feeling_layout = view.findViewById(R.id.feeling_layout);
+
+
+        List<CheckDoctorNumEntity> checkNumEntities1 = DbManager.getInstance().getCheckDocNumEntityService().queryAll();
+        LogUtils.e("查询数据 rrgg "+checkNumEntities1.size());
+
     }
 
 

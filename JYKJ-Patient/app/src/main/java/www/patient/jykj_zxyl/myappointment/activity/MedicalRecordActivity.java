@@ -208,6 +208,7 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
         Glide.with(MedicalRecordActivity.this).load(bean.getPatientLogoUrl()).into(userHead);
 
         patientName.setText(bean.getPatientName());
+        userGennder.setText(bean.getPatientGender() == 0 ? "未知" : (bean.getPatientGender() == 1 ? "男" : "女"));
         switch (bean.getPatientGender()) {
             case 0:
                 gennder = "未知";

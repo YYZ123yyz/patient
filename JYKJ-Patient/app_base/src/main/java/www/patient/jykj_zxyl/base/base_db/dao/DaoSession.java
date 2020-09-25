@@ -9,11 +9,15 @@ import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
 import www.patient.jykj_zxyl.base.base_db.entity.ArticleEntity;
+import www.patient.jykj_zxyl.base.base_db.entity.CheckDoctorNumEntity;
+import www.patient.jykj_zxyl.base.base_db.entity.CheckNumEntity;
 import www.patient.jykj_zxyl.base.base_db.entity.PublishContentEntity;
 import www.patient.jykj_zxyl.base.base_db.entity.StationEntity;
 import www.patient.jykj_zxyl.base.base_db.entity.UploadFileEntity;
 
 import www.patient.jykj_zxyl.base.base_db.dao.ArticleEntityDao;
+import www.patient.jykj_zxyl.base.base_db.dao.CheckDoctorNumEntityDao;
+import www.patient.jykj_zxyl.base.base_db.dao.CheckNumEntityDao;
 import www.patient.jykj_zxyl.base.base_db.dao.PublishContentEntityDao;
 import www.patient.jykj_zxyl.base.base_db.dao.StationEntityDao;
 import www.patient.jykj_zxyl.base.base_db.dao.UploadFileEntityDao;
@@ -28,11 +32,15 @@ import www.patient.jykj_zxyl.base.base_db.dao.UploadFileEntityDao;
 public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig articleEntityDaoConfig;
+    private final DaoConfig checkDoctorNumEntityDaoConfig;
+    private final DaoConfig checkNumEntityDaoConfig;
     private final DaoConfig publishContentEntityDaoConfig;
     private final DaoConfig stationEntityDaoConfig;
     private final DaoConfig uploadFileEntityDaoConfig;
 
     private final ArticleEntityDao articleEntityDao;
+    private final CheckDoctorNumEntityDao checkDoctorNumEntityDao;
+    private final CheckNumEntityDao checkNumEntityDao;
     private final PublishContentEntityDao publishContentEntityDao;
     private final StationEntityDao stationEntityDao;
     private final UploadFileEntityDao uploadFileEntityDao;
@@ -44,6 +52,12 @@ public class DaoSession extends AbstractDaoSession {
         articleEntityDaoConfig = daoConfigMap.get(ArticleEntityDao.class).clone();
         articleEntityDaoConfig.initIdentityScope(type);
 
+        checkDoctorNumEntityDaoConfig = daoConfigMap.get(CheckDoctorNumEntityDao.class).clone();
+        checkDoctorNumEntityDaoConfig.initIdentityScope(type);
+
+        checkNumEntityDaoConfig = daoConfigMap.get(CheckNumEntityDao.class).clone();
+        checkNumEntityDaoConfig.initIdentityScope(type);
+
         publishContentEntityDaoConfig = daoConfigMap.get(PublishContentEntityDao.class).clone();
         publishContentEntityDaoConfig.initIdentityScope(type);
 
@@ -54,11 +68,15 @@ public class DaoSession extends AbstractDaoSession {
         uploadFileEntityDaoConfig.initIdentityScope(type);
 
         articleEntityDao = new ArticleEntityDao(articleEntityDaoConfig, this);
+        checkDoctorNumEntityDao = new CheckDoctorNumEntityDao(checkDoctorNumEntityDaoConfig, this);
+        checkNumEntityDao = new CheckNumEntityDao(checkNumEntityDaoConfig, this);
         publishContentEntityDao = new PublishContentEntityDao(publishContentEntityDaoConfig, this);
         stationEntityDao = new StationEntityDao(stationEntityDaoConfig, this);
         uploadFileEntityDao = new UploadFileEntityDao(uploadFileEntityDaoConfig, this);
 
         registerDao(ArticleEntity.class, articleEntityDao);
+        registerDao(CheckDoctorNumEntity.class, checkDoctorNumEntityDao);
+        registerDao(CheckNumEntity.class, checkNumEntityDao);
         registerDao(PublishContentEntity.class, publishContentEntityDao);
         registerDao(StationEntity.class, stationEntityDao);
         registerDao(UploadFileEntity.class, uploadFileEntityDao);
@@ -66,6 +84,8 @@ public class DaoSession extends AbstractDaoSession {
     
     public void clear() {
         articleEntityDaoConfig.clearIdentityScope();
+        checkDoctorNumEntityDaoConfig.clearIdentityScope();
+        checkNumEntityDaoConfig.clearIdentityScope();
         publishContentEntityDaoConfig.clearIdentityScope();
         stationEntityDaoConfig.clearIdentityScope();
         uploadFileEntityDaoConfig.clearIdentityScope();
@@ -73,6 +93,14 @@ public class DaoSession extends AbstractDaoSession {
 
     public ArticleEntityDao getArticleEntityDao() {
         return articleEntityDao;
+    }
+
+    public CheckDoctorNumEntityDao getCheckDoctorNumEntityDao() {
+        return checkDoctorNumEntityDao;
+    }
+
+    public CheckNumEntityDao getCheckNumEntityDao() {
+        return checkNumEntityDao;
     }
 
     public PublishContentEntityDao getPublishContentEntityDao() {

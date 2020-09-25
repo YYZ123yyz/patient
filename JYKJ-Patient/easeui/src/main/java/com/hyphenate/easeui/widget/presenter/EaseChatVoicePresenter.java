@@ -3,7 +3,9 @@ package com.hyphenate.easeui.widget.presenter;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.view.View;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
@@ -18,6 +20,8 @@ import com.hyphenate.util.EMLog;
 
 import java.io.File;
 
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
+
 /**
  * Created by zhangsong on 17-10-12.
  */
@@ -26,6 +30,8 @@ public class EaseChatVoicePresenter extends EaseChatFilePresenter {
     private static final String TAG = "EaseChatVoicePresenter";
 
     private EaseChatRowVoicePlayer voicePlayer;
+    private int num =0;
+    private LinearLayout linNum;
 
     @Override
     protected EaseChatRow onCreateChatRow(Context cxt, EMMessage message, int position, BaseAdapter adapter) {
@@ -36,7 +42,6 @@ public class EaseChatVoicePresenter extends EaseChatFilePresenter {
     @Override
     public void onBubbleClick(final EMMessage message) {
         String msgId = message.getMsgId();
-
         if (voicePlayer.isPlaying()) {
             // Stop the voice play first, no matter the playing voice item is this or others.
             voicePlayer.stop();
