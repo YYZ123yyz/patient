@@ -61,4 +61,33 @@ public class PrescriptionDetPresenter  extends BasePresenterImpl<PrescriptionDet
             }
         });
     }
+
+    @Override
+    public void getDownloadDet(String params) {
+        ApiHelper.getPatientTestApi().getDownloadDet(params).compose(Transformer.switchSchedulers(new ILoadingView() {
+            @Override
+            public void showLoadingView() {
+
+            }
+
+            @Override
+            public void hideLoadingView() {
+
+            }
+        })).subscribe(new CommonDataObserver() {
+            @Override
+            protected void onSuccessResult(BaseBean baseBean) {
+                if (mView != null) {
+                    int resCode = baseBean.getResCode();
+                    if (resCode == 1) {
+                        String resJsonData = baseBean.getResJsonData();
+                        LogUtils.e("解析处方笺下载"+resJsonData);
+                      /*  PrescriptionDetBean prescriptionDetBean = GsonUtils.fromJson(resJsonData, PrescriptionDetBean.class);
+                        mView.getPrescriptionDetSucess(prescriptionDetBean);*/
+                    }
+                }
+
+            }
+        });
+    }
 }
