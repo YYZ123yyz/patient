@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="病历"
+            android:text="检查检验单"
             android:textColor="@color/writeColor"
             android:textSize="10pt" />
 
@@ -171,6 +171,7 @@
 
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -358,6 +359,7 @@
                 >
 
                 <TextView
+                    android:id="@+id/tv_inspectionname"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:text="心脏 检查申请单"
@@ -387,6 +389,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/do_type_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="b超室"
@@ -429,19 +432,32 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="5dp"
                     android:orientation="vertical">
-
-                    <TextView
+                    <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:drawableLeft="@mipmap/iv_com"
-                        android:layout_weight="1"
-                        android:drawablePadding="4dp"
-                        android:text="检查项目"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
-                        android:textColor="@color/textColor_black" />
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_marginLeft="@dimen/dp10"
+                            android:id="@+id/img_one"
+                            android:layout_gravity="center_vertical"
+                            android:background="@mipmap/iv_com"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:id="@+id/project"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:drawablePadding="4dp"
+                            android:text="检查项目"
+                            android:textStyle="bold"
+                            android:textSize="15sp"
+                            android:textColor="@color/textColor_black" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/heat_cheak_pro"
@@ -465,20 +481,32 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="5dp"
                     android:orientation="vertical">
-
-                    <TextView
+                    <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:drawableLeft="@mipmap/iv_com"
-                        android:layout_weight="1"
-                        android:drawablePadding="4dp"
-                        android:text="检查部位"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
-                        android:textColor="@color/textColor_black" />
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_marginLeft="@dimen/dp10"
+                            android:id="@+id/img_two"
+                            android:layout_gravity="center_vertical"
+                            android:background="@mipmap/location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
 
+                        <TextView
+                            android:id="@+id/tv_Location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:drawablePadding="4dp"
+                            android:text="检查部位"
+                            android:textStyle="bold"
+                            android:textSize="15sp"
+                            android:textColor="@color/textColor_black" />
+
+                    </LinearLayout>
                     <TextView
                         android:id="@+id/heat_cheak_part"
                         android:layout_width="wrap_content"
@@ -503,19 +531,32 @@
                     android:paddingBottom="5dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:drawableLeft="@mipmap/iv_com"
-                        android:layout_weight="1"
-                        android:drawablePadding="4dp"
-                        android:text="检查目的"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
-                        android:textColor="@color/textColor_black" />
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_marginLeft="@dimen/dp10"
+                            android:id="@+id/img_three"
+                            android:layout_gravity="center_vertical"
+                            android:background="@mipmap/purpose"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
 
+                        <TextView
+                            android:id="@+id/tv_purpose"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:drawablePadding="4dp"
+                            android:text="检查目的"
+                            android:textStyle="bold"
+                            android:textSize="15sp"
+                            android:textColor="@color/textColor_black" />
+
+                    </LinearLayout>
                     <TextView
                         android:id="@+id/heat_cheak_total"
                         android:layout_width="wrap_content"
@@ -548,6 +589,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/tv_applicationdepartment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="b超室"
@@ -598,7 +640,7 @@
             </LinearLayout>
 
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -844,7 +886,7 @@
                     />
 
 
-            </LinearLayout>
+            </LinearLayout>-->
 
 
             <RelativeLayout

@@ -629,6 +629,7 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/lin_checklist"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:orientation="horizontal">
@@ -675,6 +676,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/lin_prescriptionnote"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:orientation="horizontal">

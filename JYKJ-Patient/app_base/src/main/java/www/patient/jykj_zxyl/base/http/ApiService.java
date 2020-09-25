@@ -129,10 +129,16 @@ public interface ApiService {
 
     //获取病历详情
     @POST("/medicalRecordControlle/searchPatientMedicalRecordDetail")
-    Observable<String> getPatientRecordDet(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    Observable<String>  getPatientRecordDet(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
 
     //确认病历
     @POST("/medicalRecordControlle/operPatientMedicalRecordConfirm")
     Observable<String> confirmPatientRecordDet(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //检查检验单
+    @POST("/medicalRecordControlle/searchPatientInspectionDetail")
+    Observable<String> getCheckListDet(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //处方笺
+    @POST("/medicalRecordControlle/searchPatientPrescribeDetail")
+    Observable<String> getPrescriptionDet(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
 }
 
