@@ -1,3 +1,5 @@
+
+
 apply plugin: 'com.android.application'
 static def buildTime() {
     def date = new Date()

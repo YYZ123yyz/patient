@@ -8,6 +8,8 @@ import www.patient.jykj_zxyl.base.mvp.BaseView;
 public class PrescriptionDetContract {
     public interface View extends BaseView {
         void getPrescriptionDetSucess(PrescriptionDetBean prescriptionDetBean);
+
+        void downLoadUrl(String url);
     }
     public interface Presenter extends BasePresenter<PrescriptionDetContract.View> {
         void sendPrescriptionDetRequest(String loginPatientPosition,
@@ -16,5 +18,8 @@ public class PrescriptionDetContract {
                                   String mainPatientName,
                                   String orderCode
         );
+
+
+        void getDownloadDet(String params);
     }
 }

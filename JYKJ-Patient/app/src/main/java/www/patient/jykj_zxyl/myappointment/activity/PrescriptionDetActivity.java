@@ -12,14 +12,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import netService.DownloadService;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_bean.MedicalRecordBean;
 import www.patient.jykj_zxyl.base.base_bean.PrescriptionDetBean;
+import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
 import www.patient.jykj_zxyl.myappointment.Contract.PrescriptionDetContract;
 import www.patient.jykj_zxyl.myappointment.Presenter.PrescriptionDetPresenter;
@@ -102,6 +106,27 @@ public class PrescriptionDetActivity extends AbstractMvpBaseActivity<Prescriptio
                 "4dcc513a5dd34fa09a7a229a175e5c11", "Pan", "0101202009181608445105661560");
     }
 
+
+    @OnClick({R.id.confirm})
+    public void onClick(View view){
+        switch (view.getId()) {
+            case R.id.confirm:
+//                HashMap<String, Object> paramMap = new HashMap<>();
+//                paramMap.put("loginPatientPosition", "108.93425^34.23053");
+//                paramMap.put("requestClientType", "1");
+//                paramMap.put("mainPatientCode", "4dcc513a5dd34fa09a7a229a175e5c11");
+//                paramMap.put("mainPatientName", "Pan");
+//                paramMap.put("orderCode", "0101202009151610517547329868");
+//                paramMap.put("mainDoctorCode", "7b5d2d0205164f12974a3e228f5a6083");
+//                paramMap.put("mainDoctorName", "医生测试002");
+//                String s = RetrofitUtil.encodeParam(paramMap);
+//                mPresenter.getDownloadDet(s);
+                Intent intent = new Intent(PrescriptionDetActivity.this, DownloadService.class);
+                startService(intent);
+                break;
+        }
+    }
+
     @Override
     public void getPrescriptionDetSucess(PrescriptionDetBean prescriptionDetBean) {
         if (prescriptionDetBean != null) {
@@ -163,6 +188,12 @@ public class PrescriptionDetActivity extends AbstractMvpBaseActivity<Prescriptio
             PrescriptionAdapter prescriptionAdapter = new PrescriptionAdapter(R.layout.item_recyclerview, prescribeInfoBeans);
             myRecycleview.setAdapter(prescriptionAdapter);
         }
+    }
+
+    @Override
+    public void downLoadUrl(String url) {
+        Intent intent = new Intent(PrescriptionDetActivity.this, DownloadService.class);
+        startService(intent);
     }
 
     @Override

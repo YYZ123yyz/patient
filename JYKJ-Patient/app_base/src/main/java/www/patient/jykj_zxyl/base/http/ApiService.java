@@ -148,5 +148,8 @@ public interface ApiService {
     //处方笺
     @POST("/medicalRecordControlle/searchPatientPrescribeDetail")
     Observable<String> getPrescriptionDet(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //处方笺下载
+    @POST("/reservePatientDoctorControll/operDownloadAndShareMedical")
+    Observable<String> getDownloadDet(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
 }
 

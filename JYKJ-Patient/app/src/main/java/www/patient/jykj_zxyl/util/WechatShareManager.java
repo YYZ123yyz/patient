@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXFileObject;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXTextObject;
@@ -34,6 +35,7 @@ public class WechatShareManager {
     public static final int WECHAT_SHARE_WAY_WEBPAGE = 3;  //链接
     public static final int WECHAT_SHARE_WAY_VIDEO = 4; //视频
     public static final int WECHAT_SHARE_WAY_OTHER = 5; //视频
+    public static final int WECHAT_SHARE_WAY_FILE=6; //文件
     public static final int WECHAT_SHARE_TYPE_TALK = SendMessageToWX.Req.WXSceneSession;  //会话
     public static final int WECHAT_SHARE_TYPE_FRENDS = SendMessageToWX.Req.WXSceneTimeline; //朋友圈
     Bitmap bt;
@@ -42,6 +44,7 @@ public class WechatShareManager {
     private IWXAPI mWXApi;
     private Context mContext;
     private static final String WECHAT_APP_ID = "wx4ccb2ac1c5491336";
+
 
     private WechatShareManager(Context context) {
         this.mContext = context;
@@ -96,6 +99,9 @@ public class WechatShareManager {
                 break;
             case WECHAT_SHARE_WAY_OTHER:
                 shareoTHER(shareContent, shareType);
+                break;
+            case WECHAT_SHARE_WAY_FILE:
+                shareFile();
                 break;
         }
     }
@@ -216,6 +222,8 @@ public class WechatShareManager {
      *
      * @author chengcj1
      */
+
+
     public class ShareContentWebpage extends ShareContent {
         private String title;
         private String content;
@@ -262,6 +270,9 @@ public class WechatShareManager {
         mShareContentWebpag = new ShareContentWebpage(title, content, url, pictureResource);
         return (ShareContentWebpage) mShareContentWebpag;
     }
+
+
+
 
     /**
      * 设置分享视频的内容
@@ -344,6 +355,20 @@ public class WechatShareManager {
         mWXApi.sendReq(req);
     }
 
+    private void shareFile(){
+        WXFileObject wxFileObject=new WXFileObject();
+        wxFileObject.setFilePath("storage/emulated/0/Download/cpre.pdf");
+        WXMediaMessage msg = new WXMediaMessage();
+        msg.mediaObject = wxFileObject;
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("pdf");
+
+        req.message = msg;
+        req.scene = 1;
+        mWXApi.sendReq(req);
+    }
+
+
     /*
      * 分享图片
      */
@@ -374,7 +399,6 @@ public class WechatShareManager {
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = shareContent.getTitle();
         msg.description = shareContent.getContent();
-
         Bitmap thumb = BitmapFactory.decodeResource(mContext.getResources(), shareContent.getPictureResource());
         if (thumb == null) {
             Toast.makeText(mContext, "图片不能为空", Toast.LENGTH_SHORT).show();
