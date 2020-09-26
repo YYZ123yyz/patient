@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.adapter.myself;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -56,8 +57,8 @@ public class JDDA_JWBS_YSTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_YSTXAd
      * @param position
      */
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.mBM.setText(datas.get(position).getMedicalTypeName());
+    public void onBindViewHolder(ViewHolder viewHolder, @SuppressLint("RecyclerView") final int position) {
+      //  viewHolder.mBM.setText(datas.get(position).getMedicalTypeName());
         viewHolder.tv_record_doctor.setText("记录人："+StrUtils.defaultStr(datas.get(position).getDoctorName()));
         if(null!=datas.get(position).getCreateDate()) {
             viewHolder.mDate.setText(DateTimeUtils.formatLongDate(datas.get(position).getCreateDate(),"yyyy-MM-dd HH:mm"));
@@ -115,7 +116,7 @@ public class JDDA_JWBS_YSTXAdapter extends RecyclerView.Adapter<JDDA_JWBS_YSTXAd
         public ViewHolder(View view){
             super(view);
             mClickLinearLayout = (LinearLayout) view.findViewById(R.id.li_clickLayout);
-            mBM = (TextView)view.findViewById(R.id.tv_activityPatientJWBS_bm);
+        //    mBM = (TextView)view.findViewById(R.id.tv_activityPatientJWBS_bm);
             mDate = (TextView)view.findViewById(R.id.tv_activityPatientLaber_createDate);
             mType = (TextView)view.findViewById(R.id.tv_activityPatientLaber_laberName);
             mContent = (TextView)view.findViewById(R.id.tv_activityPatientLaber_content);

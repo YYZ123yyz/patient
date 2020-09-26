@@ -16,18 +16,18 @@
         <TextView
             android:id="@+id/tv_activityPatientJWBS_bm"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:background="@color/writeColor"
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
             android:text="病程别名：我的第四次就诊"
             android:textColor="@color/tabColor_nomal"
-            android:textSize="9pt" />
+            android:textSize="15sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginTop="1dp"
             android:background="@color/writeColor"
             android:orientation="horizontal">
@@ -41,7 +41,7 @@
                 android:layout_weight="1"
                 android:text="2019年11月20日"
                 android:textColor="#6C6C6C"
-                android:textSize="8pt" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_activityPatientLaber_laberName"
@@ -62,9 +62,9 @@
             android:background="@color/writeColor"
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
-            android:text="病情描述："
+            android:text="初步臆断"
             android:textColor="#6C6C6C"
-            android:textSize="8pt" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tv_activityPatientLaber_content"
@@ -80,7 +80,7 @@
             android:paddingBottom="5dp"
             android:text="第四次发现病情，去医院检查，医生诊断为高血压初期，按照医生要求进行治疗第四次发现病情，去医院检查，医生诊断为高血压初期，按照医生要求进行治疗第四次发现病情，去医院检查，医生诊断为高血压初期，按照医生要求进行治疗第四次发现病情，去医院检查，医生诊断为高血压初期，按照医生要求进行治疗第四次发现病情，去医院检查，医生诊断为高血压初期，按照医生要求进行治疗第四次发现病情，去医院检查，医生诊断为高血压初期，按照医生要求进行治疗"
             android:textColor="#6C6C6C"
-            android:textSize="8pt" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <TextView

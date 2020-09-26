@@ -5,11 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+
+
 import entity.mySelf.ProvidePatientLabel;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.myself.RedeemRecordActivity;
+import www.patient.jykj_zxyl.base.base_utils.DateUtils;
 import www.patient.jykj_zxyl.util.Util;
 
 import java.util.ArrayList;
@@ -49,8 +54,20 @@ public class NewPatientLaberAdapter extends RecyclerView.Adapter<NewPatientLaber
      */
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.mCreateDate.setText(Util.dateToStr(datas.get(position).getCreateDate()));
-        viewHolder.mLaberName.setText(datas.get(position).getUserLabelSecondName());
+        ProvidePatientLabel providePatientLabelBean = datas.get(position);
+        if(providePatientLabelBean!=null){
+            viewHolder.tv_name.setText(providePatientLabelBean.getCreateMan());
+            String dates = DateUtils.fomrDateSeflFormat(providePatientLabelBean.getCreateDate(),"yyyy-MM-dd HH:mm:ss");
+            viewHolder.tv_time.setText(dates);
+            viewHolder.tv_status.setText(providePatientLabelBean.getUserLabelSecondName());
+            Integer flagUseState = providePatientLabelBean.getFlagUseState();
+            if(flagUseState==0){
+                viewHolder.iv_stamp_icon.setImageResource(R.mipmap.ls);
+            }else if(flagUseState==1){
+                viewHolder.iv_stamp_icon.setImageResource(R.mipmap.dq);
+            }
+
+        }
     }
     //获取数据的数量
     @Override
@@ -66,16 +83,16 @@ public class NewPatientLaberAdapter extends RecyclerView.Adapter<NewPatientLaber
     //自定义的ViewHolder，持有每个Item的的所有界面元素
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        public LinearLayout mClickLinearLayout;                     //整个布局，用来监听点击事件
-        public TextView mCreateDate;                                //创建日期
-        public TextView     mLaberName;                             //标签名
-
-
+        private TextView tv_name;
+        private TextView tv_time;
+        private TextView tv_status;
+        private ImageView iv_stamp_icon;
         public ViewHolder(View view){
             super(view);
-            mClickLinearLayout = (LinearLayout) view.findViewById(R.id.li_clickLayout);
-            mCreateDate = (TextView)view.findViewById(R.id.tv_activityPatientLaber_createDate);
-            mLaberName = (TextView)view.findViewById(R.id.tv_activityPatientLaber_laberName);
+            tv_name=itemView.findViewById(R.id.tv_name);
+            tv_time=itemView.findViewById(R.id.tv_time);
+            tv_status=itemView.findViewById(R.id.tv_status);
+            iv_stamp_icon=itemView.findViewById(R.id.iv_stamp_icon);
         }
     }
 

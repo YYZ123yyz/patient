@@ -210,6 +210,7 @@ public class WechatShareManager {
         return (ShareContentPicture) mShareContentPicture;
     }
 
+
     /**
      * 设置分享链接的内容
      *

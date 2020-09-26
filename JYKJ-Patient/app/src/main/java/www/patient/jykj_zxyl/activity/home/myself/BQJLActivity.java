@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
@@ -312,6 +313,7 @@ public class BQJLActivity extends AppCompatActivity{
                 querybean.setPageNum(String.valueOf(pageno));
                 String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(querybean),Constant.SERVICEURL+ INetAddress.QUERY_PATIENTLABEL_URL);
                 NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
+                Log.e("TAG", "标签信息: "+retnetstr );
                 if(1==retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length()>3){
                     retlist = JSON.parseArray(retEntity.getResJsonData(),ProvidePatientLabel.class);
                 }

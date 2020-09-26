@@ -484,12 +484,6 @@
                     android:textColor="@color/tabColor_nomal"
                     android:textSize="8pt" />
 
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
-                    android:background="@mipmap/roww_right" />
             </LinearLayout>
 
             <LinearLayout
@@ -625,11 +619,94 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/writeColor"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_gxybsms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#ffeeeeee"
+                    android:hint="请尽可能详细描述病情症状"
+                    android:minHeight="80dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/tabColor_nomal"
+                    android:textSize="7pt" />
+            </LinearLayout>
+            <!--是否有过敏史-->
+            <LinearLayout
+                android:background="#fff"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:textColor="#000"
+                    android:text="过敏史"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:id="@+id/img_havw"
+                    android:src="@mipmap/sf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="10dp" />
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:textColor="#000"
+                    android:text="有"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:id="@+id/img_none"
+                    android:src="@mipmap/sf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="10dp" />
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:textColor="#000"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:text="无"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/writeColor"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="过敏史描述"
+                    android:textColor="@color/tabColor_nomal"
+                    android:textSize="8pt" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/writeColor"
                 android:orientation="horizontal"
                 android:paddingBottom="80dp">
 
                 <EditText
-                    android:id="@+id/et_gxybsms"
+                    android:id="@+id/et_historyAllergy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
