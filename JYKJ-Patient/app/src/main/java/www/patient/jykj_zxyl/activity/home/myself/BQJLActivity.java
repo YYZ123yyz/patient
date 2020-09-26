@@ -106,6 +106,7 @@ public class BQJLActivity extends AppCompatActivity{
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecycleView.setHasFixedSize(true);
         //创建并设置Adapter
+
         mPatientLaberAdapter = new NewPatientLaberAdapter(mProvidePatientLabel,mContext);
         mRecycleView.setAdapter(mPatientLaberAdapter);
         mPatientLaberAdapter.setOnItemClickListener(new NewPatientLaberAdapter.OnItemClickListener() {
