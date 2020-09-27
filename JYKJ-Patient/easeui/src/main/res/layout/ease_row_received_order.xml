@@ -237,6 +237,28 @@
 
 
                     </TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="28dp"
+                        android:layout_marginBottom="14dp"
+                        android:gravity="center"
+                        android:text="确定"
+                        android:visibility="gone"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:id="@+id/tv_ensure_btn"
+                        android:background="@drawable/bg_round_7a9eff_15"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        >
+
+
+                    </TextView>
                  <RelativeLayout
                      android:visibility="gone"
                      android:id="@+id/rl_immediately"

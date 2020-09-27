@@ -96,6 +96,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
     private RelativeLayout rl_two;
     private RelativeLayout rl_three;
     private RelativeLayout rl_immediately;
+    private TextView mTvEnsureBtn;
 
     public EaseChatRowOrderCard(Context context, EMMessage message,
                                 int position, BaseAdapter adapter) {
@@ -146,6 +147,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         rl_three = findViewById(R.id.rl_three);
         //立即填写
         rl_immediately = findViewById(R.id.rl_immediately);
+        mTvEnsureBtn=findViewById(R.id.tv_ensure_btn);
         addListener();
     }
 
@@ -332,7 +334,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             }
 
         } else if (direct == EMMessage.Direct.RECEIVE) {
-
+            mTvEnsureBtn.setVisibility(View.GONE);
             ivStampIcon.setVisibility(View.GONE);
             if (messageType.equals("terminationOrder")) {
 
@@ -388,6 +390,10 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             }
             //病历
             else if (messageType.equals("medicalRecord")) {
+                rl_class.setVisibility(View.GONE);
+                mTvPriceValue.setVisibility(View.GONE);
+                mTvEnsureBtn.setVisibility(View.VISIBLE);
+                rlSignOrderRoot.setVisibility(View.GONE);
                 userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
                 nickName = message.getStringAttribute("nickName", "");
                 patient_rl.setVisibility(VISIBLE);
@@ -588,6 +594,12 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             rl_immediately.setOnClickListener(v -> {
                 Bundle bundle = new Bundle();
                 startActivity(WZXXActivity.class,bundle);
+            });
+            mTvEnsureBtn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
             });
         }
 
