@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="病历"
+            android:text="处方笺"
             android:textColor="@color/writeColor"
             android:textSize="10pt" />
 
@@ -84,6 +84,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/tv_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
@@ -110,6 +111,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/tv_gender"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
@@ -135,6 +137,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/tv_age"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
@@ -160,6 +163,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/tv_Department"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
@@ -191,6 +195,7 @@
                         android:textSize="12sp" />
 
                     <TextView
+                        android:id="@+id/tv_treatmentnumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/request_type"
@@ -200,7 +205,7 @@
 
 
                     <TextView
-                        android:id="@+id/request_doctor"
+                        android:id="@+id/tv_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -212,7 +217,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/request_doctor"
+                        android:layout_toLeftOf="@+id/tv_time"
                         android:text="处方日期: "
                         android:textColor="@color/textColor_black"
                         android:textSize="12sp" />
@@ -234,6 +239,7 @@
                         android:textSize="12sp" />
 
                     <TextView
+                        android:id="@+id/tv_clinicaldiagnosis"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="高血压病 糖尿病 高脂血症"
@@ -254,44 +260,59 @@
                         android:textColor="@color/black"
                         android:textSize="12sp" />
 
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:layout_marginLeft="4dp"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/wxz"
+                        android:layout_width="12.5dp"
+                        android:layout_height="12.5dp"/>
 
 
                     <TextView
+                        android:layout_marginLeft="@dimen/dp10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="离休"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
 
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:layout_marginLeft="4dp"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/wxz"
+                        android:layout_width="12.5dp"
+                        android:layout_height="12.5dp"/>
 
 
                     <TextView
+                        android:layout_marginLeft="@dimen/dp10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="新农合"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
 
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:layout_marginLeft="4dp"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/wxz"
+                        android:layout_width="12.5dp"
+                        android:layout_height="12.5dp"/>
 
                     <TextView
+                        android:layout_marginLeft="@dimen/dp10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="其他"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
 
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:layout_marginLeft="4dp"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/xz"
+                        android:layout_width="12.5dp"
+                        android:layout_height="12.5dp"/>
 
 
                 </LinearLayout>
@@ -300,7 +321,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="证卡号"
+                    android:text="证(号)号"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
 
@@ -352,15 +373,15 @@
                             android:textSize="12sp" />
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/background_content"
                             android:layout_marginTop="20dp"
                             >
 
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/my_recycleview"
                                 android:layout_width="match_parent"
+                                android:background="@drawable/background_content"
                                 android:layout_height="wrap_content"/>
 
 
@@ -390,6 +411,7 @@
                         android:textSize="12sp" />
 
                     <TextView
+                        android:id="@+id/tv_doctrosignature"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/doctor_sign"

@@ -115,7 +115,9 @@ public class FragmentVisiting extends AbstractMvpBaseFragment <ReservationListCo
                        fragment_visitingAdapter.setOnItemClickZXListener(new Fragment_VisitingAdapter.OnItemClickZXListener() {
                            @Override
                            public void onClick(int position) {
+                               String reserveCode = myReservationListBeans.get(position).getReserveCode();
                                Intent intent = new Intent(getContext(), MedicalRecordActivity.class);
+                               intent.putExtra("reserveCode",reserveCode);
                                startActivity(intent);
                            }
 

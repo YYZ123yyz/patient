@@ -17,7 +17,7 @@ import www.patient.jykj_zxyl.base.base_db.util.DaoOpenHelper;
  * @date: 2019-06-19 11:27
  */
 public class DbCore {
-    public static final String DEFAULT_DB_NAME = "jykj_doctor.db";
+    public static final String DEFAULT_DB_NAME = "jykj_patient.db";
     private static DaoMaster daoMaster;
     private static DaoSession daoSession;
 

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import org.greenrobot.greendao.database.Database;
 
 import www.patient.jykj_zxyl.base.base_db.dao.ArticleEntityDao;
+import www.patient.jykj_zxyl.base.base_db.dao.CheckDoctorNumEntityDao;
 import www.patient.jykj_zxyl.base.base_db.dao.DaoMaster;
 import www.patient.jykj_zxyl.base.base_db.dao.PublishContentEntityDao;
 import www.patient.jykj_zxyl.base.base_db.dao.UploadFileEntityDao;
@@ -38,7 +39,8 @@ public class DaoOpenHelper extends DaoMaster.OpenHelper {
                 },
                 ArticleEntityDao.class,
                 UploadFileEntityDao.class,
-                PublishContentEntityDao.class
+                PublishContentEntityDao.class,
+                CheckDoctorNumEntityDao.class
                 );
     }
 

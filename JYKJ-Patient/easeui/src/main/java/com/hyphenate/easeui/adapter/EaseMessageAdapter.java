@@ -46,6 +46,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
+
 public class EaseMessageAdapter extends BaseAdapter {
 
     private final static String TAG = "msg";
@@ -371,7 +373,6 @@ public class EaseMessageAdapter extends BaseAdapter {
         } else {
             presenter = (EaseChatRowPresenter) convertView.getTag();
         }
-
         presenter.setup(message, position, itemClickListener, itemStyle);
 
         return convertView;

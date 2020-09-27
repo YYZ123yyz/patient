@@ -1,14 +1,16 @@
 package www.patient.jykj_zxyl.myappointment.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -22,14 +24,17 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_bean.MedicalRecordBean;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
 import www.patient.jykj_zxyl.myappointment.Contract.MedicalRecordContract;
 import www.patient.jykj_zxyl.myappointment.adapter.MedicalRecordDrugAdapter;
 import www.patient.jykj_zxyl.presenter.MedicalRecordPresenter;
+import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.CircleImageView;
 import www.patient.jykj_zxyl.util.DateUtils;
 import www.patient.jykj_zxyl.util.ToastUtils;
@@ -43,6 +48,38 @@ import www.patient.jykj_zxyl.util.ToastUtils;
  * */
 public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecordContract.View, MedicalRecordPresenter>
         implements MedicalRecordContract.View {
+    @BindView(R.id.ri_back)
+    RelativeLayout riBack;
+    @BindView(R.id.lin_chief)
+    LinearLayout linChief;
+    @BindView(R.id.lin_history)
+    LinearLayout linHistory;
+    @BindView(R.id.lin_past)
+    LinearLayout linPast;
+    @BindView(R.id.lin_examination)
+    LinearLayout linExamination;
+    @BindView(R.id.lin_look)
+    LinearLayout linLook;
+    @BindView(R.id.lin_suggest)
+    LinearLayout linSuggest;
+    @BindView(R.id.treatment)
+    TextView treatment;
+    @BindView(R.id.lin_suggest_1)
+    LinearLayout linSuggest1;
+    @BindView(R.id.lin_checklist)
+    LinearLayout linChecklist;
+    @BindView(R.id.dispaly_fullpayment)
+    ImageView dispalyFullpayment;
+    @BindView(R.id.price)
+    TextView price;
+    @BindView(R.id.share)
+    Button share;
+    @BindView(R.id.download)
+    Button download;
+    @BindView(R.id.confirm)
+    Button confirm;
+    @BindView(R.id.lin_prescriptionnote)
+    LinearLayout linPrescriptionnote;
     private String gennder;
     @BindView(R.id.id_flowlayout)
     TagFlowLayout diagFlow; //临床诊断
@@ -114,42 +151,15 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
     private static final int DRUG_TYPE_NOMAL = 0;
     private static final int DRUG_TYPE_START = 1;
     private static final int DRUG_TYPE_END = 2;
+    private String recordCode;
+    private JYKJApplication mApp;
+    private String reserveCode;
 
     @Override
     protected int setLayoutId() {
         return R.layout.activity_medical_record;
     }
 
-    @OnClick({R.id.confirm, R.id.download, R.id.lin_chief, R.id.lin_history,
-            R.id.lin_past, R.id.lin_examination, R.id.lin_look, R.id.lin_suggest})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.confirm:
-                startActivity(new Intent(MedicalRecordActivity.this, CheckListActivity.class));
-                break;
-            case R.id.download:
-                startActivity(new Intent(MedicalRecordActivity.this, PrescriptionDetActivity.class));
-                break;
-            case R.id.lin_chief:
-                clickAndSome(chiefMsg, ivChief);
-                break;
-            case R.id.lin_history:
-                clickAndSome(linMedicalhistoryfMsg, displayMedicalhistory);
-                break;
-            case R.id.lin_past:
-                clickAndSome(linPastMsg, displayPast);
-                break;
-            case R.id.lin_examination:
-                clickAndSome(linExaminationMsg, displayExamination);
-                break;
-            case R.id.lin_look:
-                clickAndSome(linLokMsg, displayLook);
-                break;
-            case R.id.lin_suggest:
-                clickAndSome(linSuggestMsg, displaySuggest);
-                break;
-        }
-    }
 
     public void showAnimation(View view) {
 
@@ -177,9 +187,9 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("loginPatientPosition", "108.93425^34.23053");
         paramMap.put("requestClientType", "1");
-        paramMap.put("operPatientCode", "7b5d2d0205164f12974a3e228f5a6083");
-        paramMap.put("operPatientName", "贾青");
-        paramMap.put("orderCode", "0101202006082132340655661259");
+        paramMap.put("operPatientCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        paramMap.put("operPatientName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        paramMap.put("orderCode", reserveCode);
         String s = RetrofitUtil.encodeParam(paramMap);
         mPresenter.getRecordDet(s);
 
@@ -198,6 +208,7 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
         Glide.with(MedicalRecordActivity.this).load(bean.getPatientLogoUrl()).into(userHead);
 
         patientName.setText(bean.getPatientName());
+        userGennder.setText(bean.getPatientGender() == 0 ? "未知" : (bean.getPatientGender() == 1 ? "男" : "女"));
         switch (bean.getPatientGender()) {
             case 0:
                 gennder = "未知";
@@ -209,6 +220,7 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
                 gennder = "女";
                 break;
         }
+        recordCode = bean.getRecordCode();
         userGennder.setText(gennder);
         userAger.setText(String.valueOf(bean.getPatientAge()));
         userDoc.setText(bean.getDoctorName());
@@ -247,9 +259,9 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
                     for (int j = 0; j < prescribeInfo.size(); j++) {
                         if (j == 0) { //一组开头
                             prescribeInfo.get(j).setType(DRUG_TYPE_START);
-                        } else if (j == (prescribeInfo.size())-1){//一组结尾
+                        } else if (j == (prescribeInfo.size()) - 1) {//一组结尾
                             prescribeInfo.get(j).setType(DRUG_TYPE_END);
-                        }else {//中间
+                        } else {//中间
                             prescribeInfo.get(j).setType(DRUG_TYPE_NOMAL);
                         }
                     }
@@ -294,7 +306,57 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
     @Override
     protected void initView() {
         super.initView();
+        Intent intent = getIntent();
+        reserveCode = intent.getStringExtra("reserveCode");
+        mApp = (JYKJApplication) getApplication();
+        ActivityUtil.setStatusBarMain(MedicalRecordActivity.this);
         drugRecycleview.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+
+    @OnClick({R.id.confirm, R.id.download, R.id.lin_chief, R.id.lin_history,R.id.lin_prescriptionnote,
+            R.id.lin_past, R.id.lin_examination, R.id.lin_look, R.id.lin_suggest, R.id.lin_checklist})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            //处方笺
+            case R.id.lin_prescriptionnote:
+                Intent intent1 = new Intent(MedicalRecordActivity.this, PrescriptionDetActivity.class);
+                intent1.putExtra("recordCode", reserveCode);
+                startActivity(intent1);
+                break;
+            //检查检验
+            case R.id.lin_checklist:
+                //检查检验单
+                Intent intent = new Intent(MedicalRecordActivity.this, CheckListActivity.class);
+                intent.putExtra("recordCode", reserveCode);
+                startActivity(intent);
+                break;
+            //确认病历
+            case R.id.confirm:
+
+                break;
+            case R.id.download:
+//                startActivity(new Intent(MedicalRecordActivity.this, PrescriptionDetActivity.class));
+                break;
+            case R.id.lin_chief:
+                clickAndSome(chiefMsg, ivChief);
+                break;
+            case R.id.lin_history:
+                clickAndSome(linMedicalhistoryfMsg, displayMedicalhistory);
+                break;
+            case R.id.lin_past:
+                clickAndSome(linPastMsg, displayPast);
+                break;
+            case R.id.lin_examination:
+                clickAndSome(linExaminationMsg, displayExamination);
+                break;
+            case R.id.lin_look:
+                clickAndSome(linLokMsg, displayLook);
+                break;
+            case R.id.lin_suggest:
+                clickAndSome(linSuggestMsg, displaySuggest);
+                break;
+        }
     }
 
     @Override
@@ -309,5 +371,12 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
         } else {
             endAnimation(ani);
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

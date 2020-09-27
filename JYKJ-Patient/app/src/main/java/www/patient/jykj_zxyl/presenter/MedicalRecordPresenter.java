@@ -1,5 +1,7 @@
 package www.patient.jykj_zxyl.presenter;
 
+import android.util.Log;
+
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.interfaces.ILoadingView;
 
@@ -67,6 +69,7 @@ public class MedicalRecordPresenter extends BasePresenterImpl<MedicalRecordContr
             @Override
             protected void onError(String s) {
                 super.onError(s);
+                Log.e("xxx", "onError: "+s);
                 if (mView!=null) {
                     mView.showRetry();
                 }

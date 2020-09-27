@@ -53,6 +53,7 @@ import okhttp3.OkHttpClient;
 import www.patient.jykj_zxyl.BuildConfig;
 import www.patient.jykj_zxyl.activity.MainActivity;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.base.base_db.DbCore;
 import www.patient.jykj_zxyl.base.base_utils.SharedPreferences_DataSave;
 import www.patient.jykj_zxyl.base.http.AppUrlConfig;
 
@@ -321,6 +322,7 @@ public class JYKJApplication extends Application {
         options.setAcceptInvitationAlways(false);
         EaseUI.getInstance().init(gContext, options);
         LibApp.init(this);
+        DbCore.init(this);
         //初始化图片方法
         /**
          * 配置并初始化ImageLoader
