@@ -170,7 +170,7 @@ public class WDZS_WZXQActivity extends AppCompatActivity {
             public void onClick(View view) {
                 ProvideInteractOrderInfo mProvideInteractOrderInfo = new ProvideInteractOrderInfo();
                 mProvideInteractOrderInfo.setOrderCode(mProvideViewInteractOrderTreatmentAndPatientInterrogation.getOrderCode());
-                startActivity(new Intent(mContext, WDYS_JZJL_WZZLActivity.class).putExtra("provideInteractOrderInfo", mProvideInteractOrderInfo));
+                startActivity(new Intent(mContext, WDYS_JZJL_WZZLActivity.class).putExtra("order", mProvideInteractOrderInfo.getOrderCode()));
             }
         });
         mLlDiagnosisMsg =  this.findViewById(R.id.ll_diagnosis_msg);
