@@ -102,7 +102,7 @@ public class Fragment_VisitingAdapter extends RecyclerView.Adapter<Fragment_Visi
         viewHolder.visiting_front.setText(datas.get(position).getViewReserveToDoctorCount() + "");
 
         viewHolder.visiting_data.setVisibility(View.VISIBLE);
-        viewHolder.visiting_data.setText("就诊资料");
+        viewHolder.visiting_data.setText("问诊资料");
         viewHolder.visiting_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +116,8 @@ public class Fragment_VisitingAdapter extends RecyclerView.Adapter<Fragment_Visi
                 viewHolder.visiting_cancelappointment.setText("取消预约");
                 viewHolder.visiting_cancelappointment.setTextColor(Color.parseColor("#7A9EFF"));
                 viewHolder.visiting_cancelappointment.setBackgroundResource(bg_advisory);
+                viewHolder.visiting_data.setBackgroundResource(bg_advisory);
+                viewHolder.visiting_data.setTextColor(Color.parseColor("#7A9EFF"));
                 //取消预约
                 if (mOnItemClickXYListener != null) {
                     viewHolder.visiting_cancelappointment.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +138,8 @@ public class Fragment_VisitingAdapter extends RecyclerView.Adapter<Fragment_Visi
                 viewHolder.visiting_cancelappointment.setText("查看病历");
                 viewHolder.visiting_cancelappointment.setTextColor(Color.parseColor("#ffffff"));
                 viewHolder.visiting_cancelappointment.setBackgroundResource(bg_addmedicbutton);
+                viewHolder.visiting_data.setTextColor(Color.parseColor("#ffffff"));
+                viewHolder.visiting_data.setBackgroundResource(bg_addmedicbutton);
 
                 if (mOnItemClickZXListener != null) {
                     viewHolder.visiting_cancelappointment.setOnClickListener(new View.OnClickListener() {
