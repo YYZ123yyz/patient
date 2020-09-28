@@ -63,7 +63,11 @@ public class EaseChatRowText extends EaseChatRow {
 
 
         }else {
-            linNum.setVisibility(GONE);
+            if (linNum !=null){
+
+                linNum.setVisibility(GONE);
+            }
+
         }
     }
 

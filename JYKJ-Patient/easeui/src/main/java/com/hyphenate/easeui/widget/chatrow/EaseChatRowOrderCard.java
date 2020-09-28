@@ -2,6 +2,7 @@ package com.hyphenate.easeui.widget.chatrow;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -598,7 +599,10 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             mTvEnsureBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent intent = new Intent();
+                    intent.setAction("android.intent.action.Med");
+                    intent.putExtra("reserveCode",orderId);
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -649,6 +653,5 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         localIntent.setClass(mContext, paramClass);
         mContext.startActivity(localIntent);
     }
-
 
 }

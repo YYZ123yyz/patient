@@ -1,6 +1,7 @@
 package www.patient.jykj_zxyl.myappointment.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.bumptech.glide.Glide;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -307,14 +309,16 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
     protected void initView() {
         super.initView();
         Intent intent = getIntent();
-        reserveCode = intent.getStringExtra("reserveCode");
+        if (intent.hasExtra("reserveCode")) {
+            reserveCode = intent.getStringExtra("reserveCode");
+        }
         mApp = (JYKJApplication) getApplication();
         ActivityUtil.setStatusBarMain(MedicalRecordActivity.this);
         drugRecycleview.setLayoutManager(new LinearLayoutManager(this));
     }
 
 
-    @OnClick({R.id.confirm, R.id.download, R.id.lin_chief, R.id.lin_history,R.id.lin_prescriptionnote,
+    @OnClick({R.id.confirm, R.id.download, R.id.lin_chief, R.id.lin_history, R.id.lin_prescriptionnote,
             R.id.lin_past, R.id.lin_examination, R.id.lin_look, R.id.lin_suggest, R.id.lin_checklist})
     public void onClick(View view) {
         switch (view.getId()) {

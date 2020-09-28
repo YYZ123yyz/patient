@@ -335,7 +335,7 @@ public class ChatActivity extends AbstractMvpBaseActivity<CheckContract.View, Ch
 
     @Override
     public void getDataFiled(String msg) {
-        ToastUtils.showToast(msg);
+//        ToastUtils.showToast(msg);
     }
 
     @Override
