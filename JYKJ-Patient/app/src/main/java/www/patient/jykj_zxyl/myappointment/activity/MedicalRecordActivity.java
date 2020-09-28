@@ -28,6 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import netService.DownloadService;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_bean.MedicalRecordBean;
@@ -319,7 +320,7 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
 
 
     @OnClick({R.id.confirm, R.id.download, R.id.lin_chief, R.id.lin_history, R.id.lin_prescriptionnote,
-            R.id.lin_past, R.id.lin_examination, R.id.lin_look, R.id.lin_suggest, R.id.lin_checklist})
+            R.id.lin_past, R.id.lin_examination, R.id.lin_look, R.id.lin_suggest, R.id.lin_checklist,R.id.share})
     public void onClick(View view) {
         switch (view.getId()) {
             //处方笺
@@ -359,6 +360,10 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
                 break;
             case R.id.lin_suggest:
                 clickAndSome(linSuggestMsg, displaySuggest);
+                break;
+            case R.id.share:
+                Intent intent2 = new Intent(MedicalRecordActivity.this, DownloadService.class);
+                startService(intent2);
                 break;
         }
     }
