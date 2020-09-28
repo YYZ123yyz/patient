@@ -414,6 +414,7 @@
         <activity
             android:name=".myappointment.activity.MyAppointmentActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 首页=》》 个人中心  ==> 建档档案 -->
+
         <activity
             android:name=".activity.home.myself.JDDAActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 首页=》》 个人中心  ==> 建档档案 == 基本健康信息 -->
