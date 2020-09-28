@@ -104,7 +104,7 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
 
 
 
-    private ProvideInteractOrderInfo mProvideInteractOrderInfo;                          //订单信息
+//    private ProvideInteractOrderInfo mProvideInteractOrderInfo;                          //订单信息
     private ProvideInteractPatientInterrogation mProvideInteractPatientInterrogation;
     private List<ProvideBasicsImg> mProvideBasicsImg = new ArrayList<>();
     private LinearLayout mBack;
@@ -119,7 +119,7 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
 
     private             File                    mTempFile;              //声明一个拍照结果的临时文件
     private             TextView                mCommit;                    //提交
-
+    private String order;
 
 
     private void setLayoutDate() {
@@ -347,12 +347,13 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
         mContext = this;
         mActivity = this;
         mApp = (JYKJApplication) getApplication();
-        mProvideInteractOrderInfo = (ProvideInteractOrderInfo) getIntent().getSerializableExtra("provideInteractOrderInfo");
+//        mProvideInteractOrderInfo = (ProvideInteractOrderInfo) getIntent().getSerializableExtra("provideInteractOrderInfo");
 
+        order = getIntent().getStringExtra("order");
         initDir();
         initLayout();
         initHandler();
-        getData();
+//        getData();
     }
 
 
@@ -441,7 +442,7 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
                                 //设置数据
                                 setLayoutDate();
                                 //获取就诊图片
-                                getImgs();
+//                                getImgs();
                             }
 
                         }
@@ -481,7 +482,7 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
         provideBasicsImg.setRequestClientType("1");
         provideBasicsImg.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideBasicsImg.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        provideBasicsImg.setOrderCode(mProvideInteractOrderInfo.getOrderCode());
+        provideBasicsImg.setOrderCode(order);
         provideBasicsImg.setImgCode(mProvideInteractPatientInterrogation.getImgCode());
         new Thread(){
             public void run(){
@@ -513,7 +514,7 @@ public class WDYS_JZJL_WZZLActivity extends AppCompatActivity {
         provideInteractPatientInterrogation.setRequestClientType("1");
         provideInteractPatientInterrogation.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideInteractPatientInterrogation.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        provideInteractPatientInterrogation.setOrderCode(mProvideInteractOrderInfo.getOrderCode());
+        provideInteractPatientInterrogation.setOrderCode(order);
 
         new Thread(){
             public void run(){

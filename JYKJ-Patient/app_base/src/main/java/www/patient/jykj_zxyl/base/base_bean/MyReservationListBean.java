@@ -61,6 +61,15 @@ public class MyReservationListBean {
     private int reserveToDoctorOrder;
     private int treatmentType;
     private int viewReserveToDoctorCount;
+    private String  orderCode;
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
+    }
 
     public String getDepartmentId() {
         return departmentId;

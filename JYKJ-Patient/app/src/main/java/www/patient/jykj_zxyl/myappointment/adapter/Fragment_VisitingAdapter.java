@@ -36,6 +36,7 @@ public class Fragment_VisitingAdapter extends RecyclerView.Adapter<Fragment_Visi
     public List<MyReservationListBean> datas = new ArrayList<>();
     private OnItemClickXYListener mOnItemClickXYListener;           //
     private OnItemClickZXListener mOnItemClickZXListener;
+    private OnInquiryDataClick mOnInquiryDataClick;
     private OnItemClickDataListener mOnItemClickDataListener;
     private Context mContext;
     private OnItemClickListener mOnItemClickListener;
@@ -98,7 +99,16 @@ public class Fragment_VisitingAdapter extends RecyclerView.Adapter<Fragment_Visi
 
         viewHolder.visiting_project.setText("预约项目:" + datas.get(position).getReserveProjectName());
 
-        viewHolder.visiting_front.setText(datas.get(position).getViewReserveToDoctorCount()+"");
+        viewHolder.visiting_front.setText(datas.get(position).getViewReserveToDoctorCount() + "");
+
+        viewHolder.visiting_data.setVisibility(View.VISIBLE);
+        viewHolder.visiting_data.setText("就诊资料");
+        viewHolder.visiting_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnInquiryDataClick.onClick(position);
+            }
+        });
 
         String reserveStatus = datas.get(position).getReserveStatus();
         if (!TextUtils.isEmpty(reserveStatus)) {
@@ -121,9 +131,8 @@ public class Fragment_VisitingAdapter extends RecyclerView.Adapter<Fragment_Visi
 //                        mOnItemClickDataListener.onClick(position);
 //                    }
 //                });
-            }
-            else if (reserveStatus.equals("20") || reserveStatus.equals("30")) {
-             //   viewHolder.visiting_data.setVisibility(View.GONE);
+            } else if (reserveStatus.equals("20") || reserveStatus.equals("30")) {
+                //   viewHolder.visiting_data.setVisibility(View.GONE);
                 viewHolder.visiting_cancelappointment.setText("查看病历");
                 viewHolder.visiting_cancelappointment.setTextColor(Color.parseColor("#ffffff"));
                 viewHolder.visiting_cancelappointment.setBackgroundResource(bg_addmedicbutton);
@@ -158,7 +167,7 @@ public class Fragment_VisitingAdapter extends RecyclerView.Adapter<Fragment_Visi
 //                    return false;
 //                }
 //            });
-      //  }
+        //  }
 //
 
     }
@@ -178,7 +187,7 @@ public class Fragment_VisitingAdapter extends RecyclerView.Adapter<Fragment_Visi
         public LinearLayout mClickLinearLayout;                     //整个布局，用来监听点击事件
         public ImageView mUserHeard;                         //用户头像
         public TextView mUserName;                          //用户名
-        public TextView mUserTitle, hospital, visiting_appointment, visiting_project, visiting_front, visiting_cancelappointment,visiting_data;                          //
+        public TextView mUserTitle, hospital, visiting_appointment, visiting_project, visiting_front, visiting_cancelappointment, visiting_data;                          //
         private LinearLayout li_clickLayout;
 
         public ViewHolder(View view) {
@@ -210,6 +219,10 @@ public class Fragment_VisitingAdapter extends RecyclerView.Adapter<Fragment_Visi
         void onLongClick(int position);
     }
 
+    public interface  OnInquiryDataClick{
+        void onClick(int position);
+    }
+
     public interface OnItemClickDataListener {
         void onClick(int position);
     }
@@ -222,6 +235,10 @@ public class Fragment_VisitingAdapter extends RecyclerView.Adapter<Fragment_Visi
 
     public void setOnItemClickXYListener(OnItemClickXYListener onItemClickXYListener) {
         this.mOnItemClickXYListener = onItemClickXYListener;
+    }
+
+    public void setOnInquiryListen(OnInquiryDataClick  onInquiryListen){
+        this.mOnInquiryDataClick =onInquiryListen;
     }
 
     public void setOnItemClickZXListener(OnItemClickZXListener onItemClickZXListener) {

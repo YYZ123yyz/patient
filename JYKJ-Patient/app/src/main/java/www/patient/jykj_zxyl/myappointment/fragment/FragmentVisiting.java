@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import java.util.List;
 
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJL_WZZLActivity;
+import www.patient.jykj_zxyl.activity.home.twjz.InquiryDataActivity;
 import www.patient.jykj_zxyl.activity.myself.order.activity.RefundActivity;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_bean.MyReservationListBean;
@@ -65,7 +67,25 @@ public class FragmentVisiting extends AbstractMvpBaseFragment <ReservationListCo
                for (MyReservationListBean myReservationListBean : myReservationListBeans) {
                    reserveStatus = myReservationListBean.getReserveStatus();
                    reserveCode = myReservationListBean.getReserveCode();
+
                }
+               fragment_visitingAdapter.setOnInquiryListen(new Fragment_VisitingAdapter.OnInquiryDataClick() {
+                   @Override
+                   public void onClick(int position) {
+                       Intent intent = new Intent(getActivity(), InquiryDataActivity.class);
+                       intent.putExtra("order",myReservationListBeans.get(position).getOrderCode());
+                       intent.putExtra("operPatientCode",myReservationListBeans.get(position).getMainPatientCode());
+                       intent.putExtra("operPatientName",myReservationListBeans.get(position).getMainPatientName());
+                       intent.putExtra("treatmentType",String.valueOf(myReservationListBeans.get(position).getTreatmentType()));
+                       intent.putExtra("doctorCode",String.valueOf(myReservationListBeans.get(position).getMainDoctorCode()));
+                       intent.putExtra("doctorName",String.valueOf(myReservationListBeans.get(position).getMainDoctorName()));
+                       startActivity(intent);
+                   }
+               });
+
+
+
+
                if(!TextUtils.isEmpty(reserveStatus)){
                    if(reserveStatus.equals("10")){
                        fragment_visitingAdapter.setOnItemClickXYListener(new Fragment_VisitingAdapter.OnItemClickXYListener() {

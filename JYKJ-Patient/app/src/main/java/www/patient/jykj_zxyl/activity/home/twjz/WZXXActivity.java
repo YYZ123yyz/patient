@@ -1068,31 +1068,31 @@ public class WZXXActivity extends AppCompatActivity {
     /**
      * 获取医生排班信息
      */
-    private void getDoctorPBInfo() {
-        ProvideDoctorSetScheduling provideDoctorSetScheduling = new ProvideDoctorSetScheduling();
-        provideDoctorSetScheduling.setLoginPatientPosition(mApp.loginDoctorPosition);
-        provideDoctorSetScheduling.setRequestClientType("1");
-        provideDoctorSetScheduling.setSearchDoctorCode(provideViewDoctorExpertRecommend.getPatientCode());
-        provideDoctorSetScheduling.setSearchDoctorName(provideViewDoctorExpertRecommend.getUserName());
-
-        new Thread() {
-            public void run() {
-                try {
-                    String string = new Gson().toJson(provideDoctorSetScheduling);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "patientInteractDataControlle/getInteractPatientInterrogationResDoctorSchedulingInfo");
-                    String string01 = Constant.SERVICEURL + "msgDataControlle/searchMsgPushReminderAllCount";
-                    System.out.println(string + string01);
-                } catch (Exception e) {
-                    NetRetEntity retEntity = new NetRetEntity();
-                    retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
-                    mNetRetStr = new Gson().toJson(retEntity);
-                    e.printStackTrace();
-                }
-                mHandler.sendEmptyMessage(2);
-            }
-        }.start();
-    }
+//    private void getDoctorPBInfo() {
+//        ProvideDoctorSetScheduling provideDoctorSetScheduling = new ProvideDoctorSetScheduling();
+//        provideDoctorSetScheduling.setLoginPatientPosition(mApp.loginDoctorPosition);
+//        provideDoctorSetScheduling.setRequestClientType("1");
+//        provideDoctorSetScheduling.setSearchDoctorCode(provideViewDoctorExpertRecommend.getPatientCode());
+//        provideDoctorSetScheduling.setSearchDoctorName(provideViewDoctorExpertRecommend.getUserName());
+//
+//        new Thread() {
+//            public void run() {
+//                try {
+//                    String string = new Gson().toJson(provideDoctorSetScheduling);
+//                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "patientInteractDataControlle/getInteractPatientInterrogationResDoctorSchedulingInfo");
+//                    String string01 = Constant.SERVICEURL + "msgDataControlle/searchMsgPushReminderAllCount";
+//                    System.out.println(string + string01);
+//                } catch (Exception e) {
+//                    NetRetEntity retEntity = new NetRetEntity();
+//                    retEntity.setResCode(0);
+//                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
+//                    mNetRetStr = new Gson().toJson(retEntity);
+//                    e.printStackTrace();
+//                }
+//                mHandler.sendEmptyMessage(2);
+//            }
+//        }.start();
+//    }
 
 
     /**

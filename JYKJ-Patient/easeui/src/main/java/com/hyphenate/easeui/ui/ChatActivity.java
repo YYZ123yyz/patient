@@ -101,7 +101,7 @@ public class ChatActivity extends AbstractMvpBaseActivity<CheckContract.View, Ch
     @Override
     protected void onPause() {
         super.onPause();
-        if (isReserveing ==1){
+        if (isReserveing ==1  ){
             mPresenter.submitData(RetrofitUtil.encodeParam(getParamsHashMap(1)));
         }
     }

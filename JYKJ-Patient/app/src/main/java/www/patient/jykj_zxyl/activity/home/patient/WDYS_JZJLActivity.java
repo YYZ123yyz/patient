@@ -156,7 +156,7 @@ public class WDYS_JZJLActivity extends AppCompatActivity {
         li_wzzl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mContext,WDYS_JZJL_WZZLActivity.class).putExtra("provideInteractOrderInfo",mProvideInteractOrderInfo));
+                startActivity(new Intent(mContext,WDYS_JZJL_WZZLActivity.class).putExtra("order",mProvideInteractOrderInfo.getOrderCode()));
             }
         });
 
