@@ -20,7 +20,9 @@ import android.widget.TextView;
 
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.interfaces.ILoadingView;
+
 import com.allin.commlibrary.CollectionUtils;
+import com.blankj.utilcode.util.ToastUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -50,7 +52,7 @@ import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
 import www.patient.jykj_zxyl.util.BitmapUtil;
 import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
 import www.patient.jykj_zxyl.util.MyId;
-import www.patient.jykj_zxyl.util.ToastUtils;
+
 
 /**
  * Description:退款
@@ -190,13 +192,13 @@ public class RefundActivity extends AbstractMvpBaseActivity<RefundApplyContract.
                             }
                         }).show();
             }else{
-                ToastUtils.showToast("最多可以选择3张");
+                ToastUtils.showShort("最多可以选择3张");
             }
 
         });
         tvSubmitBtn.setOnClickListener(v -> {
             if (mCancelContractBean==null) {
-                ToastUtils.showToast("请选择退款原因");
+                ToastUtils.showShort("请选择退款原因");
                 return;
             }
             String refundDesc = edRefundDesc.getText().toString();
@@ -307,7 +309,7 @@ public class RefundActivity extends AbstractMvpBaseActivity<RefundApplyContract.
 
                 }else{
                     photo_info.setUploadStatus(UploadStatusEnum.uploadError);
-                    ToastUtils.showToast(baseBean.getResMsg());
+                    ToastUtils.showShort(baseBean.getResMsg());
                 }
             }
 
@@ -427,7 +429,8 @@ public class RefundActivity extends AbstractMvpBaseActivity<RefundApplyContract.
             }
 
         }else{
-            ToastUtils.showToast(msg);
+
+            ToastUtils.showShort(msg);
         }
     }
 }

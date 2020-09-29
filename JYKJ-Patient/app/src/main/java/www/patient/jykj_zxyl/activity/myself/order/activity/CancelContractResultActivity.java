@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.interfaces.ILoadingView;
 import com.allin.commlibrary.CollectionUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.hyphenate.easeui.order.SignOrderDetialActivity;
 import com.hyphenate.easeui.ui.ChatActivity;
 
@@ -38,7 +39,7 @@ import www.patient.jykj_zxyl.base.http.ParameUtil;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.DateTimeUtils;
-import www.patient.jykj_zxyl.util.ToastUtils;
+
 
 /**
  * Description:解约结果
@@ -158,14 +159,14 @@ public class CancelContractResultActivity extends BaseActivity {
                            // CancelContractResultActivity.this.finish();
                             getUserInfo(mainDoctorCode);
                         }else{
-                            ToastUtils.showToast(baseBean.getResMsg());
+                            ToastUtils.showShort(baseBean.getResMsg());
                         }
                     }
 
                     @Override
                     protected void onError(String s) {
                         super.onError(s);
-                        ToastUtils.showToast(s);
+                        ToastUtils.showShort(s);
                     }
                 });
             }
