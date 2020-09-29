@@ -32,6 +32,7 @@ import netService.DownloadService;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_bean.MedicalRecordBean;
+import www.patient.jykj_zxyl.base.base_utils.StringUtils;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
 import www.patient.jykj_zxyl.myappointment.Contract.MedicalRecordContract;
@@ -297,11 +298,13 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
 
     private List<String> dealData(String msg) {
         ArrayList<String> strings = new ArrayList<>();
-        if (msg.contains(",")) {
-            String[] split = msg.split(",");
-            strings.addAll(Arrays.asList(split));
-        } else {
-            strings.add(msg);
+        if (StringUtils.isNotEmpty(msg)) {
+            if (msg.contains(",")) {
+                String[] split = msg.split(",");
+                strings.addAll(Arrays.asList(split));
+            } else {
+                strings.add(msg);
+            }
         }
         return strings;
     }

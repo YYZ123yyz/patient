@@ -30,6 +30,7 @@ public class ErrorDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.setContentView(R.layout.error_layout);
     }
 }

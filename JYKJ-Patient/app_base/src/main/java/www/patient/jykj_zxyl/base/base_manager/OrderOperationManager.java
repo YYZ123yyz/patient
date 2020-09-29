@@ -1,6 +1,10 @@
 package www.patient.jykj_zxyl.base.base_manager;
 
+import android.app.Activity;
+
 import com.allen.library.interceptor.Transformer;
+import com.allen.library.interfaces.ILoadingView;
+import com.allen.library.observer.CommonObserver;
 
 import java.util.HashMap;
 
@@ -17,6 +21,8 @@ import www.patient.jykj_zxyl.base.http.RetrofitUtil;
  * @date: 2020-08-03 14:38
  */
 public class OrderOperationManager {
+    public static Object OnCallBackListener;
+
     private static class InstanceHolder {
         private static final OrderOperationManager INSTANCE = new OrderOperationManager();
     }
@@ -116,6 +122,31 @@ public class OrderOperationManager {
                 });
     }
 
+
+    /**
+     * 发送病例确认操作
+     * @param orderCode 订单code
+     */
+    public void sendOperPatientMedicalRecordConfirmRequest(String orderCode, Activity activity,
+                                                           OnCallBackListener onCallBackListener){
+        HashMap<String, Object> hashMap = ParameUtil.buildBasePatientParam(activity);
+        hashMap.put("orderCode",orderCode);
+        String s = RetrofitUtil.encodeParam(hashMap);
+        ApiHelper.getApiService().confirmPatientRecordDet(s).compose(
+                Transformer.switchSchedulers()).subscribe(new CommonDataObserver() {
+            @Override
+            protected void onSuccessResult(BaseBean baseBean) {
+                if (onCallBackListener != null) {
+                    int resCode = baseBean.getResCode();
+                    if (resCode == 1) {
+                        onCallBackListener.onResult(true, "");
+                    } else {
+                        onCallBackListener.onResult(false, baseBean.getResMsg());
+                    }
+                }
+            }
+        });
+    }
 
 
     public interface OnCallBackListener {

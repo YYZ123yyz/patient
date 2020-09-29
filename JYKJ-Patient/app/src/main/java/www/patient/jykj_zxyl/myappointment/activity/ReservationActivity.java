@@ -578,7 +578,7 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
                     handler.sendEmptyMessageDelayed(100, 1000);
                 } else {
                     successfulDialog.dismiss();
-                    errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    //errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     errorDialog.show();
                     errorDialog.findViewById(R.id.lin_back).setOnClickListener(new View.OnClickListener() {
                         @Override

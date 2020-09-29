@@ -1,10 +1,13 @@
 package com.hyphenate.easeui.widget.chatrow;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -55,6 +58,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
     private TextView mTvRefuseBtn;//拒绝
     private TextView mTvCancelContractAgreeBtn;//同意解约按钮
     private TextView mTvCancelContractRefuseBtn;//拒绝解约按钮
+    private TextView mTvFillInBtn;//问诊立即填写
     private ImageView ivStampIcon;//印章
     private TextView mTvOperReceivedMsg;//医生操作信息
     private TextView mTvOperMsg;//操作信息
@@ -149,11 +153,13 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         //立即填写
         rl_immediately = findViewById(R.id.rl_immediately);
         mTvEnsureBtn=findViewById(R.id.tv_ensure_btn);
+        mTvFillInBtn=findViewById(R.id.tv_fill_in_btn);
         addListener();
     }
 
     private void setBtnOperStatus() {
         boolean isValid = message.getBooleanAttribute("isValid", false);
+
         if (isValid) {
             if (mTvAgreeBtn != null) {
                 mTvAgreeBtn.setBackgroundResource(R.drawable.bg_oval_frame_7a9eff_13);
@@ -210,6 +216,22 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             }
         }
 
+        String isConfirm = message.getStringAttribute("isConfirm", "");
+        if (StringUtils.isNotEmpty(isConfirm)) {
+            if (isConfirm.equals("1")) {
+                mTvEnsureBtn.setText("已确定");
+                mTvEnsureBtn.setBackgroundResource(0);
+                mTvEnsureBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_999999));
+            }else{
+                mTvEnsureBtn.setBackgroundResource(R.drawable.bg_round_7a9eff_15);
+                mTvEnsureBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_ffffff));
+                mTvEnsureBtn.setText("确定");
+            }
+        }else{
+            mTvEnsureBtn.setBackgroundResource(R.drawable.bg_round_7a9eff_15);
+            mTvEnsureBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_ffffff));
+            mTvEnsureBtn.setText("确定");
+        }
     }
 
     @Override
@@ -338,7 +360,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             mTvEnsureBtn.setVisibility(View.GONE);
             ivStampIcon.setVisibility(View.GONE);
             if (messageType.equals("terminationOrder")) {
-
+                rl_immediately.setVisibility(View.GONE);
                 switch (orderType) {
                     case "1":
                         ivStampIcon.setVisibility(View.VISIBLE);
@@ -376,11 +398,14 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 mTvUpdateBtn.setVisibility(View.VISIBLE);
                 rlCancelContractOrderRoot.setVisibility(View.GONE);
                 rlSignOrderRoot.setVisibility(View.VISIBLE);
+                rl_immediately.setVisibility(View.GONE);
             }
             //医生发的预约
             else if (messageType.equals("appointment")) {
+                rlSignOrderRoot.setVisibility(View.GONE);
                 ivStampIcon.setVisibility(GONE);
                 mTvPriceValue.setVisibility(GONE);
+                rl_immediately.setVisibility(View.GONE);
                 tv_monitor_type.setText("预约时间");
                 tv_coach_rate.setText("取消时间");
                 tv_sign_time.setText("预约项目");
@@ -391,6 +416,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             }
             //病历
             else if (messageType.equals("medicalRecord")) {
+                rl_immediately.setVisibility(View.GONE);
                 rl_class.setVisibility(View.GONE);
                 mTvPriceValue.setVisibility(View.GONE);
                 mTvEnsureBtn.setVisibility(View.VISIBLE);
@@ -409,6 +435,9 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             }
             //医生已接诊
             else if (messageType.equals("receiveTreatment")) {
+                rlSignOrderRoot.setVisibility(View.GONE);
+                rl_immediately.setVisibility(View.GONE);
+                mTvOperReceivedMsg.setVisibility(View.VISIBLE);
                 mTvOperReceivedMsg.setText("医生已接诊");
                 //图文
                 if (appointMentProject.equals("10")) {
@@ -438,11 +467,16 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             }
             //问诊资料
             else if (messageType.equals("consultation")) {
-                 rl_one.setVisibility(GONE);
-                 rl_two.setVisibility(GONE);
-                 rl_three.setVisibility(GONE);
+                mTvOperReceivedMsg.setVisibility(View.GONE);
+                mTvEnsureBtn.setVisibility(View.GONE);
+                ivStampIcon.setVisibility(GONE);
+                rl_one.setVisibility(GONE);
+                rl_two.setVisibility(GONE);
+                rl_three.setVisibility(GONE);
+                rl_class.setVisibility(View.GONE);
                 rlSignOrderRoot.setVisibility(GONE);
-                rl_immediately.setVisibility(INVISIBLE);
+                mTvPriceValue.setVisibility(View.GONE);
+                rl_immediately.setVisibility(View.VISIBLE);
             }
         }
         setBtnOperStatus();
@@ -589,7 +623,6 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                     }
                 }
 
-
             });
             //立即填写
             rl_immediately.setOnClickListener(v -> {
@@ -599,38 +632,76 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             mTvEnsureBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.setAction("android.intent.action.Med");
-                    intent.putExtra("reserveCode",orderId);
-                    mContext.startActivity(intent);
+                    if (mTvEnsureBtn.getText().toString().equals("确定")) {
+                        OrderOperationManager.getInstance()
+                                .sendOperPatientMedicalRecordConfirmRequest(orderId, (Activity) mContext
+                                        , new OrderOperationManager.OnCallBackListener() {
+                                            @Override
+                                            public void onResult(boolean isSucess, String msg) {
+                                                if (isSucess) {
+                                                    message.setAttribute("isConfirm","1" );
+                                                    mTvEnsureBtn.setText("已确定");
+                                                    mTvEnsureBtn.setBackgroundResource(0);
+                                                    mTvEnsureBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_999999));
+                                                } else {
+                                                    message.setAttribute("isConfirm","0" );
+                                                    mTvEnsureBtn.setText("确定");
+                                                    mTvEnsureBtn.setBackgroundResource(R.drawable.bg_round_7a9eff_15);
+                                                    mTvEnsureBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_ffffff));
+                                                    ToastUtils.showToast(msg);
+                                                }
+                                            }
+                                        });
+                    }
+
+                }
+            });
+            mTvFillInBtn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    startActivity(WZXXActivity.class,bundle);
+
                 }
             });
         }
 
         mLLRootView.setOnClickListener(v -> {
             String nickName = message.getStringAttribute("nickName", "");
-            if (messageType.equals("card")) {
-                Bundle bundle = new Bundle();
-                bundle.putString("signCode", orderId);
-                bundle.putString("operDoctorCode", message.getFrom());
-                bundle.putString("operDoctorName", nickName);
-                startActivity(SignOrderDetialActivity.class, bundle);
-            } else if (messageType.equals("terminationOrder")) {
-
-                if (!orderType.equals("3")) {
-                    Bundle bundle1 = new Bundle();
-                    bundle1.putString("operDoctorCode", message.getFrom());
-                    bundle1.putString("operDoctorName", nickName);
-                    bundle1.putString("orderId", orderId);
-                    startActivity(CancelConfirmDeitalActivity.class, bundle1);
+            switch (messageType) {
+                case "card": {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("signCode", orderId);
+                    bundle.putString("operDoctorCode", message.getFrom());
+                    bundle.putString("operDoctorName", nickName);
+                    startActivity(SignOrderDetialActivity.class, bundle);
+                    break;
                 }
+                case "terminationOrder":
 
+                    if (!orderType.equals("3")) {
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("operDoctorCode", message.getFrom());
+                        bundle1.putString("operDoctorName", nickName);
+                        bundle1.putString("orderId", orderId);
+                        startActivity(CancelConfirmDeitalActivity.class, bundle1);
+                    }
 
-            }
-            else if (messageType.equals("appointment")) {
-                Bundle bundle = new Bundle();
-                bundle.putString("orderId", orderId);
-                startActivity(AncelAppActivity.class, bundle);
+                    break;
+                case "appointment": {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("orderId", orderId);
+                    startActivity(AncelAppActivity.class, bundle);
+                    break;
+                }
+                case "medicalRecord":{
+                    Intent intent = new Intent();
+                    intent.setAction("android.intent.action.Med");
+                    intent.putExtra("reserveCode",orderId);
+                    mContext.startActivity(intent);
+                    break;
+                }
+                default:
             }
 
         });

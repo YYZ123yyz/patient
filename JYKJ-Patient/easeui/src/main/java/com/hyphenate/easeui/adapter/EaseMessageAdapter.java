@@ -152,7 +152,8 @@ public class EaseMessageAdapter extends BaseAdapter {
                         ||messageType.equals("card")
                         ||messageType.equals("appointment")
                         ||messageType.equals("medicalRecord")
-                        ||messageType.equals("receiveTreatment")) {
+                        ||messageType.equals("receiveTreatment")
+                        ||messageType.equals("consultation")) {
                     cards.add(i);
                 }
 
@@ -166,6 +167,7 @@ public class EaseMessageAdapter extends BaseAdapter {
                     ||messageType.equals("appointment")
                     ||messageType.equals("medicalRecord")
                     ||messageType.equals("receiveTreatment")
+                    ||messageType.equals("consultation")
             ) {
 
                 if (isLastData(cards,i)) {
@@ -278,6 +280,7 @@ public class EaseMessageAdapter extends BaseAdapter {
                         ||messageType.equals("appointment")
                         ||messageType.equals("medicalRecord")
                         ||messageType.equals("receiveTreatment")
+                        ||messageType.equals("consultation")
                 ){
                     return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_ORDER_CARD : MESSAGE_TYPE_SEND_ORDER_CARD;
                 }else if(itemStyle!=null&&itemStyle.isShowChatRoom()){
@@ -326,6 +329,7 @@ public class EaseMessageAdapter extends BaseAdapter {
                         ||messageType.equals("appointment")
                         ||messageType.equals("medicalRecord")
                         ||messageType.equals("receiveTreatment")
+                        ||messageType.equals("consultation")
                 ) {
 					presenter = new EaseChatOrderPresenter();
 				}else{
