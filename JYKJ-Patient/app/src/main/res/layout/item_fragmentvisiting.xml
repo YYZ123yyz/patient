@@ -120,16 +120,17 @@
                 android:layout_height="25dp"
                 android:layout_marginTop="10dp"
                 />
+
             <TextView
-                android:visibility="invisible"
-                android:layout_marginLeft="15dp"
-                android:gravity="center"
+                android:id="@+id/visiting_data"
                 android:layout_width="65dp"
                 android:layout_height="25dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:text=""
-                android:id="@+id/visiting_data"
-                />
+                android:visibility="invisible" />
+
             <TextView
                 android:layout_marginLeft="15dp"
                 android:gravity="center"

@@ -62,6 +62,33 @@ public class MyReservationListBean {
     private int treatmentType;
     private int viewReserveToDoctorCount;
     private String  orderCode;
+    private int isGenerateMedicalRecord;
+    private int isGenerateInspection;
+    private int isGeneratePrescription;
+
+    public int getIsGenerateMedicalRecord() {
+        return isGenerateMedicalRecord;
+    }
+
+    public void setIsGenerateMedicalRecord(int isGenerateMedicalRecord) {
+        this.isGenerateMedicalRecord = isGenerateMedicalRecord;
+    }
+
+    public int getIsGenerateInspection() {
+        return isGenerateInspection;
+    }
+
+    public void setIsGenerateInspection(int isGenerateInspection) {
+        this.isGenerateInspection = isGenerateInspection;
+    }
+
+    public int getIsGeneratePrescription() {
+        return isGeneratePrescription;
+    }
+
+    public void setIsGeneratePrescription(int isGeneratePrescription) {
+        this.isGeneratePrescription = isGeneratePrescription;
+    }
 
     public String getOrderCode() {
         return orderCode;

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.interfaces.ILoadingView;
+import com.blankj.utilcode.util.ToastUtils;
 import com.hyphenate.easeui.order.CancelContractActivity;
 import com.suke.widget.SwitchButton;
 
@@ -25,7 +26,7 @@ import www.patient.jykj_zxyl.base.http.ApiHelper;
 import www.patient.jykj_zxyl.base.http.CommonDataObserver;
 import www.patient.jykj_zxyl.base.http.ParameUtil;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
-import www.patient.jykj_zxyl.util.ToastUtils;
+
 
 /**
  * Description:医生详情设置页面
@@ -146,11 +147,11 @@ public class DoctorDetialSettingActivity extends BaseActivity {
                         bundle.putSerializable("orderMsg",signOrderInfoBean);
                         startActivity(CancelContractActivity.class,bundle);
                     }else{
-                        ToastUtils.showToast("订单不存在");
+                        ToastUtils.showShort("订单不存在");
                     }
 
                 }else{
-                    ToastUtils.showToast(baseBean.getResMsg());
+                    ToastUtils.showShort(baseBean.getResMsg());
                 }
 
             }

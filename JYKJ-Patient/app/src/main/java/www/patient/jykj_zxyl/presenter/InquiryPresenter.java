@@ -104,15 +104,12 @@ public class InquiryPresenter extends BasePresenterImpl<InquiryContract.View> im
                 if (mView != null) {
                     int resCode = baseBean.getResCode();
                     if (resCode == 1) {
-                        String resJsonData = baseBean.getResJsonData();
-                        if (StringUtils.isNotEmpty(resJsonData)) {
-                            LogUtils.e("病历提交数据"+resJsonData);
-//                            MedicalRecordBean orderDetialBean = GsonUtils.fromJson(resJsonData, MedicalRecordBean.class);
-//                            mView.getMedicalRecordSucess(orderDetialBean);
-                        }
+//                        String resJsonData = baseBean.getResJsonData();
+                        mView.commitSucess();
                     }else {
                         LogUtils.e("错误信息xxxxxxxxxxxxxxxxxxxxxxxxxxx"+baseBean.getResMsg());
 //                        mView.getDataFailure(baseBean.getResMsg());
+                        mView.commitFiled(baseBean.getResMsg());
                     }
                 }
 
@@ -122,7 +119,7 @@ public class InquiryPresenter extends BasePresenterImpl<InquiryContract.View> im
             @Override
             protected void onError(String s) {
                 super.onError(s);
-                LogUtils.e("错误信息"+s);
+                mView.commitFiled(s);
                 if (mView!=null) {
                     mView.showRetry();
                 }

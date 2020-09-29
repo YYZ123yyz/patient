@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -41,7 +42,6 @@ import www.patient.jykj_zxyl.presenter.MedicalRecordPresenter;
 import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.CircleImageView;
 import www.patient.jykj_zxyl.util.DateUtils;
-import www.patient.jykj_zxyl.util.ToastUtils;
 
 
 /*
@@ -373,7 +373,7 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
 
     @Override
     public void getDataFailure(String msg) {
-        ToastUtils.showToast(msg);
+        ToastUtils.showShort(msg);
     }
 
     private void clickAndSome(LinearLayout vis, ImageView ani) {

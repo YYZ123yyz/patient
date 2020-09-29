@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.allin.commlibrary.CollectionUtils;
 import com.allin.commonadapter.ViewHolder;
+import com.blankj.utilcode.util.ToastUtils;
 import com.hyphenate.easeui.order.RefusedOrderActivity;
 import com.hyphenate.easeui.order.SignOrderDetialActivity;
 import com.hyphenate.easeui.ui.ChatActivity;
@@ -41,7 +42,7 @@ import www.patient.jykj_zxyl.base.base_view.SimpleDividerItemDecoration;
 import www.patient.jykj_zxyl.base.base_view.SlideRecyclerView;
 import www.patient.jykj_zxyl.base.http.ParameUtil;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseFragment;
-import www.patient.jykj_zxyl.util.ToastUtils;
+
 
 /**
  * Description:待确认订单列表
@@ -179,7 +180,7 @@ public class OrderToBeConfirmedFragment extends
                                 if(isSucess){
                                     mPresenter.sendGetUserListRequest(provideInteractOrderInfo.getDoctorCode());
                                 }else{
-                                    ToastUtils.showToast(msg);
+                                    ToastUtils.showShort(msg);
                                 }
                             }
                         });
@@ -214,7 +215,7 @@ public class OrderToBeConfirmedFragment extends
                                     }
 
                                 }else{
-                                    ToastUtils.showToast(msg);
+                                    ToastUtils.showShort(msg);
                                 }
                             }
                         });

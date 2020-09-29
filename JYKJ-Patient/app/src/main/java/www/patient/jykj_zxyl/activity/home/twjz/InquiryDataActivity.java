@@ -24,6 +24,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.hyphenate.easeui.utils.DateUtills;
 
 import java.io.File;
@@ -32,6 +33,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +63,7 @@ import www.patient.jykj_zxyl.presenter.InquiryPresenter;
 import www.patient.jykj_zxyl.presenter.MedicalRecordPresenter;
 import www.patient.jykj_zxyl.util.BitmapUtil;
 import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
-import www.patient.jykj_zxyl.util.ToastUtils;
+
 import www.patient.jykj_zxyl.util.Util;
 
 /**
@@ -128,6 +130,9 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
     private String doctorName;
     private Integer measureInstrumentStr;
     private Integer measureMode;
+    private ArrayList<String> imageArrList = new ArrayList<String>();
+    private ArrayList<String> updataArrList = new ArrayList<String>();
+    private String imgCode;
 
     @Override
     protected int setLayoutId() {
@@ -168,11 +173,12 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         mImageViewRecycleAdapter.setOnItemClickListener(new ImageViewRecycleAdapter.OnItemClickListener() {
             @Override
             public void onClick(final int position) {
-                if (mPhotoInfos.size() >= 4) {
-                    Toast.makeText(InquiryDataActivity.this, "照片不超过三张", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+
                 if ("ADDPHOTO".equals(mPhotoInfos.get(position).getPhotoID())) {
+                    if (mPhotoInfos.size() >= 4) {
+                        Toast.makeText(InquiryDataActivity.this, "照片不超过三张", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     String[] items = {"拍照", "从相册选择"};
                     Dialog dialog = new AlertDialog.Builder(InquiryDataActivity.this)
                             .setItems(items, new DialogInterface.OnClickListener() {
@@ -202,7 +208,13 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
                             .setPositiveButton("是", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    String photoID = mPhotoInfos.get(position).getPhotoID();
+                                    if (!updataArrList.contains(photoID)) {
+                                        updataArrList.add(photoID);
+                                    }
+
                                     mPhotoInfos.remove(position);
+
                                     if (mPhotoInfos.size() == 0) {
                                         Photo_Info photo_info1 = new Photo_Info();
                                         photo_info1.setPhotoID("ADDPHOTO");
@@ -274,7 +286,7 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
                 String encodedPath = uri.getEncodedPath();
 
                 BitmapUtil.startPhotoZoom(InquiryDataActivity.this, uri, 450);
-                setPicToView(data);
+//                setPicToView(data);
             }
 
             // 处理拍照返回
@@ -282,7 +294,7 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
                     && resultCode == RESULT_OK) {// 拍照成功 RESULT_OK= -1
                 // 剪裁图片
                 BitmapUtil.startPhotoZoom(InquiryDataActivity.this, Uri.fromFile(mTempFile), 450);
-                setPicToView(data);
+//                setPicToView(data);
             }
             // 接收剪裁回来的结果
             if (requestCode == Constant.REQUEST_PHOTO_CUT
@@ -350,67 +362,67 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
     }
 
     private void commitData() {
-       /* if (TextUtils.isEmpty(patientName.getText().toString().trim())) {
-            ToastUtils.showToast("请填写姓名");
+        if (TextUtils.isEmpty(patientName.getText().toString().trim())) {
+            ToastUtils.showShort("请填写姓名");
             return;
         }
         if (TextUtils.isEmpty(patientNum.getText().toString().trim())) {
-            ToastUtils.showToast("请填写电话号码");
+            ToastUtils.showShort("请填写电话号码");
             return;
         }
         if (TextUtils.isEmpty(birthday.getText().toString().trim())) {
-            ToastUtils.showToast("请填写年龄");
+            ToastUtils.showShort("请填写年龄");
             return;
         }
         if (!manChoose.isChecked() && !womenChoose.isChecked()) {
-            ToastUtils.showToast("请选择性别");
+            ToastUtils.showShort("请选择性别");
             return;
         }
         if (TextUtils.isEmpty(findTimeTv.getText().toString().trim())) {
-            ToastUtils.showToast("请填写时间");
+            ToastUtils.showShort("请填写时间");
             return;
         }
         if (TextUtils.isEmpty(hyperTv.getText().toString().trim())) {
-            ToastUtils.showToast("请选择是否有高血压病史");
+            ToastUtils.showShort("请选择是否有高血压病史");
             return;
         }
         if (TextUtils.isEmpty(familyTv.getText().toString().trim())) {
-            ToastUtils.showToast("请选择是否有家族史");
+            ToastUtils.showShort("请选择是否有家族史");
             return;
         }
         if (TextUtils.isEmpty(highPressureNum.getText().toString().trim())) {
-            ToastUtils.showToast("填写收缩压");
+            ToastUtils.showShort("填写收缩压");
             return;
         }
         if (TextUtils.isEmpty(lowPressureNum.getText().toString().trim())) {
-            ToastUtils.showToast("填写舒张压");
+            ToastUtils.showShort("填写舒张压");
             return;
         }
         if (TextUtils.isEmpty(heartRateNum.getText().toString().trim())) {
-            ToastUtils.showToast("填写心率");
+            ToastUtils.showShort("填写心率");
             return;
         }
         if (TextUtils.isEmpty(meainstruTv.getText().toString().trim())) {
-            ToastUtils.showToast("请选择测量设备");
+            ToastUtils.showShort("请选择测量设备");
             return;
         }
         if (TextUtils.isEmpty(meainstruTv.getText().toString().trim())) {
-            ToastUtils.showToast("请选择测量方式");
+            ToastUtils.showShort("请选择测量方式");
             return;
         }
         if (TextUtils.isEmpty(chiefComplaint.getText().toString().trim())) {
-            ToastUtils.showToast("请填写主诉");
+            ToastUtils.showShort("请填写主诉");
             return;
         }
         if (TextUtils.isEmpty(historyNew.getText().toString().trim())) {
-            ToastUtils.showToast("请填写现病史");
+            ToastUtils.showShort("请填写现病史");
             return;
         }
         if (TextUtils.isEmpty(historyPast.getText().toString().trim())) {
-            ToastUtils.showToast("请填写既往史");
+            ToastUtils.showShort("请填写既往史");
             return;
         }
-        if (TextUtils.isEmpty(historyAllergy.getText().toString().trim())) {
+        /*if (TextUtils.isEmpty(historyAllergy.getText().toString().trim())) {
             ToastUtils.showToast("请填写既往史");
             return;
         }*/
@@ -419,17 +431,17 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
 //        paramMap.put("loginPatientPosition", "108.93425^34.23053");
 //        paramMap.put("requestClientType", "1");
         paramMap.put("operPatientCode", operPatientCode);// mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode()
-        paramMap.put("operPatientName", operPatientName);//mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName()
+        paramMap.put("operPatientName", patientName.getText().toString().trim());//mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName()
         paramMap.put("orderCode", orderCode);
-        paramMap.put("imgCode", isUpdata ? "imagecode" : "");
+        paramMap.put("imgCode", isUpdata ? imgCode : "");
         paramMap.put("treatmentType", treatmentType);
         paramMap.put("doctorCode", doctorCode);
         paramMap.put("doctorName", doctorName);
         paramMap.put("patientCode", operPatientCode);
-        paramMap.put("patientName", operPatientName);
+        paramMap.put("patientName", patientName.getText().toString().trim());
 
         paramMap.put("patientLinkPhone", patientNum.getText().toString().trim());
-        paramMap.put("gender", manChoose.isChecked() ? "1" : "0");//manChoose.isChecked() ? "男" : "女"
+        paramMap.put("gender", manChoose.isChecked() ? "1" : "0");
         paramMap.put("birthday", birthday.getText().toString().trim());
         paramMap.put("bloodPressureAbnormalDate", findTimeTv.getText().toString().trim());
         paramMap.put("flagHtnHistory", hyperTv.getText().toString().trim().equals("是") ? "1" : "0");
@@ -440,7 +452,7 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         paramMap.put("measureInstrument", measureInstrumentStr);
         paramMap.put("measureInstrumentName", meainstruTv.getText().toString().trim());
         paramMap.put("measureMode", measureMode);
-        paramMap.put("measureModeName", meainstruTv.getText().toString().trim());
+        paramMap.put("measureModeName", meaType.getText().toString().trim());
         paramMap.put("chiefComplaint", chiefComplaint.getText().toString().trim());
         paramMap.put("historyNew", historyNew.getText().toString().trim());
         paramMap.put("historyPast", historyPast.getText().toString().trim());
@@ -470,16 +482,46 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
 //                    }
 //                });
 
+                if (mPhotoInfos.get(i) != null) {
+                    String photo = mPhotoInfos.get(i).getPhoto();
+                    if (i == mPhotoInfos.size() - 1) {
+                        photoUrl.append(photo);
+                    } else {
+                        photoUrl.append(photo).append("^");
+                    }
 
-                String photo = mPhotoInfos.get(i).getPhoto();
-                photoUrl.append(photo).append("^");
+                }
+
                 LogUtils.e("图片path  44  " + photoUrl.toString());
             }
 
 
         }
-        paramMap.put("imgBase64Array", photoUrl.toString());
-        paramMap.put("imgIdArray", "");
+        if (isUpdata) {
+            if (updataArrList.size() > 0) {
+                if (photoUrl.toString().contains("null")) {
+                    paramMap.put("imgBase64Array", "");
+                } else {
+                    paramMap.put("imgBase64Array", photoUrl.toString());
+                }
+            } else {
+                paramMap.put("imgBase64Array", "");
+            }
+        } else {
+            paramMap.put("imgBase64Array", photoUrl.toString());
+        }
+
+        StringBuilder updataIm = new StringBuilder();
+        if (updataArrList.size() > 0) {
+            for (int i = 0; i < updataArrList.size(); i++) {
+                if (i == updataArrList.size() - 1) {
+                    updataIm.append(updataArrList.get(i));
+                } else {
+                    updataIm.append(updataArrList.get(i)).append("^");
+                }
+            }
+        }
+        paramMap.put("imgIdArray", updataIm.toString());
 
 
         LogUtils.e(paramMap.toString());
@@ -611,13 +653,16 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
 
     @Override
     public void hasData(InquiryBean bean) {
+        isUpdata = true;
+        imgCode = bean.getImgCode();
         patientName.setText(bean.getPatientName());
         patientNum.setText(bean.getPatientLinkPhone());
-        if (bean.getGender()==0){
+        if (bean.getGender() == 0) {
             womenChoose.setChecked(true);
-        }else {
+        } else {
             manChoose.setChecked(true);
         }
+        measureInstrumentStr = bean.getMeasureInstrument();
         birthday.setText(bean.getBirthday());
         findTimeTv.setText(DateUtils.getLongYYYYMMDD(bean.getBloodPressureAbnormalDate()));
         hyperTv.setText(bean.getFlagHtnHistory() == 0 ? "否" : "是");
@@ -631,26 +676,54 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         historyPast.setText(bean.getHistoryPast());
         historyAllergy.setText(bean.getHistoryAllergy());
         meaType.setText(bean.getMeasureModeName());
+        measureMode = bean.getMeasureMode();
         String interrogationImgArray = bean.getInterrogationImgArray();
 
 //        if (mPhotoInfos.size() != 0) {
 //            mPhotoInfos.clear();
 //        }
+        String interrogationImgIdArray = bean.getInterrogationImgIdArray();
+        if (!TextUtils.isEmpty(interrogationImgIdArray)) {
+            if (interrogationImgIdArray.contains(",")) {
+                imageArrList.addAll(Arrays.asList(interrogationImgIdArray.split(",")));
+            } else {
+                imageArrList.add(interrogationImgIdArray);
+            }
+        }
+
+
         if (interrogationImgArray.contains(",")) {
             String[] split = interrogationImgArray.split(",");
 
             for (int i = 0; i < split.length; i++) {
                 Photo_Info photo_info = new Photo_Info();
                 photo_info.setPhotoUrl(split[i]);
-
+                photo_info.setPhotoID(imageArrList.get(i));
                 mPhotoInfos.add(photo_info);
             }
-        }else {
-            Photo_Info photo_info = new Photo_Info();
-            photo_info.setPhotoUrl(interrogationImgArray);
-            mPhotoInfos.add(photo_info);
+        } else {
+            if (imageArrList.size() > 0) {
+                Photo_Info photo_info = new Photo_Info();
+                photo_info.setPhotoUrl(interrogationImgArray);
+                photo_info.setPhotoID(imageArrList.get(0));
+                mPhotoInfos.add(photo_info);
+            }
+
         }
         mImageViewRecycleAdapter.setDate(mPhotoInfos);
         mImageViewRecycleAdapter.notifyDataSetChanged();
+
+
+    }
+
+    @Override
+    public void commitSucess() {
+        finish();
+    }
+
+    @Override
+    public void commitFiled(String msg) {
+        ToastUtils.showShort(msg);
+        LogUtils.e("提交失败" + msg);
     }
 }
