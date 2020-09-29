@@ -15,6 +15,7 @@ import www.patient.jykj_zxyl.base.http.CommonDataObserver;
 import www.patient.jykj_zxyl.base.mvp.BasePresenterImpl;
 import www.patient.jykj_zxyl.myappointment.Contract.InquiryContract;
 import www.patient.jykj_zxyl.myappointment.Contract.MedicalRecordContract;
+import www.patient.jykj_zxyl.myappointment.bean.InquiryBean;
 
 /**
  * Created by G on 2020/9/27 10:58
@@ -54,8 +55,8 @@ public class InquiryPresenter extends BasePresenterImpl<InquiryContract.View> im
                         String resJsonData = baseBean.getResJsonData();
                         if (StringUtils.isNotEmpty(resJsonData)) {
                             LogUtils.e("病历接口数据"+resJsonData);
-//                            MedicalRecordBean orderDetialBean = GsonUtils.fromJson(resJsonData, MedicalRecordBean.class);
-//                            mView.getMedicalRecordSucess(orderDetialBean);
+                            InquiryBean orderDetialBean = GsonUtils.fromJson(resJsonData, InquiryBean.class);
+                            mView.hasData(orderDetialBean);
                         }
                     }else {
 //                        mView.getDataFailure(baseBean.getResMsg());
@@ -110,6 +111,7 @@ public class InquiryPresenter extends BasePresenterImpl<InquiryContract.View> im
 //                            mView.getMedicalRecordSucess(orderDetialBean);
                         }
                     }else {
+                        LogUtils.e("错误信息xxxxxxxxxxxxxxxxxxxxxxxxxxx"+baseBean.getResMsg());
 //                        mView.getDataFailure(baseBean.getResMsg());
                     }
                 }
@@ -120,6 +122,7 @@ public class InquiryPresenter extends BasePresenterImpl<InquiryContract.View> im
             @Override
             protected void onError(String s) {
                 super.onError(s);
+                LogUtils.e("错误信息"+s);
                 if (mView!=null) {
                     mView.showRetry();
                 }

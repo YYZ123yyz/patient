@@ -16,6 +16,8 @@ import com.bumptech.glide.request.RequestOptions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import netService.DownloadService;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_bean.CheckListBean;
@@ -114,6 +116,19 @@ public class CheckListActivity extends AbstractMvpBaseActivity<CheckListContract
         Log.e("TAG", "initView: " + recordCode);
         mApp = (JYKJApplication) getApplication();
         ActivityUtil.setStatusBarMain(CheckListActivity.this);
+    }
+
+    @OnClick({R.id.confirm,R.id.download})
+    public void onClick(View view){
+        switch (view.getId()) {
+            case R.id.confirm:
+                Intent intent2 = new Intent(CheckListActivity.this, DownloadService.class);
+                startService(intent2);
+                break;
+            case R.id.download:
+
+                break;
+        }
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
@@ -23,8 +24,13 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hyphenate.easeui.utils.DateUtills;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -35,15 +41,22 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import entity.patientapp.Photo_Info;
 import entity.wdzs.ProvideInteractPatientInterrogationParment;
+import top.zibin.luban.CompressionPredicate;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.ImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.base.base_utils.DateUtils;
 import www.patient.jykj_zxyl.base.base_utils.LogUtils;
+
+import www.patient.jykj_zxyl.base.http.ParameUtil;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
 import www.patient.jykj_zxyl.myappointment.Contract.InquiryContract;
 import www.patient.jykj_zxyl.myappointment.Contract.MedicalRecordContract;
+import www.patient.jykj_zxyl.myappointment.bean.InquiryBean;
 import www.patient.jykj_zxyl.presenter.InquiryPresenter;
 import www.patient.jykj_zxyl.presenter.MedicalRecordPresenter;
 import www.patient.jykj_zxyl.util.BitmapUtil;
@@ -260,7 +273,7 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
                 String path = uri.getPath();
                 String encodedPath = uri.getEncodedPath();
 
-//                BitmapUtil.startPhotoZoom(InquiryDataActivity.this, uri, 450);
+                BitmapUtil.startPhotoZoom(InquiryDataActivity.this, uri, 450);
                 setPicToView(data);
             }
 
@@ -268,7 +281,7 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
             if (requestCode == Constant.SELECT_PIC_BY_TACK_PHOTO
                     && resultCode == RESULT_OK) {// 拍照成功 RESULT_OK= -1
                 // 剪裁图片
-//                BitmapUtil.startPhotoZoom(InquiryDataActivity.this, Uri.fromFile(mTempFile), 450);
+                BitmapUtil.startPhotoZoom(InquiryDataActivity.this, Uri.fromFile(mTempFile), 450);
                 setPicToView(data);
             }
             // 接收剪裁回来的结果
@@ -401,10 +414,10 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
             ToastUtils.showToast("请填写既往史");
             return;
         }*/
-
-        HashMap<String, Object> paramMap = new HashMap<>();
-        paramMap.put("loginPatientPosition", "108.93425^34.23053");
-        paramMap.put("requestClientType", "1");
+        HashMap<String, Object> paramMap = ParameUtil.buildBasePatientParam(this);
+//        HashMap<String, Object> paramMap = new HashMap<>();
+//        paramMap.put("loginPatientPosition", "108.93425^34.23053");
+//        paramMap.put("requestClientType", "1");
         paramMap.put("operPatientCode", operPatientCode);// mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode()
         paramMap.put("operPatientName", operPatientName);//mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName()
         paramMap.put("orderCode", orderCode);
@@ -416,11 +429,11 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         paramMap.put("patientName", operPatientName);
 
         paramMap.put("patientLinkPhone", patientNum.getText().toString().trim());
-        paramMap.put("gender", manChoose.isChecked() ? "男" : "女");
+        paramMap.put("gender", manChoose.isChecked() ? "1" : "0");//manChoose.isChecked() ? "男" : "女"
         paramMap.put("birthday", birthday.getText().toString().trim());
         paramMap.put("bloodPressureAbnormalDate", findTimeTv.getText().toString().trim());
-        paramMap.put("flagHtnHistory", hyperTv.getText().toString().trim());
-        paramMap.put("flagFamilyHtn", familyTv.getText().toString().trim());
+        paramMap.put("flagHtnHistory", hyperTv.getText().toString().trim().equals("是") ? "1" : "0");
+        paramMap.put("flagFamilyHtn", familyTv.getText().toString().trim().equals("是") ? "1" : "0");//familyTv.getText().toString().trim()
         paramMap.put("highPressureNum", highPressureNum.getText().toString().trim());
         paramMap.put("lowPressureNum", lowPressureNum.getText().toString().trim());
         paramMap.put("heartRateNum", heartRateNum.getText().toString().trim());
@@ -433,22 +446,78 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         paramMap.put("historyPast", historyPast.getText().toString().trim());
         paramMap.put("historyAllergy", historyAllergy.getText().toString().trim());
         StringBuilder photoUrl = new StringBuilder();
-        photoUrl.append("data:image/jpg;base64,");
+
         if (mPhotoInfos.size() > 1) {
+            photoUrl.append("data:image/jpg;base64,");
             for (int i = 1; i < mPhotoInfos.size(); i++) {
+//                Luban.with(InquiryDataActivity.this).load(mPhotoInfos.get(i).getPhotoUrl()).ignoreBy(100)
+//                        .filter(path -> !(TextUtils.isEmpty(path) || path.toLowerCase().endsWith(".gif"))).setCompressListener(new OnCompressListener() {
+//                    @Override
+//                    public void onStart() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(File file) {
+//                        LogUtils.e("转换成功");
+//                        String s = imageToBase64(file.getPath());
+//                        photoUrl.append(s).append("^");
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//                });
+
+
                 String photo = mPhotoInfos.get(i).getPhoto();
                 photoUrl.append(photo).append("^");
                 LogUtils.e("图片path  44  " + photoUrl.toString());
             }
-        }
 
+
+        }
         paramMap.put("imgBase64Array", photoUrl.toString());
+        paramMap.put("imgIdArray", "");
+
+
+        LogUtils.e(paramMap.toString());
         String s = RetrofitUtil.encodeParam(paramMap);
         mPresenter.submitData(s);
 
 
     }
 
+    public static String imageToBase64(String path) {
+        if (TextUtils.isEmpty(path)) {
+            return null;
+        }
+        InputStream is = null;
+        byte[] data = null;
+        String result = null;
+        try {
+            is = new FileInputStream(path);
+            //创建一个字符流大小的数组。
+            data = new byte[is.available()];
+            //写入数组
+            is.read(data);
+            //用默认的编码格式进行编码
+            result = Base64.encodeToString(data, Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (null != is) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        return result;
+    }
 
     private DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
@@ -537,27 +606,51 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
     @Override
     public void hasNoData() {
         isUpdata = false;
+
     }
 
     @Override
-    public void hasData() {
-//        patientNum.setText();
-//        manChoose.setText();
-//        birthday.setText();
-//        findTimeTv.setText();
-//        hyperTv.setText();
-//        familyTv.setText();
-//        highPressureNum.setText();
-//        lowPressureNum.setText();
-//        heartRateNum.setText();
-//        meainstruTv.setText();
-//        meainstruTv.setText();
-//        chiefComplaint.setText();
-//        historyNew.setText();
-//        historyPast.setText();
-//        historyAllergy.setText();
-//
-//        mImageViewRecycleAdapter.setDate(mPhotoInfos);
-//        mImageViewRecycleAdapter.notifyDataSetChanged();
+    public void hasData(InquiryBean bean) {
+        patientName.setText(bean.getPatientName());
+        patientNum.setText(bean.getPatientLinkPhone());
+        if (bean.getGender()==0){
+            womenChoose.setChecked(true);
+        }else {
+            manChoose.setChecked(true);
+        }
+        birthday.setText(bean.getBirthday());
+        findTimeTv.setText(DateUtils.getLongYYYYMMDD(bean.getBloodPressureAbnormalDate()));
+        hyperTv.setText(bean.getFlagHtnHistory() == 0 ? "否" : "是");
+        familyTv.setText(bean.getFlagFamilyHtn() == 0 ? "否" : "是");
+        highPressureNum.setText(String.valueOf(bean.getHighPressureNum()));
+        lowPressureNum.setText(String.valueOf(bean.getLowPressureNum()));
+        heartRateNum.setText(String.valueOf(bean.getHeartRateNum()));
+        meainstruTv.setText(bean.getMeasureInstrumentName());
+        chiefComplaint.setText(bean.getChiefComplaint());
+        historyNew.setText(bean.getHistoryNew());
+        historyPast.setText(bean.getHistoryPast());
+        historyAllergy.setText(bean.getHistoryAllergy());
+        meaType.setText(bean.getMeasureModeName());
+        String interrogationImgArray = bean.getInterrogationImgArray();
+
+//        if (mPhotoInfos.size() != 0) {
+//            mPhotoInfos.clear();
+//        }
+        if (interrogationImgArray.contains(",")) {
+            String[] split = interrogationImgArray.split(",");
+
+            for (int i = 0; i < split.length; i++) {
+                Photo_Info photo_info = new Photo_Info();
+                photo_info.setPhotoUrl(split[i]);
+
+                mPhotoInfos.add(photo_info);
+            }
+        }else {
+            Photo_Info photo_info = new Photo_Info();
+            photo_info.setPhotoUrl(interrogationImgArray);
+            mPhotoInfos.add(photo_info);
+        }
+        mImageViewRecycleAdapter.setDate(mPhotoInfos);
+        mImageViewRecycleAdapter.notifyDataSetChanged();
     }
 }

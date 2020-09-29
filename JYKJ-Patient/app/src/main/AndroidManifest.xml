@@ -45,11 +45,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <activity android:name=".myappointment.activity.HealthActivity" ></activity>
+        <activity android:name=".myappointment.activity.HealthActivity"></activity>
         <activity android:name=".myappointment.activity.VerifiedActivity" />
         <activity android:name=".myappointment.activity.AllDepartmentsActivity" />
         <activity android:name=".myappointment.activity.ReservationActivity" />
-        <activity android:name=".myappointment.activity.MedicalRecordActivity" />
+        <activity android:name=".myappointment.activity.MedicalRecordActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.Med" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+
+
         <activity android:name=".myappointment.activity.InspectionApplicationFormActivity" />
         <activity android:name=".myappointment.activity.ApplicationFormActivity" /> <!-- 用户登录 -->
         <activity android:name=".activity.LoginActivity" /> <!-- 手机号登录 -->
@@ -100,8 +109,8 @@
         <activity android:name=".activity.myself.setting.UpdateVersionShowActivity" /> <!-- 设置 == > 客服热线 -->
         <activity android:name=".activity.myself.setting.ServiceHotlineActivity" /> <!-- 个人资料 -->
         <activity
-            android:exported="true"
             android:name=".activity.myself.UserCenterActivity"
+            android:exported="true"
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 用户认证 -->
         <activity
             android:name=".activity.myself.UserAuthenticationActivity"

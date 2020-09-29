@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.hyphenate.easeui.utils.DateUtills;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXFileObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -38,6 +39,7 @@ import retrofit2.Retrofit;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.base.base_utils.DateUtils;
 import www.patient.jykj_zxyl.util.WechatShareManager;
 
 import static www.patient.jykj_zxyl.activity.LoginActivity.isWeixinAvilible;
@@ -74,7 +76,7 @@ public class DownloadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mContext = this;
-        destFileName = "cpre.pdf";
+        destFileName =System.currentTimeMillis()+ "cpre.pdf";
         updateInfo = "处方笺下载中...";
         url = intent.getStringExtra("url");
         mShareManager = WechatShareManager.getInstance(mContext);
@@ -138,7 +140,7 @@ public class DownloadService extends Service {
 
                         ToastUtils.showShort("完成");
                         LogUtils.e("文件目录"+destFileDir);
-                        ShareFileToWeiXin();
+                        ShareFileToWeiXin(path);
 //                        shareFile();
                     }
 
@@ -296,15 +298,15 @@ public class DownloadService extends Service {
     }
 
 
-    private void ShareFileToWeiXin() {
+    private void ShareFileToWeiXin(String path) {
         if (mWXApi == null) {
             mWXApi = WXAPIFactory.createWXAPI(mContext, "wx4ccb2ac1c5491336", true);
         }
         mWXApi.registerApp("wx4ccb2ac1c5491336");
 
         WXFileObject fileObj = new WXFileObject();
-        fileObj.fileData = inputStreamToByte("storage/emulated/0/Download/cpre.pdf");//文件路径
-        fileObj.filePath = "storage/emulated/0/Download/cpre.pdf" ;
+        fileObj.fileData = inputStreamToByte(path);//文件路径
+        fileObj.filePath = path ;
 
         //使用媒体消息分享
         WXMediaMessage msg = new WXMediaMessage(fileObj);
