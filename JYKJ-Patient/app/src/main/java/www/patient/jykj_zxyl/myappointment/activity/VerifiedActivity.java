@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.hyphenate.easeui.hyhd.model.Constant;
 import com.hyphenate.easeui.netService.HttpNetService;
@@ -36,7 +37,7 @@ import www.patient.jykj_zxyl.myappointment.Contract.ReservationContract;
 import www.patient.jykj_zxyl.myappointment.Presenter.ResevationPresenter;
 import www.patient.jykj_zxyl.myappointment.bean.IDCardBean;
 import www.patient.jykj_zxyl.util.ActivityUtil;
-import www.patient.jykj_zxyl.util.ToastUtils;
+
 
 /*
  * 实名认证
@@ -164,7 +165,7 @@ public class VerifiedActivity extends AbstractMvpBaseActivity<ReservationContrac
      */
     @Override
     public void getReservationIDCardResult(String msg) {
-        ToastUtils.showToast(msg);
+        ToastUtils.showShort(msg);
     }
 
     /**
@@ -173,7 +174,7 @@ public class VerifiedActivity extends AbstractMvpBaseActivity<ReservationContrac
      */
     @Override
     public void getReservationIDCardResultError(String msg) {
-        ToastUtils.showToast(msg);
+        ToastUtils.showShort(msg);
     }
 
     @Override

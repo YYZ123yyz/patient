@@ -15,6 +15,10 @@ public class InquiryContract {
         void hasNoData();
 
         void hasData(InquiryBean bean);
+
+        void commitSucess();
+
+        void commitFiled(String msg);
     }
 
     public interface Presenter extends BasePresenter<View> {

@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.allin.commlibrary.CollectionUtils;
 import com.allin.commonadapter.ViewHolder;
+import com.blankj.utilcode.util.ToastUtils;
 import com.hyphenate.easeui.order.CancelConfirmDeitalActivity;
 import com.hyphenate.easeui.order.CancelContractActivity;
 import com.hyphenate.easeui.order.RefusedCancelContractActivity;
@@ -45,7 +46,7 @@ import www.patient.jykj_zxyl.base.base_view.SimpleDividerItemDecoration;
 import www.patient.jykj_zxyl.base.enum_type.OrderStatusEnum;
 import www.patient.jykj_zxyl.base.http.ParameUtil;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseFragment;
-import www.patient.jykj_zxyl.util.ToastUtils;
+
 
 /**
  * Description:进行中订单列表
@@ -266,7 +267,7 @@ public class OrderOnGoingFragment extends
                                 if(isSucess){
                                     mPresenter.sendGetUserListRequest(myOrderProcess.getDoctorCode());
                                 }else{
-                                    ToastUtils.showToast(msg);
+                                    ToastUtils.showShort(msg);
                                 }
                             }
                         });

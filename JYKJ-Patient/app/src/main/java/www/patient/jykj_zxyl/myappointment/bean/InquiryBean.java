@@ -52,6 +52,15 @@ public class InquiryBean {
     private String patientName;
     private int treatmentType;
     private String treatmentTypeName;
+    private String interrogationImgIdArray;
+
+    public String getInterrogationImgIdArray() {
+        return interrogationImgIdArray;
+    }
+
+    public void setInterrogationImgIdArray(String interrogationImgIdArray) {
+        this.interrogationImgIdArray = interrogationImgIdArray;
+    }
 
     public String getBirthday() {
         return birthday;

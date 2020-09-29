@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.blankj.utilcode.util.ToastUtils;
+
 import java.util.List;
 
 import www.patient.jykj_zxyl.R;
@@ -132,22 +134,30 @@ public class FragmentVisiting extends AbstractMvpBaseFragment <ReservationListCo
 //                       });
                    }
                    else if(reserveStatus.equals("20")||reserveStatus.equals("30")){
-                       fragment_visitingAdapter.setOnItemClickZXListener(new Fragment_VisitingAdapter.OnItemClickZXListener() {
-                           @Override
-                           public void onClick(int position) {
-                               String reserveCode = myReservationListBeans.get(position).getReserveCode();
-                               Intent intent = new Intent(getContext(), MedicalRecordActivity.class);
-                               intent.putExtra("reserveCode",reserveCode);
-                               startActivity(intent);
-                           }
 
-                           @Override
-                           public void onLongClick(int position) {
-
-                           }
-                       });
                    }
                }
+
+
+               fragment_visitingAdapter.setOnItemClickZXListener(new Fragment_VisitingAdapter.OnItemClickZXListener() {
+                   @Override
+                   public void onClick(int position) {
+                       if (myReservationListBeans.get(position).getIsGenerateMedicalRecord() ==1){
+                           String reserveCode = myReservationListBeans.get(position).getReserveCode();
+                           Intent intent = new Intent(getContext(), MedicalRecordActivity.class);
+                           intent.putExtra("reserveCode",reserveCode);
+                           startActivity(intent);
+                       }else {
+                           ToastUtils.showShort("暂未生成病历!");
+                       }
+
+                   }
+
+                   @Override
+                   public void onLongClick(int position) {
+
+                   }
+               });
 //               fragment_visitingAdapter.setmOnItemClickListener(new Fragment_VisitingAdapter.OnItemClickListener() {
 //                   @Override
 //                   public void onClick(int position) {

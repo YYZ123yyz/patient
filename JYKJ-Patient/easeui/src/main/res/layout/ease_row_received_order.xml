@@ -89,14 +89,16 @@
 
                         </TextView>
                     </RelativeLayout>
+
                     <TextView
-                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="12.5dp"
-                        android:textColor="#616166"
                         android:text="\u3000您已预约成功，为了方便您就诊请先填写问诊资料！"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textColor="#616166"
+                        android:visibility="gone" />
+
                     <RelativeLayout
                         android:id="@+id/rl_two"
                         android:layout_width="match_parent"
@@ -155,12 +157,12 @@
                     <!--患者类型-->
                     <RelativeLayout
                         android:id="@+id/patient_rl"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="18.5dp"
                         android:layout_marginTop="7dp"
-                        android:layout_marginEnd="18.5dp">
+                        android:layout_marginEnd="18.5dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/tv_patient_class"
@@ -210,6 +212,7 @@
 
                         </TextView>
                     </RelativeLayout>
+
                     <TextView
                         android:id="@+id/tv_price_vlaue"
                         android:layout_width="wrap_content"
@@ -235,47 +238,63 @@
                         android:textSize="14sp"
                         android:visibility="gone">
 
-
                     </TextView>
 
                     <TextView
+                        android:id="@+id/tv_ensure_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginTop="28dp"
                         android:layout_marginBottom="14dp"
-                        android:gravity="center"
-                        android:text="确定"
-                        android:visibility="gone"
-                        android:layout_gravity="center_horizontal"
-                        android:paddingTop="6dp"
-                        android:paddingBottom="6dp"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:id="@+id/tv_ensure_btn"
                         android:background="@drawable/bg_round_7a9eff_15"
+                        android:gravity="center"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="6dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="6dp"
+                        android:text="确定"
                         android:textColor="@color/white"
                         android:textSize="14sp"
-                        >
+                        android:visibility="gone">
 
 
                     </TextView>
-                 <RelativeLayout
-                     android:visibility="gone"
-                     android:id="@+id/rl_immediately"
-                 android:layout_gravity="center_horizontal"
-                     android:layout_marginStart="18.5dp"
-                     android:layout_marginTop="21.5dp"
-                     android:layout_marginEnd="18.5dp"
-                     android:layout_marginBottom="8dp"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content">
-                      <TextView
-                        android:gravity="center" android:background="@drawable/bg_immediately"
-                          android:textColor="#fff"
-                          android:text="立即填写"
-                          android:layout_width="77dp"
-                          android:layout_height="25dp"/>
-                 </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_immediately"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginStart="18.5dp"
+                        android:layout_marginTop="21.5dp"
+                        android:layout_marginEnd="18.5dp"
+                        android:layout_marginBottom="8dp"
+                        android:visibility="visible">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_626267"
+                            android:textSize="13sp"
+                            android:id="@+id/tv_consultion_tip"
+                            android:text="  您已预约成功，为了方便您就诊请先填写问诊资料!"
+                            >
+
+
+                        </TextView>
+                        <TextView
+                            android:layout_width="77dp"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="53dp"
+                            android:layout_below="@+id/tv_consultion_tip"
+                            android:background="@drawable/bg_immediately"
+                            android:gravity="center"
+                            android:text="立即填写"
+                            android:id="@+id/tv_fill_in_btn"
+                            android:layout_centerHorizontal="true"
+                            android:textColor="#fff" />
+                    </RelativeLayout>
+
                     <RelativeLayout
                         android:id="@+id/rl_cancel_contract_order_root"
                         android:layout_width="match_parent"
@@ -369,14 +388,15 @@
                 </LinearLayout>
 
             </RelativeLayout>
+
             <ImageView
                 android:id="@+id/iv_stamp_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/bg_agree_stamp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="-10dp"
                 android:layout_marginTop="-13dp"
+                android:layout_marginEnd="-10dp"
+                android:src="@mipmap/bg_agree_stamp"
                 android:visibility="visible">
 
             </ImageView>

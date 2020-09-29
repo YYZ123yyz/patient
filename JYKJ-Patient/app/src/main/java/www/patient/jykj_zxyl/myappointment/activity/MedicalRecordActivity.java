@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -32,6 +33,7 @@ import netService.DownloadService;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_bean.MedicalRecordBean;
+import www.patient.jykj_zxyl.base.base_utils.StringUtils;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
 import www.patient.jykj_zxyl.myappointment.Contract.MedicalRecordContract;
@@ -40,7 +42,6 @@ import www.patient.jykj_zxyl.presenter.MedicalRecordPresenter;
 import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.CircleImageView;
 import www.patient.jykj_zxyl.util.DateUtils;
-import www.patient.jykj_zxyl.util.ToastUtils;
 
 
 /*
@@ -297,11 +298,13 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
 
     private List<String> dealData(String msg) {
         ArrayList<String> strings = new ArrayList<>();
-        if (msg.contains(",")) {
-            String[] split = msg.split(",");
-            strings.addAll(Arrays.asList(split));
-        } else {
-            strings.add(msg);
+        if (StringUtils.isNotEmpty(msg)) {
+            if (msg.contains(",")) {
+                String[] split = msg.split(",");
+                strings.addAll(Arrays.asList(split));
+            } else {
+                strings.add(msg);
+            }
         }
         return strings;
     }
@@ -370,7 +373,7 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
 
     @Override
     public void getDataFailure(String msg) {
-        ToastUtils.showToast(msg);
+        ToastUtils.showShort(msg);
     }
 
     private void clickAndSome(LinearLayout vis, ImageView ani) {
