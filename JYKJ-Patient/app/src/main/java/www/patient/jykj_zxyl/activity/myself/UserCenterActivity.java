@@ -36,6 +36,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -95,7 +96,7 @@ public class UserCenterActivity extends AppCompatActivity {
 //    private                 LinearLayout                mChoiceHospitalLayout;              //选择医院布局
 //    private                 TextView                    mChoiceHospitalText;                //选择医院text
 
-    private File mTempFile;              //声明一个拍照结果的临时文件
+    private File mTempFile = createFileIfNeed("UserIcon.png");         //声明一个拍照结果的临时文件
     private ImageView mUserHeadImage;                 //用户头像显示
 
     private List<ProvideHospitalInfo> mProvideHospitalInfos = new ArrayList<>();              //获取到的医院列表
@@ -136,6 +137,9 @@ public class UserCenterActivity extends AppCompatActivity {
     private ImageView nickName_open;              //昵称是否开启
     private EditText tv_activityUserCenter_userNikeNameText;     //昵称
     private ProvideViewSysUserPatientInfoAndRegion mProvideViewSysUserPatientInfoAndRegion;
+
+    public UserCenterActivity() throws IOException {
+    }
 
 
     //    private                 ProvideViewSysUserDoctorInfoAndHospital  mProvideViewSysUserDoctorInfoAndHospital = new ProvideViewSysUserDoctorInfoAndHospital();  //医生信息
@@ -1032,5 +1036,18 @@ public class UserCenterActivity extends AppCompatActivity {
         }
     }
 
+    // 在sd卡中创建一保存图片（原图和缩略图共用的）文件夹
+    private File createFileIfNeed(String fileName) throws IOException {
+        String fileA = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/nbinpic";
+        File fileJA = new File(fileA);
+        if (!fileJA.exists()) {
+            fileJA.mkdirs();
+        }
+        File file = new File(fileA, fileName);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        return file;
+    }
 
 }
