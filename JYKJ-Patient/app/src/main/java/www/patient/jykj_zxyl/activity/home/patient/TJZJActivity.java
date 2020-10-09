@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -681,7 +682,8 @@ public class TJZJActivity extends AppCompatActivity {
                 try {
                     String string = new Gson().toJson(provideViewDoctorExpertRecommend);
                     String urlStr = Constant.SERVICEURL + "patientSearchDoctorControlle/searchIndexExpertRecommendDoctorMoreShow";
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "patientSearchDoctorControlle/searchIndexExpertRecommendDoctorMoreShow");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "patientSearchDoctorControlle/searchIndexExpertRecommendDoctorMoreShow_V20200924");
+                    Log.e("TAG", "run: "+mNetRetStr );
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
