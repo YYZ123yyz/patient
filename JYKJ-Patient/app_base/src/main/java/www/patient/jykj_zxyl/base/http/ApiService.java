@@ -157,6 +157,12 @@ public interface ApiService {
     //提交问诊详情
     @POST("/medicalRecordControlle/operAddInteractPatientInterrogationDataAndImg")
     Observable<String> submitInquiryDet(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //获取所有部门
+    @POST("/hospitalDataController/getDepartmentByHospitalCode")
+    Observable<String> getAlldepartments(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+    //获取首页banner
+    @POST("/basicDataController/getBannersAndDepartmentInfo")
+    Observable<String> getHomeBanner(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
 
 }
 

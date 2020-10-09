@@ -30,7 +30,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.allen.library.utils.ToastUtils;
+
+import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hyphenate.EMCallBack;
@@ -209,6 +210,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     private long reserveConfigEnd;
     private int sumDuration;
     private int allNum;
+    private int inputAllNum = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -390,7 +392,9 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                     case MSG_TYPING_BEGIN: // Notify typing start
 
                         if (!turnOnTyping) return;
-
+                        if (inputAllNum >10){
+                            return;
+                        }
                         // Only support single-chat type conversation.
                         if (chatType != EaseConstant.CHATTYPE_SINGLE)
                             return;
@@ -1036,7 +1040,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                     return;
                 }
             }
-            LogUtils.e("id "+itemId);
+            LogUtils.e("id " + itemId);
             switch (itemId) {
                 case ITEM_TAKE_PICTURE:
                     if (!isCompareDateTime(getCurrentFormart(), mStopDate)) {
@@ -1051,7 +1055,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                     }
                     if (isReserveing) {
                         if (sumDuration == 0) {
-                            ToastUtils.showToast("图文消息次数已用完");
+                            ToastUtils.showShort("图文消息次数已用完");
                             return;
                         }
                     }
@@ -1067,7 +1071,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                     }
                     if (isReserveing) {
                         if (sumDuration == 0) {
-                            ToastUtils.showToast("图文消息次数已用完");
+                            ToastUtils.showShort("图文消息次数已用完");
                             return;
                         }
                     }
@@ -1189,7 +1193,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         }*/
         if (isReserveing) {
             if (sumDuration == 0) {
-                ToastUtils.showToast("图文消息次数已用完");
+                ToastUtils.showShort("图文消息次数已用完");
                 return;
             }
         }
@@ -1242,7 +1246,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     protected void sendVoiceMessage(String filePath, int length) {
         if (isReserveing) {
             if (sumDuration == 0) {
-                ToastUtils.showToast("图文消息次数已用完");
+                ToastUtils.showShort("图文消息次数已用完");
                 return;
             }
         }
@@ -1290,7 +1294,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 
     protected void sendMessage(EMMessage message) {
         if (isReserveing) {
-            if (sumDuration >0){
+            if (sumDuration > 0) {
                 sumDuration--;
                 List<CheckDoctorNumEntity> checkDoctorNumEntities = DbManager.getInstance().getCheckDocNumEntityService().queryForUserId(operDoctorName);
                 CheckDoctorNumEntity checkDoctorNumEntity = checkDoctorNumEntities.get(0);
@@ -1562,7 +1566,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 
         if (isReserveing) {
             if (sumDuration == 0) {
-                ToastUtils.showToast("图文消息次数已用完");
+                ToastUtils.showShort("图文消息次数已用完");
                 return;
             }
         }

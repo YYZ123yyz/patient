@@ -81,6 +81,8 @@
                     android:paddingRight="1dp"
                     android:paddingTop="3dp"
                     android:textSize="18sp"
+                    android:maxLength="200"
+                    android:hint="最多输入200字"
                     android:imeOptions="actionSend"/>
 
             <RelativeLayout
