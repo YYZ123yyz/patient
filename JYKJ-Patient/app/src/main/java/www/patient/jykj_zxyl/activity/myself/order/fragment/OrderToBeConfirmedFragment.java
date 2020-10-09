@@ -19,9 +19,11 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 import entity.mySelf.ProvideInteractOrderInfo;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.myself.order.OrderToBeConfirmedContract;
@@ -52,25 +54,26 @@ import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseFragment;
  */
 public class OrderToBeConfirmedFragment extends
         AbstractMvpBaseFragment<OrderToBeConfirmedContract.View,
-                OrderToBeconfirmedPresenter>implements OrderToBeConfirmedContract.View {
+                OrderToBeconfirmedPresenter> implements OrderToBeConfirmedContract.View {
 
     private SmartRefreshLayout mRefreshLayout;//刷新列表
     private SlideRecyclerView mRvList;//列表
     private OrderToBeConfirmedAdapter mOrderToBeConfirmedAdapter;//待确认订单列表适配器
     private List<MultiItemEntity> mMultiItemEntitys;//多布局内容列表
-    private LoadingLayoutManager  mLoadingLayout;//重新加载空页面管理
+    private LoadingLayoutManager mLoadingLayout;//重新加载空页面管理
     private JYKJApplication mApp;
-    private ProvideInteractOrderInfo provideInteractOrderInfo ;
+    private ProvideInteractOrderInfo provideInteractOrderInfo;
     private List<ProvideInteractOrderInfo> mHZEntyties = new ArrayList<>();
     private int operationType;//1 同意 2修改 3拒绝
-    /**是否走刷新*/
+    /**
+     * 是否走刷新
+     */
     private boolean isRefresh;
 
     @Override
     protected int setLayoutId() {
         return R.layout.fragment_sideslip_base_list;
     }
-
 
 
     public static OrderToBeConfirmedFragment newInstance() {
@@ -87,7 +90,7 @@ public class OrderToBeConfirmedFragment extends
         mLoadingLayout.setRetryListener(v -> {
             mLoadingLayout.showLoading();
             mPresenter.sendSearchPatientMyOrderResIncompleteRequest(
-                    pageSize+"",pageIndex+"",this.getActivity());
+                    pageSize + "", pageIndex + "", this.getActivity());
         });
         mLoadingLayout.showLoading();
     }
@@ -97,7 +100,7 @@ public class OrderToBeConfirmedFragment extends
         mRefreshLayout = view.findViewById(R.id.refreshLayout);
         mRvList = view.findViewById(R.id.rv_list);
         mApp = (JYKJApplication) getActivity().getApplication();
-        mMultiItemEntitys=new ArrayList<>();
+        mMultiItemEntitys = new ArrayList<>();
         initLoadingAndRetryManager();
         addListener();
         setAdapter();
@@ -107,15 +110,16 @@ public class OrderToBeConfirmedFragment extends
     /**
      * 刷新数据
      */
-    public void refreshLaodData(){
-        pageIndex=1;
+    public void refreshLaodData() {
+        pageIndex = 1;
         mPresenter.sendSearchPatientMyOrderResIncompleteRequest(
-                pageSize+"",pageIndex+"",this.getActivity());
+                pageSize + "", pageIndex + "", this.getActivity());
     }
+
     @Override
     protected void initData() {
         mPresenter.sendSearchPatientMyOrderResIncompleteRequest(
-                pageSize+"",pageIndex+"",this.getActivity());
+                pageSize + "", pageIndex + "", this.getActivity());
     }
 
     /**
@@ -127,9 +131,9 @@ public class OrderToBeConfirmedFragment extends
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                pageIndex=1;
+                pageIndex = 1;
                 mPresenter.sendSearchPatientMyOrderResIncompleteRequest(
-                        pageSize+"",pageIndex+"",
+                        pageSize + "", pageIndex + "",
                         OrderToBeConfirmedFragment.this.getActivity());
             }
         });
@@ -138,7 +142,7 @@ public class OrderToBeConfirmedFragment extends
             public void onLoadMore(RefreshLayout refreshlayout) {
                 pageIndex++;
                 mPresenter.sendSearchPatientMyOrderResIncompleteRequest(
-                        pageSize+"",pageIndex+"",
+                        pageSize + "", pageIndex + "",
                         OrderToBeConfirmedFragment.this.getActivity());
             }
 
@@ -147,24 +151,23 @@ public class OrderToBeConfirmedFragment extends
     }
 
 
-
     /**
      * 设置适配器
      */
-    private void setAdapter(){
+    private void setAdapter() {
         mRvList.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        mOrderToBeConfirmedAdapter=new OrderToBeConfirmedAdapter(this.getContext(),mMultiItemEntitys);
+        mOrderToBeConfirmedAdapter = new OrderToBeConfirmedAdapter(this.getContext(), mMultiItemEntitys);
         SimpleDividerItemDecoration decor = new SimpleDividerItemDecoration(Objects.requireNonNull
-                (getContext()), SimpleDividerItemDecoration.VERTICAL,true);
+                (getContext()), SimpleDividerItemDecoration.VERTICAL, true);
         decor.setDrawable(getResources().getDrawable(R.drawable.bg_shape_line));
         mRvList.addItemDecoration(decor);
         mRvList.setAdapter(mOrderToBeConfirmedAdapter);
         mOrderToBeConfirmedAdapter.setOnClickItemListener(new OrderToBeConfirmedAdapter.OnClickItemListener() {
             @Override
             public void onClickAgree(int position) {
-                operationType=1;
-                showLoading("",null);
-                 provideInteractOrderInfo =
+                operationType = 1;
+                showLoading("", null);
+                provideInteractOrderInfo =
                         (ProvideInteractOrderInfo) mMultiItemEntitys.get(position);
                 OrderOperationManager.getInstance().sendOrderOperRequest(
                         provideInteractOrderInfo.getDoctorCode(),
@@ -172,14 +175,14 @@ public class OrderToBeConfirmedFragment extends
                         provideInteractOrderInfo.getOrderCode(), provideInteractOrderInfo.getSignNo(),
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),
-                        "1",ParameUtil.loginDoctorPosition
+                        "1", ParameUtil.loginDoctorPosition
                         , new OrderOperationManager.OnCallBackListener() {
                             @Override
                             public void onResult(boolean isSucess, String msg) {
                                 dismissLoading();
-                                if(isSucess){
+                                if (isSucess) {
                                     mPresenter.sendGetUserListRequest(provideInteractOrderInfo.getDoctorCode());
-                                }else{
+                                } else {
                                     ToastUtils.showShort(msg);
                                 }
                             }
@@ -188,9 +191,9 @@ public class OrderToBeConfirmedFragment extends
 
             @Override
             public void onClickUpdate(int position) {
-                operationType=2;
-                showLoading("",null);
-                 provideInteractOrderInfo =
+                operationType = 2;
+                showLoading("", null);
+                provideInteractOrderInfo =
                         (ProvideInteractOrderInfo) mMultiItemEntitys.get(position);
                 OrderOperationManager.getInstance().sendOrderOperRequest(
                         provideInteractOrderInfo.getDoctorCode(),
@@ -198,23 +201,23 @@ public class OrderToBeConfirmedFragment extends
                         provideInteractOrderInfo.getOrderCode(), provideInteractOrderInfo.getSignNo(),
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),
-                        "2",ParameUtil.loginDoctorPosition
+                        "2", ParameUtil.loginDoctorPosition
                         , new OrderOperationManager.OnCallBackListener() {
                             @Override
                             public void onResult(boolean isSucess, String msg) {
 
-                                if(isSucess){
-                                    if(StringUtils.isNotEmpty(msg)){
+                                if (isSucess) {
+                                    if (StringUtils.isNotEmpty(msg)) {
                                         UpdateOrderResultBean updateOrderResultBean
                                                 = GsonUtils.fromJson(msg, UpdateOrderResultBean.class);
-                                        if (updateOrderResultBean!=null) {
+                                        if (updateOrderResultBean != null) {
                                             provideInteractOrderInfo.setOrderCode(updateOrderResultBean.getSignCode());
                                             mPresenter.sendGetUserListRequest(provideInteractOrderInfo.getDoctorCode());
                                         }
 
                                     }
 
-                                }else{
+                                } else {
                                     ToastUtils.showShort(msg);
                                 }
                             }
@@ -223,14 +226,14 @@ public class OrderToBeConfirmedFragment extends
 
             @Override
             public void onClickRefuse(int position) {
-                operationType=3;
+                operationType = 3;
                 provideInteractOrderInfo =
                         (ProvideInteractOrderInfo) mMultiItemEntitys.get(position);
-                Bundle bundle=new Bundle();
-                bundle.putString("orderId",provideInteractOrderInfo.getOrderCode());
-                bundle.putString("operDoctorCode",provideInteractOrderInfo.getDoctorCode());
-                bundle.putString("operDoctorName",provideInteractOrderInfo.getDoctorName());
-                startActivity(RefusedOrderActivity.class,bundle);
+                Bundle bundle = new Bundle();
+                bundle.putString("orderId", provideInteractOrderInfo.getOrderCode());
+                bundle.putString("operDoctorCode", provideInteractOrderInfo.getDoctorCode());
+                bundle.putString("operDoctorName", provideInteractOrderInfo.getDoctorName());
+                startActivity(RefusedOrderActivity.class, bundle);
             }
 
             @Override
@@ -250,16 +253,16 @@ public class OrderToBeConfirmedFragment extends
 
             @Override
             public void onClickItem(int position, ViewHolder holder) {
-                 provideInteractOrderInfo =
+                provideInteractOrderInfo =
                         (ProvideInteractOrderInfo) mMultiItemEntitys.get(position);
                 Integer treatmentType = provideInteractOrderInfo.getTreatmentType();
-                if (treatmentType==4) {
-                    Bundle bundle=new Bundle();
-                    bundle.putString("signCode",provideInteractOrderInfo.getOrderCode());
-                    bundle.putString("operDoctorCode",provideInteractOrderInfo.getDoctorCode());
-                    bundle.putString("operDoctorName",provideInteractOrderInfo.getDoctorName());
-                    startActivity(SignOrderDetialActivity.class,bundle);
-                }else{
+                if (treatmentType == 4) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("signCode", provideInteractOrderInfo.getOrderCode());
+                    bundle.putString("operDoctorCode", provideInteractOrderInfo.getDoctorCode());
+                    bundle.putString("operDoctorName", provideInteractOrderInfo.getDoctorName());
+                    startActivity(SignOrderDetialActivity.class, bundle);
+                } else {
 
                 }
 
@@ -274,8 +277,9 @@ public class OrderToBeConfirmedFragment extends
 
     /**
      * 获取订单信息
+     *
      * @param messageType 消息类型
-     * @param orderType 操作类型
+     * @param orderType   操作类型
      * @return orderMessage
      */
     private OrderMessage getOrderMessage(String messageType, String orderType,
@@ -284,9 +288,9 @@ public class OrderToBeConfirmedFragment extends
         @SuppressLint("DefaultLocale")
         String coatch = String.format("%d次/%s",
                 provideInteractOrderInfo.getCoachValue(), provideInteractOrderInfo.getCoachUnitName());
-        OrderMessage orderMessage = new OrderMessage(provideInteractOrderInfo.getOrderCode(),provideInteractOrderInfo.getSignNo(),
+        OrderMessage orderMessage = new OrderMessage(provideInteractOrderInfo.getOrderCode(), provideInteractOrderInfo.getSignNo(),
                 provideInteractOrderInfo.getProCount() + "项",
-                coatch, provideInteractOrderInfo.getTimesCode()+"个月",provideInteractOrderInfo.getActualPayment() + "", messageType, orderType);
+                coatch, provideInteractOrderInfo.getTimesCode() + "个月", provideInteractOrderInfo.getActualPayment() + "", messageType, orderType);
         return orderMessage;
 
     }
@@ -317,8 +321,8 @@ public class OrderToBeConfirmedFragment extends
     @Override
     public void getUserInfoResult(UserInfoBaseBean userInfoBaseBean) {
         dismissLoading();
-        OrderMessage orderCard=null;
-        switch (operationType){
+        OrderMessage orderCard = null;
+        switch (operationType) {
             case 1:
                 orderCard = getOrderMessage("card",
                         "1", provideInteractOrderInfo);
@@ -331,7 +335,7 @@ public class OrderToBeConfirmedFragment extends
                 orderCard = getOrderMessage("card",
                         "0", provideInteractOrderInfo);
                 break;
-                default:
+            default:
         }
 
         if (ActivityStackManager.getInstance().exists(ChatActivity.class)) {
@@ -344,11 +348,11 @@ public class OrderToBeConfirmedFragment extends
         intent.putExtra("doctorUrl", userInfoBaseBean.getUserLogoUrl());
         intent.putExtra("patientUrl", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
         intent.putExtra("operDoctorName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        if (orderCard!=null) {
+        if (orderCard != null) {
             orderCard.setImageUrl(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
         }
-        Bundle bundle=new Bundle();
-        bundle.putSerializable("orderMsg",orderCard);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("orderMsg", orderCard);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -356,7 +360,7 @@ public class OrderToBeConfirmedFragment extends
 
     @Override
     public void showEmpty() {
-        if(pageIndex == 1){
+        if (pageIndex == 1) {
             mLoadingLayout.showEmpty();
         }
 
@@ -364,7 +368,7 @@ public class OrderToBeConfirmedFragment extends
 
     @Override
     public void showRetry() {
-        if (pageIndex==1) {
+        if (pageIndex == 1) {
             mLoadingLayout.showError();
         }
         mRefreshLayout.finishLoadMore();
@@ -372,17 +376,20 @@ public class OrderToBeConfirmedFragment extends
 
     }
 
-    private void handleData(List<MultiItemEntity> mMultiItemEntitys){
+    private void handleData(List<MultiItemEntity> mMultiItemEntitys) {
         for (MultiItemEntity mMultiItemEntity : mMultiItemEntitys) {
             ProvideInteractOrderInfo provideInteractOrderInfo =
                     (ProvideInteractOrderInfo) mMultiItemEntity;
-            if (provideInteractOrderInfo.getTreatmentType()==4) {
+            if (provideInteractOrderInfo.getTreatmentType() != null && provideInteractOrderInfo.getTreatmentType() == 4) {
+
                 provideInteractOrderInfo.setItemType(
                         CommonMutipleComplateOrderListItemType.MULTIPLE_CONTENT_ORDINARY_TYPE);
-            }else{
+
+            } else {
                 provideInteractOrderInfo.setItemType(
                         CommonMutipleComplateOrderListItemType.MULTIPLE_CONTENT_SIGN_UP_TYPE);
             }
+
 
         }
     }

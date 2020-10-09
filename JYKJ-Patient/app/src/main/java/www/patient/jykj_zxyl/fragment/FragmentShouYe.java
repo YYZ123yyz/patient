@@ -18,6 +18,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.allen.library.interfaces.ILoadingView;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -41,22 +45,27 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.hyphenate.easeui.utils.ActivityUtil;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.ycbjie.ycstatusbarlib.bar.StateAppBar;
+import entity.HomeDataBean;
 import entity.OperUpdPatientConditionTakingMedicineStateParement;
 import entity.ProvideMsgPushReminder;
 import entity.ProvidePatientBindingMyDoctorInfo;
@@ -78,9 +87,17 @@ import www.patient.jykj_zxyl.activity.myself.MedicationRecordActivity;
 import www.patient.jykj_zxyl.activity.myself.MedicationSettingsActivity;
 import www.patient.jykj_zxyl.activity.myself.couponFragment.FragmentAdapter;
 import www.patient.jykj_zxyl.activity.patient_home.KSWYSActivity;
+import www.patient.jykj_zxyl.base.base_bean.AllDepartmentBean;
+import www.patient.jykj_zxyl.base.base_bean.BaseBean;
 import www.patient.jykj_zxyl.base.base_db.DbManager;
 import www.patient.jykj_zxyl.base.base_db.entity.CheckDoctorNumEntity;
+import www.patient.jykj_zxyl.base.base_utils.GsonUtils;
 import www.patient.jykj_zxyl.base.base_utils.LogUtils;
+import www.patient.jykj_zxyl.base.base_utils.StringUtils;
+import www.patient.jykj_zxyl.base.http.ApiHelper;
+import www.patient.jykj_zxyl.base.http.CommonDataObserver;
+import www.patient.jykj_zxyl.base.http.ParameUtil;
+import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.custom.MoreFeaturesPopupWindow;
 import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_Graphic;
 import www.patient.jykj_zxyl.fragment.shouye.FragmentShouYe_WDYS;
@@ -90,6 +107,7 @@ import www.patient.jykj_zxyl.myappointment.activity.AllDepartmentsActivity;
 import www.patient.jykj_zxyl.myappointment.activity.HealthActivity;
 import www.patient.jykj_zxyl.myappointment.activity.MedicalRecordActivity;
 import www.patient.jykj_zxyl.myappointment.activity.MyAppointmentActivity;
+import www.patient.jykj_zxyl.myappointment.adapter.HotDepAdapter;
 import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.MainActivity;
@@ -126,7 +144,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     private String mNetRetStr;                 //返回字符串
 
     private String mMessageNetRetStr;                 //未读消息返回字符串
-
+    private static final String HOME_BANNER = "home_banner";
 
     private String mNetRetFYStr;                 //返回服药
     private Handler mHandler;
@@ -236,6 +254,8 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     private TextView my_deoctor;
     private TextView my_reservation;
     private TextView my_medicalrecord;
+    private List imgs;
+    private RecyclerView hotDepRecycleview;
 
 
     @SuppressLint("ResourceAsColor")
@@ -247,7 +267,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         mFragment = this;
         mApp = (JYKJApplication) getActivity().getApplication();
         initHandler();
-        ActivityUtil.setStatusBarMain(getActivity(),R.color.white);
+        ActivityUtil.setStatusBarMain(getActivity(), R.color.white);
         initView(v);
         mView = v;
         initListener();
@@ -286,12 +306,13 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        getBanner(1);
 //        getProgressBar("请稍候","正在加载数据。。。");
         //获取最近一次血压数据
         if (null != mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() && 1 == mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus()) {
-          //  mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias());
+            //  mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserNameAlias());
         } else {
-         //   mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+            //   mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         }
 
         try {
@@ -306,7 +327,151 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         }
         searchPatientStateResBloodPressureNewData();
         getNewMessage();
+
     }
+
+    private String getParams(int type) {
+        String[] ams = {"1", "2"};
+        HashMap<String, Object> paramMap = new HashMap<>();
+        paramMap.put("loginPatientPosition", "108.93425^34.23053");
+        paramMap.put("requestClientType", "1");
+        paramMap.put("appTypeCode", "1");
+        paramMap.put("positionTypes", "[\"1\",\"2\"]");
+        paramMap.put("hospitalCode", "0");
+        return RetrofitUtil.encodeParam(paramMap);
+    }
+
+    private void getBanner(int type) {
+
+        ApiHelper.getPatientTestApi().getHomeBanner(getParams(type)).compose(
+                com.allen.library.interceptor.Transformer.switchSchedulers(new ILoadingView() {
+                    @Override
+                    public void showLoadingView() {
+
+                    }
+
+                    @Override
+                    public void hideLoadingView() {
+
+                    }
+                })).subscribe(new CommonDataObserver() {
+            @Override
+            protected void onSuccessResult(BaseBean baseBean) {
+                if (mView != null) {
+                    int resCode = baseBean.getResCode();
+                    if (resCode == 1) {
+                        String resJsonData = baseBean.getResJsonData();
+                        if (StringUtils.isNotEmpty(resJsonData)) {
+                            LogUtils.e("首页banner数据" + resJsonData);
+                            HomeDataBean orderDetialBean = GsonUtils.fromJson(resJsonData, HomeDataBean.class);
+                            List<HomeDataBean.ViewBasicsBannerFilesListBean> viewBasicsBannerFilesList = orderDetialBean.getViewBasicsBannerFilesList();
+                            List<HomeDataBean.HospitalDepartmentListBean> hospitalDepartmentList = orderDetialBean.getHospitalDepartmentList();
+                            if (viewBasicsBannerFilesList.size() > 0) {
+                                showBanner(viewBasicsBannerFilesList);
+                            } else {
+                                showTopEmptyBanner();
+                                showMiddleEmptyBanner();
+                            }
+                            if (hospitalDepartmentList.size() > 0) {
+                                showHotDep(hospitalDepartmentList);
+                            }
+
+                        }
+                    } else {
+                        ToastUtils.showShort(baseBean.getResMsg());
+                    }
+                }
+
+
+            }
+
+            @Override
+            protected void onError(String s) {
+                super.onError(s);
+                Log.e("xxx", "onError: " + s);
+                ToastUtils.showShort("加载失败");
+            }
+
+            @Override
+            protected String setTag() {
+                return HOME_BANNER;
+            }
+        });
+    }
+
+    private void showHotDep(List<HomeDataBean.HospitalDepartmentListBean> hospitalDepartmentList) {
+        HotDepAdapter hotDepAdapter = new HotDepAdapter(R.layout.item_hot_dep, hospitalDepartmentList);
+        hotDepAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ToastUtils.showShort("dianji "+position);
+            }
+        });
+        hotDepRecycleview.setAdapter(hotDepAdapter);
+
+
+    }
+
+    private void showBanner(List<HomeDataBean.ViewBasicsBannerFilesListBean> list) {
+        ArrayList<HomeDataBean.ViewBasicsBannerFilesListBean> topBannerList = new ArrayList<>();
+        ArrayList<HomeDataBean.ViewBasicsBannerFilesListBean> middleBannerList = new ArrayList<>();
+        ArrayList<String> topBannerImage = new ArrayList<>();
+        ArrayList<String> middleBannerImage = new ArrayList<>();
+
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getPositionType() == 1) {
+                topBannerList.add(list.get(i));
+            } else {
+                middleBannerList.add(list.get(i));
+            }
+        }
+        if (topBannerList.size() > 0) {
+            for (int i = 0; i < topBannerList.size(); i++) {
+                String filePath = topBannerList.get(i).getViewBannerUrl();
+                topBannerImage.add(filePath);
+            }
+            live_banner.setImages(topBannerImage);
+            live_banner.setIndicatorGravity(BannerConfig.CENTER).start();
+            live_banner.setOnBannerListener(new OnBannerListener() {
+                @Override
+                public void OnBannerClick(int position) {
+
+                }
+            });
+        } else {
+            showTopEmptyBanner();
+        }
+
+        if (middleBannerList.size() > 0) {
+            for (int i = 0; i < middleBannerList.size(); i++) {
+                String filePath = middleBannerList.get(i).getViewBannerUrl();
+                middleBannerImage.add(filePath);
+            }
+            home_banner.setImages(middleBannerImage);
+            home_banner.setIndicatorGravity(BannerConfig.CENTER).start();
+            home_banner.setOnBannerListener(new OnBannerListener() {
+                @Override
+                public void OnBannerClick(int position) {
+
+                }
+            });
+        } else {
+            showMiddleEmptyBanner();
+        }
+
+    }
+
+    private void showMiddleEmptyBanner() {
+        home_banner.setImages(imgs);
+        home_banner.setIndicatorGravity(BannerConfig.CENTER).start();
+    }
+
+    private void showTopEmptyBanner() {
+        live_banner.setImages(imgs);
+        live_banner.setIndicatorGravity(BannerConfig.CENTER).start();
+    }
+
 
     /**
      * 获取最近一次血压数据
@@ -574,110 +739,35 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
             }
         });
-        live_banner = view.findViewById(R.id.live_banner);
-        List imgs = new ArrayList<>();
+
+        imgs = new ArrayList<>();
 
         imgs.add(getStringFromDrawableRes(getContext(), R.mipmap.live_image));
-
         imgs.add(getStringFromDrawableRes(getContext(), R.mipmap.tu));
-
         imgs.add(getStringFromDrawableRes(getContext(), R.mipmap.live_image));
 
 
-        //设置内置样式，共有六种可以点入方法内逐一体验使用。
-
+        live_banner = view.findViewById(R.id.live_banner);
         live_banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-
-        //设置图片加载器，图片加载器在下方
-
         live_banner.setImageLoader(new MyLoader());
-
-        //设置图片网址或地址的集合
-
-        live_banner.setImages(imgs);
-
-        //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
-
         live_banner.setBannerAnimation(Transformer.Default);
-
-        //设置轮播图的标题集合
-
-        //   live_banner.setBannerTitles(titles);
-
-        //设置轮播间隔时间
-
         live_banner.setDelayTime(2000);
-
-        //设置是否为自动轮播，默认是“是”。
-
         live_banner.isAutoPlay(true);
 
-        //设置指示器的位置，小点点，左中右。
-
-        live_banner.setIndicatorGravity(BannerConfig.CENTER)
-
-//以上内容都可写成链式布局，这是轮播图的监听。比较重要。方法在下面。
-
-                //   .setOnBannerListener((OnBannerListener) MyLiveRoomActivity.this)
-
-//必须最后调用的方法，启动轮播图。
-
-                .start();
 
         home_banner = view.findViewById(R.id.home_banner);
-        List imgss = new ArrayList<>();
-
-        imgss.add(getStringFromDrawableRes(getContext(), R.mipmap.live_image));
-
-        imgss.add(getStringFromDrawableRes(getContext(), R.mipmap.tu));
-
-        imgss.add(getStringFromDrawableRes(getContext(), R.mipmap.live_image));
-
-
-        //设置内置样式，共有六种可以点入方法内逐一体验使用。
-
         home_banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-
-        //设置图片加载器，图片加载器在下方
-
         home_banner.setImageLoader(new MyLoader());
-
-        //设置图片网址或地址的集合
-
-        home_banner.setImages(imgss);
-
-        //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
-
         home_banner.setBannerAnimation(Transformer.Default);
-
-        //设置轮播图的标题集合
-
-        //   live_banner.setBannerTitles(titles);
-
-        //设置轮播间隔时间
-
         home_banner.setDelayTime(2000);
-
-        //设置是否为自动轮播，默认是“是”。
-
         home_banner.isAutoPlay(true);
-
-        //设置指示器的位置，小点点，左中右。
-
-        home_banner.setIndicatorGravity(BannerConfig.CENTER)
-
-//以上内容都可写成链式布局，这是轮播图的监听。比较重要。方法在下面。
-
-                //   .setOnBannerListener((OnBannerListener) MyLiveRoomActivity.this)
-
-//必须最后调用的方法，启动轮播图。
-
-                .start();
 
         tv_yasfy = (TextView) view.findViewById(R.id.tv_yasfy);
         tv_wasfy = (TextView) view.findViewById(R.id.tv_wasfy);
 
-
+        hotDepRecycleview = view.findViewById(R.id.hot_dep);
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(mContext,4,LinearLayoutManager.VERTICAL,false);
+        hotDepRecycleview.setLayoutManager(linearLayoutManager);
         mYFY = (TextView) view.findViewById(R.id.yfy_button);
         mWFY = (TextView) view.findViewById(R.id.wfy_button);
         //    mKSWYS = (LinearLayout) view.findViewById(R.id.kswys);
@@ -750,7 +840,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 //        mYQTH = view.findViewById(R.id.ll_yqth);
 //        mMyComments = view.findViewById(R.id.ll_my_comment);
 ////        mAddPatient = view.findViewById(R.id.li_fragmentShouYe_addPatient);
-   //     mMyLiveRoom = view.findViewById(R.id.ll_my_liveroom);
+        //     mMyLiveRoom = view.findViewById(R.id.ll_my_liveroom);
         mScan = view.findViewById(R.id.ll_sys);
         //我的病历
         my_medicalrecord = view.findViewById(R.id.my_medicalrecord);
@@ -775,7 +865,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 //        mYQTH = view.findViewById(R.id.ll_yqth);
 //        mMyComments = view.findViewById(R.id.ll_my_comment);
 ////        mAddPatient = view.findViewById(R.id.li_fragmentShouYe_addPatient);
-       mMyLiveRoom = view.findViewById(R.id.ll_my_liveroom);
+        mMyLiveRoom = view.findViewById(R.id.ll_my_liveroom);
 //        mMyClinic = view.findViewById(R.id.ll_wdzs);
 //
 //        mUserNameText = (TextView)view.findViewById(R.id.tv_fragmentShouYe_userNameText);
@@ -833,7 +923,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
 
         List<CheckDoctorNumEntity> checkNumEntities1 = DbManager.getInstance().getCheckDocNumEntityService().queryAll();
-        LogUtils.e("查询数据 rrgg "+checkNumEntities1.size());
+        LogUtils.e("查询数据 rrgg " + checkNumEntities1.size());
 
     }
 
@@ -909,14 +999,14 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 //////                startActivity(new Intent(getActivity(),AddPatientActivity.class));
 ////                break;
             case R.id.ll_my_liveroom:
-                startActivity(new Intent(getActivity(),MyLiveRoomActivity.class));
+                startActivity(new Intent(getActivity(), MyLiveRoomActivity.class));
                 break;
-                //我的病历
+            //我的病历
             case R.id.my_medicalrecord:
                 startActivity(new Intent(getActivity(), MedicalRecordActivity.class));
                 break;
             case R.id.ll_sys:
-            //    scan();
+                //    scan();
                 startActivity(new Intent(getActivity(), QRCodeActivity.class));
                 break;
 //            case R.id.ll_wdzs:
@@ -1195,7 +1285,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                     sb.append("城市编码 : " + location.getCityCode() + "\n");
                     String cityCode = location.getCityCode();
                     String areaCode = location.getAdCode();
-                    Log.e("TAG", "onLocationChanged: "+areaCode );
+                    Log.e("TAG", "onLocationChanged: " + areaCode);
                     sb.append("区            : " + location.getDistrict() + "\n");
                     sb.append("区域 码   : " + location.getAdCode() + "\n");
                     sb.append("地    址    : " + location.getAddress() + "\n");
@@ -1207,7 +1297,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                     //       mUserTitleText.setText(location.getProvince() + location.getCity());
                 } else {
                     //定位失败
-                             mUserTitleText.setText("定位失败");
+                    mUserTitleText.setText("定位失败");
 //                    sb.append("定位失败" + "\n");
 //                    sb.append("错误码:" + location.getErrorCode() + "\n");
 //                    sb.append("错误信息:" + location.getErrorInfo() + "\n");
@@ -1225,7 +1315,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 //                //解析定位结果，
 //                String result = sb.toString();
             } else {
-                   mUserTitleText.setText("定位失败");
+                mUserTitleText.setText("定位失败");
             }
         }
     };
@@ -1342,7 +1432,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         }
     }
 
-    //自定义的图片加载器
+//自定义的图片加载器
 
     private class MyLoader extends ImageLoader {
 

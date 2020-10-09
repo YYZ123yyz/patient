@@ -235,13 +235,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="94dp"
                     android:layout_marginLeft="15dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginRight="15dp" />
+
+
 
                 <LinearLayout
                     android:id="@+id/csh_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:background="@color/writeColor"
                     android:orientation="horizontal">
 
@@ -832,61 +836,20 @@
                             android:textSize="16sp" />
 
                         <TextView
+                            android:id="@+id/more_departments"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:drawableRight="@mipmap/fragmentmyself_jt_r"
+                            android:drawablePadding="15dp"
                             android:text="更多科室" />
 
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
-                            android:src="@mipmap/fragmentmyself_jt_r" />
                     </LinearLayout>
 
-                    <LinearLayout
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/hot_dep"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:background="#fff"
-                        android:orientation="horizontal"
-                        android:paddingTop="20dp">
+                        android:layout_height="wrap_content"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawableTop="@mipmap/home_nk"
-                            android:gravity="center"
-                            android:text="心血管内科"
-                            android:textColor="#333333" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawableTop="@mipmap/home_sjnk"
-                            android:gravity="center"
-                            android:text="神经内科"
-                            android:textColor="#333333" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawableTop="@mipmap/home_nks"
-                            android:gravity="center"
-                            android:text="内科"
-                            android:textColor="#333333" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawableTop="@mipmap/home_lnbk"
-                            android:gravity="center"
-                            android:text="老年病科"
-                            android:textColor="#333333" />
-                    </LinearLayout>
                 </LinearLayout>
 
                 <!--住院信息-->
@@ -913,13 +876,11 @@
                         <TextView
                             android:text="更多信息"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
-                            android:src="@mipmap/fragmentmyself_jt_r"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"/>
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@mipmap/fragmentmyself_jt_r"
+                            android:drawablePadding="15dp"
+                            />
+
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"

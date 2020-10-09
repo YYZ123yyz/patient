@@ -90,7 +90,6 @@ public class EaseChatInputMenu extends LinearLayout {
             chatPrimaryMenu = (EaseChatPrimaryMenu) layoutInflater.inflate(R.layout.ease_layout_chat_primary_menu, null);
         }
         primaryMenuContainer.addView(chatPrimaryMenu);
-
         // emojicon menu, use default if no customized one
         if(emojiconMenu == null){
             emojiconMenu = (EaseEmojiconMenu) layoutInflater.inflate(R.layout.ease_layout_emojicon_menu, null);

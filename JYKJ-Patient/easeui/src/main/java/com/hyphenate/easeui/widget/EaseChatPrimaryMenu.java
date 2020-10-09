@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.hyphenate.easeui.R;
 import com.hyphenate.util.EMLog;
 
@@ -109,7 +110,9 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (editText.getText().toString().trim().length() ==200){
+                    ToastUtils.showShort("最大输入200");
+                }
             }
         });
 
@@ -234,7 +237,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
         }
     }
     
-    
+
     /**
      * show voice icon when speak bar is touched
      * 
