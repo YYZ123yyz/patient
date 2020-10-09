@@ -79,6 +79,7 @@ import rx.functions.Action1;
 import www.patient.jykj_zxyl.activity.MainActivity;
 import www.patient.jykj_zxyl.activity.home.*;
 import www.patient.jykj_zxyl.activity.home.patient.BloodEntryActivity;
+import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
 import www.patient.jykj_zxyl.activity.home.patient.ZJXQ_ZJBDActivity;
 import www.patient.jykj_zxyl.activity.hyhd.BindDoctorFriend;
@@ -401,12 +402,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
     private void showHotDep(List<HomeDataBean.HospitalDepartmentListBean> hospitalDepartmentList) {
         HotDepAdapter hotDepAdapter = new HotDepAdapter(R.layout.item_hot_dep, hospitalDepartmentList);
-        hotDepAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showShort("dianji "+position);
-            }
-        });
+        hotDepAdapter.setOnItemClickListener((adapter, view, position) -> startActivity(new Intent(mContext, TJZJActivity.class)));
         hotDepRecycleview.setAdapter(hotDepAdapter);
 
 
