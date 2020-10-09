@@ -188,6 +188,10 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
     }
 
     protected void initData() {
+        Intent intent = getIntent();
+        if (intent.hasExtra("reserveCode")) {
+            reserveCode = intent.getStringExtra("reserveCode");
+        }
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("loginPatientPosition", "108.93425^34.23053");
         paramMap.put("requestClientType", "1");
@@ -312,10 +316,7 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
     @Override
     protected void initView() {
         super.initView();
-        Intent intent = getIntent();
-        if (intent.hasExtra("reserveCode")) {
-            reserveCode = intent.getStringExtra("reserveCode");
-        }
+
         mApp = (JYKJApplication) getApplication();
         ActivityUtil.setStatusBarMain(MedicalRecordActivity.this);
         drugRecycleview.setLayoutManager(new LinearLayoutManager(this));
@@ -323,7 +324,7 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
 
 
     @OnClick({R.id.confirm, R.id.download, R.id.lin_chief, R.id.lin_history, R.id.lin_prescriptionnote,
-            R.id.lin_past, R.id.lin_examination, R.id.lin_look, R.id.lin_suggest, R.id.lin_checklist,R.id.share})
+            R.id.lin_past, R.id.lin_examination, R.id.lin_look, R.id.lin_suggest, R.id.lin_checklist,R.id.share,R.id.ri_back})
     public void onClick(View view) {
         switch (view.getId()) {
             //处方笺
@@ -367,6 +368,9 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
             case R.id.share:
                 Intent intent2 = new Intent(MedicalRecordActivity.this, DownloadService.class);
                 startService(intent2);
+                break;
+            case R.id.ri_back:
+                finish();
                 break;
         }
     }

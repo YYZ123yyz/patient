@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,8 +73,8 @@ import www.patient.jykj_zxyl.util.Util;
 public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract.View, InquiryPresenter>
         implements InquiryContract.View {
 
-    @BindView(R.id.iv_back_left)
-    LinearLayout back;
+    @BindView(R.id.ri_back)
+    RelativeLayout back;
     @BindView(R.id.tv_activityHZZL_MZ)
     TextView findTimeTv;//时间
     @BindView(R.id.tv_activityHZZL_gxybs)
@@ -329,7 +330,7 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         }
     }
 
-    @OnClick({R.id.iv_back_left, R.id.tv_activityHZZL_MZ, R.id.tv_activityHZZL_gxybs, R.id.tv_activityHZZL_userName,
+    @OnClick({R.id.ri_back, R.id.tv_activityHZZL_MZ, R.id.tv_activityHZZL_gxybs, R.id.tv_activityHZZL_userName,
             R.id.tv_activityHZZL_clyq, R.id.tv_commit, R.id.tv_activityHZZL_clfs})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -657,6 +658,30 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         imgCode = bean.getImgCode();
         patientName.setText(bean.getPatientName());
         patientNum.setText(bean.getPatientLinkPhone());
+
+        if (bean.getFlagOperState() == 0) { //可以修改
+            tvCommit.setVisibility(View.VISIBLE);
+        } else { //不可操作
+            patientName.setFocusable(false);
+            patientNum.setFocusable(false);
+            womenChoose.setClickable(false);
+            manChoose.setClickable(false);
+            birthday.setFocusable(false);
+            findTimeTv.setClickable(false);
+            hyperTv.setClickable(false);
+            familyTv.setClickable(false);
+            meainstruTv.setClickable(false);
+            meaType.setClickable(false);
+            highPressureNum.setFocusable(false);
+            lowPressureNum.setFocusable(false);
+            heartRateNum.setFocusable(false);
+            chiefComplaint.setFocusable(false);
+            historyNew.setFocusable(false);
+            historyPast.setFocusable(false);
+            historyAllergy.setFocusable(false);
+            mImageViewRecycleAdapter.setCanClick(false);
+            tvCommit.setVisibility(View.GONE);
+        }
         if (bean.getGender() == 0) {
             womenChoose.setChecked(true);
         } else {

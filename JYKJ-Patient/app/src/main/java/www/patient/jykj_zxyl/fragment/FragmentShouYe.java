@@ -108,6 +108,7 @@ import www.patient.jykj_zxyl.myappointment.activity.AllDepartmentsActivity;
 import www.patient.jykj_zxyl.myappointment.activity.HealthActivity;
 import www.patient.jykj_zxyl.myappointment.activity.MedicalRecordActivity;
 import www.patient.jykj_zxyl.myappointment.activity.MyAppointmentActivity;
+import www.patient.jykj_zxyl.myappointment.activity.UniversalWebActivity;
 import www.patient.jykj_zxyl.myappointment.adapter.HotDepAdapter;
 import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.R;
@@ -432,7 +433,10 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
             live_banner.setOnBannerListener(new OnBannerListener() {
                 @Override
                 public void OnBannerClick(int position) {
-
+                    Intent intent = new Intent(mContext, UniversalWebActivity.class);
+                    intent.putExtra("tittle",topBannerList.get(position).getSubtitle());
+                    intent.putExtra("url",topBannerList.get(position).getContentUrl());
+                    startActivity(intent);
                 }
             });
         } else {
@@ -449,7 +453,10 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
             home_banner.setOnBannerListener(new OnBannerListener() {
                 @Override
                 public void OnBannerClick(int position) {
-
+                    Intent intent = new Intent(mContext, UniversalWebActivity.class);
+                    intent.putExtra("tittle",middleBannerList.get(position).getSubtitle());
+                    intent.putExtra("url",middleBannerList.get(position).getContentUrl());
+                    startActivity(intent);
                 }
             });
         } else {
