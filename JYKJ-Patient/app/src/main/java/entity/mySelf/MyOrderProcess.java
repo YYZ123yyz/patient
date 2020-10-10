@@ -23,10 +23,100 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
     private Date treatmentDateStart;
     private String  treatmentLinkPhone;
     private String  treatmentTimeSlot;
-    private Integer treatmentType;
+    private int treatmentType;
     private String  treatmentTypeName;
     private Date treatmentDate;
     private String treatmentTimeSlotName;
+    private int orderType;
+    private long createDate;
+    private String mainDoctorName;
+    private long reserveTime;
+    private String doctorPhone;
+    private long reserveEndTime;
+    private int flagOrderState;
+    private int signStatus;
+    private String detectRateUnitCode;
+    private String detectRateUnitName;
+
+    public String getDetectRateUnitCode() {
+        return detectRateUnitCode;
+    }
+
+    public void setDetectRateUnitCode(String detectRateUnitCode) {
+        this.detectRateUnitCode = detectRateUnitCode;
+    }
+
+    public String getDetectRateUnitName() {
+        return detectRateUnitName;
+    }
+
+    public void setDetectRateUnitName(String detectRateUnitName) {
+        this.detectRateUnitName = detectRateUnitName;
+    }
+
+    public int getSignStatus() {
+        return signStatus;
+    }
+
+    public void setSignStatus(int signStatus) {
+        this.signStatus = signStatus;
+    }
+
+    public int getFlagOrderState() {
+        return flagOrderState;
+    }
+
+    public void setFlagOrderState(int flagOrderState) {
+        this.flagOrderState = flagOrderState;
+    }
+
+    public long getReserveEndTime() {
+        return reserveEndTime;
+    }
+
+    public void setReserveEndTime(long reserveEndTime) {
+        this.reserveEndTime = reserveEndTime;
+    }
+
+    public String getDoctorPhone() {
+        return doctorPhone;
+    }
+
+    public void setDoctorPhone(String doctorPhone) {
+        this.doctorPhone = doctorPhone;
+    }
+
+    public long getReserveTime() {
+        return reserveTime;
+    }
+
+    public void setReserveTime(long reserveTime) {
+        this.reserveTime = reserveTime;
+    }
+
+    public String getMainDoctorName() {
+        return mainDoctorName;
+    }
+
+    public void setMainDoctorName(String mainDoctorName) {
+        this.mainDoctorName = mainDoctorName;
+    }
+
+    public long getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(long createDate) {
+        this.createDate = createDate;
+    }
+
+    public int getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(int orderType) {
+        this.orderType = orderType;
+    }
 
     public String getActualPayment() {
         return actualPayment;
@@ -228,11 +318,11 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
         this.treatmentTimeSlot = treatmentTimeSlot;
     }
 
-    public Integer getTreatmentType() {
+    public int getTreatmentType() {
         return treatmentType;
     }
 
-    public void setTreatmentType(Integer treatmentType) {
+    public void setTreatmentType(int treatmentType) {
         this.treatmentType = treatmentType;
     }
 

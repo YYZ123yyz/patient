@@ -33,17 +33,30 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import entity.patientapp.Photo_Info;
 import entity.wdzs.ProvideInteractPatientInterrogationParment;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+
 import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
@@ -54,6 +67,7 @@ import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_utils.DateUtils;
 import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 
+import www.patient.jykj_zxyl.base.http.ApiService;
 import www.patient.jykj_zxyl.base.http.ParameUtil;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
@@ -122,8 +136,8 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
     private ImageViewRecycleAdapter mImageViewRecycleAdapter;
     private File mTempFile;
     private String orderCode;
-    private String operPatientCode;
-    private String operPatientName;
+  /*  private String operPatientCode;
+    private String operPatientName;*/
     private ProvideInteractPatientInterrogationParment mProvideInteractPatientInterrogationParment = new ProvideInteractPatientInterrogationParment();
     private boolean isUpdata = false;
     private String treatmentType;
@@ -246,8 +260,8 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         mApp = (JYKJApplication) getApplication();
         mApp.gPayCloseActivity.add(this);
         orderCode = getIntent().getStringExtra("order");
-        operPatientCode = getIntent().getStringExtra("operPatientCode");
-        operPatientName = getIntent().getStringExtra("operPatientName");
+       /* operPatientCode = getIntent().getStringExtra("operPatientCode");
+        operPatientName = getIntent().getStringExtra("operPatientName");*/
         treatmentType = getIntent().getStringExtra("treatmentType");
         doctorCode = getIntent().getStringExtra("doctorCode");
         doctorName = getIntent().getStringExtra("doctorName");
@@ -261,8 +275,8 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("loginPatientPosition", "108.93425^34.23053");
         paramMap.put("requestClientType", "1");
-        paramMap.put("operPatientCode", operPatientCode);// mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode()
-        paramMap.put("operPatientName", operPatientName);//mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName()
+        paramMap.put("operPatientCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());// mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode()
+        paramMap.put("operPatientName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());//mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName()
         paramMap.put("orderCode", orderCode);
         String s = RetrofitUtil.encodeParam(paramMap);
         mPresenter.getDataDet(s);
@@ -431,14 +445,14 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
 //        HashMap<String, Object> paramMap = new HashMap<>();
 //        paramMap.put("loginPatientPosition", "108.93425^34.23053");
 //        paramMap.put("requestClientType", "1");
-        paramMap.put("operPatientCode", operPatientCode);// mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode()
-        paramMap.put("operPatientName", patientName.getText().toString().trim());//mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName()
+        paramMap.put("operPatientCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());// mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode()
+        paramMap.put("operPatientName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());//mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName()
         paramMap.put("orderCode", orderCode);
         paramMap.put("imgCode", isUpdata ? imgCode : "");
         paramMap.put("treatmentType", treatmentType);
         paramMap.put("doctorCode", doctorCode);
         paramMap.put("doctorName", doctorName);
-        paramMap.put("patientCode", operPatientCode);
+        paramMap.put("patientCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         paramMap.put("patientName", patientName.getText().toString().trim());
 
         paramMap.put("patientLinkPhone", patientNum.getText().toString().trim());
@@ -528,6 +542,53 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         LogUtils.e(paramMap.toString());
         String s = RetrofitUtil.encodeParam(paramMap);
         mPresenter.submitData(s);
+
+//        demoSubmitData(s);
+
+    }
+
+    private void demoSubmitData(String s) {
+
+        OkHttpClient  client = new OkHttpClient.Builder()
+                .connectTimeout(40, TimeUnit.SECONDS)
+                .writeTimeout(40, TimeUnit.SECONDS)
+                .readTimeout(40, TimeUnit.SECONDS)
+                .addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS))
+                .proxy(Proxy.NO_PROXY)
+                .build();
+
+        ApiService retrofit = new Retrofit.Builder()
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .baseUrl("https://www.jiuyihtn.com:38081/")
+                .build()
+                .create(ApiService.class);
+
+        retrofit.submitInquiryDet(s)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
 
     }

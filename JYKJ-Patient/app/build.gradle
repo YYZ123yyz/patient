@@ -202,4 +202,5 @@ dependencies {
     implementation 'com.hyman:flowlayout-lib:1.1.2'
     annotationProcessor "com.jakewharton:butterknife-compiler:8.8.1"
     implementation 'top.zibin:Luban:1.1.8'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
 }

@@ -362,6 +362,8 @@ public class OrderToBeConfirmedFragment extends
     public void showEmpty() {
         if (pageIndex == 1) {
             mLoadingLayout.showEmpty();
+        }else {
+            mRefreshLayout.finishRefreshWithNoMoreData();
         }
 
     }
@@ -380,12 +382,12 @@ public class OrderToBeConfirmedFragment extends
         for (MultiItemEntity mMultiItemEntity : mMultiItemEntitys) {
             ProvideInteractOrderInfo provideInteractOrderInfo =
                     (ProvideInteractOrderInfo) mMultiItemEntity;
-            if (provideInteractOrderInfo.getTreatmentType() != null && provideInteractOrderInfo.getTreatmentType() == 4) {
+            if (  provideInteractOrderInfo.getOrderType() == 1) { //ordertype ==1普通订单
 
                 provideInteractOrderInfo.setItemType(
                         CommonMutipleComplateOrderListItemType.MULTIPLE_CONTENT_ORDINARY_TYPE);
 
-            } else {
+            } else {  //签约订单
                 provideInteractOrderInfo.setItemType(
                         CommonMutipleComplateOrderListItemType.MULTIPLE_CONTENT_SIGN_UP_TYPE);
             }

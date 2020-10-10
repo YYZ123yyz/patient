@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.google.gson.Gson;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.R;
@@ -152,8 +153,8 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         rl_three = findViewById(R.id.rl_three);
         //立即填写
         rl_immediately = findViewById(R.id.rl_immediately);
-        mTvEnsureBtn=findViewById(R.id.tv_ensure_btn);
-        mTvFillInBtn=findViewById(R.id.tv_fill_in_btn);
+        mTvEnsureBtn = findViewById(R.id.tv_ensure_btn);
+        mTvFillInBtn = findViewById(R.id.tv_fill_in_btn);
         addListener();
     }
 
@@ -222,15 +223,18 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 mTvEnsureBtn.setText("已确定");
                 mTvEnsureBtn.setBackgroundResource(0);
                 mTvEnsureBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_999999));
-            }else{
+            } else {
                 mTvEnsureBtn.setBackgroundResource(R.drawable.bg_round_7a9eff_15);
                 mTvEnsureBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_ffffff));
                 mTvEnsureBtn.setText("确定");
             }
-        }else{
-            mTvEnsureBtn.setBackgroundResource(R.drawable.bg_round_7a9eff_15);
-            mTvEnsureBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_ffffff));
-            mTvEnsureBtn.setText("确定");
+        } else {
+            if (message.direct() == EMMessage.Direct.RECEIVE) {
+                mTvEnsureBtn.setBackgroundResource(R.drawable.bg_round_7a9eff_15);
+                mTvEnsureBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_ffffff));
+                mTvEnsureBtn.setText("确定");
+            }
+
         }
     }
 
@@ -550,7 +554,6 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 }
 
 
-
             });
             mTvRefuseBtn.setOnClickListener(v -> {
 
@@ -626,8 +629,23 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             });
             //立即填写
             rl_immediately.setOnClickListener(v -> {
-                Bundle bundle = new Bundle();
-                startActivity(WZXXActivity.class,bundle);
+                Intent intent = new Intent();
+                Object tag = mTvCancelContractAgreeBtn.getTag();
+                if (tag != null) {
+                    String string = tag.toString();
+                    int i = Integer.parseInt(string);
+                    if (i == 1) {
+                        String nickName = message.getStringAttribute("nickName", "");
+                        intent.setAction("android.intent.action.Inquiry");
+                        intent.putExtra("order", orderId);
+                        intent.putExtra("doctorCode", message.getFrom());
+                        intent.putExtra("doctorName", nickName);
+                        intent.putExtra("treatmentType", "1");
+                        mContext.startActivity(intent);
+                    }
+                }
+
+
             });
             mTvEnsureBtn.setOnClickListener(new OnClickListener() {
                 @Override
@@ -639,12 +657,12 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                                             @Override
                                             public void onResult(boolean isSucess, String msg) {
                                                 if (isSucess) {
-                                                    message.setAttribute("isConfirm","1" );
+                                                    message.setAttribute("isConfirm", "1");
                                                     mTvEnsureBtn.setText("已确定");
                                                     mTvEnsureBtn.setBackgroundResource(0);
                                                     mTvEnsureBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_999999));
                                                 } else {
-                                                    message.setAttribute("isConfirm","0" );
+                                                    message.setAttribute("isConfirm", "0");
                                                     mTvEnsureBtn.setText("确定");
                                                     mTvEnsureBtn.setBackgroundResource(R.drawable.bg_round_7a9eff_15);
                                                     mTvEnsureBtn.setTextColor(ContextCompat.getColor(mContext, R.color.color_ffffff));
@@ -660,7 +678,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
-                    startActivity(WZXXActivity.class,bundle);
+                    startActivity(WZXXActivity.class, bundle);
 
                 }
             });
@@ -694,10 +712,10 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                     startActivity(AncelAppActivity.class, bundle);
                     break;
                 }
-                case "medicalRecord":{
+                case "medicalRecord": {
                     Intent intent = new Intent();
                     intent.setAction("android.intent.action.Med");
-                    intent.putExtra("reserveCode",orderId);
+                    intent.putExtra("reserveCode", orderId);
                     mContext.startActivity(intent);
                     break;
                 }

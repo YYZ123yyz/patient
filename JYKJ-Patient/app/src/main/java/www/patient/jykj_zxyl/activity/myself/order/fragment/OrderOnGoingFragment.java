@@ -280,6 +280,10 @@ public class OrderOnGoingFragment extends
     public void showEmpty() {
         if(pageIndex == 1){
             mLoadingLayout.showEmpty();
+        }else {
+            mRefreshLayout.finishLoadMore();
+            mRefreshLayout.finishRefreshWithNoMoreData();
+
         }
 
     }
@@ -298,9 +302,9 @@ public class OrderOnGoingFragment extends
         for (MultiItemEntity mMultiItemEntity : mMultiItemEntitys) {
             MyOrderProcess myOrderProcess =
                     (MyOrderProcess) mMultiItemEntity;
-            if (myOrderProcess.getTreatmentType()==4) {
+            if (myOrderProcess.getOrderType()==1) { //普通订单
                 myOrderProcess.setItemType("1");
-            }else{
+            }else{ //签约订单
                 myOrderProcess.setItemType("2");
             }
 
