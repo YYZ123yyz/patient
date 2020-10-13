@@ -15,11 +15,15 @@ public class MedicalRecordContract {
         void getMedicalRecordSucess(MedicalRecordBean bean);
 
         void getDataFailure(String msg);
+
+        void commitDetSucess();
     }
 
     public interface Presenter extends BasePresenter<View> {
 
         void getRecordDet(String params);
+
+        void commitDet(String params);
 
     }
 }

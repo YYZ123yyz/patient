@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.allin.commlibrary.CollectionUtils;
 import com.allin.commonadapter.ViewHolder;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hyphenate.easeui.order.CancelConfirmDeitalActivity;
 import com.hyphenate.easeui.order.CancelContractActivity;
@@ -164,8 +165,8 @@ public class OrderOnGoingFragment extends
                 myOrderProcess = (MyOrderProcess) mMultiItemEntitys.get(pos);
                 Bundle bundle=new Bundle();
                 bundle.putString("orderId",myOrderProcess.getOrderCode());
-                bundle.putString("operDoctorCode",myOrderProcess.getDoctorCode());
-                bundle.putString("operDoctorName",myOrderProcess.getDoctorName());
+                bundle.putString("operDoctorCode",myOrderProcess.getMainDoctorCode());
+                bundle.putString("operDoctorName",myOrderProcess.getMainDoctorName());
                 startActivity(CancelContractActivity.class,bundle,100);
             }
 
@@ -173,7 +174,7 @@ public class OrderOnGoingFragment extends
             public void onClickConsult(int pos) {
                 isJumpIm=true;
                 myOrderProcess = (MyOrderProcess) mMultiItemEntitys.get(pos);
-                mPresenter.sendGetUserListRequest(myOrderProcess.getDoctorCode());
+                mPresenter.sendGetUserListRequest(myOrderProcess.getMainDoctorCode());
 
             }
 
@@ -182,8 +183,8 @@ public class OrderOnGoingFragment extends
                 currentPos=pos;
                 myOrderProcess = (MyOrderProcess) mMultiItemEntitys.get(pos);
                 Bundle bundle=new Bundle();
-                bundle.putString("mainDoctorCode",myOrderProcess.getDoctorCode());
-                bundle.putString("mainDoctorName",myOrderProcess.getDoctorName());
+                bundle.putString("mainDoctorCode",myOrderProcess.getMainDoctorCode());
+                bundle.putString("mainDoctorName",myOrderProcess.getMainDoctorName());
                 bundle.putInt("orderState",myOrderProcess.getFlagTreatmentState());
                 bundle.putString("signNo",myOrderProcess.getSignNo());
                 bundle.putString("orderId",myOrderProcess.getOrderCode());
@@ -197,24 +198,28 @@ public class OrderOnGoingFragment extends
                  myOrderProcess = (MyOrderProcess)
                         mMultiItemEntitys.get(position);
                 Integer treatmentType = myOrderProcess.getTreatmentType();
+                LogUtils.e("xxxxxxxxxxxx1111");
                 if (treatmentType==4) {
+                    LogUtils.e("xxxxxxxxxxxx2222222");
                     if(myOrderProcess.getFlagTreatmentState()
                             .toString().equals(OrderStatusEnum.orderDoctorCancelContractCode)){
                         Bundle bundle=new Bundle();
                         bundle.putString("orderId",myOrderProcess.getOrderCode());
-                        bundle.putString("operDoctorCode",myOrderProcess.getDoctorCode());
-                        bundle.putString("operDoctorName",myOrderProcess.getDoctorName());
+                        bundle.putString("operDoctorCode",myOrderProcess.getMainDoctorCode());
+                        bundle.putString("operDoctorName",myOrderProcess.getMainDoctorName());
                         startActivity(CancelConfirmDeitalActivity.class,bundle,100);
 
                     }else{
+                        LogUtils.e("xxxxxxxxxxxx333333333");
                         Bundle bundle=new Bundle();
                         bundle.putString("signCode",myOrderProcess.getOrderCode());
-                        bundle.putString("operDoctorCode",myOrderProcess.getDoctorCode());
-                        bundle.putString("operDoctorName",myOrderProcess.getDoctorName());
+                        bundle.putString("operDoctorCode",myOrderProcess.getMainDoctorCode());
+                        bundle.putString("operDoctorName",myOrderProcess.getMainDoctorName());
                         startActivity(SignOrderDetialActivity.class,bundle,100);
                     }
 
                 }else{
+                    LogUtils.e("xxxxxxxxxxxx444444");
                     ProvideInteractOrderInfo parorder = new ProvideInteractOrderInfo();
                     parorder.setOrderCode(myOrderProcess.getOrderCode());
                     startActivity(new Intent(mActivity, OrderMessage_OrderPayActivity.class)
@@ -241,9 +246,9 @@ public class OrderOnGoingFragment extends
                         mMultiItemEntitys.get(pos);
                 Bundle bundle=new Bundle();
                 bundle.putString("orderId",myOrderProcess.getOrderCode());
-                bundle.putString("signOrderCode",myOrderProcess.getDoctorCode());
-                bundle.putString("operDoctorName",myOrderProcess.getDoctorName());
-                bundle.putString("operDoctorCode",myOrderProcess.getDoctorCode());
+                bundle.putString("signOrderCode",myOrderProcess.getMainDoctorCode());
+                bundle.putString("operDoctorName",myOrderProcess.getMainDoctorCode());
+                bundle.putString("operDoctorCode",myOrderProcess.getMainDoctorName());
                 startActivity(RefusedCancelContractActivity.class,bundle,100);
             }
 
@@ -254,8 +259,8 @@ public class OrderOnGoingFragment extends
                 myOrderProcess = (MyOrderProcess)
                         mMultiItemEntitys.get(pos);
                 OrderOperationManager.getInstance().sendOrderCancelContractOperRequest(
-                        myOrderProcess.getDoctorCode(),
-                        myOrderProcess.getDoctorName(),
+                        myOrderProcess.getMainDoctorCode(),
+                        myOrderProcess.getMainDoctorName(),
                         myOrderProcess.getOrderCode(), myOrderProcess.getSignNo(),
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),
@@ -265,7 +270,7 @@ public class OrderOnGoingFragment extends
                             public void onResult(boolean isSucess, String msg) {
                                 dismissLoading();
                                 if(isSucess){
-                                    mPresenter.sendGetUserListRequest(myOrderProcess.getDoctorCode());
+                                    mPresenter.sendGetUserListRequest(myOrderProcess.getMainDoctorCode());
                                 }else{
                                     ToastUtils.showShort(msg);
                                 }
@@ -280,6 +285,10 @@ public class OrderOnGoingFragment extends
     public void showEmpty() {
         if(pageIndex == 1){
             mLoadingLayout.showEmpty();
+        }else {
+            mRefreshLayout.finishLoadMore();
+            mRefreshLayout.finishRefreshWithNoMoreData();
+
         }
 
     }
@@ -298,9 +307,9 @@ public class OrderOnGoingFragment extends
         for (MultiItemEntity mMultiItemEntity : mMultiItemEntitys) {
             MyOrderProcess myOrderProcess =
                     (MyOrderProcess) mMultiItemEntity;
-            if (myOrderProcess.getTreatmentType()==4) {
+            if (myOrderProcess.getOrderType()==1) { //普通订单
                 myOrderProcess.setItemType("1");
-            }else{
+            }else{ //签约订单
                 myOrderProcess.setItemType("2");
             }
 
@@ -338,8 +347,8 @@ public class OrderOnGoingFragment extends
         OrderMessage terminationOrder = getOrderMessage("terminationOrder", "1",myOrderProcess);
         Intent intent = new Intent();
         intent.setClass(Objects.requireNonNull(this.getContext()), ChatActivity.class);
-        intent.putExtra("userCode", myOrderProcess.getDoctorCode());
-        intent.putExtra("userName", myOrderProcess.getDoctorName());
+        intent.putExtra("userCode", myOrderProcess.getMainDoctorCode());
+        intent.putExtra("userName", myOrderProcess.getMainDoctorName());
         intent.putExtra("doctorUrl", userInfoBaseBean.getUserLogoUrl());
         intent.putExtra("patientUrl", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
         intent.putExtra("operDoctorName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
@@ -362,12 +371,11 @@ public class OrderOnGoingFragment extends
      */
     private OrderMessage getOrderMessage(String messageType, String orderType,
                                          MyOrderProcess myOrderProcess) {
-
-        @SuppressLint("DefaultLocale") String coatch = String.format("%d次/%s",
-                myOrderProcess.getCoachValue(), myOrderProcess.getCoachUnitName());
+        @SuppressLint("DefaultLocale") String coatch =String.format("%s次/%s",
+                myOrderProcess.getDetectRateUnitCode(), myOrderProcess.getDetectRateUnitName());
         OrderMessage orderMessage = new OrderMessage(myOrderProcess.getOrderCode(),myOrderProcess.getSignNo(),
                 myOrderProcess.getProCount() + "项",
-                coatch, myOrderProcess.getTimesCode()+"个月",myOrderProcess.getActualPayment() + "", messageType, orderType);
+                coatch, myOrderProcess.getSignDuration()+"个月",myOrderProcess.getActualPayment() + "", messageType, orderType);
         return orderMessage;
 
     }

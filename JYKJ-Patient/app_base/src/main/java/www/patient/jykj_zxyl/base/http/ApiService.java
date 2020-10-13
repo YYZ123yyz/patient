@@ -163,6 +163,8 @@ public interface ApiService {
     //获取首页banner
     @POST("/basicDataController/getBannersAndDepartmentInfo")
     Observable<String> getHomeBanner(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
-
+    //获取订单详情
+    @POST("msgDataControlle/searchPatientMsgInteractOrderInfoDetail")
+    Observable<String> getOrderDet(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
 }
 

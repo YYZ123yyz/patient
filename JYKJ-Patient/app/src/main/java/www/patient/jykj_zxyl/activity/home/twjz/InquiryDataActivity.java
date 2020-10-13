@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,17 +33,30 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import entity.patientapp.Photo_Info;
 import entity.wdzs.ProvideInteractPatientInterrogationParment;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+
 import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
@@ -53,6 +67,7 @@ import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_utils.DateUtils;
 import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 
+import www.patient.jykj_zxyl.base.http.ApiService;
 import www.patient.jykj_zxyl.base.http.ParameUtil;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
@@ -72,8 +87,8 @@ import www.patient.jykj_zxyl.util.Util;
 public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract.View, InquiryPresenter>
         implements InquiryContract.View {
 
-    @BindView(R.id.iv_back_left)
-    LinearLayout back;
+    @BindView(R.id.ri_back)
+    RelativeLayout back;
     @BindView(R.id.tv_activityHZZL_MZ)
     TextView findTimeTv;//时间
     @BindView(R.id.tv_activityHZZL_gxybs)
@@ -121,8 +136,8 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
     private ImageViewRecycleAdapter mImageViewRecycleAdapter;
     private File mTempFile;
     private String orderCode;
-    private String operPatientCode;
-    private String operPatientName;
+  /*  private String operPatientCode;
+    private String operPatientName;*/
     private ProvideInteractPatientInterrogationParment mProvideInteractPatientInterrogationParment = new ProvideInteractPatientInterrogationParment();
     private boolean isUpdata = false;
     private String treatmentType;
@@ -245,8 +260,8 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         mApp = (JYKJApplication) getApplication();
         mApp.gPayCloseActivity.add(this);
         orderCode = getIntent().getStringExtra("order");
-        operPatientCode = getIntent().getStringExtra("operPatientCode");
-        operPatientName = getIntent().getStringExtra("operPatientName");
+       /* operPatientCode = getIntent().getStringExtra("operPatientCode");
+        operPatientName = getIntent().getStringExtra("operPatientName");*/
         treatmentType = getIntent().getStringExtra("treatmentType");
         doctorCode = getIntent().getStringExtra("doctorCode");
         doctorName = getIntent().getStringExtra("doctorName");
@@ -260,8 +275,8 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("loginPatientPosition", "108.93425^34.23053");
         paramMap.put("requestClientType", "1");
-        paramMap.put("operPatientCode", operPatientCode);// mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode()
-        paramMap.put("operPatientName", operPatientName);//mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName()
+        paramMap.put("operPatientCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());// mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode()
+        paramMap.put("operPatientName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());//mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName()
         paramMap.put("orderCode", orderCode);
         String s = RetrofitUtil.encodeParam(paramMap);
         mPresenter.getDataDet(s);
@@ -329,7 +344,7 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         }
     }
 
-    @OnClick({R.id.iv_back_left, R.id.tv_activityHZZL_MZ, R.id.tv_activityHZZL_gxybs, R.id.tv_activityHZZL_userName,
+    @OnClick({R.id.ri_back, R.id.tv_activityHZZL_MZ, R.id.tv_activityHZZL_gxybs, R.id.tv_activityHZZL_userName,
             R.id.tv_activityHZZL_clyq, R.id.tv_commit, R.id.tv_activityHZZL_clfs})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -430,14 +445,14 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
 //        HashMap<String, Object> paramMap = new HashMap<>();
 //        paramMap.put("loginPatientPosition", "108.93425^34.23053");
 //        paramMap.put("requestClientType", "1");
-        paramMap.put("operPatientCode", operPatientCode);// mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode()
-        paramMap.put("operPatientName", patientName.getText().toString().trim());//mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName()
+        paramMap.put("operPatientCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());// mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode()
+        paramMap.put("operPatientName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());//mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName()
         paramMap.put("orderCode", orderCode);
         paramMap.put("imgCode", isUpdata ? imgCode : "");
         paramMap.put("treatmentType", treatmentType);
         paramMap.put("doctorCode", doctorCode);
         paramMap.put("doctorName", doctorName);
-        paramMap.put("patientCode", operPatientCode);
+        paramMap.put("patientCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         paramMap.put("patientName", patientName.getText().toString().trim());
 
         paramMap.put("patientLinkPhone", patientNum.getText().toString().trim());
@@ -527,6 +542,53 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         LogUtils.e(paramMap.toString());
         String s = RetrofitUtil.encodeParam(paramMap);
         mPresenter.submitData(s);
+
+//        demoSubmitData(s);
+
+    }
+
+    private void demoSubmitData(String s) {
+
+        OkHttpClient  client = new OkHttpClient.Builder()
+                .connectTimeout(40, TimeUnit.SECONDS)
+                .writeTimeout(40, TimeUnit.SECONDS)
+                .readTimeout(40, TimeUnit.SECONDS)
+                .addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS))
+                .proxy(Proxy.NO_PROXY)
+                .build();
+
+        ApiService retrofit = new Retrofit.Builder()
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .baseUrl("https://www.jiuyihtn.com:38081/")
+                .build()
+                .create(ApiService.class);
+
+        retrofit.submitInquiryDet(s)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
 
     }
@@ -657,6 +719,30 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         imgCode = bean.getImgCode();
         patientName.setText(bean.getPatientName());
         patientNum.setText(bean.getPatientLinkPhone());
+
+        if (bean.getFlagOperState() == 0) { //可以修改
+            tvCommit.setVisibility(View.VISIBLE);
+        } else { //不可操作
+            patientName.setFocusable(false);
+            patientNum.setFocusable(false);
+            womenChoose.setClickable(false);
+            manChoose.setClickable(false);
+            birthday.setFocusable(false);
+            findTimeTv.setClickable(false);
+            hyperTv.setClickable(false);
+            familyTv.setClickable(false);
+            meainstruTv.setClickable(false);
+            meaType.setClickable(false);
+            highPressureNum.setFocusable(false);
+            lowPressureNum.setFocusable(false);
+            heartRateNum.setFocusable(false);
+            chiefComplaint.setFocusable(false);
+            historyNew.setFocusable(false);
+            historyPast.setFocusable(false);
+            historyAllergy.setFocusable(false);
+            mImageViewRecycleAdapter.setCanClick(false);
+            tvCommit.setVisibility(View.GONE);
+        }
         if (bean.getGender() == 0) {
             womenChoose.setChecked(true);
         } else {

@@ -479,4 +479,5 @@
     <string name="msg_allergy">提示内容：描述对某些过敏原过敏的病史。(最多不超过50 字)</string>
     <string name="msg_updataimg">可上传检查资料、病例照片、医院化验单、报告单、处 方单等</string>
     <string name="msg_seedoc"><![CDATA[提示内容：主要痛苦<如:头晕、胸闷、气短等>、发生频次 <如:持续性、间歇性(几次/天、几次/周)等>、严重程度<如 :轻微、一般、严重等>。(最多不超过100字)]]></string>
+    <string name="msg_def">--</string>
 </resources>

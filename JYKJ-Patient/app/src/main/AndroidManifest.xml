@@ -530,7 +530,14 @@
         <activity android:name=".myappointment.activity.PrescriptionDetActivity" />
         <activity android:name=".activity.myself.MyEquipmentActivity" />
         <activity android:name=".activity.myself.AddEquipmentActivity" />
-        <activity android:name=".activity.home.twjz.InquiryDataActivity" /> <!-- 设置环信应用的AppKey -->
+        <activity android:name=".activity.home.twjz.InquiryDataActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.Inquiry" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".myappointment.activity.UniversalWebActivity" /> <!-- 设置环信应用的AppKey -->
         <!-- <meta-data android:name="EASEMOB_APPKEY"  android:value="Your AppKey" /> -->
         <meta-data
             android:name="EASEMOB_APPKEY"

@@ -26,6 +26,7 @@ import java.util.Objects;
 
 import entity.mySelf.ProvideInteractOrderInfo;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.activity.home.OrderMessage_OrderPayActivity;
 import www.patient.jykj_zxyl.activity.myself.order.OrderToBeConfirmedContract;
 import www.patient.jykj_zxyl.activity.myself.order.OrderToBeconfirmedPresenter;
 import www.patient.jykj_zxyl.activity.myself.order.adapter.CommonMutipleComplateOrderListItemType;
@@ -48,7 +49,7 @@ import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseFragment;
 
 /**
  * Description:待确认订单列表
- *
+ *handleData
  * @author: qiuxinhai
  * @date: 2020-07-30 11:42
  */
@@ -170,9 +171,9 @@ public class OrderToBeConfirmedFragment extends
                 provideInteractOrderInfo =
                         (ProvideInteractOrderInfo) mMultiItemEntitys.get(position);
                 OrderOperationManager.getInstance().sendOrderOperRequest(
-                        provideInteractOrderInfo.getDoctorCode(),
-                        provideInteractOrderInfo.getDoctorName(),
-                        provideInteractOrderInfo.getOrderCode(), provideInteractOrderInfo.getSignNo(),
+                        provideInteractOrderInfo.getMainDoctorCode(),
+                        provideInteractOrderInfo.getMainDoctorName(),
+                        provideInteractOrderInfo.getOrderCode(), provideInteractOrderInfo.getSignCode(),
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),
                         "1", ParameUtil.loginDoctorPosition
@@ -181,8 +182,9 @@ public class OrderToBeConfirmedFragment extends
                             public void onResult(boolean isSucess, String msg) {
                                 dismissLoading();
                                 if (isSucess) {
-                                    mPresenter.sendGetUserListRequest(provideInteractOrderInfo.getDoctorCode());
+                                    mPresenter.sendGetUserListRequest(provideInteractOrderInfo.getMainDoctorCode());
                                 } else {
+                                    dismissLoading();
                                     ToastUtils.showShort(msg);
                                 }
                             }
@@ -196,9 +198,9 @@ public class OrderToBeConfirmedFragment extends
                 provideInteractOrderInfo =
                         (ProvideInteractOrderInfo) mMultiItemEntitys.get(position);
                 OrderOperationManager.getInstance().sendOrderOperRequest(
-                        provideInteractOrderInfo.getDoctorCode(),
-                        provideInteractOrderInfo.getDoctorName(),
-                        provideInteractOrderInfo.getOrderCode(), provideInteractOrderInfo.getSignNo(),
+                        provideInteractOrderInfo.getMainDoctorCode(),
+                        provideInteractOrderInfo.getMainDoctorName(),
+                        provideInteractOrderInfo.getOrderCode(), provideInteractOrderInfo.getSignCode(),
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),
                         "2", ParameUtil.loginDoctorPosition
@@ -212,12 +214,13 @@ public class OrderToBeConfirmedFragment extends
                                                 = GsonUtils.fromJson(msg, UpdateOrderResultBean.class);
                                         if (updateOrderResultBean != null) {
                                             provideInteractOrderInfo.setOrderCode(updateOrderResultBean.getSignCode());
-                                            mPresenter.sendGetUserListRequest(provideInteractOrderInfo.getDoctorCode());
+                                            mPresenter.sendGetUserListRequest(provideInteractOrderInfo.getMainDoctorCode());
                                         }
 
                                     }
 
                                 } else {
+                                    dismissLoading();
                                     ToastUtils.showShort(msg);
                                 }
                             }
@@ -231,8 +234,10 @@ public class OrderToBeConfirmedFragment extends
                         (ProvideInteractOrderInfo) mMultiItemEntitys.get(position);
                 Bundle bundle = new Bundle();
                 bundle.putString("orderId", provideInteractOrderInfo.getOrderCode());
-                bundle.putString("operDoctorCode", provideInteractOrderInfo.getDoctorCode());
-                bundle.putString("operDoctorName", provideInteractOrderInfo.getDoctorName());
+                bundle.putString("orderNo",provideInteractOrderInfo.getSignCode());
+                bundle.putString("operDoctorCode", provideInteractOrderInfo.getMainDoctorCode());
+                bundle.putString("operDoctorName", provideInteractOrderInfo.getMainDoctorName());
+
                 startActivity(RefusedOrderActivity.class, bundle);
             }
 
@@ -255,15 +260,18 @@ public class OrderToBeConfirmedFragment extends
             public void onClickItem(int position, ViewHolder holder) {
                 provideInteractOrderInfo =
                         (ProvideInteractOrderInfo) mMultiItemEntitys.get(position);
-                Integer treatmentType = provideInteractOrderInfo.getTreatmentType();
-                if (treatmentType == 4) {
+                int treatmentType = provideInteractOrderInfo.getOrderType();
+                if (treatmentType == 2) {
                     Bundle bundle = new Bundle();
                     bundle.putString("signCode", provideInteractOrderInfo.getOrderCode());
-                    bundle.putString("operDoctorCode", provideInteractOrderInfo.getDoctorCode());
-                    bundle.putString("operDoctorName", provideInteractOrderInfo.getDoctorName());
+                    bundle.putString("operDoctorCode", provideInteractOrderInfo.getMainDoctorCode());
+                    bundle.putString("operDoctorName", provideInteractOrderInfo.getMainDoctorName());
                     startActivity(SignOrderDetialActivity.class, bundle);
                 } else {
-
+                    entity.ProvideInteractOrderInfo parorder = new entity.ProvideInteractOrderInfo();
+                    parorder.setOrderCode(provideInteractOrderInfo.getOrderCode());
+                    startActivity(new Intent(mActivity, OrderMessage_OrderPayActivity.class)
+                            .putExtra("provideInteractOrderInfo", parorder));
                 }
 
             }
@@ -284,13 +292,12 @@ public class OrderToBeConfirmedFragment extends
      */
     private OrderMessage getOrderMessage(String messageType, String orderType,
                                          ProvideInteractOrderInfo provideInteractOrderInfo) {
-
         @SuppressLint("DefaultLocale")
-        String coatch = String.format("%d次/%s",
-                provideInteractOrderInfo.getCoachValue(), provideInteractOrderInfo.getCoachUnitName());
+        String coatch =String.format("%s次/%s",
+                provideInteractOrderInfo.getDetectRateUnitCode(), provideInteractOrderInfo.getDetectRateUnitName());
         OrderMessage orderMessage = new OrderMessage(provideInteractOrderInfo.getOrderCode(), provideInteractOrderInfo.getSignNo(),
                 provideInteractOrderInfo.getProCount() + "项",
-                coatch, provideInteractOrderInfo.getTimesCode() + "个月", provideInteractOrderInfo.getActualPayment() + "", messageType, orderType);
+                coatch, provideInteractOrderInfo.getSignDuration() + "个月", provideInteractOrderInfo.getActualPayment() + "", messageType, orderType);
         return orderMessage;
 
     }
@@ -343,8 +350,8 @@ public class OrderToBeConfirmedFragment extends
         }
         Intent intent = new Intent();
         intent.setClass(Objects.requireNonNull(this.getContext()), ChatActivity.class);
-        intent.putExtra("userCode", provideInteractOrderInfo.getDoctorCode());
-        intent.putExtra("userName", provideInteractOrderInfo.getDoctorName());
+        intent.putExtra("userCode", provideInteractOrderInfo.getMainDoctorCode());
+        intent.putExtra("userName", provideInteractOrderInfo.getMainDoctorName());
         intent.putExtra("doctorUrl", userInfoBaseBean.getUserLogoUrl());
         intent.putExtra("patientUrl", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
         intent.putExtra("operDoctorName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
@@ -362,6 +369,8 @@ public class OrderToBeConfirmedFragment extends
     public void showEmpty() {
         if (pageIndex == 1) {
             mLoadingLayout.showEmpty();
+        }else {
+            mRefreshLayout.finishRefreshWithNoMoreData();
         }
 
     }
@@ -380,12 +389,12 @@ public class OrderToBeConfirmedFragment extends
         for (MultiItemEntity mMultiItemEntity : mMultiItemEntitys) {
             ProvideInteractOrderInfo provideInteractOrderInfo =
                     (ProvideInteractOrderInfo) mMultiItemEntity;
-            if (provideInteractOrderInfo.getTreatmentType() != null && provideInteractOrderInfo.getTreatmentType() == 4) {
+            if (  provideInteractOrderInfo.getOrderType() == 1) { //ordertype ==1普通订单
 
                 provideInteractOrderInfo.setItemType(
                         CommonMutipleComplateOrderListItemType.MULTIPLE_CONTENT_ORDINARY_TYPE);
 
-            } else {
+            } else {  //签约订单
                 provideInteractOrderInfo.setItemType(
                         CommonMutipleComplateOrderListItemType.MULTIPLE_CONTENT_SIGN_UP_TYPE);
             }

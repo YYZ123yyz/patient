@@ -52,6 +52,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.hyphenate.easeui.utils.ActivityUtil;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -79,6 +80,7 @@ import rx.functions.Action1;
 import www.patient.jykj_zxyl.activity.MainActivity;
 import www.patient.jykj_zxyl.activity.home.*;
 import www.patient.jykj_zxyl.activity.home.patient.BloodEntryActivity;
+import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
 import www.patient.jykj_zxyl.activity.home.patient.ZJXQ_ZJBDActivity;
 import www.patient.jykj_zxyl.activity.hyhd.BindDoctorFriend;
@@ -107,6 +109,7 @@ import www.patient.jykj_zxyl.myappointment.activity.AllDepartmentsActivity;
 import www.patient.jykj_zxyl.myappointment.activity.HealthActivity;
 import www.patient.jykj_zxyl.myappointment.activity.MedicalRecordActivity;
 import www.patient.jykj_zxyl.myappointment.activity.MyAppointmentActivity;
+import www.patient.jykj_zxyl.myappointment.activity.UniversalWebActivity;
 import www.patient.jykj_zxyl.myappointment.adapter.HotDepAdapter;
 import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.R;
@@ -401,12 +404,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 
     private void showHotDep(List<HomeDataBean.HospitalDepartmentListBean> hospitalDepartmentList) {
         HotDepAdapter hotDepAdapter = new HotDepAdapter(R.layout.item_hot_dep, hospitalDepartmentList);
-        hotDepAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showShort("dianji "+position);
-            }
-        });
+        hotDepAdapter.setOnItemClickListener((adapter, view, position) -> startActivity(new Intent(mContext, TJZJActivity.class)));
         hotDepRecycleview.setAdapter(hotDepAdapter);
 
 
@@ -436,7 +434,10 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
             live_banner.setOnBannerListener(new OnBannerListener() {
                 @Override
                 public void OnBannerClick(int position) {
-
+                    Intent intent = new Intent(mContext, UniversalWebActivity.class);
+                    intent.putExtra("tittle", topBannerList.get(position).getSubtitle());
+                    intent.putExtra("url", topBannerList.get(position).getContentUrl());
+                    startActivity(intent);
                 }
             });
         } else {
@@ -453,7 +454,10 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
             home_banner.setOnBannerListener(new OnBannerListener() {
                 @Override
                 public void OnBannerClick(int position) {
-
+                    Intent intent = new Intent(mContext, UniversalWebActivity.class);
+                    intent.putExtra("tittle", middleBannerList.get(position).getSubtitle());
+                    intent.putExtra("url", middleBannerList.get(position).getContentUrl());
+                    startActivity(intent);
                 }
             });
         } else {
@@ -766,7 +770,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         tv_wasfy = (TextView) view.findViewById(R.id.tv_wasfy);
 
         hotDepRecycleview = view.findViewById(R.id.hot_dep);
-        GridLayoutManager linearLayoutManager = new GridLayoutManager(mContext,4,LinearLayoutManager.VERTICAL,false);
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(mContext, 4, LinearLayoutManager.VERTICAL, false);
         hotDepRecycleview.setLayoutManager(linearLayoutManager);
         mYFY = (TextView) view.findViewById(R.id.yfy_button);
         mWFY = (TextView) view.findViewById(R.id.wfy_button);
@@ -849,34 +853,40 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
 //
         mUserNameText = (TextView) view.findViewById(R.id.tv_fragmentShouYe_userNameText);
 
-//        mMyPatient = view.findViewById(R.id.ll_wdhz);
-//        mNewMessage = (TextView) view.findViewById(R.id.tv_fragmentShouYe_NewMessage);
-//        mNewMessageLayout = (LinearLayout) view.findViewById(R.id.li_fragmentShouYe_newMessage);
+/*
+        mMyPatient = view.findViewById(R.id.ll_wdhz);
+        mNewMessage = (TextView) view.findViewById(R.id.tv_fragmentShouYe_NewMessage);
+        mNewMessageLayout = (LinearLayout) view.findViewById(R.id.li_fragmentShouYe_newMessage);
+*/
         llQuickApplication = (LinearLayout) view.findViewById(R.id.ll_quick_application);
-//        mNewMessageLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mApp.gMainActivity.setViewPageIndex(1, 1);
-//            }
-//        });
-//        mQrCode = view.findViewById(R.id.ll_qr_code);
-//        mNews = view.findViewById(R.id.ll_news);
-//        mDoctorUnion = view.findViewById(R.id.ll_doctor_union);
-//        mYQTH = view.findViewById(R.id.ll_yqth);
-//        mMyComments = view.findViewById(R.id.ll_my_comment);
-////        mAddPatient = view.findViewById(R.id.li_fragmentShouYe_addPatient);
+/*
+        mNewMessageLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mApp.gMainActivity.setViewPageIndex(1, 1);
+            }
+        });
+        mQrCode = view.findViewById(R.id.ll_qr_code);
+        mNews = view.findViewById(R.id.ll_news);
+        mDoctorUnion = view.findViewById(R.id.ll_doctor_union);
+        mYQTH = view.findViewById(R.id.ll_yqth);
+        mMyComments = view.findViewById(R.id.ll_my_comment);
+//        mAddPatient = view.findViewById(R.id.li_fragmentShouYe_addPatient);
+*/
         mMyLiveRoom = view.findViewById(R.id.ll_my_liveroom);
-//        mMyClinic = view.findViewById(R.id.ll_wdzs);
-//
-//        mUserNameText = (TextView)view.findViewById(R.id.tv_fragmentShouYe_userNameText);
-//        mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        //  mUserTitleText = (TextView) view.findViewById(R.id.tv_fragmentShouYe_userTitleText);
-//        if (mApp.mProvideViewSysUserPatientInfoAndRegion.getProvinceName() != null && !"".equals(mApp.mProvideViewSysUserPatientInfoAndRegion.getProvinceName()))
-//            mUserTitleText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getProvinceName());
-//        mMyPatient = view.findViewById(R.id.ll_wdhz);
-//        mNewMessage = (TextView)view.findViewById(R.id.tv_fragmentShouYe_NewMessage);
-//        mNewMessageLayout = (LinearLayout) view.findViewById(R.id.li_fragmentShouYe_newMessage);
-//        llQuickApplication = (LinearLayout)view.findViewById(R.id.ll_quick_application);
+/*
+        mMyClinic = view.findViewById(R.id.ll_wdzs);
+
+        mUserNameText = (TextView)view.findViewById(R.id.tv_fragmentShouYe_userNameText);
+        mUserNameText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+  mUserTitleText = (TextView) view.findViewById(R.id.tv_fragmentShouYe_userTitleText);
+        if (mApp.mProvideViewSysUserPatientInfoAndRegion.getProvinceName() != null && !"".equals(mApp.mProvideViewSysUserPatientInfoAndRegion.getProvinceName()))
+            mUserTitleText.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getProvinceName());
+        mMyPatient = view.findViewById(R.id.ll_wdhz);
+        mNewMessage = (TextView)view.findViewById(R.id.tv_fragmentShouYe_NewMessage);
+        mNewMessageLayout = (LinearLayout) view.findViewById(R.id.li_fragmentShouYe_newMessage);
+        llQuickApplication = (LinearLayout)view.findViewById(R.id.ll_quick_application);
+*/
 
         mXYValueText = (TextView) view.findViewById(R.id.xy_value);
         mXLValueText = (TextView) view.findViewById(R.id.xl_value);
@@ -914,16 +924,19 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         fragmentAdapter = new FragmentAdapter(getChildFragmentManager(), fragmentList, mTitles);
         pager.setAdapter(fragmentAdapter);
         tabLayout.setupWithViewPager(pager);//与ViewPage建立关系
-        // live_layout = view.findViewById(R.id.live_layout);
-        //    kswys = view.findViewById(R.id.kswys);
-        //    diet_layout = view.findViewById(R.id.diet_layout);
-        //     port_layout = view.findViewById(R.id.port_layout);
-        //     sweem_layout = view.findViewById(R.id.sweem_layout);
-        //     feeling_layout = view.findViewById(R.id.feeling_layout);
+        /*
+         live_layout = view.findViewById(R.id.live_layout);
+            kswys = view.findViewById(R.id.kswys);
+            diet_layout = view.findViewById(R.id.diet_layout);
+             port_layout = view.findViewById(R.id.port_layout);
+             sweem_layout = view.findViewById(R.id.sweem_layout);
+             feeling_layout = view.findViewById(R.id.feeling_layout);
+        */
 
 
         List<CheckDoctorNumEntity> checkNumEntities1 = DbManager.getInstance().getCheckDocNumEntityService().queryAll();
-        LogUtils.e("查询数据 rrgg " + checkNumEntities1.size());
+        SmartRefreshLayout refreshLayout = view.findViewById(R.id.refreshLayout);
+        refreshLayout.setEnableLoadMore(false);
 
     }
 
@@ -932,27 +945,33 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         mBloodEntry.setOnClickListener(this);
         llBloodRecord.setOnClickListener(this);
         mQrCode.setOnClickListener(this);
-//        mNews.setOnClickListener(this);
-//        mDoctorUnion.setOnClickListener(this);
-////        mTWJZ.setOnClickListener(this);
-//        mYQTH.setOnClickListener(this);
-//        mMyComments.setOnClickListener(this);
-////        mAddPatient.setOnClickListener(this);
+/*
+        mNews.setOnClickListener(this);
+        mDoctorUnion.setOnClickListener(this);
+//        mTWJZ.setOnClickListener(this);
+        mYQTH.setOnClickListener(this);
+        mMyComments.setOnClickListener(this);
+//        mAddPatient.setOnClickListener(this);
+*/
         mMyLiveRoom.setOnClickListener(this);
         mScan.setOnClickListener(this);
         mXLTX.setOnClickListener(this);
         mFYTX.setOnClickListener(this);
-//        mMyClinic.setOnClickListener(this);
-//        mMyPatient.setOnClickListener(this);
-//        mNewMessageLayout.setOnClickListener(this);
+/*
+        mMyClinic.setOnClickListener(this);
+        mMyPatient.setOnClickListener(this);
+        mNewMessageLayout.setOnClickListener(this);
+*/
         llQuickApplication.setOnClickListener(this);
-        //  live_layout.setOnClickListener(this);
-//        kswys.setOnClickListener(this);
-//        diet_layout.setOnClickListener(this);
-//        port_layout.setOnClickListener(this);
-//        sweem_layout.setOnClickListener(this);
-//        feeling_layout.setOnClickListener(this);
-        //我的医生
+        /*
+  live_layout.setOnClickListener(this);
+        kswys.setOnClickListener(this);
+        diet_layout.setOnClickListener(this);
+        port_layout.setOnClickListener(this);
+        sweem_layout.setOnClickListener(this);
+        feeling_layout.setOnClickListener(this);
+我的医生
+*/
         my_deoctor.setOnClickListener(this);
     }
 
@@ -1022,30 +1041,32 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                     mPopupWindow.showAsDropDown(llQuickApplication, 0, 0);
                 }
                 break;
-//            case R.id.kswys:
-//                alertWillpub();
-//                break;
-//            case R.id.diet_layout:
-//                alertWillpub();
-//                break;
-//            case R.id.port_layout:
-//                alertWillpub();
-//                break;
-//            case R.id.sweem_layout:
-//                alertWillpub();
-//                break;
-//            case R.id.feeling_layout:
-//                alertWillpub();
-//                break;
-//            case R.id.live_layout:
-//                /*Intent goliveintent = new Intent(mContext, LivePlayerActivity.class);
-//                goliveintent.putExtra("TITLE","医生直播间");
-//                goliveintent.putExtra("TYPE", LivePlayerActivity.ACTIVITY_TYPE_LIVE_PLAY);
-//                startActivity(goliveintent);*/
-//                Intent goliveintent = new Intent(mContext, MyLiveRoomActivity.class);
-//                startActivity(goliveintent);
-//
-//                break;
+/*
+            case R.id.kswys:
+                alertWillpub();
+                break;
+            case R.id.diet_layout:
+                alertWillpub();
+                break;
+            case R.id.port_layout:
+                alertWillpub();
+                break;
+            case R.id.sweem_layout:
+                alertWillpub();
+                break;
+            case R.id.feeling_layout:
+                alertWillpub();
+                break;
+            case R.id.live_layout:
+                /*Intent goliveintent = new Intent(mContext, LivePlayerActivity.class);
+                goliveintent.putExtra("TITLE","医生直播间");
+                goliveintent.putExtra("TYPE", LivePlayerActivity.ACTIVITY_TYPE_LIVE_PLAY);
+                startActivity(goliveintent);* /
+                Intent goliveintent = new Intent(mContext, MyLiveRoomActivity.class);
+                startActivity(goliveintent);
+
+                break;
+*/
         }
     }
 
@@ -1209,13 +1230,15 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
      * @param string
      */
     public void setNewMessageView(String string) {
-//        if ("".equals(string))
-//            mNewMessageLayout.setVisibility(View.GONE);
-//        else
-//        {
-//            mNewMessageLayout.setVisibility(View.VISIBLE);
-//            mNewMessage.setText(string);
-//        }
+/*
+        if ("".equals(string))
+            mNewMessageLayout.setVisibility(View.GONE);
+        else
+        {
+            mNewMessageLayout.setVisibility(View.VISIBLE);
+            mNewMessage.setText(string);
+        }
+*/
     }
 
 
@@ -1298,22 +1321,26 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                 } else {
                     //定位失败
                     mUserTitleText.setText("定位失败");
-//                    sb.append("定位失败" + "\n");
-//                    sb.append("错误码:" + location.getErrorCode() + "\n");
-//                    sb.append("错误信息:" + location.getErrorInfo() + "\n");
-//                    sb.append("错误描述:" + location.getLocationDetail() + "\n");
+/*
+                    sb.append("定位失败" + "\n");
+                    sb.append("错误码:" + location.getErrorCode() + "\n");
+                    sb.append("错误信息:" + location.getErrorInfo() + "\n");
+                    sb.append("错误描述:" + location.getLocationDetail() + "\n");
+*/
                 }
-//                sb.append("***定位质量报告***").append("\n");
-//                sb.append("* WIFI开关：").append(location.getLocationQualityReport().isWifiAble() ? "开启":"关闭").append("\n");
-//                sb.append("* GPS状态：").append(getGPSStatusString(location.getLocationQualityReport().getGPSStatus())).append("\n");
-//                sb.append("* GPS星数：").append(location.getLocationQualityReport().getGPSSatellites()).append("\n");
-//                sb.append("* 网络类型：" + location.getLocationQualityReport().getNetworkType()).append("\n");
-//                sb.append("* 网络耗时：" + location.getLocationQualityReport().getNetUseTime()).append("\n");
-//                sb.append("****************").append("\n");
-//                //定位之后的回调时间
-//
-//                //解析定位结果，
-//                String result = sb.toString();
+/*
+                sb.append("***定位质量报告***").append("\n");
+                sb.append("* WIFI开关：").append(location.getLocationQualityReport().isWifiAble() ? "开启":"关闭").append("\n");
+                sb.append("* GPS状态：").append(getGPSStatusString(location.getLocationQualityReport().getGPSStatus())).append("\n");
+                sb.append("* GPS星数：").append(location.getLocationQualityReport().getGPSSatellites()).append("\n");
+                sb.append("* 网络类型：" + location.getLocationQualityReport().getNetworkType()).append("\n");
+                sb.append("* 网络耗时：" + location.getLocationQualityReport().getNetUseTime()).append("\n");
+                sb.append("****************").append("\n");
+                //定位之后的回调时间
+
+                //解析定位结果，
+                String result = sb.toString();
+*/
             } else {
                 mUserTitleText.setText("定位失败");
             }
@@ -1377,15 +1404,17 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
             }
         }
 
-//        String strTimeout = etHttpTimeout.getText().toString();
-//        if(!TextUtils.isEmpty(strTimeout)){
-//            try{
-//                // 设置网络请求超时时间
-//                locationOption.setHttpTimeOut(Long.valueOf(strTimeout));
-//            }catch(Throwable e){
-//                e.printStackTrace();
-//            }
-//        }
+/*
+        String strTimeout = etHttpTimeout.getText().toString();
+        if(!TextUtils.isEmpty(strTimeout)){
+            try{
+                // 设置网络请求超时时间
+                locationOption.setHttpTimeOut(Long.valueOf(strTimeout));
+            }catch(Throwable e){
+                e.printStackTrace();
+            }
+        }
+*/
     }
 
     /**

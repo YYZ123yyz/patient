@@ -53,6 +53,15 @@ public class InquiryBean {
     private int treatmentType;
     private String treatmentTypeName;
     private String interrogationImgIdArray;
+    private int flagOperState;
+
+    public int getFlagOperState() {
+        return flagOperState;
+    }
+
+    public void setFlagOperState(int flagOperState) {
+        this.flagOperState = flagOperState;
+    }
 
     public String getInterrogationImgIdArray() {
         return interrogationImgIdArray;

@@ -81,4 +81,58 @@ public class MedicalRecordPresenter extends BasePresenterImpl<MedicalRecordContr
             }
         });
     }
+
+    @Override
+    public void commitDet(String params) {
+        ApiHelper.getPatientTestApi().confirmPatientRecordDet(params).compose(
+                Transformer.switchSchedulers(new ILoadingView() {
+                    @Override
+                    public void showLoadingView() {
+                        if (mView!=null) {
+                            mView.showLoading(100);
+                        }
+                    }
+
+                    @Override
+                    public void hideLoadingView() {
+                        if (mView!=null) {
+                            mView.hideLoading();
+                        }
+                    }
+                })).subscribe(new CommonDataObserver() {
+            @Override
+            protected void onSuccessResult(BaseBean baseBean) {
+                if (mView != null) {
+                    int resCode = baseBean.getResCode();
+                    if (resCode == 1) {
+                        String resJsonData = baseBean.getResJsonData();
+                        mView.commitDetSucess();
+                       /* if (StringUtils.isNotEmpty(resJsonData)) {
+                            LogUtils.e("病历接口数据"+resJsonData);
+                            MedicalRecordBean orderDetialBean = GsonUtils.fromJson(resJsonData, MedicalRecordBean.class);
+                            mView.getMedicalRecordSucess(orderDetialBean);
+                        }*/
+                    }else {
+                        mView.getDataFailure(baseBean.getResMsg());
+                    }
+                }
+
+
+            }
+
+            @Override
+            protected void onError(String s) {
+                super.onError(s);
+                Log.e("xxx", "onError: "+s);
+                if (mView!=null) {
+                    mView.showRetry();
+                }
+            }
+
+            @Override
+            protected String setTag() {
+                return GET_MEDICALRECORD_DET;
+            }
+        });
+    }
 }

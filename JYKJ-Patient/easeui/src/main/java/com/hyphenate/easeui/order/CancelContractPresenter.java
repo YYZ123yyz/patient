@@ -200,7 +200,7 @@ public class CancelContractPresenter extends BasePresenterImpl<CancelContract.Vi
         hashMap.put("operDoctorCode",operDoctorCode);
         hashMap.put("operDoctorName",operDoctorName);
         String s = RetrofitUtil.encodeParam(hashMap);
-        ApiHelper.getPatientTestApi().searchSignPatientDoctorOrder(s)
+        ApiHelper.getApiService().searchSignPatientDoctorOrder2(s)
                 .compose(Transformer.switchSchedulers()).subscribe(new CommonDataObserver() {
             @Override
             protected void onSuccessResult(BaseBean baseBean) {

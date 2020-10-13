@@ -49,6 +49,96 @@ public class ProvideInteractOrderInfo extends
 	private String timesCode;
 	private String timesName;
 	private String signNo;
+	private int orderType;
+	private long createDate;
+	private String signDuration;
+	private String signDurationUnit;
+	private String detectRateUnitCode;
+	private String detectRateUnitName;
+	private String signStatus;
+	private String mainDoctorName;
+	private String mainDoctorCode;
+	private String signCode;
+
+	public String getMainDoctorName() {
+		return mainDoctorName;
+	}
+
+	public void setMainDoctorName(String mainDoctorName) {
+		this.mainDoctorName = mainDoctorName;
+	}
+
+	public String getMainDoctorCode() {
+		return mainDoctorCode;
+	}
+
+	public void setMainDoctorCode(String mainDoctorCode) {
+		this.mainDoctorCode = mainDoctorCode;
+	}
+
+	public String getSignCode() {
+		return signCode;
+	}
+
+	public void setSignCode(String signCode) {
+		this.signCode = signCode;
+	}
+
+	public String getSignStatus() {
+		return signStatus;
+	}
+
+	public void setSignStatus(String signStatus) {
+		this.signStatus = signStatus;
+	}
+
+	public String getDetectRateUnitCode() {
+		return detectRateUnitCode;
+	}
+
+	public void setDetectRateUnitCode(String detectRateUnitCode) {
+		this.detectRateUnitCode = detectRateUnitCode;
+	}
+
+	public String getDetectRateUnitName() {
+		return detectRateUnitName;
+	}
+
+	public void setDetectRateUnitName(String detectRateUnitName) {
+		this.detectRateUnitName = detectRateUnitName;
+	}
+
+	public String getSignDuration() {
+		return signDuration;
+	}
+
+	public void setSignDuration(String signDuration) {
+		this.signDuration = signDuration;
+	}
+
+	public String getSignDurationUnit() {
+		return signDurationUnit;
+	}
+
+	public void setSignDurationUnit(String signDurationUnit) {
+		this.signDurationUnit = signDurationUnit;
+	}
+
+	public long getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(long createDate) {
+		this.createDate = createDate;
+	}
+
+	public int getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(int orderType) {
+		this.orderType = orderType;
+	}
 
 	public String getSignNo() {
 		return signNo;

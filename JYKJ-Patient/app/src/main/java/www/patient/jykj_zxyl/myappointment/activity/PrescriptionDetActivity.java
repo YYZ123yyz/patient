@@ -101,9 +101,9 @@ public class PrescriptionDetActivity extends AbstractMvpBaseActivity<Prescriptio
         mApp = (JYKJApplication) getApplication();
         Intent intent = getIntent();
         recordCode = intent.getStringExtra("recordCode");
-        //    mPresenter.sendPrescriptionDetRequest(mApp.loginDoctorPosition,"1",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),recordCode);
-        mPresenter.sendPrescriptionDetRequest("123123^123123213", "1",
-                "4dcc513a5dd34fa09a7a229a175e5c11", "Pan", "0101202009181608445105661560");
+        mPresenter.sendPrescriptionDetRequest(mApp.loginDoctorPosition,"1",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),recordCode);
+        /*mPresenter.sendPrescriptionDetRequest("123123^123123213", "1",
+                "4dcc513a5dd34fa09a7a229a175e5c11", "Pan", "0101202009181608445105661560");*/
     }
 
 

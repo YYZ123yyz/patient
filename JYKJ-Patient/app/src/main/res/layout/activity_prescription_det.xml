@@ -88,7 +88,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:text="xxx"
+                            android:text="@string/msg_def"
                             android:textColor="@color/black"
                             android:textSize="10sp" />
 
@@ -115,7 +115,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:text="xxx"
+                            android:text="@string/msg_def"
                             android:textColor="@color/black"
                             android:textSize="10sp" />
 
@@ -141,7 +141,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:text="xxx"
+                            android:text="@string/msg_def"
                             android:textColor="@color/black"
                             android:textSize="10sp" />
 
@@ -167,7 +167,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:text="xxx"
+                            android:text="@string/msg_def"
                             android:textColor="@color/black"
                             android:textSize="10sp" />
 
@@ -199,7 +199,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/request_type"
-                        android:text="b超室"
+                        android:text="@string/msg_def"
                         android:textColor="@color/textColor_black"
                         android:textSize="12sp" />
 
@@ -210,7 +210,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="45dp"
-                        android:text="260元"
+                        android:text="@string/msg_def"
                         android:textColor="@color/textColor_black"
                         android:textSize="12sp" />
 
@@ -415,7 +415,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/doctor_sign"
-                        android:text="b超室"
+                        android:text="@string/msg_def"
                         android:textColor="@color/textColor_black"
                         android:textSize="12sp" />
 
@@ -426,7 +426,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="45dp"
-                        android:text="260元"
+                        android:text="@string/msg_def"
                         android:textColor="@color/textColor_black"
                         android:textSize="12sp" />
 

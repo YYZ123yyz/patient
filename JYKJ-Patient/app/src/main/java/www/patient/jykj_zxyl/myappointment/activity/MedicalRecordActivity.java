@@ -21,6 +21,8 @@ import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -158,6 +160,9 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
     private String recordCode;
     private JYKJApplication mApp;
     private String reserveCode;
+    private boolean isConfig = false;
+    private MedicalRecordBean mBean;
+    private String drugName;
 
     @Override
     protected int setLayoutId() {
@@ -188,17 +193,26 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
     }
 
     protected void initData() {
+        Intent intent = getIntent();
+        if (intent.hasExtra("reserveCode")) {
+            reserveCode = intent.getStringExtra("reserveCode");
+        }
+
+        mPresenter.getRecordDet(RetrofitUtil.encodeParam(getParamsHashMap()));
+
+        mInflater = LayoutInflater.from(this);
+
+    }
+
+    @NotNull
+    private HashMap<String, Object> getParamsHashMap() {
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("loginPatientPosition", "108.93425^34.23053");
         paramMap.put("requestClientType", "1");
         paramMap.put("operPatientCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         paramMap.put("operPatientName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         paramMap.put("orderCode", reserveCode);
-        String s = RetrofitUtil.encodeParam(paramMap);
-        mPresenter.getRecordDet(s);
-
-        mInflater = LayoutInflater.from(this);
-
+        return paramMap;
     }
 
     @Override
@@ -209,6 +223,7 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
 
     @Override
     public void getMedicalRecordSucess(MedicalRecordBean bean) {
+        mBean = bean;
         Glide.with(MedicalRecordActivity.this).load(bean.getPatientLogoUrl()).into(userHead);
 
         patientName.setText(bean.getPatientName());
@@ -239,48 +254,46 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
         lookTv.setText(bean.getMedicalExamination());
         diagFlow.setAdapter(getTagAdapter(bean.getDiagnosisName(), diagFlow));
         checkFlow.setAdapter(getTagAdapter(bean.getInspectionName(), checkFlow));
+        isConfig = bean.getFlagConfirmState() != 0;
+        drugName = bean.getDrugName();
+        showViewOrHidd();
+    }
 
+    private void showDet() {
+        List<MedicalRecordBean.InteractOrderPrescribeListBean> interactOrderPrescribeList = mBean.getInteractOrderPrescribeList();
+        List<MedicalRecordBean.InteractOrderPrescribeListBean.PrescribeInfoBean> prescribeInfoBeans = new ArrayList<>();
+        for (int i = 0; i < interactOrderPrescribeList.size(); i++) {
 
-        if (bean.getFlagSendMedicalRecord() == 0) { //未确认
-            prescrFlow.setVisibility(View.VISIBLE);
-            linPrescr.setVisibility(View.GONE);
-            prescrFlow.setAdapter(getTagAdapter(bean.getDrugName(), prescrFlow));
-            intoCheck.setVisibility(View.GONE);
-            linConfig.setVisibility(View.VISIBLE);
-            linOnyShare.setVisibility(View.GONE);
-        } else { //已确认
-            prescrFlow.setVisibility(View.GONE);
-            linPrescr.setVisibility(View.VISIBLE);
-            intoCheck.setVisibility(View.VISIBLE);
-            linConfig.setVisibility(View.GONE);
-            linOnyShare.setVisibility(View.VISIBLE);
-            List<MedicalRecordBean.InteractOrderPrescribeListBean> interactOrderPrescribeList = bean.getInteractOrderPrescribeList();
-            List<MedicalRecordBean.InteractOrderPrescribeListBean.PrescribeInfoBean> prescribeInfoBeans = new ArrayList<>();
-            for (int i = 0; i < interactOrderPrescribeList.size(); i++) {
-
-                List<MedicalRecordBean.InteractOrderPrescribeListBean.PrescribeInfoBean> prescribeInfo = interactOrderPrescribeList.get(i).getPrescribeInfo();
-                if (prescribeInfo.size() > 1) { //有一组
-                    for (int j = 0; j < prescribeInfo.size(); j++) {
-                        if (j == 0) { //一组开头
-                            prescribeInfo.get(j).setType(DRUG_TYPE_START);
-                        } else if (j == (prescribeInfo.size()) - 1) {//一组结尾
-                            prescribeInfo.get(j).setType(DRUG_TYPE_END);
-                        } else {//中间
-                            prescribeInfo.get(j).setType(DRUG_TYPE_NOMAL);
-                        }
+            List<MedicalRecordBean.InteractOrderPrescribeListBean.PrescribeInfoBean> prescribeInfo = interactOrderPrescribeList.get(i).getPrescribeInfo();
+            if (prescribeInfo.size() > 1) { //有一组
+                for (int j = 0; j < prescribeInfo.size(); j++) {
+                    if (j == 0) { //一组开头
+                        prescribeInfo.get(j).setType(DRUG_TYPE_START);
+                    } else if (j == (prescribeInfo.size()) - 1) {//一组结尾
+                        prescribeInfo.get(j).setType(DRUG_TYPE_END);
+                    } else {//中间
+                        prescribeInfo.get(j).setType(DRUG_TYPE_NOMAL);
                     }
-                } else { //没有一组
-                    prescribeInfo.get(0).setType(DRUG_TYPE_NOMAL);
                 }
-                prescribeInfoBeans.addAll(prescribeInfo);
+            } else { //没有一组
+                prescribeInfo.get(0).setType(DRUG_TYPE_NOMAL);
             }
-            MedicalRecordDrugAdapter medicalRecordDrugAdapter = new MedicalRecordDrugAdapter(R.layout.item_record_drug, prescribeInfoBeans);
-            drugRecycleview.setAdapter(medicalRecordDrugAdapter);
-
-
+            prescribeInfoBeans.addAll(prescribeInfo);
         }
+        MedicalRecordDrugAdapter medicalRecordDrugAdapter = new MedicalRecordDrugAdapter(R.layout.item_record_drug, prescribeInfoBeans);
+        drugRecycleview.setAdapter(medicalRecordDrugAdapter);
+    }
 
-
+    private void showViewOrHidd() {
+        prescrFlow.setVisibility(!isConfig ? View.VISIBLE : View.GONE);
+        linPrescr.setVisibility(!isConfig ? View.GONE : View.VISIBLE);
+        prescrFlow.setAdapter(getTagAdapter(drugName, prescrFlow));
+        intoCheck.setVisibility(!isConfig ? View.GONE : View.VISIBLE);
+        linConfig.setVisibility(!isConfig ? View.VISIBLE : View.GONE);
+        linOnyShare.setVisibility(!isConfig ? View.GONE : View.VISIBLE);
+        if (isConfig) {
+            showDet();
+        }
     }
 
     private TagAdapter<String> getTagAdapter(String msg, TagFlowLayout checkFlow) {
@@ -312,10 +325,7 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
     @Override
     protected void initView() {
         super.initView();
-        Intent intent = getIntent();
-        if (intent.hasExtra("reserveCode")) {
-            reserveCode = intent.getStringExtra("reserveCode");
-        }
+
         mApp = (JYKJApplication) getApplication();
         ActivityUtil.setStatusBarMain(MedicalRecordActivity.this);
         drugRecycleview.setLayoutManager(new LinearLayoutManager(this));
@@ -323,25 +333,31 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
 
 
     @OnClick({R.id.confirm, R.id.download, R.id.lin_chief, R.id.lin_history, R.id.lin_prescriptionnote,
-            R.id.lin_past, R.id.lin_examination, R.id.lin_look, R.id.lin_suggest, R.id.lin_checklist,R.id.share})
+            R.id.lin_past, R.id.lin_examination, R.id.lin_look, R.id.lin_suggest, R.id.lin_checklist, R.id.share, R.id.ri_back})
     public void onClick(View view) {
         switch (view.getId()) {
             //处方笺
             case R.id.lin_prescriptionnote:
-                Intent intent1 = new Intent(MedicalRecordActivity.this, PrescriptionDetActivity.class);
-                intent1.putExtra("recordCode", reserveCode);
-                startActivity(intent1);
+                if (isConfig){
+
+                    Intent intent1 = new Intent(MedicalRecordActivity.this, PrescriptionDetActivity.class);
+                    intent1.putExtra("recordCode", reserveCode);
+                    startActivity(intent1);
+                }
                 break;
             //检查检验
             case R.id.lin_checklist:
                 //检查检验单
-                Intent intent = new Intent(MedicalRecordActivity.this, CheckListActivity.class);
-                intent.putExtra("recordCode", reserveCode);
-                startActivity(intent);
+                if (isConfig){
+
+                    Intent intent = new Intent(MedicalRecordActivity.this, CheckListActivity.class);
+                    intent.putExtra("recordCode", reserveCode);
+                    startActivity(intent);
+                }
                 break;
             //确认病历
             case R.id.confirm:
-
+                mPresenter.commitDet(RetrofitUtil.encodeParam(getParamsHashMap()));
                 break;
             case R.id.download:
 //                startActivity(new Intent(MedicalRecordActivity.this, PrescriptionDetActivity.class));
@@ -368,12 +384,21 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
                 Intent intent2 = new Intent(MedicalRecordActivity.this, DownloadService.class);
                 startService(intent2);
                 break;
+            case R.id.ri_back:
+                finish();
+                break;
         }
     }
 
     @Override
     public void getDataFailure(String msg) {
         ToastUtils.showShort(msg);
+    }
+
+    @Override
+    public void commitDetSucess() {
+        isConfig =true;
+        showViewOrHidd();
     }
 
     private void clickAndSome(LinearLayout vis, ImageView ani) {

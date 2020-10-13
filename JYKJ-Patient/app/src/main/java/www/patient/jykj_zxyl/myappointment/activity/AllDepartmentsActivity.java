@@ -1,5 +1,6 @@
 package www.patient.jykj_zxyl.myappointment.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -22,6 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
 import www.patient.jykj_zxyl.base.base_bean.AllDepartmentBean;
 import www.patient.jykj_zxyl.base.base_view.WaveSideBar;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
@@ -108,7 +110,8 @@ public class AllDepartmentsActivity extends AbstractMvpBaseActivity<AllDepartmen
         allDepartmentAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showShort("dian wo la ");
+//                ToastUtils.showShort("dian wo la ");
+                startActivity(new Intent(AllDepartmentsActivity.this, TJZJActivity.class));
             }
         });
         mRecycleview.setAdapter(allDepartmentAdapter);
@@ -123,7 +126,7 @@ public class AllDepartmentsActivity extends AbstractMvpBaseActivity<AllDepartmen
             hotDepAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    ToastUtils.showShort("dianji "+position);
+                    startActivity(new Intent(AllDepartmentsActivity.this, TJZJActivity.class));
                 }
             });
             hotDepRecycleview.setAdapter(hotDepAdapter);

@@ -53,10 +53,11 @@ public class CommonMutipleComplateOrderListItemType implements IMulItemViewType<
         int layoutId = -1;
         switch (viewType){
             case 1:
-                layoutId=R.layout.item_complated_order_card;
+                layoutId=R.layout.item_fragment_myorder_al_1;
                 break;
             case 2:
-                layoutId=R.layout.item_fragment_myorder_al_1;
+
+                layoutId=R.layout.item_complated_order_card;
                 break;
                 default:
         }

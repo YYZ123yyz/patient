@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.allin.commonadapter.ViewHolder;
 import com.allin.commonadapter.recyclerview.MultiItemRecycleViewAdapter;
 
@@ -29,7 +30,6 @@ public class OrderOnGoingAdapter extends MultiItemRecycleViewAdapter<MultiItemEn
     private OnClickItemListener onClickItemListener;
 
 
-
     public void setOnClickItemListener(OnClickItemListener onClickItemListener) {
         this.onClickItemListener = onClickItemListener;
     }
@@ -43,7 +43,7 @@ public class OrderOnGoingAdapter extends MultiItemRecycleViewAdapter<MultiItemEn
     public void convert(ViewHolder viewHolder, MultiItemEntity multiItemEntity, int i) {
         MyOrderProcess parbean = (MyOrderProcess) multiItemEntity;
         int layoutId = viewHolder.getLayoutId();
-        switch (layoutId){
+        switch (layoutId) {
             case R.layout.item_ongoing_order_card_1:
                 LinearLayout llItemRoot = viewHolder.getView(R.id.ll_item_root);
                 RelativeLayout rlCancelContractRoot = viewHolder.getView(R.id.rl_cancel_contract_root);
@@ -59,39 +59,37 @@ public class OrderOnGoingAdapter extends MultiItemRecycleViewAdapter<MultiItemEn
                 TextView mTvCoachValue = viewHolder.getView(R.id.tv_coach_value);
                 TextView mTvSignTimeValue = viewHolder.getView(R.id.tv_sign_time_value);
                 TextView mTvPriceValue = viewHolder.getView(R.id.tv_price_vlaue);
-                TextView mTvCancelContractBtn=viewHolder.getView(R.id.tv_cancel_contract_btn);
+                TextView mTvCancelContractBtn = viewHolder.getView(R.id.tv_cancel_contract_btn);
                 TextView tvConsultBtn = viewHolder.getView(R.id.tv_consult_btn);
                 TextView tvCancelContractGoingBtn = viewHolder.getView(R.id.tv_cancel_contract_going_btn);
                 TextView tvConsultBtn2 = viewHolder.getView(R.id.tv_consult_btn_2);
                 TextView tvRefuseBtn = viewHolder.getView(R.id.tv_refuse_btn);
                 TextView tvAgreeBtn = viewHolder.getView(R.id.tv_agree_btn);
-                Integer flagTreatmentState = parbean.getFlagTreatmentState();
-                if (flagTreatmentState!=null) {
-                    String orderState = flagTreatmentState.toString();
-                    switch (orderState){
-                        case OrderStatusEnum
-                                .orderSignCompleteCode:
-                            rlCancelContractRoot.setVisibility(View.VISIBLE);
-                            rlCancelContractGoingRoot.setVisibility(View.GONE);
-                            rlDoctorCancelContractRoot.setVisibility(View.GONE);
-                            break;
-                        case OrderStatusEnum.orderPatientCancelContractApplyCode:
-                            rlCancelContractGoingRoot.setVisibility(View.VISIBLE);
-                            rlCancelContractRoot.setVisibility(View.GONE);
-                            rlDoctorCancelContractRoot.setVisibility(View.GONE);
-                            break;
-                        case OrderStatusEnum.orderDoctorCancelContractCode:
-                            rlCancelContractGoingRoot.setVisibility(View.GONE);
-                            rlCancelContractRoot.setVisibility(View.GONE);
-                            rlDoctorCancelContractRoot.setVisibility(View.VISIBLE);
-                            break;
-                            default:
-                    }
+                Integer flagTreatmentState = parbean.getSignStatus();
 
+                String orderState = flagTreatmentState.toString();
+                switch (orderState) {
+                    case OrderStatusEnum
+                            .orderSignCompleteCode:
+                        rlCancelContractRoot.setVisibility(View.VISIBLE);
+                        rlCancelContractGoingRoot.setVisibility(View.GONE);
+                        rlDoctorCancelContractRoot.setVisibility(View.GONE);
+                        break;
+                    case OrderStatusEnum.orderPatientCancelContractApplyCode:
+                        rlCancelContractGoingRoot.setVisibility(View.VISIBLE);
+                        rlCancelContractRoot.setVisibility(View.GONE);
+                        rlDoctorCancelContractRoot.setVisibility(View.GONE);
+                        break;
+                    case OrderStatusEnum.orderDoctorCancelContractCode:
+                        rlCancelContractGoingRoot.setVisibility(View.GONE);
+                        rlCancelContractRoot.setVisibility(View.GONE);
+                        rlDoctorCancelContractRoot.setVisibility(View.VISIBLE);
+                        break;
+                    default:
                 }
                 mTvPriceValue.setText(String.format("¥%s", parbean.getActualPayment()));
-                mTvOrderType.setText(parbean.getTreatmentTypeName());
-                mTvOrderTime.setText(DateUtils.getStringTimeMinute(parbean.getOrderDate().getTime()));
+//                mTvOrderType.setText(parbean.getTreatmentTypeName());
+                mTvOrderTime.setText(DateUtils.getStringTimeSlash(parbean.getCreateDate()));
                 Integer coachValue = parbean.getProCount();
                 if (coachValue != null) {
                     if (coachValue == 1) {
@@ -108,43 +106,44 @@ public class OrderOnGoingAdapter extends MultiItemRecycleViewAdapter<MultiItemEn
                         mTvMonitorValue.setText("六项");
                     }
                 }
-                mTvCoachValue.setText(String.format("%d次/%s",
-                        parbean.getCoachValue(), parbean.getCoachUnitName()));
-                mTvSignTimeValue.setText(parbean.getTimesName());
-               // mTvPriceValue.setText(String.format("¥%s", parbean.getp));
+                mTvCoachValue.setText(String.format("%s次/%s",
+                        parbean.getDetectRateUnitCode(), parbean.getDetectRateUnitName()));
+//                mTvSignTimeValue.setText(parbean.getTimesName());
+                mTvSignTimeValue.setText(String.format("%s%s", parbean.getSignDuration(), parbean.getSignDurationUnit()));
+                // mTvPriceValue.setText(String.format("¥%s", parbean.getp));
                 mTvCancelContractBtn.setOnClickListener(v -> {
-                    if (onClickItemListener!=null) {
+                    if (onClickItemListener != null) {
                         onClickItemListener.onClickCancelContract(i);
                     }
                 });
                 tvConsultBtn.setOnClickListener(v -> {
-                    if (onClickItemListener!=null) {
+                    if (onClickItemListener != null) {
                         onClickItemListener.onClickConsult(i);
                     }
                 });
                 tvCancelContractGoingBtn.setOnClickListener(v -> {
-                    if (onClickItemListener!=null) {
+                    if (onClickItemListener != null) {
                         onClickItemListener.onClickCancelOnGoing(i);
                     }
                 });
                 tvConsultBtn2.setOnClickListener(v -> {
-                    if (onClickItemListener!=null) {
+                    if (onClickItemListener != null) {
                         onClickItemListener.onClickConsult(i);
                     }
                 });
                 llItemRoot.setOnClickListener(v -> {
-                    if (onClickItemListener!=null) {
-                        onClickItemListener.onClickItem(i,viewHolder);
+                    if (onClickItemListener != null) {
+                        onClickItemListener.onClickItem(i, viewHolder);
                     }
                 });
                 tvRefuseBtn.setOnClickListener(v -> {
-                    if (onClickItemListener!=null) {
+                    if (onClickItemListener != null) {
                         onClickItemListener.onClickRefused(i);
                     }
 
                 });
                 tvAgreeBtn.setOnClickListener(v -> {
-                    if (onClickItemListener!=null) {
+                    if (onClickItemListener != null) {
                         onClickItemListener.onClickAgree(i);
                     }
                 });
@@ -152,7 +151,12 @@ public class OrderOnGoingAdapter extends MultiItemRecycleViewAdapter<MultiItemEn
                 break;
             case R.layout.item_fragment_myorder_on_1:
 
-               LinearLayout mClickLinearLayout =viewHolder.getView (R.id.item_fragmentYLZX_rmjxLayout);
+                String treatmentType = "";
+                String treat_styleStr = "";
+                String service_time_titleStr = "";
+                String treat_style_toolStr = "";
+                String service_timeStr = "";
+                LinearLayout mClickLinearLayout = viewHolder.getView(R.id.item_fragmentYLZX_rmjxLayout);
                 TextView treatment_type = viewHolder.getView(R.id.treatment_type);
                 TextView process_state = viewHolder.getView(R.id.process_state);
                 TextView order_date = viewHolder.getView(R.id.order_date);
@@ -164,12 +168,54 @@ public class OrderOnGoingAdapter extends MultiItemRecycleViewAdapter<MultiItemEn
                 TextView quest_btn = viewHolder.getView(R.id.quest_btn);
                 TextView back_btn = viewHolder.getView(R.id.back_btn);
                 LinearLayout item_root = viewHolder.getView(R.id.item_root);
-                treatment_type.setText("["+parbean.getTreatmentTypeName()+"]");
-                process_state.setText(parbean.getDoctorReceiveShow());
+
+                switch (parbean.getTreatmentType()) {
+                    case 1:
+                        treatmentType = "[图文就诊]";
+                        treat_styleStr = "服务开始时间";
+                        service_time_titleStr = "服务截止时间";
+                        treat_style_toolStr = DateUtils.getStringTimeSlash(parbean.getReserveTime());
+                        service_timeStr = DateUtils.getStringTimeSlash(parbean.getReserveEndTime());
+                        break;
+                    case 2:
+                        treatmentType = "[音频就诊]";
+                        treat_styleStr = "接听电话";
+                        service_time_titleStr = "预约服务时间";
+                        treat_style_toolStr = parbean.getDoctorPhone();
+                        service_timeStr = DateUtils.getStringTimeSlash(parbean.getReserveTime());
+                        break;
+                    case 3:
+                        treatmentType = "[视频就诊]";
+                        treat_styleStr = "接听电话";
+                        service_time_titleStr = "预约服务时间";
+                        treat_style_toolStr = parbean.getDoctorPhone();
+                        service_timeStr = DateUtils.getStringTimeSlash(parbean.getReserveTime());
+                        break;
+                    case 5:
+                        treatmentType = "[电话就诊]";
+                        treat_styleStr = "接听电话";
+                        service_time_titleStr = "预约服务时间";
+                        treat_style_toolStr = parbean.getDoctorPhone();
+                        service_timeStr = DateUtils.getStringTimeSlash(parbean.getReserveTime());
+                        break;
+                }
+                treatment_type.setText(treatmentType);
+                treat_style.setText(treat_styleStr);
+                service_time_title.setText(service_time_titleStr);
+                treat_style_tool.setText(treat_style_toolStr);
+                service_time.setText(service_timeStr);
+                process_state.setText(DateUtils.getStringTimeSlash(parbean.getCreateDate()));
+
+                if (parbean.getFlagOrderState() == 2) {
+                    back_btn.setText("退款");
+                } else {
+                    back_btn.setText("退款中");
+                }
+
                 back_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (onClickItemListener!=null) {
+                        if (onClickItemListener != null && back_btn.getText().toString().equals("退款")) {
                             onClickItemListener.onClickRefund(i);
                         }
                     }
@@ -177,20 +223,20 @@ public class OrderOnGoingAdapter extends MultiItemRecycleViewAdapter<MultiItemEn
                 item_root.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (onClickItemListener!=null) {
-                            onClickItemListener.onClickItem(i,viewHolder);
+                        if (onClickItemListener != null) {
+                            onClickItemListener.onClickItem(i, viewHolder);
                         }
                     }
                 });
                 quest_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (onClickItemListener!=null) {
+                        if (onClickItemListener != null) {
                             onClickItemListener.onClickConsult(i);
                         }
                     }
                 });
-                if(parbean.getFlagColor()==null){
+               /* if(parbean.getFlagColor()==null){
 
                 }else{
                     switch (parbean.getFlagColor()) {
@@ -212,13 +258,13 @@ public class OrderOnGoingAdapter extends MultiItemRecycleViewAdapter<MultiItemEn
                             process_state.setTextColor(mContext.getResources().getColor(R.color.color_green));
                             break;
                     }
-                }
+                }*/
 
                 if (null != parbean.getOrderDate()) {
                     order_date.setText(DateUtils.fomrDateSeflFormat(parbean.getOrderDate(), "yyyy-MM-dd HH:mm"));
                 }
-                advise_doctor.setText(parbean.getDoctorName());
-                switch (parbean.getTreatmentType()) {
+                advise_doctor.setText(parbean.getMainDoctorName());
+               /* switch (parbean.getTreatmentType()) {
                     case 1:
                     case 5:
                     case 0:
@@ -250,11 +296,11 @@ public class OrderOnGoingAdapter extends MultiItemRecycleViewAdapter<MultiItemEn
                         break;
                 }
                 break;
-                default:
+            default:*/
         }
     }
 
-    public interface OnClickItemListener{
+    public interface OnClickItemListener {
         void onClickCancelContract(int pos);
 
         void onClickConsult(int pos);

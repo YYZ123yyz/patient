@@ -5,42 +5,35 @@
     android:background="@color/pBackColor"
     android:orientation="vertical">
 
-    <LinearLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:orientation="vertical">
+        android:background="@color/groabColor">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/groabColor">
+            android:id="@+id/ri_back"
+            android:layout_width="60dp"
+            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/iv_back_left"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:src="@mipmap/arrow_left" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="问诊资料"
-                android:textColor="@color/writeColor"
-                android:textSize="10pt" />
-
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/arrow_left" />
         </RelativeLayout>
 
-    </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="问诊资料"
+            android:textColor="@color/writeColor"
+            android:textSize="10pt" />
+
+    </RelativeLayout>
+
 
     <TextView
         android:layout_width="match_parent"
