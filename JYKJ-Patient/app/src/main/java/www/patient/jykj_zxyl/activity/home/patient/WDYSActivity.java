@@ -47,6 +47,7 @@ import www.patient.jykj_zxyl.base.base_activity.BaseActivity;
 import www.patient.jykj_zxyl.fragment.wdys.FragmentWDYS_FQYYS;
 import www.patient.jykj_zxyl.fragment.wdys.FragmentWDYS_GZYS;
 import www.patient.jykj_zxyl.fragment.wdys.FragmentWDYS_QYYS;
+import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
 import www.patient.jykj_zxyl.util.ProvincePicker;
 
@@ -164,8 +165,6 @@ public class WDYSActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
-
-
         //initView();
         initHandler();
         mNumPage = 1;
@@ -178,6 +177,7 @@ public class WDYSActivity extends BaseActivity {
     protected void initView() {
         mContext = this;
         mActivity = this;
+        ActivityUtil.setStatusBarMain(this);
         provideViewDoctorExpertRecommend = new ProvideViewDoctorExpertRecommend();
         mApp = (JYKJApplication) getApplication();
         llBack = (LinearLayout) findViewById(R.id.ll_back);

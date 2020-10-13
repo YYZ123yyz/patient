@@ -32,6 +32,7 @@ public class Fragment_CompletedAdapter extends RecyclerView.Adapter<Fragment_Com
     private OnItemClickZXListener mOnItemClickZXListener;           //
     private Context mContext;
     private OnItemClickListener mOnItemClickListener;
+    private OnItemMessageClickListener mOnItemMessageClickListener;
 
     public Fragment_CompletedAdapter(List<MyReservationListBean> list, Context context) {
         mContext = context;
@@ -62,16 +63,16 @@ public class Fragment_CompletedAdapter extends RecyclerView.Adapter<Fragment_Com
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, @SuppressLint("RecyclerView") final int position) {
         String reserveStatus = datas.get(position).getReserveStatus();
-        if(!TextUtils.isEmpty(reserveStatus)){
-            if(reserveStatus.equals("30")){
+        if (!TextUtils.isEmpty(reserveStatus)) {
+            if (reserveStatus.equals("30")) {
                 viewHolder.iv_stamp_icon.setVisibility(View.VISIBLE);
                 viewHolder.iv_failure_icon.setVisibility(View.GONE);
                 viewHolder.iv_cancel_icon.setVisibility(View.GONE);
-            }else if(reserveStatus.equals("110")){
+            } else if (reserveStatus.equals("110")) {
                 viewHolder.iv_stamp_icon.setVisibility(View.GONE);
                 viewHolder.iv_failure_icon.setVisibility(View.VISIBLE);
                 viewHolder.iv_cancel_icon.setVisibility(View.GONE);
-            }else if(reserveStatus.equals("130")||reserveStatus.equals("140")){
+            } else if (reserveStatus.equals("130") || reserveStatus.equals("140")) {
                 viewHolder.iv_stamp_icon.setVisibility(View.GONE);
                 viewHolder.iv_failure_icon.setVisibility(View.GONE);
                 viewHolder.iv_cancel_icon.setVisibility(View.VISIBLE);
@@ -134,6 +135,15 @@ public class Fragment_CompletedAdapter extends RecyclerView.Adapter<Fragment_Com
                 }
             });
         }
+        //诊后留言
+        if (mOnItemMessageClickListener != null) {
+            viewHolder.completed_Message.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemMessageClickListener.onClick(position);
+                }
+            });
+        }
 
 
     }
@@ -151,9 +161,9 @@ public class Fragment_CompletedAdapter extends RecyclerView.Adapter<Fragment_Com
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout mClickLinearLayout;                     //整个布局，用来监听点击事件
         public ImageView mUserHeard;                         //用户头像
-        public TextView mUserName;                          //用户名
+        public TextView mUserName, completed_Message;                          //用户名
         public TextView mUserTitle, completed_appointment, completed_project, completed_front, completed_prescription, completed_checklist, completed_medicalrecord, hospital;
-        public  ImageView iv_stamp_icon,iv_failure_icon,iv_cancel_icon;
+        public ImageView iv_stamp_icon, iv_failure_icon, iv_cancel_icon;
 
         public ViewHolder(View view) {
             super(view);
@@ -167,9 +177,10 @@ public class Fragment_CompletedAdapter extends RecyclerView.Adapter<Fragment_Com
             completed_checklist = (TextView) view.findViewById(R.id.completed_checklist);
             completed_medicalrecord = (TextView) view.findViewById(R.id.completed_medicalrecord);
             hospital = (TextView) view.findViewById(R.id.hospital);
-            iv_stamp_icon=  view.findViewById(R.id.iv_stamp_icon);
-            iv_failure_icon=  view.findViewById(R.id.iv_failure_icon);
-            iv_cancel_icon=  view.findViewById(R.id.iv_cancel_icon);
+            iv_stamp_icon = view.findViewById(R.id.iv_stamp_icon);
+            iv_failure_icon = view.findViewById(R.id.iv_failure_icon);
+            iv_cancel_icon = view.findViewById(R.id.iv_cancel_icon);
+            completed_Message = view.findViewById(R.id.completed_Message);
         }
     }
 
@@ -191,6 +202,16 @@ public class Fragment_CompletedAdapter extends RecyclerView.Adapter<Fragment_Com
 
         void onLongClick(int position);
     }
+
+    //诊后留言
+    public interface OnItemMessageClickListener {
+        void onClick(int position);
+    }
+
+    public void setOnItemMessageClickListener(OnItemMessageClickListener onItemMessageClickListener) {
+        this.mOnItemMessageClickListener = onItemMessageClickListener;
+    }
+
 
     public void setOnItemClickXYListener(OnItemClickXYListener onItemClickXYListener) {
         this.mOnItemClickXYListener = onItemClickXYListener;
