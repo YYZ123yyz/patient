@@ -152,6 +152,7 @@ public class CheckListActivity extends AbstractMvpBaseActivity<CheckListContract
                                 .diskCacheStrategy(DiskCacheStrategy.ALL))
                         .into(userHead);
             }
+            userName.setText(checkListBean.getPatientName());
             //性别
             int patientGender = checkListBean.getPatientGender();
             if (patientGender == 1) {

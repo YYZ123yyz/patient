@@ -677,8 +677,21 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             mTvFillInBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    startActivity(WZXXActivity.class, bundle);
+                    Intent intent = new Intent();
+                    Object tag = mTvCancelContractAgreeBtn.getTag();
+                    if (tag != null) {
+                        String string = tag.toString();
+                        int i = Integer.parseInt(string);
+                        if (i == 1) {
+                            String nickName = message.getStringAttribute("nickName", "");
+                            intent.setAction("android.intent.action.Inquiry");
+                            intent.putExtra("order", orderId);
+                            intent.putExtra("doctorCode", message.getFrom());
+                            intent.putExtra("doctorName", nickName);
+                            intent.putExtra("treatmentType", "1");
+                            mContext.startActivity(intent);
+                        }
+                    }
 
                 }
             });

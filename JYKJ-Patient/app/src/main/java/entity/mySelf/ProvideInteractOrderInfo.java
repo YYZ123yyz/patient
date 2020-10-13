@@ -56,6 +56,33 @@ public class ProvideInteractOrderInfo extends
 	private String detectRateUnitCode;
 	private String detectRateUnitName;
 	private String signStatus;
+	private String mainDoctorName;
+	private String mainDoctorCode;
+	private String signCode;
+
+	public String getMainDoctorName() {
+		return mainDoctorName;
+	}
+
+	public void setMainDoctorName(String mainDoctorName) {
+		this.mainDoctorName = mainDoctorName;
+	}
+
+	public String getMainDoctorCode() {
+		return mainDoctorCode;
+	}
+
+	public void setMainDoctorCode(String mainDoctorCode) {
+		this.mainDoctorCode = mainDoctorCode;
+	}
+
+	public String getSignCode() {
+		return signCode;
+	}
+
+	public void setSignCode(String signCode) {
+		this.signCode = signCode;
+	}
 
 	public String getSignStatus() {
 		return signStatus;

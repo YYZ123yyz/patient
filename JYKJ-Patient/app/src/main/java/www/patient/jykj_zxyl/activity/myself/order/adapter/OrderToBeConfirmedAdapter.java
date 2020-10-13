@@ -70,31 +70,34 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                 TextView tvOrderPaymentBtn = viewHolder.getView(R.id.tv_order_payment_btn);
                 TextView mTvDeleteBtn = viewHolder.getView(R.id.tv_delete);
 
-                Integer flagOrderState = parbean.getFlagOrderState();
-                if (flagOrderState != null) {
-                    String orderState = flagOrderState.toString();
-                    switch (orderState) {
-                        case OrderStatusEnum.orderSubmitCode:
-                            mRlToBeConfirmedRoot.setVisibility(View.VISIBLE);
-                            mRlCancelContractRoot.setVisibility(View.GONE);
-                            rlOrderPaymentRoot.setVisibility(View.GONE);
-                            break;
-                        case OrderStatusEnum.orderExpireCancelContractCode:
-                        case OrderStatusEnum.orderAdvenceCancelContractCode:
-                            mRlToBeConfirmedRoot.setVisibility(View.GONE);
-                            mRlCancelContractRoot.setVisibility(View.VISIBLE);
-                            rlOrderPaymentRoot.setVisibility(View.GONE);
+                String flagOrderState = parbean.getSignStatus();
 
-                            break;
-                        case OrderStatusEnum.orderAgreeCode:
-                            mRlToBeConfirmedRoot.setVisibility(View.GONE);
-                            mRlCancelContractRoot.setVisibility(View.GONE);
-                            rlOrderPaymentRoot.setVisibility(View.VISIBLE);
-                            break;
-                        default:
-                    }
+                String orderState = flagOrderState.toString();
+                switch (orderState) {
+                    case OrderStatusEnum.orderSubmitCode:
+                        mRlToBeConfirmedRoot.setVisibility(View.VISIBLE);
+                        mRlCancelContractRoot.setVisibility(View.GONE);
+                        rlOrderPaymentRoot.setVisibility(View.GONE);
+                        break;
+                    case OrderStatusEnum.orderExpireCancelContractCode:
+                    case OrderStatusEnum.orderAdvenceCancelContractCode:
+                        mRlToBeConfirmedRoot.setVisibility(View.GONE);
+                        mRlCancelContractRoot.setVisibility(View.VISIBLE);
+                        rlOrderPaymentRoot.setVisibility(View.GONE);
 
+                        break;
+                    case OrderStatusEnum.orderAgreeCode:
+                        mRlToBeConfirmedRoot.setVisibility(View.GONE);
+                        mRlCancelContractRoot.setVisibility(View.GONE);
+                        rlOrderPaymentRoot.setVisibility(View.VISIBLE);
+                        break;
+                    default:
+                        mRlToBeConfirmedRoot.setVisibility(View.GONE);
+                        mRlCancelContractRoot.setVisibility(View.GONE);
+                        rlOrderPaymentRoot.setVisibility(View.GONE);
+                        break;
                 }
+
 
 //                mTvOrderType.setText(parbean.getTreatmentTypeName());
                 mTvOrderTime.setText(DateUtils.getStringTimeSlash(parbean.getCreateDate()));
@@ -116,7 +119,7 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                         mTvMonitorValue.setText("六项");
                     }
                 }*/
-                String signStatus = parbean.getSignStatus();
+               /* String signStatus = parbean.getSignStatus();
                 if (signStatus.equals(OrderStatusEnum.orderSubmitCode)) {  //同意,修改,拒绝
                     mRlToBeConfirmedRoot.setVisibility(View.VISIBLE);
                     mRlCancelContractRoot.setVisibility(View.GONE);
@@ -125,11 +128,14 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
 
 
                 } else if (signStatus.equals(OrderStatusEnum.orderNeedUpdateCode)) { //修改
-
+                    mRlToBeConfirmedRoot.setVisibility(View.GONE);
+                    mRlCancelContractRoot.setVisibility(View.GONE);
+                    rlOrderPaymentRoot.setVisibility(View.VISIBLE);
+                    tvOrderPaymentBtn.setText("需修改");
 
                 } else {
 
-                }
+                }*/
 
 
                 mTvCoachValue.setText(String.format("%s次/%s",

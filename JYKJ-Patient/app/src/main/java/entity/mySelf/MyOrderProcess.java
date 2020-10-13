@@ -30,6 +30,9 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
     private int orderType;
     private long createDate;
     private String mainDoctorName;
+    private String mainDoctorCode;
+
+
     private long reserveTime;
     private String doctorPhone;
     private long reserveEndTime;
@@ -37,6 +40,34 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
     private int signStatus;
     private String detectRateUnitCode;
     private String detectRateUnitName;
+    private String signDuration;
+    private String signDurationUnit;
+
+
+    public String getMainDoctorCode() {
+        return mainDoctorCode;
+    }
+
+    public void setMainDoctorCode(String mainDoctorCode) {
+        this.mainDoctorCode = mainDoctorCode;
+    }
+
+
+    public String getSignDuration() {
+        return signDuration;
+    }
+
+    public void setSignDuration(String signDuration) {
+        this.signDuration = signDuration;
+    }
+
+    public String getSignDurationUnit() {
+        return signDurationUnit;
+    }
+
+    public void setSignDurationUnit(String signDurationUnit) {
+        this.signDurationUnit = signDurationUnit;
+    }
 
     public String getDetectRateUnitCode() {
         return detectRateUnitCode;

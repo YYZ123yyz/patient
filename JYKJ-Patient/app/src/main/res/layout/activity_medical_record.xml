@@ -80,7 +80,7 @@
                             android:id="@+id/userName"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:text="李医生"
+                            android:text="@string/msg_def"
                             android:textColor="@color/encode_view"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -135,7 +135,7 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginBottom="5dp"
-                                android:text="yyz"
+                                android:text="@string/msg_def"
                                 android:textColor="@color/encode_view"
                                 android:textSize="12sp" />
 
@@ -161,7 +161,7 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginBottom="5dp"
-                                android:text="科室"
+                                android:text="@string/msg_def"
                                 android:textColor="@color/encode_view"
                                 android:textSize="12sp" />
 
@@ -199,7 +199,7 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginBottom="5dp"
-                                android:text="科室"
+                                android:text="@string/msg_def"
                                 android:textColor="@color/encode_view"
                                 android:textSize="12sp" />
 
@@ -226,7 +226,7 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginBottom="5dp"
-                                android:text="888"
+                                android:text="@string/msg_def"
                                 android:textColor="@color/encode_view"
                                 android:textSize="12sp" />
 
@@ -296,7 +296,7 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:text="2222222"
+                            android:text="@string/msg_def"
                             android:textColor="@color/textColor_vo"
                             android:visibility="visible" />
                     </LinearLayout>
@@ -355,7 +355,7 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:text="2222222"
+                            android:text="@string/msg_def"
                             android:textColor="@color/textColor_vo"
                             android:visibility="visible" />
                     </LinearLayout>
@@ -414,7 +414,7 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:text="66666666666666666"
+                            android:text="@string/msg_def"
                             android:textColor="@color/textColor_vo" />
                     </LinearLayout>
 
@@ -471,7 +471,7 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="10dp"
-                            android:text="2222222"
+                            android:text="@string/msg_def"
                             android:textColor="@color/textColor_vo"/>
                     </LinearLayout>
 
@@ -530,7 +530,7 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="10dp"
-                            android:text="2222222"
+                            android:text="@string/msg_def"
                             android:textColor="@color/textColor_vo"/>
                     </LinearLayout>
 
@@ -614,7 +614,7 @@
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginBottom="10dp"
-                                android:text="2222222"
+                                android:text="@string/msg_def"
                                 android:textColor="@color/textColor_vo"/>
 
                         </LinearLayout>

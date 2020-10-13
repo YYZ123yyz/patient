@@ -108,7 +108,8 @@ public class OrderOnGoingAdapter extends MultiItemRecycleViewAdapter<MultiItemEn
                 }
                 mTvCoachValue.setText(String.format("%s次/%s",
                         parbean.getDetectRateUnitCode(), parbean.getDetectRateUnitName()));
-                mTvSignTimeValue.setText(parbean.getTimesName());
+//                mTvSignTimeValue.setText(parbean.getTimesName());
+                mTvSignTimeValue.setText(String.format("%s%s", parbean.getSignDuration(), parbean.getSignDurationUnit()));
                 // mTvPriceValue.setText(String.format("¥%s", parbean.getp));
                 mTvCancelContractBtn.setOnClickListener(v -> {
                     if (onClickItemListener != null) {

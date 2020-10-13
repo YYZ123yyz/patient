@@ -18,17 +18,20 @@ import com.hyphenate.easeui.ui.ChatActivity;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import www.patient.jykj_zxyl.base.base_bean.BaseReasonBean;
 import www.patient.jykj_zxyl.base.base_bean.OrderDetialBean;
 import www.patient.jykj_zxyl.base.base_bean.OrderMessage;
+import www.patient.jykj_zxyl.base.base_bean.RefusedOrderBean;
 import www.patient.jykj_zxyl.base.base_bean.UserInfoBaseBean;
 import www.patient.jykj_zxyl.base.base_dialog.BaseReasonDialog;
 import www.patient.jykj_zxyl.base.base_utils.ActivityStackManager;
 import www.patient.jykj_zxyl.base.base_utils.SharedPreferences_DataSave;
 import www.patient.jykj_zxyl.base.base_view.BaseToolBar;
 import www.patient.jykj_zxyl.base.http.ParameUtil;
+import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
 
 /**
@@ -47,27 +50,31 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
     private BaseReasonDialog mCancelContractDialog;
     private List<BaseReasonBean> baseReasonBeans;
     private BaseReasonBean baseReasonBean;
-    private OrderDetialBean orderDetialBean;
-    private String orderId;
+    //    private OrderDetialBean orderDetialBean;
+    private String orderId,orderNo;
     private List<OrderDetialBean.OrderDetailListBean> monitorTypeList;
     private List<OrderDetialBean.OrderDetailListBean> coachTypeList;
     private ProvideViewSysUserPatientInfoAndRegion mProvideViewSysUserPatientInfoAndRegion;
     private String operDoctorCode;
     private String operDoctorName;
-    private static final String DATA_MONITOR_CODE="10";//监测类型
-    private static final String DATA_COATCH_CODE="20";//辅导类型
+    private static final String DATA_MONITOR_CODE = "10";//监测类型
+    private static final String DATA_COATCH_CODE = "20";//辅导类型
+    private String userLogoUrl;
+
+
     @Override
     protected void onBeforeSetContentLayout() {
         super.onBeforeSetContentLayout();
         monitorTypeList = new ArrayList<>();
         coachTypeList = new ArrayList<>();
-        mCancelContractDialog = new BaseReasonDialog(this,"拒绝原因");
-        baseReasonBeans=new ArrayList<>();
+        mCancelContractDialog = new BaseReasonDialog(this, "拒绝原因");
+        baseReasonBeans = new ArrayList<>();
         Bundle extras = this.getIntent().getExtras();
-        if (extras!=null) {
-             orderId = extras.getString("orderId");
-            operDoctorCode=extras.getString("operDoctorCode");
-            operDoctorName=extras.getString("operDoctorName");
+        if (extras != null) {
+            orderId = extras.getString("orderId");
+            operDoctorCode = extras.getString("operDoctorCode");
+            operDoctorName = extras.getString("operDoctorName");
+            orderNo = extras.getString("orderNo");
         }
     }
 
@@ -80,17 +87,18 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
     @Override
     protected void initView() {
         super.initView();
-        mLlRefuseRoot=findViewById(R.id.ll_refuse_root);
-        mTvCancelContract=findViewById(R.id.tv_cancel_contract);
-        edRefusedReason=findViewById(R.id.ed_refused_reason);
-        mTvSubmitBtn=findViewById(R.id.tv_submit_btn);
-        mToolBar=findViewById(R.id.toolbar);
+        mLlRefuseRoot = findViewById(R.id.ll_refuse_root);
+        mTvCancelContract = findViewById(R.id.tv_cancel_contract);
+        edRefusedReason = findViewById(R.id.ed_refused_reason);
+        mTvSubmitBtn = findViewById(R.id.tv_submit_btn);
+        mToolBar = findViewById(R.id.toolbar);
         setToolBar();
         addListener();
     }
 
     @Override
     protected void initData() {
+
         SharedPreferences_DataSave jykjdocter = new SharedPreferences_DataSave(this, "JYKJDOCTER");
         String userInfoSuLogin = jykjdocter.getString("viewSysUserDoctorInfoAndHospital", "");
         try {
@@ -99,7 +107,7 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
 
         }
         mPresenter.sendGetBasicsDomainRequest("90002");
-        mPresenter.sendSearchSignPatientDoctorOrderRequest(orderId,operDoctorCode,operDoctorName);
+//        mPresenter.sendSearchSignPatientDoctorOrderRequest(orderId,operDoctorCode,operDoctorName);
     }
 
     /**
@@ -112,11 +120,10 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
     }
 
 
-
     @Override
     public void showLoading(int code) {
-        if (code==101) {
-            showLoading("",null);
+        if (code == 101) {
+            showLoading("", null);
         }
     }
 
@@ -128,7 +135,7 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
     /**
      * 添加监听
      */
-    private void addListener(){
+    private void addListener() {
         mLlRefuseRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,26 +149,33 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
         mCancelContractDialog.setOnClickItemListener(new BaseReasonDialog.OnClickItemListener() {
             @Override
             public void onClickItem(BaseReasonBean cancelContractBean) {
-                RefusedOrderActivity.this.baseReasonBean=cancelContractBean;
+                RefusedOrderActivity.this.baseReasonBean = cancelContractBean;
                 mTvCancelContract.setText(cancelContractBean.getAttrName());
             }
         });
         mTvSubmitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(baseReasonBean!=null&&orderDetialBean!=null){
+                if (baseReasonBean != null) {
+
+
+
+
+
+
                     String refusedReason = edRefusedReason.getText().toString();
 
-                    mPresenter.sendRefusedOrderRequest(ParameUtil.loginDoctorPosition
-                            ,orderDetialBean.getMainDoctorCode(),
-                            orderDetialBean.getMainDoctorName(),
-                            orderDetialBean.getSignCode(),
-                            orderDetialBean.getSignNo(),
-                            orderDetialBean.getMainPatientCode()
-                            ,orderDetialBean.getMainUserName(),"0",
-                            baseReasonBean.getAttrCode()+"",baseReasonBean.getAttrName(),refusedReason);
 
-                }else{
+                    mPresenter.sendRefusedOrderRequest(ParameUtil.loginDoctorPosition
+                            , operDoctorCode,
+                            operDoctorName,
+                            orderNo ,  //signCode
+                            orderId ,  //signNo
+                            mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),
+                            mProvideViewSysUserPatientInfoAndRegion.getUserName(), "0",
+                            baseReasonBean.getAttrCode() + "", baseReasonBean.getAttrName(), refusedReason);
+
+                } else {
                     ToastUtils.showToast("请选择拒绝原因");
                 }
 
@@ -170,19 +184,16 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
     }
 
 
-
     @Override
     public void getBasicDomainResult(List<BaseReasonBean> cancelContractBeans) {
-       this.baseReasonBeans=cancelContractBeans;
+        this.baseReasonBeans = cancelContractBeans;
     }
 
     @Override
     public void getRefusedOrderResult(boolean isSucess, String msg) {
         if (isSucess) {
-            if (orderDetialBean != null) {
-                mPresenter.sendGetUserListRequest(orderDetialBean.getMainDoctorCode());
-            }
-        }else{
+                mPresenter.sendGetUserListRequest(operDoctorCode);
+        } else {
             ToastUtils.showToast(msg);
         }
 
@@ -190,8 +201,8 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
 
     @Override
     public void getSearchSignPatientDoctorOrderResult(OrderDetialBean orderDetialBean) {
-        this.orderDetialBean=orderDetialBean;
-        handleOrderListResult(orderDetialBean);
+      /*  this.orderDetialBean=orderDetialBean;
+        handleOrderListResult(orderDetialBean);*/
     }
 
     @Override
@@ -199,48 +210,65 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
         if (ActivityStackManager.getInstance().exists(ChatActivity.class)) {
             ActivityStackManager.getInstance().finish(ChatActivity.class);
         }
+        userLogoUrl = userInfoBaseBean.getUserLogoUrl();
+        HashMap<String, String> stringStringHashMap = new HashMap<>();
+        stringStringHashMap.put("loginPatientPosition", "108.93425^34.23053");
+        stringStringHashMap.put("requestClientType", "1");
+        stringStringHashMap.put("searchPatientCode", mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        stringStringHashMap.put("searchPatientName",mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        stringStringHashMap.put("orderCode",orderId);
+        String s = RetrofitUtil.encodeParam(stringStringHashMap);
+        mPresenter.getOrderDet(s);
 
+
+
+        this.finish();
+    }
+
+    @Override
+    public void getRufusedDet(RefusedOrderBean userInfoBaseBean) {
         Intent intent = new Intent();
         intent.setClass(this, ChatActivity.class);
-        intent.putExtra("userCode", orderDetialBean.getMainDoctorCode());
-        intent.putExtra("userName", orderDetialBean.getMainDoctorName());
-        intent.putExtra("doctorUrl", userInfoBaseBean.getUserLogoUrl());
+        intent.putExtra("userCode", operDoctorCode);
+        intent.putExtra("userName", operDoctorName);
+        intent.putExtra("doctorUrl", userLogoUrl);
         intent.putExtra("patientUrl", mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
         intent.putExtra("operDoctorName", mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        Bundle bundle=new Bundle();
-        OrderMessage card = getOrderMessage("card", "3");
-        if (card!=null) {
+        Bundle bundle = new Bundle();
+        OrderMessage card = getOrderMessage("card", "3",userInfoBaseBean);
+        if (card != null) {
             card.setImageUrl(mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
         }
         bundle.putSerializable("orderMsg", card);
         intent.putExtras(bundle);
         startActivity(intent);
         setResult(1000);
-        this.finish();
     }
 
 
     /**
      * 获取订单信息
+     *
      * @param messageType 消息类型
-     * @param orderType 操作类型
+     * @param orderType   操作类型
      * @return orderMessage
      */
-    private OrderMessage getOrderMessage(String messageType, String orderType) {
+    private OrderMessage getOrderMessage(String messageType, String orderType, RefusedOrderBean userInfoBaseBean) {
         @SuppressLint("DefaultLocale")
-        String  monitorRate= String.format("一次/%d%s", orderDetialBean.getDetectRate(),
-                orderDetialBean.getDetectRateUnitName());
-        OrderMessage orderMessage = new OrderMessage(orderDetialBean.getSignCode()
-                ,orderDetialBean.getSignNo(),
+        String monitorRate = String.format("%s次/%s",
+                userInfoBaseBean.getDetectRateUnitCode(), userInfoBaseBean.getDetectRateUnitName());
+        OrderMessage orderMessage = new OrderMessage(userInfoBaseBean.getSignCode()
+                , userInfoBaseBean.getSignNo(),
                 monitorTypeList.size() + "项", monitorRate,
-                orderDetialBean.getSignDuration()+ orderDetialBean.getSignDurationUnit()
-                , orderDetialBean.getSignPrice() + "", messageType, orderType);
+                userInfoBaseBean.getSignDuration() + userInfoBaseBean.getSignDurationUnit()
+                , userInfoBaseBean.getSignPrice() + "", messageType, orderType);
         return orderMessage;
 
     }
 
     /**
      * 处理订单详情数据
+     *
      * @param orderDetialData 订单详情
      */
     private void handleOrderListResult(OrderDetialBean orderDetialData) {
@@ -249,7 +277,7 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
             String configDetailTypeCode = orderDetailListBean.getConfigDetailTypeCode();
             if (configDetailTypeCode.equals(DATA_MONITOR_CODE)) {
                 monitorTypeList.add(orderDetailListBean);
-            }else if(configDetailTypeCode.equals(DATA_COATCH_CODE)){
+            } else if (configDetailTypeCode.equals(DATA_COATCH_CODE)) {
                 coachTypeList.add(orderDetailListBean);
             }
         }

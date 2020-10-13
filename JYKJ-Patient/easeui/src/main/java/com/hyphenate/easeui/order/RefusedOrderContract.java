@@ -6,6 +6,7 @@ import java.util.List;
 
 import www.patient.jykj_zxyl.base.base_bean.BaseReasonBean;
 import www.patient.jykj_zxyl.base.base_bean.OrderDetialBean;
+import www.patient.jykj_zxyl.base.base_bean.RefusedOrderBean;
 import www.patient.jykj_zxyl.base.base_bean.UserInfoBaseBean;
 import www.patient.jykj_zxyl.base.mvp.BasePresenter;
 import www.patient.jykj_zxyl.base.mvp.BaseView;
@@ -45,6 +46,7 @@ public class RefusedOrderContract {
          */
         void getUserInfoResult(UserInfoBaseBean userInfoBaseBean);
 
+        void getRufusedDet(RefusedOrderBean userInfoBaseBean);
     }
 
     public interface Presenter extends BasePresenter<View> {
@@ -95,6 +97,8 @@ public class RefusedOrderContract {
          * @param userCodeList 医生或者患者Id列表
          */
         void sendGetUserListRequest(String userCodeList);
+
+        void getOrderDet(String userCodeList);
 
     }
 }
