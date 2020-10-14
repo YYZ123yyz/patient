@@ -122,13 +122,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="点赞量        "
+                    android:text="点赞量   "
                     android:textSize="13sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
                     android:id="@+id/frequency"
-                    android:textColor="#fa4a4a"
+                    android:text=""
+                    android:textColor="#FF0000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:textColor="#FF0000"
                     android:text="次"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -139,13 +144,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="就诊人数        "
+                    android:text="就诊人数   "
                     android:textSize="13sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
                     android:id="@+id/people"
-                    android:textColor="#fa4a4a"
+                    android:text=""
+                    android:textColor="#FF0000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:textColor="#FF0000"
                     android:text="人"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

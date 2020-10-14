@@ -16,7 +16,15 @@ public class ProvidePatientBindingMyDoctorInfo implements java.io.Serializable {
 	/************************* 【非签约医生】 *************************/
 	private Integer dpBindingId;//医患绑定编号
 	private Integer flagBindingState;//绑定标识(0:未绑定;1:绑定;)
-	private Integer flagTreatmentState;//就诊标识(0:未就诊;1:就诊;)
+	private Integer flagTreatmentStatus;//按钮状态：就诊记录(0:不显示;1:显示;)
+
+	public Integer getFlagTreatmentStatus() {
+		return flagTreatmentStatus;
+	}
+
+	public void setFlagTreatmentStatus(Integer flagTreatmentStatus) {
+		this.flagTreatmentStatus = flagTreatmentStatus;
+	}
 
 	public Integer getDpBindingId() {
 		return dpBindingId;
@@ -34,13 +42,7 @@ public class ProvidePatientBindingMyDoctorInfo implements java.io.Serializable {
 		this.flagBindingState = flagBindingState;
 	}
 
-	public Integer getFlagTreatmentState() {
-		return flagTreatmentState;
-	}
 
-	public void setFlagTreatmentState(Integer flagTreatmentState) {
-		this.flagTreatmentState = flagTreatmentState;
-	}
 
 	private Integer doctorId;//医生编号
 	private String doctorCode;//医生编码
@@ -93,7 +95,25 @@ public class ProvidePatientBindingMyDoctorInfo implements java.io.Serializable {
 	private String searchDoctorTitle;
 	private	String bindingDoctorCode;
 	private	String bindingDoctorName;
+	//咨询按钮
+	private Integer flagConsultingStatus;//按钮状态：咨询(0:不显示;1:显示;)
+	private Integer flagAppointmentStatus;//按钮状态：预约(0:不显示;1:显示;)
 
+	public Integer getFlagConsultingStatus() {
+		return flagConsultingStatus;
+	}
+
+	public void setFlagConsultingStatus(Integer flagConsultingStatus) {
+		this.flagConsultingStatus = flagConsultingStatus;
+	}
+
+	public Integer getFlagAppointmentStatus() {
+		return flagAppointmentStatus;
+	}
+
+	public void setFlagAppointmentStatus(Integer flagAppointmentStatus) {
+		this.flagAppointmentStatus = flagAppointmentStatus;
+	}
 
 	public String getBindingDoctorCode() {
 		return bindingDoctorCode;

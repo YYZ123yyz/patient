@@ -46,6 +46,7 @@ public class ProvideViewDoctorExpertRecommend implements java.io.Serializable {
 	
 	private Integer collectNum;//收藏
 	private Integer thumbsUpNum;//点赞
+	private Integer allSumNum;//点赞
 	private Integer flagImgText;//图文就诊开通标识(0:未开通;1:已开通;)
 	private Long imgTextSumNum;//就诊量：图文
 	private Integer flagAudio;//音频就诊开通标识(0:未开通;1:已开通;)
@@ -95,6 +96,14 @@ public class ProvideViewDoctorExpertRecommend implements java.io.Serializable {
 
 	/********** 【我的医生】 **********/
 	private Integer pcBindingId;//【关注医生】使用。患者关注收藏医生编号
+
+	public Integer getAllSumNum() {
+		return allSumNum;
+	}
+
+	public void setAllSumNum(Integer allSumNum) {
+		this.allSumNum = allSumNum;
+	}
 
 	private String patientCode;
 

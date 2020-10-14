@@ -60,33 +60,34 @@ public class FragmentHomeTJZJAdapter extends RecyclerView.Adapter<FragmentHomeTJ
      */
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, @SuppressLint("RecyclerView") final int position) {
-        try {
-            int avatarResId = Integer.parseInt(datas.get(position).getUserLogoUrl());
-            Glide.with(mContext).load(avatarResId).into(viewHolder.mUserHeard);
-        } catch (Exception e) {
-            //use default avatar
-            Glide.with(mContext).load(datas.get(position).getUserLogoUrl())
-                    .apply(RequestOptions.placeholderOf(R.mipmap.tx_nh)
-                            .diskCacheStrategy(DiskCacheStrategy.ALL))
-                    .into(viewHolder.mUserHeard);
-        }
+       if(datas!=null){
+           try {
+               int avatarResId = Integer.parseInt(datas.get(position).getUserLogoUrl());
+               Glide.with(mContext).load(avatarResId).into(viewHolder.mUserHeard);
+           } catch (Exception e) {
+               //use default avatar
+               Glide.with(mContext).load(datas.get(position).getUserLogoUrl())
+                       .apply(RequestOptions.placeholderOf(R.mipmap.tx_nh)
+                               .diskCacheStrategy(DiskCacheStrategy.ALL))
+                       .into(viewHolder.mUserHeard);
+           }
 
-        if (datas.get(position).getUserName() == null || "".equals(datas.get(position).getUserName()))
-            viewHolder.mUserName.setText("未设置");
-        else
-            viewHolder.mUserName.setText(datas.get(position).getUserName());
-        if (datas.get(position).getDoctorTitleName() == null || "".equals(datas.get(position).getDoctorTitleName()))
-            viewHolder.mUserTitle.setText("未设置");
-        else
-            viewHolder.mUserTitle.setText(datas.get(position).getDoctorTitleName() + "|" + datas.get(position).getDepartmentSecondName());
-        if (datas.get(position).getHospitalInfoName() == null || "".equals(datas.get(position).getHospitalInfoName()))
-            viewHolder.mUserHospital.setText("未设置");
-        else
-            viewHolder.mUserHospital.setText(datas.get(position).getHospitalInfoName());
-        if (datas.get(position).getGoodAtRealm() == null || "".equals(datas.get(position).getGoodAtRealm()))
-            viewHolder.mUserGoodAtRealm.setText("擅长:  "+"未设置");
-        else
-            viewHolder.mUserGoodAtRealm.setText("擅长:  "+datas.get(position).getGoodAtRealm());
+           if (datas.get(position).getUserName() == null || "".equals(datas.get(position).getUserName()))
+               viewHolder.mUserName.setText("未设置");
+           else
+               viewHolder.mUserName.setText(datas.get(position).getUserName());
+           if (datas.get(position).getDoctorTitleName() == null || "".equals(datas.get(position).getDoctorTitleName()))
+               viewHolder.mUserTitle.setText("未设置");
+           else
+               viewHolder.mUserTitle.setText(datas.get(position).getDoctorTitleName() + "|" + datas.get(position).getDepartmentSecondName());
+           if (datas.get(position).getHospitalInfoName() == null || "".equals(datas.get(position).getHospitalInfoName()))
+               viewHolder.mUserHospital.setText("未设置");
+           else
+               viewHolder.mUserHospital.setText(datas.get(position).getHospitalInfoName());
+           if (datas.get(position).getGoodAtRealm() == null || "".equals(datas.get(position).getGoodAtRealm()))
+               viewHolder.mUserGoodAtRealm.setText("擅长:  "+"未设置");
+           else
+               viewHolder.mUserGoodAtRealm.setText("擅长:  "+datas.get(position).getGoodAtRealm());
 //        if (datas.get(position).getImgTextPriceShow() == null || "".equals(datas.get(position).getImgTextPriceShow()))
 //            viewHolder.imgTextPrice.setText("未设置");
 //        else
@@ -154,23 +155,29 @@ public class FragmentHomeTJZJAdapter extends RecyclerView.Adapter<FragmentHomeTJ
 //            viewHolder.mImgQYJZ.setBackgroundResource(R.mipmap.qy_p);
 //        else
 //            viewHolder.mImgQYJZ.setBackgroundResource(R.mipmap.qy_d);
-        if (mOnItemClickListener != null) {
-            viewHolder.mClickLinearLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mOnItemClickListener.onClick(position);
-                }
-            });
+           //点赞量
+           viewHolder.frequency.setText(datas.get(position).getThumbsUpNum()+"");
+           //人数
+           viewHolder.people.setText(datas.get(position).getAllSumNum()+"");
+           if (mOnItemClickListener != null) {
+               viewHolder.mClickLinearLayout.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View view) {
+                       mOnItemClickListener.onClick(position);
+                   }
+               });
 
-            viewHolder.mClickLinearLayout.setOnLongClickListener(new View.OnLongClickListener() {
+               viewHolder.mClickLinearLayout.setOnLongClickListener(new View.OnLongClickListener() {
 
-                @Override
-                public boolean onLongClick(View view) {
-                    mOnItemClickListener.onLongClick(position);
-                    return false;
-                }
-            });
-        }
+                   @Override
+                   public boolean onLongClick(View view) {
+                       mOnItemClickListener.onLongClick(position);
+                       return false;
+                   }
+               });
+           }
+
+       }
 
 
     }
@@ -209,6 +216,8 @@ public class FragmentHomeTJZJAdapter extends RecyclerView.Adapter<FragmentHomeTJ
         public ImageView mImgYYJZ;                         //语音就诊图标
         public ImageView mImgSPJZ;                         //视频就诊图标
         public ImageView mImgQYJZ;                         //签约就诊图标
+        private final TextView frequency;
+        private final TextView people;
 
 
         public ViewHolder(View view) {
@@ -219,6 +228,9 @@ public class FragmentHomeTJZJAdapter extends RecyclerView.Adapter<FragmentHomeTJ
             mUserTitle = (TextView) view.findViewById(R.id.userTitle);
             mUserHospital = (TextView) view.findViewById(R.id.userHospital);
             mUserGoodAtRealm = (TextView) view.findViewById(R.id.userGoodAtRealm);
+            frequency = view.findViewById(R.id.frequency);
+            //人数
+            people = view.findViewById(R.id.people);
 //            imgTextPrice = (TextView) view.findViewById(R.id.imgTextPrice);
 //            imgTextSumNum = (TextView) view.findViewById(R.id.imgTextSumNum);
 //            phonePriceStr = (TextView) view.findViewById(R.id.phonePriceStr);

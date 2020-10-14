@@ -105,7 +105,8 @@
                         android:textColor="@color/textColor_black" />
                 </LinearLayout>
 
-                <TextView
+                <EditText
+                    android:hint="请输入您的留言内容（不超过300字）。"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:layout_marginLeft="10dp"
@@ -138,6 +139,7 @@
                         android:textColor="@color/textColor_black" />
 
                     <TextView
+                        android:id="@+id/tv_prompt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -147,6 +149,16 @@
                         android:textSize="12sp" />
 
                 </LinearLayout>
+
+              <TextView
+                  android:id="@+id/tv_hint"
+                  android:layout_marginRight="@dimen/dp10"
+                  android:layout_marginLeft="@dimen/dp10"
+                  android:text="可上传检查资料、病例照片、医院化验单、报告单、处方单等 (图片最多不超过5张)"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
@@ -159,63 +171,25 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/message_recy"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/writeColor"
-                android:orientation="vertical">
-
-
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="医生回复"
-                    android:textColor="@color/textColor_black"
-                    android:textSize="12sp" />
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/shape_edittext_bg"
-                    android:gravity="top"
-                    android:hint="未设置"
-                    android:id="@+id/tv_messageReply"
-                    android:padding="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:textSize="14sp" />
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@mipmap/bg2"
+                    android:textColor="#fff"
+                    android:id="@+id/tv_commit"
+                    android:text="确定"
+                    android:layout_width="235dp"
+                    android:layout_height="33dp"/>
             </LinearLayout>
 
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="回复"-->
-                <!--android:background="@drawable/shape_corner_button1"-->
-                <!--android:textColor="@color/writeColor"-->
-                <!--android:gravity="center"-->
-                <!--android:layout_marginTop="10dp"-->
-                <!--android:id="@+id/tv_commit"-->
-                <!--android:layout_marginBottom="10dp"-->
-                <!--android:layout_marginLeft="70dp"-->
-                <!--android:layout_marginRight="70dp"-->
-                <!--android:padding="6dp"/>-->
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="给患者增加1次留言机会"-->
-                <!--android:layout_gravity="center_horizontal"-->
-                <!--android:textColor="@color/groabColor"-->
-                <!--android:textSize="14sp"-->
-                <!--android:drawableLeft="@mipmap/icon_add_blue"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:drawablePadding="5dp"/>-->
         </LinearLayout>
 
     </ScrollView>

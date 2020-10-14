@@ -77,7 +77,7 @@ public class OrderDetialBean {
     private long signEndTime;
     private int signId;
     private String signNo;
-    private double signPrice;
+    private int signPrice;
     private long signStartTime;
     private String signStatus;
     private String signUnit;
@@ -284,11 +284,11 @@ public class OrderDetialBean {
         this.signNo = signNo;
     }
 
-    public double getSignPrice() {
+    public int getSignPrice() {
         return signPrice;
     }
 
-    public void setSignPrice(double signPrice) {
+    public void setSignPrice(int signPrice) {
         this.signPrice = signPrice;
     }
 

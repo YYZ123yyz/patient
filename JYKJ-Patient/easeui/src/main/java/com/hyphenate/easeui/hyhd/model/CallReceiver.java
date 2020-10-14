@@ -1,10 +1,10 @@
 /**
  * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,6 +14,7 @@
 
 package com.hyphenate.easeui.hyhd.model;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -37,42 +38,42 @@ import com.hyphenate.util.EMLog;
 import java.util.List;
 
 
-public class CallReceiver extends BroadcastReceiver{
+public class CallReceiver extends BroadcastReceiver {
 
 
-    private                 String                      mNetRetStr;                 //返回字符串
-    private                 Context                     mContext;
-    private                 String                      mFrom;
-    private                 String                      mType;
-    private                 Long                        mFirstTime;                 //第一次时间
-    private                 Handler                     mHandler = new Handler(){
+    private String mNetRetStr;                 //返回字符串
+    private Context mContext;
+    private String mFrom;
+    private String mType;
+    private Long mFirstTime;                 //第一次时间
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what)
-            {
+            switch (msg.what) {
                 case 1:
                     String stringUserName = "";
                     if (mNetRetStr != null && !mNetRetStr.equals("")) {
                         NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
                         if (netRetEntity.getResCode() == 1) {
-                            List<ProvideDoctorPatientUserInfo> mProvideDoctorPatientUserInfos =  new Gson().fromJson(netRetEntity.getResJsonData(), new TypeToken<List<ProvideDoctorPatientUserInfo>>(){}.getType());
+                            List<ProvideDoctorPatientUserInfo> mProvideDoctorPatientUserInfos = new Gson().fromJson(netRetEntity.getResJsonData(), new TypeToken<List<ProvideDoctorPatientUserInfo>>() {
+                            }.getType());
 
-                            if (mProvideDoctorPatientUserInfos != null && mProvideDoctorPatientUserInfos.size() > 0)
-                            {
+                            if (mProvideDoctorPatientUserInfos != null && mProvideDoctorPatientUserInfos.size() > 0) {
                                 stringUserName = mProvideDoctorPatientUserInfos.get(0).getUserName();
                             }
                         }
                     }
                     mFirstTime = System.currentTimeMillis();
-                    if("video".equals(mType)){ //video call
+                    if ("video".equals(mType)) { //video call
 
                         mContext.startActivity(new Intent(mContext, VideoCallActivity.class).
                                 putExtra("username", mFrom).putExtra("isComingCall", true).putExtra("nickName", stringUserName).
-                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("vedioNum",1000000));
-                    }else{ //voice call
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("vedioNum", 1000000));
+                    } else { //voice call
                         mContext.startActivity(new Intent(mContext, VoiceCallActivity.class).
                                 putExtra("username", mFrom).putExtra("isComingCall", true).putExtra("nickName", stringUserName).
-                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("voiceNum",1000000));
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("voiceNum", 1000000));
                         //            MediaSoundUtil mediaSoundUtil = new MediaSoundUtil(context);
                         //            mediaSoundUtil.playRingSound();
                     }
@@ -80,9 +81,10 @@ public class CallReceiver extends BroadcastReceiver{
                     break;
             }
         }
-    };;
+    };
+    ;
 
-    public static long getDistanceTime(long  time1,long time2 ) {
+    public static long getDistanceTime(long time1, long time2) {
         long day = 0;
         long hour = 0;
         long min = 0;
@@ -95,10 +97,9 @@ public class CallReceiver extends BroadcastReceiver{
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(!DemoHelper.getInstance().isLoggedIn())
+        if (!DemoHelper.getInstance().isLoggedIn())
             return;
-        if (mFirstTime != null)
-        {
+        if (mFirstTime != null) {
             long timeDistance = getDistanceTime(mFirstTime, System.currentTimeMillis());
             if (timeDistance < 3)
                 return;
@@ -115,20 +116,20 @@ public class CallReceiver extends BroadcastReceiver{
 
     }
 
-    private void getUserInfo(final String userCode){
+    private void getUserInfo(final String userCode) {
         //连接网络，登录
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
 
                 ProvideDoctorPatientUserInfo provideDoctorPatientUserInfo = new ProvideDoctorPatientUserInfo();
                 provideDoctorPatientUserInfo.setUserCodeList(userCode);
                 try {
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideDoctorPatientUserInfo),Constant.SERVICEURL+"patientDoctorCommonDataController/getUserInfoList");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(provideDoctorPatientUserInfo), Constant.SERVICEURL + "patientDoctorCommonDataController/getUserInfoList");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }

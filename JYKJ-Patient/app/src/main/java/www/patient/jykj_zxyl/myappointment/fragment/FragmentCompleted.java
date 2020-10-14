@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJL_CFQActivity;
+import www.patient.jykj_zxyl.activity.home.patient.WDYS_JZJL_ZHLYActivity;
 import www.patient.jykj_zxyl.activity.myself.MyOrderActivity;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.base.base_bean.MyReservationListBean;
@@ -126,6 +127,13 @@ public class FragmentCompleted  extends AbstractMvpBaseFragment<ReservationListC
             @Override
             public void onLongClick(int position) {
 
+            }
+        });
+        //诊后留言
+        fragment_completedAdapter.setOnItemMessageClickListener(new Fragment_CompletedAdapter.OnItemMessageClickListener() {
+            @Override
+            public void onClick(int position) {
+                startActivity(new Intent(getActivity(), WDYS_JZJL_ZHLYActivity.class));
             }
         });
     }

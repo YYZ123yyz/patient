@@ -158,7 +158,7 @@ public abstract class EaseChatRow extends LinearLayout {
                 }
             } else {
 //                EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
-//                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
+                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
                 try {
                     int avatarResId = Integer.parseInt(Constant.doctorUrl);
                     Glide.with(context).load(avatarResId).into(userAvatarView);
@@ -247,7 +247,8 @@ public abstract class EaseChatRow extends LinearLayout {
             if (message.direct() == Direct.SEND) {
                 EaseUserUtils.setUserNick(ExtEaseUtils.getInstance().getNickName(),usernickView);
             }else{
-                EaseUserUtils.setUserNick(message.getUserName(),usernickView);
+                String nickName = message.getStringAttribute("nickName", "");
+                EaseUserUtils.setUserNick(nickName,usernickView);
             }
         }
     }

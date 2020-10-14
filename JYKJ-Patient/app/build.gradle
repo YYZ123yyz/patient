@@ -114,11 +114,11 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
             if (outputFileName.endsWith('.apk') && 'release_channel' == variant.buildType.name) {
-                outputFileName = "jykj_v${variant.versionName}_${buildTime()}.apk"
+                outputFileName = "jykj_patient_v${variant.versionName}_${buildTime()}.apk"
             } else if (outputFileName.endsWith('.apk') && 'release' == variant.buildType.name) {
-                outputFileName = "jykj_v${variant.versionName}_${buildTime()}.apk"
+                outputFileName = "jykj_patient_v${variant.versionName}_${buildTime()}.apk"
             } else if (outputFileName.endsWith('.apk') && 'detest' == variant.buildType.name) {
-                outputFileName = "jykj_v${variant.versionName}_${buildTimeHH()}_detest.apk"
+                outputFileName = "jykj_patient_v${variant.versionName}_${buildTimeHH()}_detest.apk"
             }
         }
     }
