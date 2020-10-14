@@ -214,11 +214,11 @@ public class RefusedCancelContractActivity extends AbstractMvpBaseActivity<Refus
         @SuppressLint("DefaultLocale")
         String  monitorRate= String.format("一次/%d%s", orderDetialBean.getDetectRate(),
                 orderDetialBean.getDetectRateUnitName());
-        OrderMessage orderMessage = new OrderMessage(orderDetialBean.getSignCode()
+        OrderMessage orderMessage = new OrderMessage(orderId
                 , orderDetialBean.getSignNo(),
                 monitorTypeList.size() + "项", monitorRate,
                 orderDetialBean.getSignDuration()+orderDetialBean.getSignDurationUnit()
-                , orderDetialBean.getSignPrice() + "", messageType, orderType);
+                , orderDetialBean.getSignPrice() + "", messageType, orderType,orderDetialBean.getSignCode());
         return orderMessage;
 
     }

@@ -45,10 +45,13 @@ public class OrderDetialPresenter extends BasePresenterImpl<OrderDetialContract.
     @Override
     public void sendSearchOrderDetialRequest(String signOrderCode ,String operDoctorCode, String operDoctorName) {
         HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
-        hashMap.put("loginDoctorPosition",ParameUtil.loginDoctorPosition);
-        hashMap.put("signOrderCode",signOrderCode);
-        hashMap.put("operDoctorCode",operDoctorCode);
-        hashMap.put("operDoctorName",operDoctorName);
+
+
+        hashMap.put("loginPatientPosition",ParameUtil.loginDoctorPosition);
+        hashMap.put("requestClientType", "1");
+        hashMap.put("orderCode",signOrderCode);
+        hashMap.put("searchPatientCode",operDoctorCode);
+        hashMap.put("searchPatientName",operDoctorName);
         String s = RetrofitUtil.encodeParam(hashMap);
         ApiHelper.getApiService().searchSignPatientDoctorOrder2(s).compose(
                 Transformer.switchSchedulers(new ILoadingView() {

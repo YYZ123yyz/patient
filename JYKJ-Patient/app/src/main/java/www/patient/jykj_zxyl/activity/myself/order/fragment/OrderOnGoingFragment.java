@@ -375,7 +375,7 @@ public class OrderOnGoingFragment extends
                 myOrderProcess.getDetectRateUnitCode(), myOrderProcess.getDetectRateUnitName());
         OrderMessage orderMessage = new OrderMessage(myOrderProcess.getOrderCode(),myOrderProcess.getSignNo(),
                 myOrderProcess.getProCount() + "项",
-                coatch, myOrderProcess.getSignDuration()+"个月",myOrderProcess.getActualPayment() + "", messageType, orderType);
+                coatch, myOrderProcess.getSignDuration()+"个月",myOrderProcess.getActualPayment() + "", messageType, orderType,myOrderProcess.getSignCode()==null?"":myOrderProcess.getSignCode());
         return orderMessage;
 
     }

@@ -273,11 +273,11 @@ public class CancelContractActivity extends AbstractMvpBaseActivity<CancelContra
         @SuppressLint("DefaultLocale")
         String  monitorRate= String.format("一次/%d%s", mOrderDetialBean.getDetectRate(),
                 mOrderDetialBean.getDetectRateUnitName());
-        OrderMessage orderMessage = new OrderMessage(mOrderDetialBean.getSignCode()
+        OrderMessage orderMessage = new OrderMessage(orderId
                 ,mOrderDetialBean.getSignNo(),
                 monitorTypeList.size() + "项", monitorRate,
                 mOrderDetialBean.getSignDuration()+ mOrderDetialBean.getSignDurationUnit()
-                , mOrderDetialBean.getSignPrice() + "", messageType, orderType);
+                , mOrderDetialBean.getSignPrice() + "", messageType, orderType,mOrderDetialBean.getSignCode());
         return orderMessage;
 
     }

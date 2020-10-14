@@ -42,7 +42,15 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
     private String detectRateUnitName;
     private String signDuration;
     private String signDurationUnit;
+    private String signCode;
 
+    public String getSignCode() {
+        return signCode;
+    }
+
+    public void setSignCode(String signCode) {
+        this.signCode = signCode;
+    }
 
     public String getMainDoctorCode() {
         return mainDoctorCode;

@@ -90,6 +90,14 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                         mRlToBeConfirmedRoot.setVisibility(View.GONE);
                         mRlCancelContractRoot.setVisibility(View.GONE);
                         rlOrderPaymentRoot.setVisibility(View.VISIBLE);
+                        tvOrderPaymentBtn.setText("支付");
+                        break;
+                    case OrderStatusEnum.orderNeedUpdateCode:
+                        mRlToBeConfirmedRoot.setVisibility(View.GONE);
+                        mRlCancelContractRoot.setVisibility(View.GONE);
+                        rlOrderPaymentRoot.setVisibility(View.VISIBLE);
+                        tvOrderPaymentBtn.setText("修改中");
+
                         break;
                     default:
                         mRlToBeConfirmedRoot.setVisibility(View.GONE);
@@ -187,7 +195,10 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                     @Override
                     public void onClick(View v) {
                         if (onClickItemListener != null) {
-                            onClickItemListener.onClickPayment(i);
+                            if (tvOrderPaymentBtn.getText().toString().equals("支付")){
+
+                                onClickItemListener.onClickPayment(i);
+                            }
                         }
                     }
                 });

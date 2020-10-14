@@ -19,6 +19,15 @@ public class OrderMessage implements Serializable {
     private String messageType;
     private String imageUrl;
     private String isPatient;
+    private String signId;
+
+    public String getSignId() {
+        return signId;
+    }
+
+    public void setSignId(String signId) {
+        this.signId = signId;
+    }
 
     //预约类型
     private String statusType;
@@ -117,7 +126,7 @@ public class OrderMessage implements Serializable {
 
     public OrderMessage(String orderId, String singNo,
                         String monitoringType, String coach, String signUpTime,
-                        String price, String messageType, String orderType) {
+                        String price, String messageType, String orderType,String singId) {
         this.orderId = orderId;
         this.singNo = singNo;
         this.monitoringType = monitoringType;
@@ -126,6 +135,7 @@ public class OrderMessage implements Serializable {
         this.price = price;
         this.messageType = messageType;
         this.orderType = orderType;
+        this.signId =singId;
     }
 
     public OrderMessage(String orderId,

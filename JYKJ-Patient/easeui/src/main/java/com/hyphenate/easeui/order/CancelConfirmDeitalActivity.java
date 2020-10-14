@@ -301,10 +301,10 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
         @SuppressLint("DefaultLocale")
         String  monitorRate= String.format("一次/%d%s", orderDetialBean.getDetectRate(),
                 orderDetialBean.getDetectRateUnitName());
-        return new OrderMessage(orderDetialBean.getSignCode(),orderDetialBean.getSignNo(),
+        return new OrderMessage(orderId,orderDetialBean.getSignNo(),
                 monitorTypeList.size() + "项", monitorRate,
                 orderDetialBean.getSignDuration()+ orderDetialBean.getSignDurationUnit()
-                , orderDetialBean.getSignPrice() + "", messageType, orderType);
+                , orderDetialBean.getSignPrice() + "", messageType, orderType,orderDetialBean.getSignCode());
 
     }
 }

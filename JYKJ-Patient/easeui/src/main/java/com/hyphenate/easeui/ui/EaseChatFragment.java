@@ -1888,7 +1888,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 //增加自己的属性
                 message.setAttribute("coach", msg.getCoach());
                 message.setAttribute("signUpTime", msg.getSignUpTime());
-                message.setAttribute("singNo", msg.getSingNo());
+                message.setAttribute("signId",msg.getSignId());
                 message.setAttribute("price", msg.getPrice());
                 message.setAttribute("monitoringType", msg.getMonitoringType());
                 message.setAttribute("orderType", msg.getOrderType());

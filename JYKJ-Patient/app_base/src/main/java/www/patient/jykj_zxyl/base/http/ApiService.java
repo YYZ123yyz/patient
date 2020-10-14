@@ -85,7 +85,7 @@ public interface ApiService {
     @POST("/patientMyOrderControlle/searchPatientMyOrderResComment")
     Observable<String> searchPatientMyOrderResComment(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
     //患者端获取签约订单信息接口
-    @POST("/patientSignControlle/searchSignPatientDoctorOrder")
+    @POST("/msgDataControlle/searchPatientMsgInteractOrderInfoDetail")
     Observable<String> searchSignPatientDoctorOrder2(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
     //撤销解约流程
     @POST("/patientSignControlle/operTerminationRevoke")
@@ -164,7 +164,7 @@ public interface ApiService {
     @POST("/basicDataController/getBannersAndDepartmentInfo")
     Observable<String> getHomeBanner(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
     //获取订单详情
-    @POST("msgDataControlle/searchPatientMsgInteractOrderInfoDetail")
+    @POST("/msgDataControlle/searchPatientMsgInteractOrderInfoDetail")
     Observable<String> getOrderDet(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
 }
 

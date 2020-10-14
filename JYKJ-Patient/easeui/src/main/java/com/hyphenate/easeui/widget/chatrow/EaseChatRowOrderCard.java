@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
-import com.blankj.utilcode.util.LogUtils;
 import com.google.gson.Gson;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.R;
@@ -36,6 +35,7 @@ import www.patient.jykj_zxyl.base.base_bean.ProvideViewSysUserPatientInfoAndRegi
 import www.patient.jykj_zxyl.base.base_bean.UpdateOrderResultBean;
 import www.patient.jykj_zxyl.base.base_manager.OrderOperationManager;
 import www.patient.jykj_zxyl.base.base_utils.GsonUtils;
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 import www.patient.jykj_zxyl.base.base_utils.SharedPreferences_DataSave;
 import www.patient.jykj_zxyl.base.base_utils.StringUtils;
 import www.patient.jykj_zxyl.base.http.ParameUtil;
@@ -103,6 +103,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
     private RelativeLayout rl_three;
     private RelativeLayout rl_immediately;
     private TextView mTvEnsureBtn;
+    private String singId;
 
     public EaseChatRowOrderCard(Context context, EMMessage message,
                                 int position, BaseAdapter adapter) {
@@ -253,6 +254,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 = GsonUtils.fromJson(userInfoSuLogin, ProvideViewSysUserPatientInfoAndRegion.class);
         // TODO: 2020-07-29 显示ui
         orderId = message.getStringAttribute("orderId", "");
+        singId = message.getStringAttribute("singId", "");
         monitoringType = message.getStringAttribute("monitoringType", "");
         coach = message.getStringAttribute("coach", "");
         signUpTime = message.getStringAttribute("signUpTime", "");
@@ -507,7 +509,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                                     if (isSucess) {
                                         EventBus.getDefault().post(new OrderMessage(orderId,
                                                 singNO, monitoringType, coach
-                                                , signUpTime, price, messageType, "1"));
+                                                , signUpTime, price, messageType, "1",singId));
                                     } else {
                                         ToastUtils.showToast(msg);
                                     }
@@ -541,7 +543,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                                             }
                                             EventBus.getDefault().post(new OrderMessage(orderId,
                                                     singNO, monitoringType, coach
-                                                    , signUpTime, price, messageType, "2"));
+                                                    , signUpTime, price, messageType, "2",singId));
                                         } else {
                                             ToastUtils.showToast(msg);
 
@@ -574,7 +576,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                             } else if (messageType.equals("terminationOrder")) {
                                 EventBus.getDefault().post(new OrderMessage(orderId,
                                         singNO, monitoringType, coach
-                                        , signUpTime, price, messageType, "2"));
+                                        , signUpTime, price, messageType, "2",singId));
                             }
 
                         }
@@ -599,7 +601,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                                     if (isSucess) {
                                         OrderMessage event = new OrderMessage(orderId, singNO,
                                                 monitoringType, coach
-                                                , signUpTime, price, messageType, "1");
+                                                , signUpTime, price, messageType, "1",singId);
                                         EventBus.getDefault().post(event);
                                     } else {
                                         ToastUtils.showToast(msg);
@@ -701,8 +703,9 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             String nickName = message.getStringAttribute("nickName", "");
             switch (messageType) {
                 case "card": {
+
                     Bundle bundle = new Bundle();
-                    bundle.putString("signCode", orderId);
+                    bundle.putString("signCode", message.getStringAttribute("orderId",""));
                     bundle.putString("operDoctorCode", message.getFrom());
                     bundle.putString("operDoctorName", nickName);
                     startActivity(SignOrderDetialActivity.class, bundle);
