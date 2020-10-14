@@ -50,7 +50,7 @@ public class OrderDetialPresenter extends BasePresenterImpl<OrderDetialContract.
         hashMap.put("operDoctorCode",operDoctorCode);
         hashMap.put("operDoctorName",operDoctorName);
         String s = RetrofitUtil.encodeParam(hashMap);
-        ApiHelper.getPatientTestApi().searchSignPatientDoctorOrder(s).compose(
+        ApiHelper.getApiService().searchSignPatientDoctorOrder2(s).compose(
                 Transformer.switchSchedulers(new ILoadingView() {
             @Override
             public void showLoadingView() {

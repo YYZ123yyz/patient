@@ -55,7 +55,7 @@ public class JwbsBrtxAdapter extends RecyclerView.Adapter<JwbsBrtxAdapter.ViewHo
         ProvidePatientConditionDiseaseRecord mProvidePatientConditionDiseaseRecords = beanstrarr.get(position);
         holder.mBCBM.setText(mProvidePatientConditionDiseaseRecords.getRecordName());
         holder.mJZRQ.setText(Util.dateToStrDate(mProvidePatientConditionDiseaseRecords.getTreatmentDate()));
-        holder.mBCFL.setText(mProvidePatientConditionDiseaseRecords.getRecordTypeName());
+    //    holder.mBCFL.setText(mProvidePatientConditionDiseaseRecords.getRecordTypeName());
         holder.mBQZS.setText(mProvidePatientConditionDiseaseRecords.getRecordContent());
         ImgAutogridAdapter imgAdapter = new ImgAutogridAdapter();
         if(imgsarr.size()>0){
@@ -119,7 +119,7 @@ public class JwbsBrtxAdapter extends RecyclerView.Adapter<JwbsBrtxAdapter.ViewHo
             mBack = (RelativeLayout)view.findViewById(R.id.back);
             mBCBM = (TextView)view.findViewById(R.id.tv_activityHZZL_userSG);
             mJZRQ = (TextView)view.findViewById(R.id.tv_activityHZZL_userYW);
-            mBCFL = (TextView)view.findViewById(R.id.tv_activityHZZL_userTZ);
+        //    mBCFL = (TextView)view.findViewById(R.id.tv_activityHZZL_userTZ);
             mBQZS = (TextView)view.findViewById(R.id.tv_activityHZZL_region);
             autoGv = view.findViewById(R.id.autoGridView);
         }

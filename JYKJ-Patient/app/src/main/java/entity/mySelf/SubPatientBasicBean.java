@@ -23,6 +23,15 @@ public class SubPatientBasicBean implements Serializable {
     private String flagFamilyHtn;
     private String flagHtnHistory;
     private String htnHistory;
+   private String  historyAllergy;
+
+    public String getHistoryAllergy() {
+        return historyAllergy;
+    }
+
+    public void setHistoryAllergy(String historyAllergy) {
+        this.historyAllergy = historyAllergy;
+    }
 
     public String getLoginPatientPosition() {
         return loginPatientPosition;

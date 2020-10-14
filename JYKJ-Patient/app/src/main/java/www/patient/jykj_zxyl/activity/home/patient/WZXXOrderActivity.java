@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -62,62 +63,63 @@ public class WZXXOrderActivity extends AppCompatActivity {
     private FragmentHomeTJZJAdapter mAdapter;
     private LinearLayout llBack;
 
-    public          ProgressDialog              mDialogProgress =null;
+    public ProgressDialog mDialogProgress = null;
 
-    private         Context                     mContext;                                       //
+    private Context mContext;                                       //
     private WZXXOrderActivity mActivity;
-    private         JYKJApplication             mApp;
+    private JYKJApplication mApp;
 
-    private         String                      mNetRetStr;                 //返回字符串
-    private         Handler                     mHandler;
+    private String mNetRetStr;                 //返回字符串
+    private Handler mHandler;
 
-    private         TextView                    mJZLX;                      //订单类型
-    private         TextView                    mZXYS;                      //咨询医生
-    private         TextView                    mGXZF;                      //共需支付
-    private         TextView                    mKYYHQ;                     //可用优惠券
-    private         TextView                    mXZYHQ;                     //选择优惠券
-    private         TextView                    mKYJF;                      //可用积分
-    private         ImageView                   mSYJF;                      //使用积分
-    private         ImageView                   mWXZF;                      //微信支付
-    private         ImageView                   mZFBZF;                     //支付宝支付
+    private TextView mJZLX;                      //订单类型
+    private TextView mZXYS;                      //咨询医生
+    private TextView mGXZF;                      //共需支付
+    private TextView mKYYHQ;                     //可用优惠券
+    private TextView mXZYHQ;                     //选择优惠券
+    private TextView mKYJF;                      //可用积分
+    private ImageView mSYJF;                      //使用积分
+    private ImageView mWXZF;                      //微信支付
+    private ImageView mZFBZF;                     //支付宝支付
 
-    private         TextView                    mCommit;                    //提交
+    private TextView mCommit;                    //提交
 
-    private         ProvideInteractPatientInterrogation mProvideInteractPatientInterrogation = new ProvideInteractPatientInterrogation();               //提交的问诊资料
-    private         String                      mOrderNum;                  //订单号
-    private         String                      mOrderType;                 //订单类型
+    private ProvideInteractPatientInterrogation mProvideInteractPatientInterrogation = new ProvideInteractPatientInterrogation();               //提交的问诊资料
+    private String mOrderNum;                  //订单号
+    private String mOrderType;                 //订单类型
 
-    private         ProvideMarketingAvailableCoupons mProvideMarketingAvailableCoupons;             //获取到的优惠券
+    private ProvideMarketingAvailableCoupons mProvideMarketingAvailableCoupons;             //获取到的优惠券
 
-    private         LinearLayout                zf_weixin;                  //支付（微信支付）
-    private         LinearLayout                zf_zhifubao;                     //支付（支付宝）
-    private         int                         payModel = 1;                   //支付模式 1=微信支付  2=支付宝支付
+    private LinearLayout zf_weixin;                  //支付（微信支付）
+    private LinearLayout zf_zhifubao;                     //支付（支付宝）
+    private int payModel = 1;                   //支付模式 1=微信支付  2=支付宝支付
     private ProvideViewDoctorExpertRecommend provideViewDoctorExpertRecommend;                          //专家信息
     private ProvideDoctorSetSchedulingInfoGroupDate provideDoctorSetSchedulingInfoGroupDate;
 
-    private         XYEntiy                 mXYEntity;
-    public          IWXAPI                  msgApi;
+    private XYEntiy mXYEntity;
+    public IWXAPI msgApi;
 
-    private         TextView                fwjzsj;                         //服务截止时间
-    private         EditText                qysc;
+    private TextView fwjzsj;                         //服务截止时间
+    private EditText qysc;
 
-    private         LinearLayout            li_qysc;                    //签约时长
-    private         LinearLayout            li_fwjzsj;                  //服务截止时间
+    private LinearLayout li_qysc;                    //签约时长
+    private LinearLayout li_fwjzsj;                  //服务截止时间
     private static final int SDK_PAY_FLAG = 3;
     private String pay_appid;
     private String pay_productid;
+    private LinearLayout ll_back;
 
     private void initView() {
-        zf_weixin = (LinearLayout)this.findViewById(R.id.zf_weixin);
-        qysc = (EditText)this.findViewById(R.id.qysc);
-        li_qysc = (LinearLayout)this.findViewById(R.id.li_qysc);
-        li_fwjzsj = (LinearLayout)this.findViewById(R.id.li_fwjzsj);
-        zf_zhifubao = (LinearLayout)this.findViewById(R.id.zf_zhifubao);
+        zf_weixin = (LinearLayout) this.findViewById(R.id.zf_weixin);
+        qysc = (EditText) this.findViewById(R.id.qysc);
+        li_qysc = (LinearLayout) this.findViewById(R.id.li_qysc);
+        li_fwjzsj = (LinearLayout) this.findViewById(R.id.li_fwjzsj);
+        zf_zhifubao = (LinearLayout) this.findViewById(R.id.zf_zhifubao);
         zf_weixin.setOnClickListener(new ButtonClick());
         zf_zhifubao.setOnClickListener(new ButtonClick());
-        mGXZF = (TextView)this.findViewById(R.id.gxzf);
-        mJZLX = (TextView)this.findViewById(R.id.jzlx);
-        fwjzsj = (TextView)this.findViewById(R.id.fwjzsj);
+        mGXZF = (TextView) this.findViewById(R.id.gxzf);
+        mJZLX = (TextView) this.findViewById(R.id.jzlx);
+        fwjzsj = (TextView) this.findViewById(R.id.fwjzsj);
         qysc.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -129,19 +131,16 @@ public class WZXXOrderActivity extends AppCompatActivity {
                 if (charSequence == null || "".equals(String.valueOf(charSequence)))
                     return;
                 //获取n个月后的时间
-                String str = getAfterMonth(Util.getCurrentFormart(),Integer.valueOf(charSequence+""));
+                String str = getAfterMonth(Util.getCurrentFormart(), Integer.valueOf(charSequence + ""));
                 //判断是否超过服务截止时间
                 try {
-                    boolean is = compare(str,Util.dateToStr(mXYEntity.getLimitSigningExpireDate()));
-                    if (!is)
-                    {
-                        Toast.makeText(mContext,"超过医生服务截止时间",Toast.LENGTH_SHORT).show();
+                    boolean is = compare(str, Util.dateToStr(mXYEntity.getLimitSigningExpireDate()));
+                    if (!is) {
+                        Toast.makeText(mContext, "超过医生服务截止时间", Toast.LENGTH_SHORT).show();
                         qysc.setText("");
-                    }
-                    else
-                    {
-                        Float price = Float.valueOf(charSequence+"")*Float.valueOf(mXYEntity.getPriceBasics());
-                        mGXZF.setText("￥"+price);
+                    } else {
+                        Float price = Float.valueOf(charSequence + "") * Float.valueOf(mXYEntity.getPriceBasics());
+                        mGXZF.setText("￥" + price);
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -153,14 +152,13 @@ public class WZXXOrderActivity extends AppCompatActivity {
 
             }
         });
-        switch (Integer.valueOf(mOrderType))
-        {
+        switch (Integer.valueOf(mOrderType)) {
             case 1:
                 mJZLX.setText("图文就诊");
                 if (provideViewDoctorExpertRecommend.getImgTextPrice() == null)
                     mGXZF.setText("未设置");
                 else
-                    mGXZF.setText("￥"+provideViewDoctorExpertRecommend.getImgTextPrice());
+                    mGXZF.setText("￥" + provideViewDoctorExpertRecommend.getImgTextPrice());
                 li_qysc.setVisibility(View.GONE);
                 li_fwjzsj.setVisibility(View.GONE);
                 break;
@@ -169,7 +167,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
                 if (provideViewDoctorExpertRecommend.getPhonePrice() == null)
                     mGXZF.setText("未设置");
                 else
-                    mGXZF.setText("￥"+provideViewDoctorExpertRecommend.getPhonePrice());
+                    mGXZF.setText("￥" + provideViewDoctorExpertRecommend.getPhonePrice());
                 li_fwjzsj.setVisibility(View.GONE);
                 li_qysc.setVisibility(View.GONE);
                 break;
@@ -178,7 +176,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
                 if (provideViewDoctorExpertRecommend.getAudioPrice() == null)
                     mGXZF.setText("未设置");
                 else
-                    mGXZF.setText("￥"+provideViewDoctorExpertRecommend.getAudioPrice());
+                    mGXZF.setText("￥" + provideViewDoctorExpertRecommend.getAudioPrice());
                 li_fwjzsj.setVisibility(View.GONE);
                 li_qysc.setVisibility(View.GONE);
                 break;
@@ -187,7 +185,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
                 if (provideViewDoctorExpertRecommend.getVideoPrice() == null)
                     mGXZF.setText("未设置");
                 else
-                    mGXZF.setText("￥"+provideViewDoctorExpertRecommend.getVideoPrice());
+                    mGXZF.setText("￥" + provideViewDoctorExpertRecommend.getVideoPrice());
                 li_fwjzsj.setVisibility(View.GONE);
                 li_qysc.setVisibility(View.GONE);
                 break;
@@ -196,7 +194,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
                 if (provideViewDoctorExpertRecommend.getSigningPrice() == null)
                     mGXZF.setText("未设置");
                 else
-                    mGXZF.setText("￥"+provideViewDoctorExpertRecommend.getSigningPrice());
+                    mGXZF.setText("￥" + provideViewDoctorExpertRecommend.getSigningPrice());
                 li_fwjzsj.setVisibility(View.GONE);
                 li_qysc.setVisibility(View.GONE);
                 break;
@@ -211,39 +209,39 @@ public class WZXXOrderActivity extends AppCompatActivity {
 //                    mGXZF.setText("￥"+provideViewDoctorExpertRecommend.getSigningPrice());
                 break;
         }
-        mZXYS = (TextView)this.findViewById(R.id.zxys);
+        mZXYS = (TextView) this.findViewById(R.id.zxys);
         mZXYS.setText(mProvideInteractPatientInterrogation.getDoctorName());
 
 
 //        mKYYHQ = (TextView)this.findViewById(R.id.wkyyhq);
 //        mXZYHQ = (TextView)this.findViewById(R.id.xzyhq);
-        mKYJF = (TextView)this.findViewById(R.id.kyjf);
-        mSYJF = (ImageView)this.findViewById(R.id.xzjf);
-        mWXZF = (ImageView)this.findViewById(R.id.wxzf);
-        mZFBZF = (ImageView)this.findViewById(R.id.zfbzf);
-        mCommit = (TextView)this.findViewById(R.id.commit);
+        mKYJF = (TextView) this.findViewById(R.id.kyjf);
+        mSYJF = (ImageView) this.findViewById(R.id.xzjf);
+        mWXZF = (ImageView) this.findViewById(R.id.wxzf);
+        mZFBZF = (ImageView) this.findViewById(R.id.zfbzf);
+        mCommit = (TextView) this.findViewById(R.id.commit);
+        ll_back = findViewById(R.id.ll_back);
         mCommit.setOnClickListener(new ButtonClick());
+        ll_back.setOnClickListener(new ButtonClick());
         setZFModel();
     }
 
     /**
      * 设置支付模式
      */
-    public void setZFModel(){
-        if (payModel == 1)
-        {
+    public void setZFModel() {
+        if (payModel == 1) {
             mWXZF.setBackgroundResource(R.mipmap.zf_choice);
             mZFBZF.setBackgroundResource(R.mipmap.no_gx111);
         }
-        if (payModel == 2)
-        {
+        if (payModel == 2) {
             mWXZF.setBackgroundResource(R.mipmap.no_gx111);
             mZFBZF.setBackgroundResource(R.mipmap.zf_choice);
 
         }
     }
 
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -277,41 +275,42 @@ public class WZXXOrderActivity extends AppCompatActivity {
 
     /**
      * 获取n个月后的时间
+     *
      * @param inputDate
      * @param number
      * @return
      */
-    public static String  getAfterMonth(String inputDate,int number) {
+    public static String getAfterMonth(String inputDate, int number) {
         Calendar c = Calendar.getInstance();//获得一个日历的实例
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
-        try{
+        try {
             date = sdf.parse(inputDate);//初始日期
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
         c.setTime(date);//设置日历时间
-        c.add(Calendar.MONTH,number);//在日历的月份上增加6个月
+        c.add(Calendar.MONTH, number);//在日历的月份上增加6个月
         String strDate = sdf.format(c.getTime());//的到你想要得6个月后的日期
         return strDate;
     }
 
     /**
      * 比较两个时间大小
+     *
      * @param time1
      * @param time2
      * @return
      * @throws ParseException
      */
-    public boolean compare(String time1,String time2) throws ParseException
-    {
+    public boolean compare(String time1, String time2) throws ParseException {
         //如果想比较日期则写成"yyyy-MM-dd"就可以了
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         //将字符串形式的时间转化为Date类型的时间
-        Date a=sdf.parse(time1);
-        Date b=sdf.parse(time2);
+        Date a = sdf.parse(time1);
+        Date b = sdf.parse(time2);
         //Date类的一个方法，如果a早于b返回true，否则返回false
-        if(a.before(b))
+        if (a.before(b))
             return true;
         else
             return false;
@@ -335,14 +334,13 @@ public class WZXXOrderActivity extends AppCompatActivity {
         provideInteractOrderInfo.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         provideInteractOrderInfo.setSigningDoctorCode(mProvideInteractPatientInterrogation.getDoctorCode());
         provideInteractOrderInfo.setTreatmentSigningId(mXYEntity.getTreatmentSigningId());
-        if (qysc.getText().toString() == null || "".equals(qysc.getText().toString()))
-        {
-            Toast.makeText(mContext,"续约时长不能为空",Toast.LENGTH_SHORT).show();
+        if (qysc.getText().toString() == null || "".equals(qysc.getText().toString())) {
+            Toast.makeText(mContext, "续约时长不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
         provideInteractOrderInfo.setSigningMonth(qysc.getText().toString());
         provideInteractOrderInfo.setSigningExpireDate(Util.dateToStr(mXYEntity.getLimitSigningExpireDate()));
-        Float price = Float.valueOf(qysc.getText().toString())*Float.valueOf(mXYEntity.getPriceBasics());
+        Float price = Float.valueOf(qysc.getText().toString()) * Float.valueOf(mXYEntity.getPriceBasics());
         provideInteractOrderInfo.setServiceTotal(price);
         provideInteractOrderInfo.setOrderTotal(price);
         provideInteractOrderInfo.setActualPayment(price);
@@ -353,17 +351,18 @@ public class WZXXOrderActivity extends AppCompatActivity {
         provideInteractOrderInfo.setIntegralDeductionMoney("0");
         provideInteractOrderInfo.setFlagPayType(String.valueOf(payModel));
         provideInteractOrderInfo.setOperPatientPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
-        getProgressBar("请稍候。。。。","正在获取数据");
-        new Thread(){
-            public void run(){
+        getProgressBar("请稍候。。。。", "正在获取数据");
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideInteractOrderInfo);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideInteractOrderInfo),Constant.SERVICEURL+"PatientMyDoctorControlle/operIndexMyDoctorSigningRenewal");
+                    Log.e("TAG", "run: "+string);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(provideInteractOrderInfo), Constant.SERVICEURL + "PatientMyDoctorControlle/operIndexMyDoctorSigningRenewal");
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -376,6 +375,8 @@ public class WZXXOrderActivity extends AppCompatActivity {
      * 生成支付订单
      */
     private void commit() {
+        /*{"couponsHaveCode":"0","flagPayType":"1","integralDeductionMoney":"0","integralHaveCode":"0","loginPatientPosition":"20.154455^23.41548512","operPatientCode":"ae0b55c6be7f4b1588f0ea73b8653d26","operPatientName":"A～杨","patientCode":"ae0b55c6be7f4b1588f0ea73b8653d26","patientName":"A～杨","priceDiscountCoupon":0.0,"priceDiscountIntegral":0.0,"requestClientType":"1","treatmentType":0}
+        * */
         ProvideInteractOrderInfo provideInteractOrderInfo = new ProvideInteractOrderInfo();
         provideInteractOrderInfo.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideInteractOrderInfo.setRequestClientType("1");
@@ -387,8 +388,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
         provideInteractOrderInfo.setDoctorName(provideViewDoctorExpertRecommend.getUserName());
         provideInteractOrderInfo.setPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideInteractOrderInfo.setPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        switch (Integer.valueOf(mOrderType))
-        {
+        switch (Integer.valueOf(mOrderType)) {
             case 1:
                 provideInteractOrderInfo.setServiceTotal(provideViewDoctorExpertRecommend.getImgTextPrice());
                 provideInteractOrderInfo.setOrderTotal(provideViewDoctorExpertRecommend.getImgTextPrice());
@@ -418,28 +418,24 @@ public class WZXXOrderActivity extends AppCompatActivity {
         provideInteractOrderInfo.setPriceDiscountCoupon(Float.valueOf("0.00"));
         provideInteractOrderInfo.setPriceDiscountIntegral(Float.valueOf("0.00"));
 
-        switch (Integer.valueOf(mOrderType))
-        {
+        switch (Integer.valueOf(mOrderType)) {
             case 2:
                 provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
-                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++)
-                {
+                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++) {
                     if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
                         provideInteractOrderInfo.setTreatmentTimeSlot(provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).getDayTimeSlot());
                 }
                 break;
             case 3:
                 provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
-                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++)
-                {
+                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++) {
                     if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
                         provideInteractOrderInfo.setTreatmentTimeSlot(provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).getDayTimeSlot());
                 }
                 break;
             case 5:
                 provideInteractOrderInfo.setTreatmentDate(Util.dateToStr(provideDoctorSetSchedulingInfoGroupDate.getWorkDate()));
-                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++)
-                {
+                for (int i = 0; i < provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().size(); i++) {
                     if (provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).isChoice())
                         provideInteractOrderInfo.setTreatmentTimeSlot(provideDoctorSetSchedulingInfoGroupDate.getGroupTimeList().get(i).getDayTimeSlot());
                 }
@@ -452,19 +448,20 @@ public class WZXXOrderActivity extends AppCompatActivity {
         provideInteractOrderInfo.setIntegralHaveCode("0");
         provideInteractOrderInfo.setIntegralDeductionMoney("0");
         provideInteractOrderInfo.setFlagPayType(String.valueOf(payModel));
-        getProgressBar("请稍候。。。。","正在获取数据");
-        new Thread(){
-            public void run(){
+        getProgressBar("请稍候。。。。", "正在获取数据");
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideInteractOrderInfo);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideInteractOrderInfo),Constant.SERVICEURL+"patientInteractDataControlle/operInteractOrderInfoGenerate");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(provideInteractOrderInfo), Constant.SERVICEURL + "patientInteractDataControlle/operInteractOrderInfoGenerate");
+                    Log.e("TAG", "run: "+string );
 //                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideInteractOrderInfo),"http://192.168.3.15:8081/jyJXTWeiChat/weiChatPayDemo");
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
 
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -484,11 +481,10 @@ public class WZXXOrderActivity extends AppCompatActivity {
         mApp.gPayCloseActivity.add(mActivity);
         mProvideInteractPatientInterrogation = (ProvideInteractPatientInterrogation) getIntent().getSerializableExtra("provideInteractPatientInterrogation");
         provideViewDoctorExpertRecommend = (ProvideViewDoctorExpertRecommend) getIntent().getSerializableExtra("provideViewDoctorExpertRecommend");
-        provideDoctorSetSchedulingInfoGroupDate= (ProvideDoctorSetSchedulingInfoGroupDate) getIntent().getSerializableExtra("provideDoctorSetSchedulingInfoGroupDate");
+        provideDoctorSetSchedulingInfoGroupDate = (ProvideDoctorSetSchedulingInfoGroupDate) getIntent().getSerializableExtra("provideDoctorSetSchedulingInfoGroupDate");
         mOrderNum = getIntent().getStringExtra("orderID");
         mOrderType = getIntent().getStringExtra("orderType");
-        if ("6".equals(mOrderType))
-        {
+        if ("6".equals(mOrderType)) {
             mXYEntity = (XYEntiy) getIntent().getSerializableExtra("xyEntiy");
         }
         initView();
@@ -506,22 +502,22 @@ public class WZXXOrderActivity extends AppCompatActivity {
      * 获取订单详情
      */
     private void getDate() {
-        getProgressBar("请稍候","正在获取数据。。。");
-        ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreat= new ProvideViewMyDoctorOrderAndTreatment();
+        getProgressBar("请稍候", "正在获取数据。。。");
+        ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreat = new ProvideViewMyDoctorOrderAndTreatment();
         provideViewMyDoctorOrderAndTreat.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideViewMyDoctorOrderAndTreat.setRequestClientType("1");
         provideViewMyDoctorOrderAndTreat.setSearchPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideViewMyDoctorOrderAndTreat.setSearchPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         provideViewMyDoctorOrderAndTreat.setOrderCode(mOrderNum);
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideViewMyDoctorOrderAndTreat);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"msgDataControlle/searchPatientMsgInteractOrderInfoDetail");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "msgDataControlle/searchPatientMsgInteractOrderInfoDetail");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -541,27 +537,24 @@ public class WZXXOrderActivity extends AppCompatActivity {
         provideMarketingAvailableCoupons.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         provideMarketingAvailableCoupons.setOrderCode(mOrderNum);
         provideMarketingAvailableCoupons.setTreatmentType(mOrderType);
-        if ("6".equals(mOrderType))
-        {
+        if ("6".equals(mOrderType)) {
             provideMarketingAvailableCoupons.setDoctorCode(mProvideInteractPatientInterrogation.getDoctorCode());
             provideMarketingAvailableCoupons.setDoctorName(mProvideInteractPatientInterrogation.getDoctorName());
-        }
-        else
-        {
+        } else {
             provideMarketingAvailableCoupons.setDoctorCode(provideViewDoctorExpertRecommend.getDoctorCode());
             provideMarketingAvailableCoupons.setDoctorName(provideViewDoctorExpertRecommend.getUserName());
         }
 
 
-        getProgressBar("请稍候。。。。","正在获取数据");
-        new Thread(){
-            public void run(){
+        getProgressBar("请稍候。。。。", "正在获取数据");
+        new Thread() {
+            public void run() {
                 try {
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideMarketingAvailableCoupons),Constant.SERVICEURL+"patientInteractDataControlle/getInteractPatientInterrogationResPatientCoupon");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(provideMarketingAvailableCoupons), Constant.SERVICEURL + "patientInteractDataControlle/getInteractPatientInterrogationResPatientCoupon");
                     NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
 
                     if (netRetEntity.getResCode() == 1) {
-                        mProvideMarketingAvailableCoupons = JSON.parseObject(netRetEntity.getResJsonData(),ProvideMarketingAvailableCoupons.class);
+                        mProvideMarketingAvailableCoupons = JSON.parseObject(netRetEntity.getResJsonData(), ProvideMarketingAvailableCoupons.class);
                     }
                     //获取积分信息
                     ProvideMarketingAvailableIntegral provideMarketingAvailableIntegral = new ProvideMarketingAvailableIntegral();
@@ -573,13 +566,13 @@ public class WZXXOrderActivity extends AppCompatActivity {
                     provideMarketingAvailableIntegral.setTreatmentType(mOrderType);
                     provideMarketingAvailableIntegral.setDoctorCode(provideViewDoctorExpertRecommend.getPatientCode());
                     provideMarketingAvailableIntegral.setDoctorName(provideViewDoctorExpertRecommend.getUserName());
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(provideMarketingAvailableCoupons),Constant.SERVICEURL+"patientInteractDataControlle/getInteractPatientInterrogationResPatientIntegral");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(provideMarketingAvailableCoupons), Constant.SERVICEURL + "patientInteractDataControlle/getInteractPatientInterrogationResPatientIntegral");
                     netRetEntity = new Gson().fromJson(mNetRetStr, NetRetEntity.class);
                     mHandler.sendEmptyMessage(0);
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -650,15 +643,14 @@ public class WZXXOrderActivity extends AppCompatActivity {
                         }
                         startActivity(intent);
                         //PayResult payResult = new PayResult((Map<String, String>) msg.obj);
-                    break;
+                        break;
                     case 6:
                         cacerProgress();
-                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
                         if (netRetEntity.getResCode() == 0)
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
-                        else if(netRetEntity.getResCode() == 1)
-                        {
-                            ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatment = JSON.parseObject(netRetEntity.getResJsonData(),ProvideViewMyDoctorOrderAndTreatment.class);
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
+                        else if (netRetEntity.getResCode() == 1) {
+                            ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatment = JSON.parseObject(netRetEntity.getResJsonData(), ProvideViewMyDoctorOrderAndTreatment.class);
                             showDate(provideViewMyDoctorOrderAndTreatment);
                         }
                         break;
@@ -671,6 +663,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
 
     /**
      * 展示支付状态
+     *
      * @param provideViewMyDoctorOrderAndTreatment
      */
     private void showDate(ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatment) {
@@ -678,7 +671,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
     }
 
 
-    public void sendAliPay(final String orderInfo){
+    public void sendAliPay(final String orderInfo) {
         //final String orderInfo = provideWechatPayModel.getSign();
         final Runnable payRunnable = new Runnable() {
 
@@ -686,7 +679,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
             public void run() {
                 PayTask alipay = new PayTask(WZXXOrderActivity.this);
                 Map<String, String> result = alipay.payV2(orderInfo, true);
-                mApp.gPayOrderCode =  mOrderNum;
+                mApp.gPayOrderCode = mOrderNum;
                 Message msg = new Message();
                 msg.what = SDK_PAY_FLAG;
                 msg.obj = result;
@@ -703,7 +696,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
         //将appid注册到微信
         //boolean a = msgApi.registerApp(provideWechatPayModel.getAppId());
         //调起微信支付
-        if(null==msgApi) {
+        if (null == msgApi) {
             msgApi = WXAPIFactory.createWXAPI(this, "wx4ccb2ac1c5491336");
             msgApi.registerApp("wx4ccb2ac1c5491336");
         }
@@ -711,11 +704,11 @@ public class WZXXOrderActivity extends AppCompatActivity {
         request.appId = provideWechatPayModel.getAppId();
         request.partnerId = provideWechatPayModel.getPartnerid();
         String prepare_id = provideWechatPayModel.getPrepayid();
-        request.prepayId= prepare_id;
+        request.prepayId = prepare_id;
         request.packageValue = "Sign=WXPay";
-        request.nonceStr=provideWechatPayModel.getNonceStr();
-        request.timeStamp= provideWechatPayModel.getTimeStamp();
-        request.sign= provideWechatPayModel.getSign();
+        request.nonceStr = provideWechatPayModel.getNonceStr();
+        request.timeStamp = provideWechatPayModel.getTimeStamp();
+        request.sign = provideWechatPayModel.getSign();
         request.signType = "MD5";
         mApp.gPayOrderCode = mOrderNum;
         boolean result = msgApi.sendReq(request);
@@ -737,10 +730,10 @@ public class WZXXOrderActivity extends AppCompatActivity {
 
 
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(this);
         }
@@ -753,15 +746,11 @@ public class WZXXOrderActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }
     }
-
-
-
-
 
 
     /**
@@ -779,7 +768,7 @@ public class WZXXOrderActivity extends AppCompatActivity {
 //        new Thread(){
 //            public void run(){
 //                try {
-                    //获取一级科室
+        //获取一级科室
 //                    ProvideHospitalDepartment provideHospitalDepartment = new ProvideHospitalDepartment();
 //                    provideHospitalDepartment.setHospitalInfoCode(mProvideHospitalInfos.get(index).getHospitalInfoCode());
 //                    provideHospitalDepartment.setHospitalDepartmentId(0);

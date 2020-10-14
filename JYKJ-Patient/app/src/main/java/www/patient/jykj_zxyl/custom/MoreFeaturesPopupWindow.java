@@ -25,6 +25,7 @@ import www.patient.jykj_zxyl.activity.myself.MedicationRecordActivity;
 import www.patient.jykj_zxyl.activity.myself.MedicationSettingsActivity;
 import www.patient.jykj_zxyl.activity.myself.MyOrderActivity;
 import www.patient.jykj_zxyl.fragment.FragmentShouYe;
+import www.patient.jykj_zxyl.myappointment.activity.MyAppointmentActivity;
 import zxing.android.CaptureActivity;
 
 public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClickListener {
@@ -43,6 +44,7 @@ public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClick
     private TextView tvFqhz;
     private TextView tvWdbb;
     private TextView tvBzfk;
+    private TextView tv_yy;
 
     public MoreFeaturesPopupWindow(Activity context) {
         super(context);
@@ -55,6 +57,7 @@ public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClick
         tvTjhz.setOnClickListener(this);
         tvWdzs.setOnClickListener(this);
         tvWdxx.setOnClickListener(this);
+        tv_yy.setOnClickListener(this);
 //        tvCjlm.setOnClickListener(this);
 
     }
@@ -67,6 +70,7 @@ public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClick
         tvTjhz = mPopView.findViewById(R.id.tv_tjhz);
         tvWdzs = mPopView.findViewById(R.id.tv_wdzs);
         tvWdxx = mPopView.findViewById(R.id.tv_wdxx);
+        tv_yy = mPopView.findViewById(R.id.tv_yy);
 
     }
 
@@ -147,6 +151,9 @@ public class MoreFeaturesPopupWindow extends PopupWindow implements View.OnClick
 //            case R.id.tv_cjlm:
 //                mContext.startActivity(new Intent(mContext,DoctorsUnionActivity.class));
 //                break;
+            case R.id.tv_yy:
+                mContext.startActivity(new Intent(mContext, MyAppointmentActivity.class));
+                break;
         }
     }
 

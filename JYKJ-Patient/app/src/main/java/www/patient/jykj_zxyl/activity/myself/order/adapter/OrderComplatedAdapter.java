@@ -35,6 +35,7 @@ import www.patient.jykj_zxyl.util.StrUtils;
 public class OrderComplatedAdapter extends MultiItemRecycleViewAdapter<MultiItemEntity> {
 
     private OnItemClickListener mOnItemClickListener;
+
     public OrderComplatedAdapter(Context context, List<MultiItemEntity> datas) {
         super(context, datas, new CommonMutipleComplateOrderListItemType());
     }
@@ -43,8 +44,8 @@ public class OrderComplatedAdapter extends MultiItemRecycleViewAdapter<MultiItem
     @Override
     public void convert(ViewHolder viewHolder, MultiItemEntity multiItemEntity, int i) {
         int layoutId = viewHolder.getLayoutId();
-        switch (layoutId){
-            case R.layout.item_complated_order_card:
+        switch (layoutId) {
+            case R.layout.item_complated_order_card: //普通订单
                 LinearLayout llItemRoot = viewHolder.getView(R.id.ll_item_root);
                 RelativeLayout rlOrderComplateRoot = viewHolder.getView(R.id.rl_order_complate_root);
                 RelativeLayout rlCancelContractSucessRoot = viewHolder.getView(R.id.rl_cancel_contract_sucess_root);
@@ -58,26 +59,26 @@ public class OrderComplatedAdapter extends MultiItemRecycleViewAdapter<MultiItem
                 TextView tvLeaveMsgBtn = viewHolder.getView(R.id.tv_leave_msg_btn);
                 TextView tvEvaluteBtn = viewHolder.getView(R.id.tv_evalute_btn);
                 TextView tvCancelContractSucessBtn = viewHolder.getView(R.id.tv_cancel_contract_sucess_btn);
-                Integer flagTreatmentState = parbean1.getFlagTreatmentState();
-                if (flagTreatmentState!=null) {
-                    String status = Integer.toString(flagTreatmentState);
-                    if (status.equals(OrderStatusEnum.orderAdvenceCancelContractCode)) {
-                        rlCancelContractSucessRoot.setVisibility(View.VISIBLE);
-                        rlOrderComplateRoot.setVisibility(View.GONE);
-                    }else{
-                        rlCancelContractSucessRoot.setVisibility(View.GONE);
-                        rlOrderComplateRoot.setVisibility(View.GONE);
-                    }
+                int flagTreatmentState = parbean1.getSignStatus();
+
+                String status = String.valueOf(flagTreatmentState);
+                if (status.equals(OrderStatusEnum.orderAdvenceCancelContractCode)) {
+                    rlCancelContractSucessRoot.setVisibility(View.VISIBLE);
+                    rlOrderComplateRoot.setVisibility(View.GONE);
+                } else {
+                    rlCancelContractSucessRoot.setVisibility(View.GONE);
+                    rlOrderComplateRoot.setVisibility(View.GONE);
                 }
+
                 String actualPayment = parbean1.getActualPayment();
                 if (StringUtils.isNotEmpty(actualPayment)) {
                     mTvPriceValue.setText(String.format("¥%s", actualPayment));
-                }else{
+                } else {
                     mTvPriceValue.setText(String.format("¥%s", "0"));
                 }
 
-                mTvOrderType.setText(parbean1.getTreatmentTypeName());
-                mTvOrderTime.setText(DateUtils.getStringTimeMinute(parbean1.getOrderDate().getTime()));
+//                mTvOrderType.setText(parbean1.getTreatmentTypeName());
+                mTvOrderTime.setText(DateUtils.getStringTimeSlash(parbean1.getCreateDate()));
                 Integer coachValue = parbean1.getProCount();
                 if (coachValue != null) {
                     if (coachValue == 1) {
@@ -95,22 +96,21 @@ public class OrderComplatedAdapter extends MultiItemRecycleViewAdapter<MultiItem
                     }
                 }
 
-                mTvCoachValue.setText(String.format("%d次/%s",
-                        parbean1.getCoachValue(), StringUtils.isNotEmpty(
-                                parbean1.getCoachUnitName())?parbean1.getCoachUnitName():"一月"));
-                mTvSignTimeValue.setText(parbean1.getTimesName());
+                mTvCoachValue.setText(String.format("%s次/%s",
+                        parbean1.getDetectRateUnitCode(), parbean1.getDetectRateUnitName()));
+                mTvSignTimeValue.setText(String.format("%s%s", parbean1.getSignDuration(), parbean1.getSignDurationUnit()));
                 llItemRoot.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mOnItemClickListener!=null) {
-                            mOnItemClickListener.onClick(i,v);
+                        if (mOnItemClickListener != null) {
+                            mOnItemClickListener.onClick(i, v);
                         }
                     }
                 });
                 tvLeaveMsgBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mOnItemClickListener!=null) {
+                        if (mOnItemClickListener != null) {
                             mOnItemClickListener.onClickLeaveMsg(i);
                         }
                     }
@@ -118,7 +118,7 @@ public class OrderComplatedAdapter extends MultiItemRecycleViewAdapter<MultiItem
                 tvEvaluteBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mOnItemClickListener!=null) {
+                        if (mOnItemClickListener != null) {
                             mOnItemClickListener.onClickEvaluate(i);
                         }
                     }
@@ -126,15 +126,20 @@ public class OrderComplatedAdapter extends MultiItemRecycleViewAdapter<MultiItem
                 tvCancelContractSucessBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mOnItemClickListener!=null) {
-                            mOnItemClickListener.onClickCancelSucess(i);
+                        if (mOnItemClickListener != null) {
+//                            mOnItemClickListener.onClickCancelSucess(i);
                         }
                     }
                 });
 
                 break;
-            case R.layout.item_fragment_myorder_al_1:
-               LinearLayout mClickLinearLayout =viewHolder.getView (R.id.item_fragmentYLZX_rmjxLayout);
+            case R.layout.item_fragment_myorder_al_1: //签约订单
+                String treatmentType = "";
+                String treat_styleStr = "";
+                String service_time_titleStr = "";
+                String treat_style_toolStr = "";
+                String service_timeStr = "";
+                LinearLayout mClickLinearLayout = viewHolder.getView(R.id.item_fragmentYLZX_rmjxLayout);
                 TextView treatment_type = viewHolder.getView(R.id.treatment_type);
                 TextView process_state = viewHolder.getView(R.id.process_state);
                 TextView order_date = viewHolder.getView(R.id.order_date);
@@ -147,32 +152,71 @@ public class OrderComplatedAdapter extends MultiItemRecycleViewAdapter<MultiItem
                 TextView opinion_btn = viewHolder.getView(R.id.opinion_btn);
                 LinearLayout item_root = viewHolder.getView(R.id.item_root);
                 MyOrderProcess parbean = (MyOrderProcess) multiItemEntity;
-                treatment_type.setText(String.format("[%s]", parbean.getTreatmentTypeName()));
-                process_state.setText(parbean.getDoctorReceiveShow());
-                switch (parbean.getFlagColor()) {
-                    case 0:
-                        break;
+
+                switch (parbean.getTreatmentType()) {
                     case 1:
-                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_red));
+                        treatmentType = "[图文就诊]";
+                        treat_styleStr = "服务开始时间";
+                        service_time_titleStr = "服务截止时间";
+                        treat_style_toolStr = DateUtils.getStringTimeSlash(parbean.getReserveTime());
+                        service_timeStr = DateUtils.getStringTimeSlash(parbean.getReserveEndTime());
                         break;
                     case 2:
-                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_orange));
+                        treatmentType = "[音频就诊]";
+                        treat_styleStr = "接听电话";
+                        service_time_titleStr = "预约服务时间";
+                        treat_style_toolStr = parbean.getDoctorPhone();
+                        service_timeStr = DateUtils.getStringTimeSlash(parbean.getReserveTime());
                         break;
                     case 3:
-                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_yellow));
-                        break;
-                    case 4:
-                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_blue));
+                        treatmentType = "[视频就诊]";
+                        treat_styleStr = "接听电话";
+                        service_time_titleStr = "预约服务时间";
+                        treat_style_toolStr = parbean.getDoctorPhone();
+                        service_timeStr = DateUtils.getStringTimeSlash(parbean.getReserveTime());
                         break;
                     case 5:
-                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_green));
+                        treatmentType = "[电话就诊]";
+                        treat_styleStr = "接听电话";
+                        service_time_titleStr = "预约服务时间";
+                        treat_style_toolStr = parbean.getDoctorPhone();
+                        service_timeStr = DateUtils.getStringTimeSlash(parbean.getReserveTime());
                         break;
                 }
+
+                treatment_type.setText(treatmentType);
+                treat_style.setText(treat_styleStr);
+                service_time_title.setText(service_time_titleStr);
+                treat_style_tool.setText(treat_style_toolStr);
+                service_time.setText(service_timeStr);
+                advise_doctor.setText(parbean.getMainDoctorName());
+
+
+                process_state.setText(DateUtils.getStringTimeSlash(parbean.getCreateDate()));
+//                switch (parbean.getFlagColor()) {
+//                    case 0:
+//                        break;
+//                    case 1:
+//                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_red));
+//                        break;
+//                    case 2:
+//                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_orange));
+//                        break;
+//                    case 3:
+//                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_yellow));
+//                        break;
+//                    case 4:
+//                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_blue));
+//                        break;
+//                    case 5:
+//                        process_state.setTextColor(mContext.getResources().getColor(R.color.color_green));
+//                        break;
+//                }
                 if (null != parbean.getOrderDate()) {
                     order_date.setText(DateUtils.fomrDateSeflFormat(parbean.getOrderDate(), "yyyy-MM-dd HH:mm"));
                 }
-                advise_doctor.setText(parbean.getDoctorName());
-                switch (parbean.getTreatmentType()) {
+
+               /* switch (parbean.getTreatmentType()) {
                     case 1:
                     case 5:
                     case 0:
@@ -204,7 +248,7 @@ public class OrderComplatedAdapter extends MultiItemRecycleViewAdapter<MultiItem
 
 
                         break;
-                }
+                }*/
 
                 if (mOnItemClickListener != null) {
                     item_root.setOnClickListener(new View.OnClickListener() {
@@ -239,7 +283,7 @@ public class OrderComplatedAdapter extends MultiItemRecycleViewAdapter<MultiItem
                     opinion_btn.setTag(parbean);
                 }
                 break;
-                default:
+            default:
 
 
         }

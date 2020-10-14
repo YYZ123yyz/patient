@@ -36,6 +36,7 @@ import www.patient.jykj_zxyl.fragment.ylzx.FragmentWDSC;
 import www.patient.jykj_zxyl.fragment.ylzx.FragmentYXWX;
 import www.patient.jykj_zxyl.fragment.ylzx.FragmentYXXW;
 import www.patient.jykj_zxyl.fragment.ylzx.FragmentYXZN;
+import www.patient.jykj_zxyl.util.ActivityUtil;
 
 
 /**
@@ -61,6 +62,7 @@ public class FragmentYLZX extends Fragment {
         mContext = getContext();
         mActivity = (MainActivity) getActivity();
         mApp = (JYKJApplication) getActivity().getApplication();
+        ActivityUtil.setStatusBarMain(mActivity);
         initLayout(v);
         initHandler();
         return v;

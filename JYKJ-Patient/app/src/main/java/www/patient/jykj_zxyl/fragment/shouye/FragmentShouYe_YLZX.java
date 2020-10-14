@@ -50,15 +50,17 @@ import www.patient.jykj_zxyl.application.JYKJApplication;
  * Created by admin on 2016/6/1.
  */
 public class FragmentShouYe_YLZX extends Fragment {
-    private             Context                             mContext;
-    private             Handler                             mHandler;
+    private Context mContext;
+    private Handler mHandler;
     private MainActivity mActivity;
-    private             JYKJApplication                     mApp;
+    private JYKJApplication mApp;
 
-    private             WebView                             mWebView;
+    private WebView mWebView;
 
-    private             TextView                            more;
-    private             LinearLayout                        ylzxWebView;
+    private TextView more;
+    private LinearLayout ylzxWebView;
+    private RecyclerView ylzx_re;
+    private LinearLayoutManager layoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,43 +68,25 @@ public class FragmentShouYe_YLZX extends Fragment {
         mContext = getContext();
         mActivity = (MainActivity) getActivity();
         mApp = (JYKJApplication) getActivity().getApplication();
-//        mWebView = (WebView)v.findViewById(R.id.webView);
-        ylzxWebView = (LinearLayout)v.findViewById(R.id.ylzxWebView);
-        ylzxWebView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(mContext,YLZX01Activity.class));
-            }
-        });
-        more = (TextView)v.findViewById(R.id.more);
-        more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(mContext,YLZXWebActivity.class));
-            }
-        });
-//        loadWebPage();
-//        initLayout(v);
-//        initHandler();
-//        setData();
+        initLayout(v);
+        initHandler();
         return v;
     }
 
-    void loadWebPage(){
+    private void initHandler() {
 
-        mWebView.loadUrl("http://jiuyihtn.com/AppAssembly/medicalLink/medicalLink1.html");
-        mWebView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+    }
 
-                // 不要使用super，否则有些手机访问不了，因为包含了一条 handler.cancel()
-                // super.onReceivedSslError(view, handler, error);
+    private void initLayout(View v) {
+        ylzx_re = v.findViewById(R.id.ylzx_re);
+        //创建默认的线性LayoutManager
+        layoutManager = new LinearLayoutManager(mContext);
+        layoutManager.setOrientation(LinearLayout.VERTICAL);
+        ylzx_re.setLayoutManager(layoutManager);
+        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        ylzx_re.setHasFixedSize(true);
 
-                // 接受所有网站的证书，忽略SSL错误，执行访问网页
-                handler.proceed();
-                super.onReceivedSslError(view, handler, error);
-            }
-        });
+        //AudioAdapter
     }
 
 

@@ -53,10 +53,11 @@ public class CommonMutipleNoOrderListItemType implements IMulItemViewType<MultiI
         int layoutId = -1;
         switch (viewType){
             case 1:
-                layoutId=R.layout.item_to_be_confirmed_order_card;
+                layoutId=R.layout.item_fragment_myorder_no_1;
+
                 break;
             case 2:
-                layoutId=R.layout.item_fragment_myorder_no_1;
+                layoutId=R.layout.item_to_be_confirmed_order_card;
                 break;
                 default:
         }

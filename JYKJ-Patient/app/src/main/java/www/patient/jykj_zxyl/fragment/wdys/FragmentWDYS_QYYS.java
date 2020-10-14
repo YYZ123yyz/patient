@@ -19,24 +19,32 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.hyphenate.easeui.EaseConstant;
-import com.hyphenate.easeui.ui.ChatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import entity.ProvideViewInteractPatientComment;
 import entity.ProvideViewMyDoctorSigning;
 import entity.ProvideViewMyDoctorSigningRenewal;
 import entity.XYEntiy;
+import entity.service.GetInteractOrderCodeGenerate;
+import entity.shouye.ProvideViewDoctorExpertRecommend;
 import entity.wdzs.ProvideInteractPatientInterrogation;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WZXXOrderActivity;
+import www.patient.jykj_zxyl.activity.home.patient.ZJXQActivity;
+import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeWDYSQYYSAdapter;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
+import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
+import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeWDYSQYYSAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.myappointment.activity.ReservationActivity;
 
 
 /**
@@ -44,36 +52,35 @@ import www.patient.jykj_zxyl.application.JYKJApplication;
  * Created by admin on 2016/6/1.
  */
 public class FragmentWDYS_QYYS extends Fragment {
-    private             Context                             mContext;
+    private Context mContext;
     private WDYSActivity mActivity;
-    private             Handler                             mHandler;
-    private             JYKJApplication                     mApp;
+    private Handler mHandler;
+    private JYKJApplication mApp;
 
     private RecyclerView mRecyclerView;
     private FragmentHomeWDYSQYYSAdapter mAdapter;
     private LinearLayout llBack;
 
-    private             List<ProvideViewMyDoctorSigning>    provideViewMyDoctorSignings = new ArrayList<>();
-    private             boolean                             loadDate;
+    private List<ProvideViewMyDoctorSigning> provideViewMyDoctorSignings = new ArrayList<>();
+    private boolean loadDate;
 
-    private                 int                         mNumPage = 1;                  //页数（默认，1）
-    private                 int                         mRowNum = 10;                  //每页加载10条
-    private         String                      mNetRetStr;                 //返回字符串
-    public          ProgressDialog              mDialogProgress =null;
+    private int mNumPage = 1;                  //页数（默认，1）
+    private int mRowNum = 10;                  //每页加载10条
+    private String mNetRetStr;                 //返回字符串
+    public ProgressDialog mDialogProgress = null;
 
-    private                 TextView                tv_zjtj;
+    private TextView tv_zjtj;
 
 
-    private         String              mSearchName = "";
-    private         String              mSearchProvice = "";
-    private         String              mSearchCity = "";
-    private         String              mSearchArea = "";
-    private         String              mSearchJGBJ = "";
-    private         String              mSearchYSZC = "";
+    private String mSearchName = "";
+    private String mSearchProvice = "";
+    private String mSearchCity = "";
+    private String mSearchArea = "";
+    private String mSearchJGBJ = "";
+    private String mSearchYSZC = "";
 
-    private         String              mOrderNum;
-    private         int                 mXYChoiceIndex;
-
+    private String mOrderNum;
+    private int mXYChoiceIndex;
 
 
     @Override
@@ -85,7 +92,7 @@ public class FragmentWDYS_QYYS extends Fragment {
         initLayout(v);
         initHandler();
         provideViewMyDoctorSignings.clear();
-        getDate(this.mSearchName,this.mSearchProvice,this.mSearchCity,this.mSearchArea,this.mSearchJGBJ,this.mSearchYSZC);
+        getDate(this.mSearchName, this.mSearchProvice, this.mSearchCity, this.mSearchArea, this.mSearchJGBJ, this.mSearchYSZC);
         return v;
     }
 
@@ -105,14 +112,33 @@ public class FragmentWDYS_QYYS extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(manager);
-        mAdapter = new FragmentHomeWDYSQYYSAdapter(provideViewMyDoctorSignings,mContext);
+        mAdapter = new FragmentHomeWDYSQYYSAdapter(provideViewMyDoctorSignings, mContext);
         mRecyclerView.setAdapter(mAdapter);
+        //预约
+        mAdapter.setOnItemClickYYListener(new FragmentHomeWDYSQYYSAdapter.OnItemClickYYListener() {
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(mActivity, ReservationActivity.class);
+                intent.putExtra("userCode", provideViewMyDoctorSignings.get(position).getDoctorCode());
+                intent.putExtra("userName", provideViewMyDoctorSignings.get(position).getUserName());
+                intent.putExtra("loginDoctorPosition", mApp.loginDoctorPosition);
+                intent.putExtra("status", "2");
+                intent.putExtra("linPhone", provideViewMyDoctorSignings.get(position).getLinkPhone());
+                startActivity(intent);
+
+            }
+
+            @Override
+            public void onLongClick(int position) {
+
+            }
+        });
         //续约
         mAdapter.setOnItemClickXYListener(new FragmentHomeWDYSQYYSAdapter.OnItemClickXYListener() {
             @Override
             public void onClick(int position) {
                 mXYChoiceIndex = position;
-                    //获取续约数据
+                //获取续约数据
                 getXYData();
 
             }
@@ -126,31 +152,28 @@ public class FragmentWDYS_QYYS extends Fragment {
         mAdapter.setOnItemClickZXListener(new FragmentHomeWDYSQYYSAdapter.OnItemClickZXListener() {
             @Override
             public void onClick(int position) {
-                if (provideViewMyDoctorSignings.get(position).getFlagSigningBtn() == 0)
-                {
-                    Toast.makeText(mContext,"暂不可咨询",Toast.LENGTH_SHORT).show();
+                if (provideViewMyDoctorSignings.get(position).getFlagSigningBtn() == 0) {
+                    Toast.makeText(mContext, "暂不可咨询", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-
                 Intent intent = new Intent();
                 intent.setClass(mContext, ChatActivity.class);
-                intent.putExtra("userCode",provideViewMyDoctorSignings.get(position).getDoctorCode());
-                intent.putExtra("userName",provideViewMyDoctorSignings.get(position).getUserName());
-                intent.putExtra("doctorUrl",provideViewMyDoctorSignings.get(position).getUserLogoUrl());
+                intent.putExtra("userCode", provideViewMyDoctorSignings.get(position).getDoctorCode());
+                intent.putExtra("userName", provideViewMyDoctorSignings.get(position).getUserName());
+                intent.putExtra("doctorUrl", provideViewMyDoctorSignings.get(position).getUserLogoUrl());
 //                intent.putExtra("chatType","twjz");
 
-                intent.putExtra("operDoctorName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-                intent.putExtra("loginDoctorPosition",mApp.loginDoctorPosition);
-                intent.putExtra("operDoctorCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-                intent.putExtra("operDoctorName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                intent.putExtra("operDoctorName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                intent.putExtra("loginDoctorPosition", mApp.loginDoctorPosition);
+                intent.putExtra("operDoctorCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                intent.putExtra("operDoctorName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
 //                intent.putExtra("orderCode",provideViewInteractOrderTreatmentAndPatientInterrogations.get(position).getOrderCode());
 
-                intent.putExtra(EaseConstant.EXTRA_MESSAGE_NUM,provideViewMyDoctorSignings.get(position).getLimitImgText());           //消息数量
-                intent.putExtra(EaseConstant.EXTRA_VOICE_NUM,provideViewMyDoctorSignings.get(position).getLimitAudio());           //音频时长（单位：秒）
-                intent.putExtra(EaseConstant.EXTRA_VEDIO_NUM,provideViewMyDoctorSignings.get(position).getLimitVideo());           //视频时长（单位：秒）
+                intent.putExtra(EaseConstant.EXTRA_MESSAGE_NUM, provideViewMyDoctorSignings.get(position).getLimitImgText());           //消息数量
+                intent.putExtra(EaseConstant.EXTRA_VOICE_NUM, provideViewMyDoctorSignings.get(position).getLimitAudio());           //音频时长（单位：秒）
+                intent.putExtra(EaseConstant.EXTRA_VEDIO_NUM, provideViewMyDoctorSignings.get(position).getLimitVideo());           //视频时长（单位：秒）
                 startActivity(intent);
-//                startActivity(new Intent(mContext,ZJXQActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommendList.get(position)));
+               // startActivity(new Intent(mContext, ZJXQActivity.class).putExtra("provideViewDoctorExpertRecommend",provideViewDoctorExpertRecommendList.get(position)));
             }
 
             @Override
@@ -162,14 +185,12 @@ public class FragmentWDYS_QYYS extends Fragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(newState == RecyclerView.SCROLL_STATE_IDLE)
-                {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     int lastVisiblePosition = manager.findLastVisibleItemPosition();
-                    if(lastVisiblePosition >= manager.getItemCount() - 1) {
-                        if (loadDate)
-                        {
-                            mNumPage ++;
-                            getDate(mSearchName,mSearchProvice,mSearchCity,mSearchArea,mSearchJGBJ,mSearchYSZC);
+                    if (lastVisiblePosition >= manager.getItemCount() - 1) {
+                        if (loadDate) {
+                            mNumPage++;
+                            getDate(mSearchName, mSearchProvice, mSearchCity, mSearchArea, mSearchJGBJ, mSearchYSZC);
                         }
 
                     }
@@ -177,11 +198,11 @@ public class FragmentWDYS_QYYS extends Fragment {
             }
         });
 
-        tv_zjtj = (TextView)view.findViewById(R.id.tv_zjtj);
+        tv_zjtj = (TextView) view.findViewById(R.id.tv_zjtj);
         tv_zjtj.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(mContext,TJZJActivity.class));
+                startActivity(new Intent(mContext, TJZJActivity.class));
             }
         });
 
@@ -192,29 +213,28 @@ public class FragmentWDYS_QYYS extends Fragment {
      * 获取订单号
      */
     private void getXYData() {
-        getProgressBar("请稍候","正在获取数据。。。");
+        getProgressBar("请稍候", "正在获取数据。。。");
         ProvideViewMyDoctorSigningRenewal provideViewMyDoctorSigningRenewal = new ProvideViewMyDoctorSigningRenewal();
         provideViewMyDoctorSigningRenewal.setLoginPatientPosition(mApp.loginDoctorPosition);
         provideViewMyDoctorSigningRenewal.setRequestClientType("1");
         provideViewMyDoctorSigningRenewal.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideViewMyDoctorSigningRenewal.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         provideViewMyDoctorSigningRenewal.setSigningDoctorCode(provideViewMyDoctorSignings.get(mXYChoiceIndex).getDoctorCode());
-        if (provideViewMyDoctorSignings.get(mXYChoiceIndex).getDoctorCode() == null)
-        {
-            Toast.makeText(mContext,"医生编码为空",Toast.LENGTH_SHORT).show();
+        if (provideViewMyDoctorSignings.get(mXYChoiceIndex).getDoctorCode() == null) {
+            Toast.makeText(mContext, "医生编码为空", Toast.LENGTH_SHORT).show();
             return;
         }
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideViewMyDoctorSigningRenewal);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string,Constant.SERVICEURL+"PatientMyDoctorControlle/searchIndexMyDoctorSigningResInitRenewal");
-                    String string01 = Constant.SERVICEURL+"msgDataControlle/searchMsgPushReminderAllCount";
-                    System.out.println(string+string01);
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "PatientMyDoctorControlle/searchIndexMyDoctorSigningResInitRenewal");
+                    String string01 = Constant.SERVICEURL + "msgDataControlle/searchMsgPushReminderAllCount";
+                    System.out.println(string + string01);
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -224,24 +244,21 @@ public class FragmentWDYS_QYYS extends Fragment {
     }
 
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case 5:
-                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 1 && netRetEntity.getResJsonData() != null && !"".equals(netRetEntity.getResJsonData()))
-                        {
-                            List<ProvideViewMyDoctorSigning> list = JSON.parseArray(netRetEntity.getResJsonData(),ProvideViewMyDoctorSigning.class);
+                        NetRetEntity netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 1 && netRetEntity.getResJsonData() != null && !"".equals(netRetEntity.getResJsonData())) {
+                            List<ProvideViewMyDoctorSigning> list = JSON.parseArray(netRetEntity.getResJsonData(), ProvideViewMyDoctorSigning.class);
 
                             if (list == null || list.size() == 0)
                                 loadDate = false;
                             else
                                 provideViewMyDoctorSignings.addAll(list);
-                            if (list.size() < mRowNum )
-                            {
+                            if (list.size() < mRowNum) {
                                 loadDate = false;
                             }
                         }
@@ -253,24 +270,21 @@ public class FragmentWDYS_QYYS extends Fragment {
                         //获取订单号
                         getOrderNum();
                         cacerProgress();
-                        netRetEntity = JSON.parseObject(mNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 0 || netRetEntity.getResJsonData() == null)
-                        {
-                            Toast.makeText(mContext,netRetEntity.getResMsg(),Toast.LENGTH_SHORT).show();
+                        netRetEntity = JSON.parseObject(mNetRetStr, NetRetEntity.class);
+                        if (netRetEntity.getResCode() == 0 || netRetEntity.getResJsonData() == null) {
+                            Toast.makeText(mContext, netRetEntity.getResMsg(), Toast.LENGTH_SHORT).show();
                             cacerProgress();
-                        }
-                        else
-                        {
-                            XYEntiy xyEntiy = JSON.parseObject(netRetEntity.getResJsonData(),XYEntiy.class);
+                        } else {
+                            XYEntiy xyEntiy = JSON.parseObject(netRetEntity.getResJsonData(), XYEntiy.class);
                             Intent intent = new Intent();
                             ProvideInteractPatientInterrogation provideInteractPatientInterrogation = new ProvideInteractPatientInterrogation();
                             provideInteractPatientInterrogation.setDoctorCode(xyEntiy.getDoctorCode());
                             provideInteractPatientInterrogation.setDoctorName(xyEntiy.getUserName());
                             provideInteractPatientInterrogation.setPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
                             provideInteractPatientInterrogation.setPatientLinkPhone(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
-                            startActivity(new Intent(mContext,WZXXOrderActivity.class)
-                                    .putExtra("provideInteractPatientInterrogation",provideInteractPatientInterrogation)
-                                    .putExtra("orderID",mOrderNum).putExtra("orderType","6").putExtra("xyEntiy",xyEntiy));
+                            startActivity(new Intent(mContext, WZXXOrderActivity.class)
+                                    .putExtra("provideInteractPatientInterrogation", provideInteractPatientInterrogation)
+                                    .putExtra("orderID", mOrderNum).putExtra("orderType", "6").putExtra("xyEntiy", xyEntiy));
 //
                         }
                         break;
@@ -315,12 +329,12 @@ public class FragmentWDYS_QYYS extends Fragment {
     /**
      * 搜索
      */
-    public void getDate(String searchName,String searchProvince,String searchCity,String searchArea,String searchHospitalType,String searchDoctorTitle) {
+    public void getDate(String searchName, String searchProvince, String searchCity, String searchArea, String searchHospitalType, String searchDoctorTitle) {
         if (mNumPage == 1)
             provideViewMyDoctorSignings.clear();
         ProvideViewMyDoctorSigning provideViewMyDoctorSigning = new ProvideViewMyDoctorSigning();
-        provideViewMyDoctorSigning.setRowNum(mRowNum+"");
-        provideViewMyDoctorSigning.setPageNum(mNumPage+"");
+        provideViewMyDoctorSigning.setRowNum(mRowNum + "");
+        provideViewMyDoctorSigning.setPageNum(mNumPage + "");
         provideViewMyDoctorSigning.setLoginUserPosition(mApp.loginDoctorPosition);
         provideViewMyDoctorSigning.setRequestClientType("1");
         provideViewMyDoctorSigning.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
@@ -333,17 +347,17 @@ public class FragmentWDYS_QYYS extends Fragment {
         provideViewMyDoctorSigning.setSearchDoctorTitle(searchDoctorTitle);
 //        provideViewDoctorExpertRecommend.setShowNum("4");
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 try {
                     String string = new Gson().toJson(provideViewMyDoctorSigning);
-                    String urlStr = Constant.SERVICEURL+"PatientMyDoctorControlle/searchIndexMyDoctorSigningShow";
+                    String urlStr = Constant.SERVICEURL + "PatientMyDoctorControlle/searchIndexMyDoctorSigningShow";
 //                    mNetRetStr = HttpNetService.getUpgradeInfo("jsonDataInfo="+string, urlStr);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo="+string, Constant.SERVICEURL+"PatientMyDoctorControlle/searchIndexMyDoctorSigningShow");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "PatientMyDoctorControlle/searchIndexMyDoctorSigningShow");
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
-                    retEntity.setResMsg("网络连接异常，请联系管理员："+e.getMessage());
+                    retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
                     mNetRetStr = new Gson().toJson(retEntity);
                     e.printStackTrace();
                 }
@@ -353,10 +367,10 @@ public class FragmentWDYS_QYYS extends Fragment {
     }
 
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(getContext());
         }
@@ -369,7 +383,7 @@ public class FragmentWDYS_QYYS extends Fragment {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }
@@ -377,6 +391,7 @@ public class FragmentWDYS_QYYS extends Fragment {
 
     /**
      * 设置搜索条件
+     *
      * @param mSearchProvice
      * @param mSearchCity
      * @param mSearchArea
@@ -394,6 +409,6 @@ public class FragmentWDYS_QYYS extends Fragment {
         this.mSearchJGBJ = mSearchJGBJ;
         this.mSearchYSZC = mSearchYSZC;
         provideViewMyDoctorSignings.clear();
-        getDate(this.mSearchName,this.mSearchProvice,this.mSearchCity,this.mSearchArea,this.mSearchJGBJ,this.mSearchYSZC);
+        getDate(this.mSearchName, this.mSearchProvice, this.mSearchCity, this.mSearchArea, this.mSearchJGBJ, this.mSearchYSZC);
     }
 }

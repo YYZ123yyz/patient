@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -83,8 +84,9 @@ public class ChoiceMedicationActivity extends AppCompatActivity implements View.
                     case 1:
                         cacerProgress();
                         NetRetEntity netRetEntity = new Gson().fromJson(mNetRetStr,NetRetEntity.class);
-                        if (netRetEntity.getResCode() == 1)
-                        {
+                        if(!TextUtils.isEmpty(mNetRetStr)){
+                            if (netRetEntity.getResCode() == 1)
+                            {
                                 List<ProvideDrugInfo> list = JSON.parseArray(netRetEntity.getResJsonData(), ProvideDrugInfo.class);
                                 if (list.size() < mRowNum)
                                 {
@@ -102,12 +104,14 @@ public class ChoiceMedicationActivity extends AppCompatActivity implements View.
                                 mAdapter.setDate(mData);
                                 mAdapter.notifyDataSetChanged();
 
+                            }
+                            else
+                            {
+                                mNoDun.setVisibility(View.VISIBLE);
+                                mLoadDate = false;
+                            }
                         }
-                        else
-                        {
-                            mNoDun.setVisibility(View.VISIBLE);
-                            mLoadDate = false;
-                        }
+
 
                         break;
 

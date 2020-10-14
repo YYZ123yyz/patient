@@ -53,6 +53,7 @@ import okhttp3.OkHttpClient;
 import www.patient.jykj_zxyl.BuildConfig;
 import www.patient.jykj_zxyl.activity.MainActivity;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.base.base_db.DbCore;
 import www.patient.jykj_zxyl.base.base_utils.SharedPreferences_DataSave;
 import www.patient.jykj_zxyl.base.http.AppUrlConfig;
 
@@ -64,6 +65,7 @@ public class JYKJApplication extends Application {
     public List<Activity> gActivityList = new ArrayList();
     public ImageLoader imageLoader = ImageLoader.getInstance();
     public DisplayImageOptions mImageOptions;                                                // DisplayImageOptions是用于设置图片显示的类
+
 
     public SharedPreferences_DataSave m_persist;                                                //数据存储
 
@@ -320,6 +322,7 @@ public class JYKJApplication extends Application {
         options.setAcceptInvitationAlways(false);
         EaseUI.getInstance().init(gContext, options);
         LibApp.init(this);
+        DbCore.init(this);
         //初始化图片方法
         /**
          * 配置并初始化ImageLoader
@@ -359,6 +362,8 @@ public class JYKJApplication extends Application {
         m_persist = new SharedPreferences_DataSave(this, "JYKJDOCTER");
         m_persist.putString("loginUserInfo", new Gson().toJson(mLoginUserInfo));
         m_persist.putString("viewSysUserDoctorInfoAndHospital", new Gson().toJson(mProvideViewSysUserPatientInfoAndRegion));
+
+     //   m_persist.putString("gBasicDate",gBasicDate);
         ExtEaseUtils.getInstance().setNickName(mProvideViewSysUserPatientInfoAndRegion.getUserName());
         ExtEaseUtils.getInstance().setImageUrl(mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
         ExtEaseUtils.getInstance().setUserId(mProvideViewSysUserPatientInfoAndRegion.getPatientCode());

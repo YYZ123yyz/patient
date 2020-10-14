@@ -11,17 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/groabColor">
+
         <RelativeLayout
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
             android:id="@+id/back"
-            >
-        <ImageView
-            android:layout_width="10dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:src="@mipmap/arrow_left" />
+            android:layout_width="60dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/arrow_left" />
         </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
@@ -48,7 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="诊询标题"
-                    android:textSize="8pt"
+                    android:textSize="15sp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/tabColor_nomal"
                     android:layout_gravity="center_vertical"
@@ -60,7 +61,7 @@
                     android:hint="请输入诊询标题"
                     android:id="@+id/tv_activityHZZL_userSG"
                     android:background="@null"
-                    android:textSize="8pt"
+                    android:textSize="15sp"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/tabColor_nomal"
                     android:layout_gravity="center_vertical"
@@ -77,7 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="诊询日期"
-                    android:textSize="8pt"
+                    android:textSize="15sp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/tabColor_nomal"
                     android:layout_gravity="center_vertical"
@@ -88,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:text="点击选择"
                     android:id="@+id/tv_activityHZZL_userYW"
-                    android:textSize="8pt"
+                    android:textSize="15sp"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/tabColor_nomal"
                     android:layout_gravity="center_vertical"
@@ -105,7 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="主诉"
-                    android:textSize="8pt"
+                    android:textSize="15sp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/tabColor_nomal"
                     android:layout_gravity="center_vertical"
@@ -125,7 +126,7 @@
                     android:hint="为了使医生准确判断病情为您提供更好的帮助，请尽可能详细描述病情症状。（300字以内）"
                     android:id="@+id/tv_activityHZZL_region"
                     android:background="@drawable/bg_lrbs_zsedit"
-                    android:textSize="7pt"
+                    android:textSize="13sp"
                     android:layout_marginTop="1dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -150,7 +151,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="上传照片"
-                    android:textSize="8pt"
+                    android:textSize="15sp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/tabColor_nomal"
                     android:layout_gravity="center_vertical"
@@ -170,7 +171,7 @@
                 android:layout_marginRight="10dp"
                 android:text="可上传检查资料、病例照片、医院化验单、报告单、处方单等"
                 android:textColor="#ff999999"
-                android:textSize="7pt"
+                android:textSize="13sp"
                 />
                 <TextView
                     android:layout_width="match_parent"

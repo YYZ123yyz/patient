@@ -50,7 +50,8 @@ public class OrderCompletedFragment extends AbstractMvpBaseFragment<OrderComplet
     private OrderComplatedAdapter mOrderComplatedAdapter;
     private LoadingLayoutManager mLoadingLayout;//重新加载空页面管理
     private List<MultiItemEntity> mMultiItemEntitys;//多布局内容列表
-    private  MyOrderProcess currentMyOrderProcess;
+    private MyOrderProcess currentMyOrderProcess;
+
     @Override
     protected int setLayoutId() {
         return R.layout.fragment_base_list;
@@ -66,7 +67,7 @@ public class OrderCompletedFragment extends AbstractMvpBaseFragment<OrderComplet
     protected void initView(View view) {
         mRefreshLayout = view.findViewById(R.id.refreshLayout);
         mRvList = view.findViewById(R.id.rv_list);
-        mMultiItemEntitys=new ArrayList<>();
+        mMultiItemEntitys = new ArrayList<>();
         initLoadingAndRetryManager();
         //设置适配器
         setAdapter();
@@ -77,10 +78,9 @@ public class OrderCompletedFragment extends AbstractMvpBaseFragment<OrderComplet
 
     @Override
     protected void initData() {
-       mPresenter.sendSearchPatientMyOrderResCompletedRequest(pageSize+"",
-               pageIndex+"",this.getActivity());
+        mPresenter.sendSearchPatientMyOrderResCompletedRequest(pageSize + "",
+                pageIndex + "", this.getActivity());
     }
-
 
 
     /**
@@ -101,16 +101,16 @@ public class OrderCompletedFragment extends AbstractMvpBaseFragment<OrderComplet
         mRefreshLayout.setRefreshHeader(new ClassicsHeader(Objects.requireNonNull(this.getContext())));
         mRefreshLayout.setRefreshFooter(new ClassicsFooter(this.getContext()));
         mRefreshLayout.setOnRefreshListener(refreshlayout -> {
-            pageIndex=1;
-            mPresenter.sendSearchPatientMyOrderResCompletedRequest(pageSize+"",
-                    pageIndex+"",OrderCompletedFragment.this.getActivity());
+            pageIndex = 1;
+            mPresenter.sendSearchPatientMyOrderResCompletedRequest(pageSize + "",
+                    pageIndex + "", OrderCompletedFragment.this.getActivity());
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
                 pageIndex++;
-                mPresenter.sendSearchPatientMyOrderResCompletedRequest(pageSize+"",
-                        pageIndex+"",OrderCompletedFragment.this.getActivity());
+                mPresenter.sendSearchPatientMyOrderResCompletedRequest(pageSize + "",
+                        pageIndex + "", OrderCompletedFragment.this.getActivity());
             }
         });
         mOrderComplatedAdapter.setmOnItemClickListener(new OrderComplatedAdapter.OnItemClickListener() {
@@ -128,26 +128,26 @@ public class OrderCompletedFragment extends AbstractMvpBaseFragment<OrderComplet
                         break;
                     case R.id.leave_btn:
                         MyOrderProcess myOrderProcess = (MyOrderProcess) mMultiItemEntitys.get(position);
-                        currentMyOrderProcess=myOrderProcess;
+                        currentMyOrderProcess = myOrderProcess;
                         mPresenter.sendSearchPatientOrderByCodeRequest(myOrderProcess.getOrderCode()
-                                ,OrderCompletedFragment.this.getActivity());
+                                , OrderCompletedFragment.this.getActivity());
                         break;
                     case R.id.opinion_btn:
                         MyOrderProcess myOrderProcess1 = (MyOrderProcess) mMultiItemEntitys.get(position);
-                        currentMyOrderProcess=myOrderProcess1;
+                        currentMyOrderProcess = myOrderProcess1;
                         mPresenter.searchPatientMyOrderResCommentRequest(myOrderProcess1.getOrderCode()
-                                ,OrderCompletedFragment.this.getActivity());
+                                , OrderCompletedFragment.this.getActivity());
                         break;
                     case R.id.ll_item_root:
                         MyOrderProcess parbean1 = (MyOrderProcess) mMultiItemEntitys.get(position);
-                        Bundle bundle=new Bundle();
-                        bundle.putString("signCode",parbean1.getOrderCode());
-                        bundle.putString("operDoctorCode",parbean1.getDoctorCode());
-                        bundle.putString("operDoctorName",parbean1.getDoctorName());
-                        startActivity(SignOrderDetialActivity.class,bundle);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("signCode", parbean1.getOrderCode());
+                        bundle.putString("operDoctorCode", parbean1.getMainDoctorCode());
+                        bundle.putString("operDoctorName", parbean1.getMainDoctorName());
+                        startActivity(SignOrderDetialActivity.class, bundle);
 
                         break;
-                        default:
+                    default:
                 }
             }
 
@@ -169,13 +169,13 @@ public class OrderCompletedFragment extends AbstractMvpBaseFragment<OrderComplet
             @Override
             public void onClickCancelSucess(int position) {
                 MyOrderProcess myOrderProcess = (MyOrderProcess) mMultiItemEntitys.get(position);
-                Bundle bundle=new Bundle();
-                bundle.putString("mainDoctorCode",myOrderProcess.getDoctorCode());
-                bundle.putString("mainDoctorName",myOrderProcess.getDoctorName());
-                bundle.putInt("orderState",myOrderProcess.getFlagTreatmentState());
-                bundle.putString("signNo",myOrderProcess.getSignNo());
-                bundle.putString("orderId",myOrderProcess.getOrderCode());
-                startActivity(CancelContractResultActivity.class,bundle);
+                Bundle bundle = new Bundle();
+                bundle.putString("mainDoctorCode", myOrderProcess.getMainDoctorCode());
+                bundle.putString("mainDoctorName", myOrderProcess.getMainDoctorName());
+                bundle.putInt("orderState", myOrderProcess.getFlagTreatmentState());
+                bundle.putString("signNo", myOrderProcess.getSignNo());
+                bundle.putString("orderId", myOrderProcess.getOrderCode());
+                startActivity(CancelContractResultActivity.class, bundle);
             }
         });
     }
@@ -183,12 +183,12 @@ public class OrderCompletedFragment extends AbstractMvpBaseFragment<OrderComplet
     /**
      * 设置适配器
      */
-    private void setAdapter(){
+    private void setAdapter() {
         mRvList.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        mOrderComplatedAdapter=new OrderComplatedAdapter(this.getContext(),mMultiItemEntitys);
+        mOrderComplatedAdapter = new OrderComplatedAdapter(this.getContext(), mMultiItemEntitys);
         mRvList.setAdapter(mOrderComplatedAdapter);
         SimpleDividerItemDecoration decor = new SimpleDividerItemDecoration(Objects.requireNonNull
-                (getContext()), SimpleDividerItemDecoration.VERTICAL,true);
+                (getContext()), SimpleDividerItemDecoration.VERTICAL, true);
         decor.setDrawable(getResources().getDrawable(R.drawable.bg_shape_line));
         mRvList.addItemDecoration(decor);
 
@@ -233,7 +233,7 @@ public class OrderCompletedFragment extends AbstractMvpBaseFragment<OrderComplet
 
     @Override
     public void searchPatientCommentResult(CommentInfo commentInfo) {
-        if (null != commentInfo&&commentInfo.getCommentId()!=0) {
+        if (null != commentInfo && commentInfo.getCommentId() != 0) {
             Intent showint = new Intent(mActivity, ShowCommentActivity.class);
             showint.putExtra("orderinfo", currentMyOrderProcess);
             showint.putExtra("commentinfo", commentInfo);
@@ -246,15 +246,15 @@ public class OrderCompletedFragment extends AbstractMvpBaseFragment<OrderComplet
     }
 
 
-    private void handleData(List<MultiItemEntity> mMultiItemEntitys){
+    private void handleData(List<MultiItemEntity> mMultiItemEntitys) {
         for (MultiItemEntity mMultiItemEntity : mMultiItemEntitys) {
             MyOrderProcess myOrderProcess =
                     (MyOrderProcess) mMultiItemEntity;
-            Integer flagTreatmentState = myOrderProcess.getFlagTreatmentState();
-            if (flagTreatmentState==4) {
-                myOrderProcess.setItemType("2");
-            }else{
+            int flagTreatmentState = myOrderProcess.getOrderType();
+            if (flagTreatmentState == 1) {
                 myOrderProcess.setItemType("1");
+            } else {
+                myOrderProcess.setItemType("2");
             }
 //            myOrderProcess.setItemType(
 //                    CommonMutipleGoOrderListItemType.MULTIPLE_CONTENT_SIGN_UP_TYPE);
@@ -264,14 +264,16 @@ public class OrderCompletedFragment extends AbstractMvpBaseFragment<OrderComplet
 
     @Override
     public void showEmpty() {
-        if(pageIndex == 1){
+        if (pageIndex == 1) {
             mLoadingLayout.showEmpty();
+        }else {
+            mRefreshLayout.finishRefreshWithNoMoreData();
         }
     }
 
     @Override
     public void showRetry() {
-        if (pageIndex==1) {
+        if (pageIndex == 1) {
             mLoadingLayout.showError();
         }
         mRefreshLayout.finishLoadMore();

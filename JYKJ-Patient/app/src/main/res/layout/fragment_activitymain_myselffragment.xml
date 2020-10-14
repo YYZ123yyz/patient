@@ -188,7 +188,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/result_minor_text" />
+            <www.patient.jykj_zxyl.custom.MyselfItemView
+                android:id="@+id/myself_yy_btn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:have_img="true"
+                app:img_src="@mipmap/myself_yy"
+                app:text_title="我的预约" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/result_minor_text" />
             <www.patient.jykj_zxyl.custom.MyselfItemView
                 android:id="@+id/myself_doctor_btn"
                 android:layout_width="match_parent"
@@ -240,6 +251,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/result_minor_text" />
+
+            <www.patient.jykj_zxyl.custom.MyselfItemView
+                android:id="@+id/my_equipment"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:have_img="true"
+                app:img_src="@mipmap/iv_equipment"
+                app:text_title="我的设备" />
+
+            <View
+                style="@style/div_h" />
+
 
             <www.patient.jykj_zxyl.custom.MyselfItemView
                 android:id="@+id/myself_recommend"

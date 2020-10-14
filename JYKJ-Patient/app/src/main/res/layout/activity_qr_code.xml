@@ -84,10 +84,10 @@
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
                 android:id="@+id/sys"
-                android:textSize="12sp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:gravity="center"
+                android:textSize="12sp"
                 android:drawableLeft="@mipmap/icon_scan_white"
                 android:textColor="@color/writeColor"/>
 
@@ -105,7 +105,7 @@
                 android:gravity="center"
                 android:textSize="12sp"
                 android:drawableLeft="@mipmap/icon_share_white"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="15dp"
                 android:textColor="@color/writeColor"/>
 
             <TextView
@@ -121,7 +121,7 @@
                 android:paddingRight="15dp"
                 android:gravity="center"
                 android:drawableLeft="@mipmap/icon_share_white"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="15dp"
                 android:textSize="12sp"
                 android:textColor="@color/writeColor"/>
 

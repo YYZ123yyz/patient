@@ -12,8 +12,10 @@ import java.util.List;
 import www.patient.jykj_zxyl.base.base_bean.BaseBean;
 import www.patient.jykj_zxyl.base.base_bean.BaseReasonBean;
 import www.patient.jykj_zxyl.base.base_bean.OrderDetialBean;
+import www.patient.jykj_zxyl.base.base_bean.RefusedOrderBean;
 import www.patient.jykj_zxyl.base.base_bean.UserInfoBaseBean;
 import www.patient.jykj_zxyl.base.base_utils.GsonUtils;
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 import www.patient.jykj_zxyl.base.http.ApiHelper;
 import www.patient.jykj_zxyl.base.http.CommonDataObserver;
 import www.patient.jykj_zxyl.base.http.ParameUtil;
@@ -204,4 +206,40 @@ public class RefusedOrderPresenter extends BasePresenterImpl<RefusedOrderContrac
             }
         });
     }
+
+    @Override
+    public void getOrderDet(String s) {
+
+        ApiHelper.getApiService().getOrderDet(s).
+                compose(Transformer.switchSchedulers()).subscribe(new CommonDataObserver() {
+            @Override
+            protected void onSuccessResult(BaseBean baseBean) {
+                if (mView!=null) {
+                    int resCode = baseBean.getResCode();
+                    if (resCode==1) {
+                        String resJsonData = baseBean.getResJsonData();
+                        LogUtils.e("拒绝数据+resJsonData    "+resJsonData);
+                        RefusedOrderBean userInfoBaseBean = GsonUtils.fromJson(resJsonData, RefusedOrderBean.class);
+                        if (userInfoBaseBean !=null){
+                            mView.getRufusedDet(userInfoBaseBean);
+                        }
+
+                    }
+                }
+
+            }
+
+            @Override
+            protected void onError(String s) {
+                super.onError(s);
+            }
+
+            @Override
+            protected String setTag() {
+                return SEND_GET_USERINFO_REQUEST_TAG;
+            }
+        });
+    }
+
+
 }

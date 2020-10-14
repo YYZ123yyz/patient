@@ -22,23 +22,30 @@ public class ProvideViewPatientHealthyAndBasics implements java.io.Serializable 
 	private Integer flagFamilyHtn;//是否有家族病史(直系亲属).1:是;0:否;[操作方式:单选按钮]
 	private Integer flagHtnHistory;//是否有高血压病史.1:是;0:否;[操作方式:单选按钮]
 	private String htnHistory;//高血压病史描述[操作方式:文本]
-	
-	
-	
+	private String historyAllergy;  //过敏史描述
+
+	public String getHistoryAllergy() {
+		return historyAllergy;
+	}
+
+	public void setHistoryAllergy(String historyAllergy) {
+		this.historyAllergy = historyAllergy;
+	}
+
 	private String onsetSymptoms;//起病症状[操作方式:多选.最多5项].数据字典编码:10001
 	private String currentSymptoms;//目前症状[操作方式:多选.最多5项].数据字典编码:10002
 	private String complication;//并发症[操作方式:多选.最多5项].数据字典编码:10003
 	private String combinedDisease;//合并疾病[操作方式:多选.最多5项].数据字典编码:10004
-	private String currentTreatmentPlan;//目前治疗方案[操作方式:多选.最多5项].数据字典编码:10005	
+	private String currentTreatmentPlan;//目前治疗方案[操作方式:多选.最多5项].数据字典编码:10005
 	private String stateOfIllness;//病情自述
 	private String onsetSymptomsName;
 	private String currentSymptomsName;
 	private String complicationName;
 	private String combinedDiseaseName;
 	private String currentTreatmentPlanName;
-	
-	
-	
+
+
+
 	private String userName;
 	private String userNameAlias;
 	private Integer flagUserNameAliasStatus;

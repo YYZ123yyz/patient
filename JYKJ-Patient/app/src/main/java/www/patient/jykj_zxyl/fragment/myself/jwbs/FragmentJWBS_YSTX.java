@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -251,6 +252,7 @@ public class FragmentJWBS_YSTX extends Fragment {
             try {
                 queryCond.setPageNum(String.valueOf(pageno));
                 String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(queryCond), Constant.SERVICEURL + INetAddress.QUERY_PASTHIST_URL);
+                Log.e("TAG", "既往病史: "+retnetstr );
                 NetRetEntity retEntity = JSON.parseObject(retnetstr, NetRetEntity.class);
                 if (1 == retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length() > 3) {
                     retlist = JSON.parseArray(retEntity.getResJsonData(), JwbsYstxInfo.class);

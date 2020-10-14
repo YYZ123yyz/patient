@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMFileMessageBody;
@@ -19,10 +20,15 @@ import com.hyphenate.util.ImageUtils;
 
 import java.io.File;
 
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
+
 public class EaseChatRowImage extends EaseChatRowFile{
 
     protected ImageView imageView;
     private EMImageMessageBody imgBody;
+    private LinearLayout linNum;
+    private TextView allNum;
+    private TextView remainNum;
 
     public EaseChatRowImage(Context context, EMMessage message, int position, BaseAdapter adapter) {
         super(context, message, position, adapter);
@@ -37,6 +43,9 @@ public class EaseChatRowImage extends EaseChatRowFile{
     protected void onFindViewById() {
         percentageView = (TextView) findViewById(R.id.percentage);
         imageView = (ImageView) findViewById(R.id.image);
+        linNum = (LinearLayout) findViewById(R.id.lin_num);
+        allNum = (TextView) findViewById(R.id.all_num);
+        remainNum = (TextView) findViewById(R.id.remain_num);
     }
 
     
@@ -57,6 +66,25 @@ public class EaseChatRowImage extends EaseChatRowFile{
     @Override
     protected void onViewUpdate(EMMessage msg) {
         if (msg.direct() == EMMessage.Direct.SEND) {
+            boolean isReserveing = message.getBooleanAttribute("isReserveing", false);
+            if (message.direct() == EMMessage.Direct.SEND && isReserveing) {
+                long msgTime = message.getMsgTime();
+                long reserveConfigStart = message.getLongAttribute("reserveConfigStart", 0);
+                long reserveConfigEnd = message.getLongAttribute("reserveConfigEnd", 0);
+                int sumDuration = message.getIntAttribute("sumDuration", 0);
+                int allNum = message.getIntAttribute("allNum", 0);
+                LogUtils.e("消息时间  "+msgTime);
+                LogUtils.e("预约开始  "+reserveConfigStart);
+                LogUtils.e("预约结束  "+reserveConfigEnd);
+                LogUtils.e("剩余次数  "+sumDuration);
+                linNum.setVisibility((msgTime > reserveConfigStart && reserveConfigEnd > msgTime) ? VISIBLE : GONE);
+                this.allNum.setText(String.format("您一共有%d次机会", allNum));
+                remainNum.setText(String.format("您还有%d次机会", sumDuration));
+            }else {
+                linNum.setVisibility(GONE);
+            }
+
+
             if(EMClient.getInstance().getOptions().getAutodownloadThumbnail()){
                 super.onViewUpdate(msg);
             }else{

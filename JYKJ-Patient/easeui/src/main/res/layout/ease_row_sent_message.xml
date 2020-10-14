@@ -103,4 +103,35 @@
             android:visibility="visible" />
     </RelativeLayout>
 
+
+    <LinearLayout
+        android:id="@+id/lin_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/all_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="您一共有5次机会"
+            android:textColor="@color/red"
+            android:layout_gravity="end"
+            android:layout_marginRight="20dp"
+
+            />
+
+        <TextView
+            android:id="@+id/remain_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="您还有3次机会"
+            android:textColor="@color/red"
+            android:layout_gravity="end"
+            android:layout_marginRight="20dp"
+
+            />
+
+
+    </LinearLayout>
 </LinearLayout>

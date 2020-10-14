@@ -12,8 +12,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,67 +63,67 @@ import www.patient.jykj_zxyl.util.*;
 public class JDDAJBJKXXActivity extends AppCompatActivity {
 
 
-    private         Context                 mContext;
-    private         JDDAJBJKXXActivity        mActivity;
-    private         Handler                 mHandler;
-    private         JYKJApplication         mApp;
-    private         RecyclerView            mRecycleView;
+    private Context mContext;
+    private JDDAJBJKXXActivity mActivity;
+    private Handler mHandler;
+    private JYKJApplication mApp;
+    private RecyclerView mRecycleView;
 
-    private         LinearLayoutManager     layoutManager;
+    private LinearLayoutManager layoutManager;
     private JYZL_GRZLRecycleAdapter mJYZL_GRZLRecycleAdapter;      //适配器
-    private         List<HZIfno>            mHZEntyties = new ArrayList<>();            //所有数据
-    private         LinearLayout            mJBXX;                                  //基本信息
-    private         String                  mPatientCode;                       //患者code
+    private List<HZIfno> mHZEntyties = new ArrayList<>();            //所有数据
+    private LinearLayout mJBXX;                                  //基本信息
+    private String mPatientCode;                       //患者code
 
-    public                  ProgressDialog              mDialogProgress =null;
-    private                 String                      mNetRetStr;                 //获取返回字符串
+    public ProgressDialog mDialogProgress = null;
+    private String mNetRetStr;                 //获取返回字符串
     private ProvidePatientConditionHealthy mProvidePatientConditionHealthy;
 
 
-    private         LinearLayout            mBack;
+    private LinearLayout mBack;
 
-    private         EditText                    et_sfzh;                        //身份证号
-    private         EditText                    et_dh;                          //电话
+    private EditText et_sfzh;                        //身份证号
+    private EditText et_dh;                          //电话
 
-    private         TextView                    tv_xglx;                          //性格类型
-    private         TextView                    tv_mz;                          //民族
-    private         TextView                    tv_jg;                          //籍贯
+    private TextView tv_xglx;                          //性格类型
+    private TextView tv_mz;                          //民族
+    private TextView tv_jg;                          //籍贯
 
-    private         EditText                    et_sg;                          //身高
-    private         EditText                    et_tz;                          //体重
-    private         EditText                    et_yw;                          //腰围
+    private EditText et_sg;                          //身高
+    private EditText et_tz;                          //体重
+    private EditText et_yw;                          //腰围
 
-    private         TextView                    tv_sfxy;                          //是否吸烟
-    private         TextView                    tv_sfxj;                          //是否酗酒
-    private         TextView                    tv_sfay;                          //是否熬夜
-    private         TextView                    tv_zzfxycsj;                      //最早发现异常时间
-    private         TextView                    tv_qznf;                          //确诊年份
-    private         TextView                    tv_zxybs;                          //高血压病史
-    private         TextView                    tv_sfyjzs;                          //是否有家族史
-    private         EditText                    et_gxybsms;                         //高血压病史描述
+    private TextView tv_sfxy;                          //是否吸烟
+    private TextView tv_sfxj;                          //是否酗酒
+    private TextView tv_sfay;                          //是否熬夜
+    private TextView tv_zzfxycsj;                      //最早发现异常时间
+    private TextView tv_qznf;                          //确诊年份
+    private TextView tv_zxybs;                          //高血压病史
+    private TextView tv_sfyjzs;                          //是否有家族史
+    private EditText et_gxybsms;                         //高血压病史描述
 
-    private         LinearLayout                li_xglx;                        //性格类型
-    private         LinearLayout                li_mz;                          //民族
-    private         LinearLayout                li_jg;                             //籍贯
-    private         LinearLayout                li_sfxy;                          //是否吸烟
-    private         LinearLayout                li_sfxj;                          //是否酗酒
-    private         LinearLayout                li_sfay;                          //是否熬夜
-    private         LinearLayout                li_zzfxycsj;                      //最早发现异常时间
-    private         LinearLayout                li_qznf;                          //确诊年份
-    private         LinearLayout                li_zxybs;                          //高血压病史
-    private         LinearLayout                li_sfyjzs;                          //是否有家族史
-
-
-    private         ProvincePicker              mPicker;
+    private LinearLayout li_xglx;                        //性格类型
+    private LinearLayout li_mz;                          //民族
+    private LinearLayout li_jg;                             //籍贯
+    private LinearLayout li_sfxy;                          //是否吸烟
+    private LinearLayout li_sfxj;                          //是否酗酒
+    private LinearLayout li_sfay;                          //是否熬夜
+    private LinearLayout li_zzfxycsj;                      //最早发现异常时间
+    private LinearLayout li_qznf;                          //确诊年份
+    private LinearLayout li_zxybs;                          //高血压病史
+    private LinearLayout li_sfyjzs;                          //是否有家族史
 
 
-    private                 String                   mSearchProvice;
-    private                 String                   mSearchCity;
-    private                 String                   mSearchArea;
+    private ProvincePicker mPicker;
 
-    public Map<String,ProvideBasicsRegion> mChoiceRegionMap = new HashMap<>();                                  //用户选择的省市区map
-    private                 int                           mChoiceRegionLevel;                                       //选择的区域级别
-    private                 String                        mChoiceRegionID;                                       //选择的区域ID
+
+    private String mSearchProvice;
+    private String mSearchCity;
+    private String mSearchArea;
+
+    public Map<String, ProvideBasicsRegion> mChoiceRegionMap = new HashMap<>();                                  //用户选择的省市区map
+    private int mChoiceRegionLevel;                                       //选择的区域级别
+    private String mChoiceRegionID;                                       //选择的区域ID
 
     private TimePickerView timePickerView;
 
@@ -135,18 +138,22 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
     private SubDataTask subDataTask = null;
     private boolean isupdateope = false;
     private int uphealthyid = 0;
+    private ImageView img_havw;
+    private ImageView img_none;
+    private EditText et_historyAllergy;
+
     /**
      * 初始化布局
      */
     private void initLayout() {
-        mBack = (LinearLayout)this.findViewById(R.id.li_back);
+        mBack = (LinearLayout) this.findViewById(R.id.li_back);
         mBack.setOnClickListener(new ButtonClick());
 
-        et_sfzh = (EditText)this.findViewById(R.id.et_sfzh);
-        et_dh = (EditText)this.findViewById(R.id.et_dh);
-        et_sg = (EditText)this.findViewById(R.id.et_sg);
-        et_tz = (EditText)this.findViewById(R.id.et_tz);
-        et_yw = (EditText)this.findViewById(R.id.et_yw);
+        et_sfzh = (EditText) this.findViewById(R.id.et_sfzh);
+        et_dh = (EditText) this.findViewById(R.id.et_dh);
+        et_sg = (EditText) this.findViewById(R.id.et_sg);
+        et_tz = (EditText) this.findViewById(R.id.et_tz);
+        et_yw = (EditText) this.findViewById(R.id.et_yw);
 
         tv_xglx = (TextView) this.findViewById(R.id.tv_xglx);
         tv_mz = (TextView) this.findViewById(R.id.tv_mz);
@@ -158,7 +165,7 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
         tv_qznf = (TextView) this.findViewById(R.id.tv_qznf);
         tv_zxybs = (TextView) this.findViewById(R.id.tv_zxybs);
         tv_sfyjzs = (TextView) this.findViewById(R.id.tv_sfyjzs);
-        subinfo_btn = (TextView)findViewById(R.id.subinfo_btn);
+        subinfo_btn = (TextView) findViewById(R.id.subinfo_btn);
         et_gxybsms = findViewById(R.id.et_gxybsms);
         li_xglx = (LinearLayout) this.findViewById(R.id.li_xglx);
         li_xglx.setOnClickListener(new ButtonClick());
@@ -195,10 +202,17 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
                 saveData();
             }
         });
+        //是否有过敏史
+        //是
+        img_havw = findViewById(R.id.img_havw);
+        //否
+        img_none = findViewById(R.id.img_none);
+        //过敏史描述
+        et_historyAllergy = findViewById(R.id.et_historyAllergy);
     }
 
 
-    class   ButtonClick implements View.OnClickListener {
+    class ButtonClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -234,14 +248,13 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
                     break;
                 case R.id.li_jg:
                     //籍贯
-                    if (mApp.gRegionProvideList == null || mApp.gRegionProvideList.size() == 0)
-                    {
-                        Toast.makeText(mContext,"区域数据为空",Toast.LENGTH_SHORT).show();
+                    if (mApp.gRegionProvideList == null || mApp.gRegionProvideList.size() == 0) {
+                        Toast.makeText(mContext, "区域数据为空", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     //弹出对话框选择省份
                     mPicker = new ProvincePicker(mContext);
-                    mPicker.setActivity(mActivity,8);
+                    mPicker.setActivity(mActivity, 8);
                     mPicker.show();
                     break;
                 case R.id.li_sfxy:
@@ -349,7 +362,6 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -363,20 +375,18 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
     }
 
 
-
     @SuppressLint("HandlerLeak")
     private void initHandler() {
-        mHandler = new Handler(){
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case 0:
                         cacerProgress();
                         break;
                     case 1:
                         cacerProgress();
-                        mProvidePatientConditionHealthy = JSON.parseObject(JSON.parseObject(mNetRetStr,NetRetEntity.class).getResJsonData(),ProvidePatientConditionHealthy.class);
+                        mProvidePatientConditionHealthy = JSON.parseObject(JSON.parseObject(mNetRetStr, NetRetEntity.class).getResJsonData(), ProvidePatientConditionHealthy.class);
                         showViewDate();
                         break;
                     case 2:
@@ -385,7 +395,6 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
             }
         };
     }
-
 
 
     /**
@@ -403,7 +412,7 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
         return string;
     }
 
-    private String getYear(Date date){
+    private String getYear(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
                 "yyyy");
         String string = simpleDateFormat.format(date);
@@ -444,7 +453,7 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
                 mHandler.sendEmptyMessage(1);
             }
         }.start();*/
-        if(null==loadDataTask){
+        if (null == loadDataTask) {
             QueryContactCond queryCond = new QueryContactCond();
             queryCond.setLoginPatientPosition(mApp.loginDoctorPosition);
             queryCond.setRequestClientType("1");
@@ -452,19 +461,19 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
             queryCond.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
             loadDataTask = new LoadDataTask(queryCond);
             loadDataTask.execute();
-        }else{
+        } else {
             loadDataTask.execute();
         }
     }
 
-    void saveData(){
+    void saveData() {
 
-        if(!VerifyUtil.isIDCardNo(et_sfzh.getText().toString())){
-            Toast.makeText(mContext,"请输入正确的身份证号码",Toast.LENGTH_SHORT).show();
+        if (!VerifyUtil.isIDCardNo(et_sfzh.getText().toString())) {
+            Toast.makeText(mContext, "请输入正确的身份证号码", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(!VerifyUtil.isPhone(et_dh.getText().toString())){
-            Toast.makeText(mContext,"请输入正确的手机号码",Toast.LENGTH_SHORT).show();
+        if (!VerifyUtil.isPhone(et_dh.getText().toString())) {
+            Toast.makeText(mContext, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
             return;
         }
         //if(null==subDataTask){
@@ -473,51 +482,54 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
         subbean.setRequestClientType("1");
         subbean.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         subbean.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        if(isupdateope){
+        if (isupdateope) {
             subbean.setHealthyId(String.valueOf(uphealthyid));
-        }else{
+        } else {
             subbean.setHealthyId("0");
         }
         subbean.setIdNumber(StrUtils.defaultStr(et_sfzh.getText()));
         subbean.setNation(StrUtils.defaultStr(tv_mz.getText()));
         subbean.setNativePlace(StrUtils.defaultStr(tv_jg.getText()));
-        if(StrUtils.defaultStr(tv_xglx.getText()).equals("内向")){
+        if (StrUtils.defaultStr(tv_xglx.getText()).equals("内向")) {
             subbean.setCharacterType("1");
-        }else if(StrUtils.defaultStr(tv_xglx.getText()).equals("外向")){
+        } else if (StrUtils.defaultStr(tv_xglx.getText()).equals("外向")) {
             subbean.setCharacterType("2");
-        }else if(StrUtils.defaultStr(tv_xglx.getText()).equals("未知")){
+        } else if (StrUtils.defaultStr(tv_xglx.getText()).equals("未知")) {
             subbean.setCharacterType("0");
         }
+        //过敏史
+        subbean.setHistoryAllergy(et_historyAllergy.getText().toString());
         subbean.setHeight(StrUtils.defaultStr(et_sg.getText()));
         subbean.setWaistline(StrUtils.defaultStr(et_yw.getText()));
         subbean.setWeight(StrUtils.defaultStr(et_tz.getText()));
-        if("是".equals(StrUtils.defaultStr(tv_sfxy.getText()))){
+        if ("是".equals(StrUtils.defaultStr(tv_sfxy.getText()))) {
             subbean.setFlagSmoking("1");
-        }else if("否".equals(StrUtils.defaultStr(tv_sfxy.getText()))){
+        } else if ("否".equals(StrUtils.defaultStr(tv_sfxy.getText()))) {
             subbean.setFlagSmoking("0");
         }
-        if("是".equals(StrUtils.defaultStr(tv_sfxj.getText()))){
+        if ("是".equals(StrUtils.defaultStr(tv_sfxj.getText()))) {
             subbean.setFlagAlcoholism("1");
-        }else if("否".equals(StrUtils.defaultStr(tv_sfxj.getText()))){
+        } else if ("否".equals(StrUtils.defaultStr(tv_sfxj.getText()))) {
             subbean.setFlagAlcoholism("0");
         }
-        if("是".equals(StrUtils.defaultStr(tv_sfay.getText()))){
+        if ("是".equals(StrUtils.defaultStr(tv_sfay.getText()))) {
             subbean.setFlagStayUpLate("1");
-        }else if("否".equals(StrUtils.defaultStr(tv_sfay.getText()))){
+        } else if ("否".equals(StrUtils.defaultStr(tv_sfay.getText()))) {
             subbean.setFlagStayUpLate("0");
         }
         subbean.setBloodPressureAbnormalDate(StrUtils.defaultStr(tv_zzfxycsj.getText()));
         subbean.setConfirmedYear(StrUtils.defaultStr(tv_qznf.getText()));
-        if("是".equals(StrUtils.defaultStr(tv_sfyjzs.getText()))){
+        if ("是".equals(StrUtils.defaultStr(tv_sfyjzs.getText()))) {
             subbean.setFlagFamilyHtn("1");
-        }else if("否".equals(StrUtils.defaultStr(tv_sfyjzs.getText()))){
+        } else if ("否".equals(StrUtils.defaultStr(tv_sfyjzs.getText()))) {
             subbean.setFlagFamilyHtn("0");
         }
-        if("是".equals(StrUtils.defaultStr(tv_zxybs.getText()))){
+        if ("是".equals(StrUtils.defaultStr(tv_zxybs.getText()))) {
             subbean.setFlagHtnHistory("1");
-        }else if("否".equals(StrUtils.defaultStr(tv_zxybs.getText()))){
+        } else if ("否".equals(StrUtils.defaultStr(tv_zxybs.getText()))) {
             subbean.setFlagHtnHistory("0");
         }
+
         subbean.setHtnHistory(StrUtils.defaultStr(et_gxybsms.getText()));
         subDataTask = new SubDataTask(subbean);
         subDataTask.execute();
@@ -525,16 +537,11 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
     /**
-     *   获取进度条
+     * 获取进度条
      */
 
-    public void getProgressBar(String title,String progressPrompt){
+    public void getProgressBar(String title, String progressPrompt) {
         if (mDialogProgress == null) {
             mDialogProgress = new ProgressDialog(this);
         }
@@ -547,7 +554,7 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
     /**
      * 取消进度条
      */
-    public void cacerProgress(){
+    public void cacerProgress() {
         if (mDialogProgress != null) {
             mDialogProgress.dismiss();
         }
@@ -556,7 +563,7 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
     private List<String> getMZList() {
         String mzString = "汉族、蒙古族、满族、朝鲜族、赫哲族、达斡尔族、鄂温克族、鄂伦春族、回族、东乡族、土族、撒拉族、保安族、裕固族、维吾尔族、哈萨克族、柯尔克孜族、锡伯族、塔吉克族、乌孜别克族、俄罗斯族、塔塔尔族、藏族、门巴族、珞巴族、羌族、彝族、白族、哈尼族、傣族、僳僳族、佤族、拉祜族、纳西族、景颇族、布朗族、阿昌族、普米族、怒族、德昂族、独龙族、基诺族、苗族、布依族、侗族、水族、仡佬族、壮族、瑶族、仫佬族、毛南族、京族、土家族、黎族、畲族、高山族56个民族";
         String[] mzArray = mzString.split("、");
-        List<String> mzList =  Arrays.asList(mzArray);
+        List<String> mzList = Arrays.asList(mzArray);
         return mzList;
     }
 
@@ -576,7 +583,7 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
             mSearchArea = "";
 
         } else if (mChoiceRegionMap.get("dist") == null || "qqb".equals(mChoiceRegionMap.get("dist").getRegion_id())) {
-            tv_jg.setText(mChoiceRegionMap.get("provice").getRegion_name()+mChoiceRegionMap.get("city").getRegion_name());
+            tv_jg.setText(mChoiceRegionMap.get("provice").getRegion_name() + mChoiceRegionMap.get("city").getRegion_name());
             mChoiceRegionLevel = 2;               //区级全部，则是市级
             mChoiceRegionID = mChoiceRegionMap.get("city").getRegion_id();
 
@@ -588,7 +595,7 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
         }
         if (!"sqb".equals(mChoiceRegionMap.get("city").getRegion_id())) {
 //            provideViewDoctorExpertRecommend.setSearchCity(mChoiceRegionMap.get("city").getRegion_id());
-            tv_jg.setText(mChoiceRegionMap.get("provice").getRegion_name()+mChoiceRegionMap.get("city").getRegion_name());
+            tv_jg.setText(mChoiceRegionMap.get("provice").getRegion_name() + mChoiceRegionMap.get("city").getRegion_name());
             mChoiceRegionLevel = 2;               //市级
             mChoiceRegionID = mChoiceRegionMap.get("city").getRegion_id();
 
@@ -598,20 +605,20 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
 
         }
         if (mChoiceRegionMap.get("dist") != null && !"qqb".equals(mChoiceRegionMap.get("dist").getRegion_id())) {
-            tv_jg.setText(mChoiceRegionMap.get("provice").getRegion_name()+mChoiceRegionMap.get("city").getRegion_name()+mChoiceRegionMap.get("dist").getRegion_name());
+            tv_jg.setText(mChoiceRegionMap.get("provice").getRegion_name() + mChoiceRegionMap.get("city").getRegion_name() + mChoiceRegionMap.get("dist").getRegion_name());
 //            provideViewDoctorExpertRecommend.setSearchArea(mChoiceRegionMap.get("dist").getRegion_id());
             mChoiceRegionLevel = 3;               //区级全部，则是市级
             mChoiceRegionID = mChoiceRegionMap.get("dist").getRegion_id();
 
             mSearchProvice = mChoiceRegionMap.get("provice").getRegion_id();
             mSearchCity = mChoiceRegionMap.get("city").getRegion_id();
-            mSearchArea =  mChoiceRegionMap.get("dist").getRegion_id();
+            mSearchArea = mChoiceRegionMap.get("dist").getRegion_id();
         }
 //        provideViewDoctorExpertRecommendList.clear();
 
     }
 
-    class LoadDataTask extends AsyncTask<Void,Void, ProvideViewPatientHealthyAndBasics>{
+    class LoadDataTask extends AsyncTask<Void, Void, ProvideViewPatientHealthyAndBasics> {
         private QueryContactCond queryContactCond;
 
         public LoadDataTask(QueryContactCond queryContactCond) {
@@ -622,11 +629,12 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
         protected ProvideViewPatientHealthyAndBasics doInBackground(Void... voids) {
             ProvideViewPatientHealthyAndBasics retbean = null;
             try {
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+new Gson().toJson(queryContactCond),Constant.SERVICEURL+ INetAddress.QUERY_HEALTHY_BASIC_URL);
-                NetRetEntity retnetbean = JSON.parseObject(retnetstr,NetRetEntity.class);
-                if(1==retnetbean.getResCode()){
-                    if(null!=retnetbean.getResJsonData() && retnetbean.getResJsonData().length()>3){
-                        retbean = JSON.parseObject(retnetbean.getResJsonData(),ProvideViewPatientHealthyAndBasics.class);
+                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(queryContactCond), Constant.SERVICEURL + INetAddress.QUERY_HEALTHY_BASIC_URL);
+                NetRetEntity retnetbean = JSON.parseObject(retnetstr, NetRetEntity.class);
+                if (1 == retnetbean.getResCode()) {
+                    Log.e("TAG", "基本信息: "+retnetstr );
+                    if (null != retnetbean.getResJsonData() && retnetbean.getResJsonData().length() > 3) {
+                        retbean = JSON.parseObject(retnetbean.getResJsonData(), ProvideViewPatientHealthyAndBasics.class);
                     }
                 }
             } catch (Exception e) {
@@ -637,11 +645,11 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ProvideViewPatientHealthyAndBasics provideViewPatientHealthyAndBasics) {
-            if(null!=provideViewPatientHealthyAndBasics){
+            if (null != provideViewPatientHealthyAndBasics) {
                 et_sfzh.setText(StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getIdNumber()));
                 et_dh.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
                 tv_xglx.setText("未知");
-                if(null!=provideViewPatientHealthyAndBasics.getCharacterType()) {
+                if (null != provideViewPatientHealthyAndBasics.getCharacterType()) {
                     if (1 == provideViewPatientHealthyAndBasics.getCharacterType().intValue())
                         tv_xglx.setText("内向");
                     else if (2 == provideViewPatientHealthyAndBasics.getCharacterType().intValue())
@@ -652,30 +660,58 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
                 et_sg.setText(StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getHeight()));
                 et_yw.setText(StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getWaistline()));
                 et_tz.setText(StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getWeight()));
-                if(1==provideViewPatientHealthyAndBasics.getFlagSmoking().intValue())
+                if (1 == provideViewPatientHealthyAndBasics.getFlagSmoking().intValue())
                     tv_sfxy.setText("是");
                 else
                     tv_sfxy.setText("否");
-                if(1==provideViewPatientHealthyAndBasics.getFlagAlcoholism().intValue())
-                    tv_sfxj.setText("是");
-                else
-                    tv_sfxj.setText("否");
-                if(1==provideViewPatientHealthyAndBasics.getFlagStayUpLate().intValue())
-                    tv_sfay.setText("是");
-                else
-                    tv_sfay.setText("否");
-                if(null!=provideViewPatientHealthyAndBasics.getBloodPressureAbnormalDate())
+                if (provideViewPatientHealthyAndBasics.getFlagAlcoholism() != null) {
+                    if (1 == provideViewPatientHealthyAndBasics.getFlagAlcoholism().intValue())
+                        tv_sfxj.setText("是");
+                    else
+                        tv_sfxj.setText("否");
+                } else {
+                    tv_sfxj.setText("未设置");
+                }
+                if (provideViewPatientHealthyAndBasics.getFlagStayUpLate() != null) {
+                    if (1 == provideViewPatientHealthyAndBasics.getFlagStayUpLate().intValue())
+                        tv_sfay.setText("是");
+                    else
+                        tv_sfay.setText("否");
+                } else {
+                    tv_sfay.setText("未设置");
+                }
+
+                if (null != provideViewPatientHealthyAndBasics.getBloodPressureAbnormalDate())
                     tv_zzfxycsj.setText(DateUtils.getStringTimeOfYMD(provideViewPatientHealthyAndBasics.getBloodPressureAbnormalDate().getTime()));
-                if(null!=provideViewPatientHealthyAndBasics.getConfirmedYear())
-                    tv_qznf.setText(DateUtils.fomrDateSeflFormat(provideViewPatientHealthyAndBasics.getConfirmedYear(),"yyyy"));
-                if(1==provideViewPatientHealthyAndBasics.getFlagHtnHistory().intValue())
-                    tv_zxybs.setText("是");
-                else
-                    tv_zxybs.setText("否");
-                if(1==provideViewPatientHealthyAndBasics.getFlagFamilyHtn())
-                    tv_sfyjzs.setText("是");
-                else
-                    tv_sfyjzs.setText("否");
+                if (null != provideViewPatientHealthyAndBasics.getConfirmedYear())
+                    tv_qznf.setText(DateUtils.fomrDateSeflFormat(provideViewPatientHealthyAndBasics.getConfirmedYear(), "yyyy"));
+                if (provideViewPatientHealthyAndBasics.getFlagHtnHistory() != null) {
+                    if (1 == provideViewPatientHealthyAndBasics.getFlagHtnHistory().intValue())
+                        tv_zxybs.setText("是");
+                    else
+                        tv_zxybs.setText("否");
+                } else {
+                    tv_zxybs.setText("未设置");
+                }
+                if( provideViewPatientHealthyAndBasics.getFlagFamilyHtn()!=null){
+                    if (1 == provideViewPatientHealthyAndBasics.getFlagFamilyHtn().intValue())
+                        tv_sfyjzs.setText("是");
+                    else
+                        tv_sfyjzs.setText("否");
+                }else{
+                    tv_sfyjzs.setText("未设置");
+                }
+                //是否有过敏史
+                // 是
+                //        img_havw = findViewById(R.id.img_havw);
+                //        //否
+                //        img_none = findViewById(R.id.img_none);
+                //        //过敏史描述
+                //        et_historyAllergy = findViewById(R.id.et_historyAllergy);
+                String historyAllergy = provideViewPatientHealthyAndBasics.getHistoryAllergy();
+                if(!TextUtils.isEmpty(historyAllergy)){
+                    et_historyAllergy.setText(historyAllergy);
+                }
                 et_gxybsms.setText(StrUtils.defaultStr(provideViewPatientHealthyAndBasics.getHtnHistory()));
                 uphealthyid = provideViewPatientHealthyAndBasics.getHealthyId().intValue();
                 isupdateope = true;
@@ -685,10 +721,11 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
 
     }
 
-    class SubDataTask extends AsyncTask<Void,Void,Boolean>{
+    class SubDataTask extends AsyncTask<Void, Void, Boolean> {
         SubPatientBasicBean subean;
         String submsg = "";
-        SubDataTask(SubPatientBasicBean subean){
+
+        SubDataTask(SubPatientBasicBean subean) {
             this.subean = subean;
         }
 
@@ -696,12 +733,12 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... voids) {
             try {
                 String substr = new Gson().toJson(subean);
-                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo="+substr,Constant.SERVICEURL+INetAddress.MAINTAIN_HEALTHY_BASIC_URL);
-                NetRetEntity retEntity = JSON.parseObject(retnetstr,NetRetEntity.class);
-                if(1==retEntity.getResCode()){
+                String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo=" + substr, Constant.SERVICEURL + INetAddress.MAINTAIN_HEALTHY_BASIC_URL);
+                NetRetEntity retEntity = JSON.parseObject(retnetstr, NetRetEntity.class);
+                if (1 == retEntity.getResCode()) {
                     submsg = "保存成功";
                     return true;
-                }else{
+                } else {
                     submsg = retEntity.getResMsg();
                     return false;
                 }
@@ -713,8 +750,8 @@ public class JDDAJBJKXXActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            Toast.makeText(mContext,submsg,Toast.LENGTH_SHORT);
-            if(aBoolean){
+            Toast.makeText(mContext, submsg, Toast.LENGTH_SHORT);
+            if (aBoolean) {
                 finish();
             }
         }

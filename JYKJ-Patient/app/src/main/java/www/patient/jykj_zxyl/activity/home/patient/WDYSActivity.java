@@ -47,6 +47,7 @@ import www.patient.jykj_zxyl.base.base_activity.BaseActivity;
 import www.patient.jykj_zxyl.fragment.wdys.FragmentWDYS_FQYYS;
 import www.patient.jykj_zxyl.fragment.wdys.FragmentWDYS_GZYS;
 import www.patient.jykj_zxyl.fragment.wdys.FragmentWDYS_QYYS;
+import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
 import www.patient.jykj_zxyl.util.ProvincePicker;
 
@@ -164,8 +165,6 @@ public class WDYSActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
-
-
         //initView();
         initHandler();
         mNumPage = 1;
@@ -178,6 +177,7 @@ public class WDYSActivity extends BaseActivity {
     protected void initView() {
         mContext = this;
         mActivity = this;
+        ActivityUtil.setStatusBarMain(this);
         provideViewDoctorExpertRecommend = new ProvideViewDoctorExpertRecommend();
         mApp = (JYKJApplication) getApplication();
         llBack = (LinearLayout) findViewById(R.id.ll_back);
@@ -227,8 +227,8 @@ public class WDYSActivity extends BaseActivity {
 
         tv_cz = (TextView) this.findViewById(R.id.tv_cz);
         tv_qd = (TextView) this.findViewById(R.id.tv_qd);
-        tv_zdj = (EditText) this.findViewById(R.id.tv_zdj);
-        tv_zgj = (EditText) this.findViewById(R.id.tv_zgj);
+       /* tv_zdj = (EditText) this.findViewById(R.id.tv_zdj);
+        tv_zgj = (EditText) this.findViewById(R.id.tv_zgj);*/
 
         tv_cz.setOnClickListener(new ButtonClick());
         tv_qd.setOnClickListener(new ButtonClick());
@@ -239,7 +239,7 @@ public class WDYSActivity extends BaseActivity {
         fragmentList = new ArrayList<>();
         mTitles = new ArrayList<>();
         mTitles.add("签约医生");
-        mTitles.add("非签约医生");
+        mTitles.add("就诊医生");
         mTitles.add("关注医生");
 
         mFragmentWDYS_QYYS = new FragmentWDYS_QYYS();
@@ -454,8 +454,8 @@ public class WDYSActivity extends BaseActivity {
 
                     break;
                 case R.id.tv_cz:
-                    tv_zdj.setText("");
-                    tv_zgj.setText("");
+                   /* tv_zdj.setText("");
+                    tv_zgj.setText("");*/
                     for (int i = 0; i < mProvideBasicsDominJGBJ.size(); i++) {
                         mProvideBasicsDominJGBJ.get(i).setChoice(false);
                         mJGBJtAdapter.setDate(mProvideBasicsDominJGBJ);

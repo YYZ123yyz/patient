@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="270dp"
+    android:layout_height="400dp"
+    android:orientation="vertical">
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <LinearLayout
+          android:id="@+id/lin_success"
+          android:layout_marginTop="50dp"
+          android:layout_width="match_parent"
+          android:layout_height="250dp"
+          android:background="#fff"
+          android:orientation="vertical">
+          <TextView
+              android:textColor="#799DFE"
+              android:textSize="19sp"
+              android:text="付款成功"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_horizontal"
+              android:layout_marginTop="70dp" />
+
+          <TextView
+              android:layout_marginTop="50dp"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_horizontal"
+              android:text="请及时就诊，不要忘了哦！"
+              android:textColor="#333333" />
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_centerHorizontal="true"
+          android:layout_below="@+id/lin_success"
+          android:layout_marginTop="41dp"
+          android:id="@+id/lin_back"
+          android:background="#799DFE"
+          android:layout_width="124dp"
+          android:layout_height="41dp"
+          android:orientation="horizontal">
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:layout_marginLeft="35dp"
+              android:textColor="#fff" />
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:text="我知道了"
+              android:textColor="#fff" />
+      </LinearLayout>
+      <ImageView
+          android:layout_centerHorizontal="true"
+          android:src="@mipmap/dui"
+          android:layout_width="95dp"
+          android:layout_height="wrap_content"
+          android:textColor="#799DFE"
+          android:textSize="19sp" />
+  </RelativeLayout>
+
+</LinearLayout>

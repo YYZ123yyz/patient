@@ -53,10 +53,10 @@ public class CommonMutipleGoOrderListItemType implements IMulItemViewType<MultiI
         int layoutId = -1;
         switch (viewType){
             case 1:
-                layoutId=R.layout.item_ongoing_order_card_1;
+                layoutId=R.layout.item_fragment_myorder_on_1;
                 break;
             case 2:
-                layoutId=R.layout.item_fragment_myorder_on_1;
+                layoutId=R.layout.item_ongoing_order_card_1;
                 break;
                 default:
         }

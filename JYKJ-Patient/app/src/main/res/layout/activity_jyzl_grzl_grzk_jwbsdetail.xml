@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="病程别名"
-                android:textSize="8pt"
+                android:textSize="15sp"
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/tabColor_nomal"
                 android:layout_gravity="center_vertical"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="未设置"
                 android:id="@+id/tv_activityHZZL_userSG"
-                android:textSize="8pt"
+                android:textSize="15sp"
                 android:layout_marginRight="10dp"
                 android:textColor="@color/tabColor_nomal"
                 android:layout_gravity="center_vertical"
@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="就诊日期"
-                android:textSize="8pt"
+                android:textSize="15sp"
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/tabColor_nomal"
                 android:layout_gravity="center_vertical"
@@ -78,14 +78,14 @@
                 android:layout_height="wrap_content"
                 android:text="未设置"
                 android:id="@+id/tv_activityHZZL_userYW"
-                android:textSize="8pt"
+                android:textSize="15sp"
                 android:layout_marginRight="10dp"
                 android:textColor="@color/tabColor_nomal"
                 android:layout_gravity="center_vertical"
         />
     </LinearLayout>
 
-    <LinearLayout
+    <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/writeColor"
@@ -111,7 +111,7 @@
                 android:textColor="@color/tabColor_nomal"
                 android:layout_gravity="center_vertical"
         />
-    </LinearLayout>
+    </LinearLayout>-->
 
 
     <LinearLayout
@@ -123,8 +123,8 @@
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="病情自述"
-                android:textSize="8pt"
+                android:text="病情描述"
+                android:textSize="15sp"
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/tabColor_nomal"
                 android:layout_gravity="center_vertical"
@@ -132,19 +132,26 @@
         />
 
     </LinearLayout>
-    <TextView
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:background="@drawable/bg_lrbs_zsedit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=""
             android:id="@+id/tv_activityHZZL_region"
-            android:textSize="7pt"
+            android:textSize="15sp"
             android:layout_marginTop="1dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:padding="5dp"
             android:textColor="@color/tabColor_nomal"
             android:layout_gravity="center_vertical"
-    />
+            />
+    </LinearLayout>
+
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="20dp"
@@ -153,20 +160,28 @@
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:background="@color/writeColor"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="病历照片"
-                android:textSize="8pt"
+                android:text="照片"
+                android:textSize="15sp"
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/tabColor_nomal"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
         />
+        <TextView
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="13dp"
+            android:layout_marginTop="3dp"
+            android:textColor="#999999"
+            android:text="上传的检查资料、病例照片、医院化验单、报告单、处方单等。"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
     <com.liyi.grid.AutoGridView
             android:id="@+id/autoGridView"

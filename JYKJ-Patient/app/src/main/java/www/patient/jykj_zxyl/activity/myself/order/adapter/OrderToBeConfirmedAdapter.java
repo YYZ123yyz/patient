@@ -3,6 +3,7 @@ package www.patient.jykj_zxyl.activity.myself.order.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -49,7 +50,7 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
         int layoutId = viewHolder.getLayoutId();
         switch (layoutId) {
             case R.layout.item_to_be_confirmed_order_card:
-                LinearLayout mLlItemRoot=viewHolder.getView(R.id.ll_item_root);
+                LinearLayout mLlItemRoot = viewHolder.getView(R.id.ll_item_root);
                 RelativeLayout mRlToBeConfirmedRoot =
                         viewHolder.getView(R.id.rl_to_be_confirmed_root);
                 RelativeLayout mRlCancelContractRoot = viewHolder.getView(R.id.rl_cancel_contract_root);
@@ -68,39 +69,42 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                 TextView mTvCancelContractAgreeBtn = viewHolder.getView(R.id.tv_cancel_contract_agree_btn);
                 TextView tvOrderPaymentBtn = viewHolder.getView(R.id.tv_order_payment_btn);
                 TextView mTvDeleteBtn = viewHolder.getView(R.id.tv_delete);
-                mRlToBeConfirmedRoot.setVisibility(View.GONE);
-                mRlCancelContractRoot.setVisibility(View.GONE);
-                rlOrderPaymentRoot.setVisibility(View.GONE);
-                Integer flagOrderState = parbean.getFlagOrderState();
-                if (flagOrderState != null) {
-                    String orderState = flagOrderState.toString();
-                    switch (orderState) {
-                        case OrderStatusEnum.orderSubmitCode:
-                            mRlToBeConfirmedRoot.setVisibility(View.VISIBLE);
-                            mRlCancelContractRoot.setVisibility(View.GONE);
-                            rlOrderPaymentRoot.setVisibility(View.GONE);
-                            break;
-                        case OrderStatusEnum.orderExpireCancelContractCode:
-                        case OrderStatusEnum.orderAdvenceCancelContractCode:
-                            mRlToBeConfirmedRoot.setVisibility(View.GONE);
-                            mRlCancelContractRoot.setVisibility(View.VISIBLE);
-                            rlOrderPaymentRoot.setVisibility(View.GONE);
 
-                            break;
-                        case OrderStatusEnum.orderAgreeCode:
-                            mRlToBeConfirmedRoot.setVisibility(View.GONE);
-                            mRlCancelContractRoot.setVisibility(View.GONE);
-                            rlOrderPaymentRoot.setVisibility(View.VISIBLE);
-                            break;
-                        default:
-                    }
+                String flagOrderState = parbean.getSignStatus();
 
+                String orderState = flagOrderState.toString();
+                switch (orderState) {
+                    case OrderStatusEnum.orderSubmitCode:
+                        mRlToBeConfirmedRoot.setVisibility(View.VISIBLE);
+                        mRlCancelContractRoot.setVisibility(View.GONE);
+                        rlOrderPaymentRoot.setVisibility(View.GONE);
+                        break;
+                    case OrderStatusEnum.orderExpireCancelContractCode:
+                    case OrderStatusEnum.orderAdvenceCancelContractCode:
+                        mRlToBeConfirmedRoot.setVisibility(View.GONE);
+                        mRlCancelContractRoot.setVisibility(View.VISIBLE);
+                        rlOrderPaymentRoot.setVisibility(View.GONE);
+
+                        break;
+                    case OrderStatusEnum.orderAgreeCode:
+                        mRlToBeConfirmedRoot.setVisibility(View.GONE);
+                        mRlCancelContractRoot.setVisibility(View.GONE);
+                        rlOrderPaymentRoot.setVisibility(View.VISIBLE);
+                        break;
+                    default:
+                        mRlToBeConfirmedRoot.setVisibility(View.GONE);
+                        mRlCancelContractRoot.setVisibility(View.GONE);
+                        rlOrderPaymentRoot.setVisibility(View.GONE);
+                        break;
                 }
 
-                mTvOrderType.setText(parbean.getTreatmentTypeName());
-                mTvOrderTime.setText(DateUtils.getStringTimeMinute(parbean.getOrderDate().getTime()));
+
+//                mTvOrderType.setText(parbean.getTreatmentTypeName());
+                mTvOrderTime.setText(DateUtils.getStringTimeSlash(parbean.getCreateDate()));
                 Integer coachValue = parbean.getProCount();
-                if (coachValue != null) {
+                mTvMonitorValue.setText(coachValue + "项");
+
+                /*if (coachValue != null) {
                     if (coachValue == 1) {
                         mTvMonitorValue.setText("一项");
                     } else if (coachValue == 2) {
@@ -114,15 +118,34 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                     } else if (coachValue == 6) {
                         mTvMonitorValue.setText("六项");
                     }
-                }
-                mTvCoachValue.setText(String.format("%d次/%s",
-                        parbean.getCoachValue(), parbean.getCoachUnitName()));
-                mTvSignTimeValue.setText(parbean.getTimesName());
+                }*/
+               /* String signStatus = parbean.getSignStatus();
+                if (signStatus.equals(OrderStatusEnum.orderSubmitCode)) {  //同意,修改,拒绝
+                    mRlToBeConfirmedRoot.setVisibility(View.VISIBLE);
+                    mRlCancelContractRoot.setVisibility(View.GONE);
+                    rlOrderPaymentRoot.setVisibility(View.GONE);
+                } else if (signStatus.equals(OrderStatusEnum.orderAgreeCode)) {  //支付
+
+
+                } else if (signStatus.equals(OrderStatusEnum.orderNeedUpdateCode)) { //修改
+                    mRlToBeConfirmedRoot.setVisibility(View.GONE);
+                    mRlCancelContractRoot.setVisibility(View.GONE);
+                    rlOrderPaymentRoot.setVisibility(View.VISIBLE);
+                    tvOrderPaymentBtn.setText("需修改");
+
+                } else {
+
+                }*/
+
+
+                mTvCoachValue.setText(String.format("%s次/%s",
+                        parbean.getDetectRateUnitCode(), parbean.getDetectRateUnitName()));
+                mTvSignTimeValue.setText(String.format("%s%s", parbean.getSignDuration(), parbean.getSignDurationUnit()));
                 mTvPriceValue.setText(String.format("¥%s", parbean.getActualPayment()));
                 mTvRefuseBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (onClickItemListener!=null) {
+                        if (onClickItemListener != null) {
                             onClickItemListener.onClickRefuse(i);
                         }
                     }
@@ -130,7 +153,7 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                 mTvUpdateBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (onClickItemListener!=null) {
+                        if (onClickItemListener != null) {
                             onClickItemListener.onClickUpdate(i);
                         }
                     }
@@ -138,7 +161,7 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                 tvAgreeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (onClickItemListener!=null) {
+                        if (onClickItemListener != null) {
                             onClickItemListener.onClickAgree(i);
                         }
                     }
@@ -146,7 +169,7 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                 mTvCancelContractRefuseBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (onClickItemListener!=null) {
+                        if (onClickItemListener != null) {
                             onClickItemListener.onClickCancelContractRefuse(i);
                         }
 
@@ -155,7 +178,7 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                 mTvCancelContractAgreeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (onClickItemListener!=null) {
+                        if (onClickItemListener != null) {
                             onClickItemListener.onClickCancelContractAgree(i);
                         }
                     }
@@ -163,7 +186,7 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                 tvOrderPaymentBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (onClickItemListener!=null) {
+                        if (onClickItemListener != null) {
                             onClickItemListener.onClickPayment(i);
                         }
                     }
@@ -171,15 +194,15 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                 mLlItemRoot.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (onClickItemListener!=null) {
-                            onClickItemListener.onClickItem(i,viewHolder);
+                        if (onClickItemListener != null) {
+                            onClickItemListener.onClickItem(i, viewHolder);
                         }
                     }
                 });
                 mTvDeleteBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (onClickItemListener!=null) {
+                        if (onClickItemListener != null) {
                             onClickItemListener.onClickDelete(i);
                         }
                     }
@@ -194,7 +217,10 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                 TextView pay_btn = viewHolder.getView(R.id.pay_btn);
                 TextView find_doc_btn = viewHolder.getView(R.id.find_doc_btn);
                 TextView mTvDelete = viewHolder.getView(R.id.tv_delete);
-                mDate.setText(DateUtils.getStringTimeMinute(parbean.getOrderDate().getTime()));
+//                String stringTimeMinute = DateUtils.fomrDateSeflFormat(parbean.getOrderDate(),"yyyy-MM-dd");
+//                if(!TextUtils.isEmpty(stringTimeMinute)){
+//                    mDate.setText(stringTimeMinute);
+//                }
                 mSurPrice.setText(String.format("[%s]", parbean.getFlagOrderStateName()));
                 price.setText(parbean.getOrderShowContent());
                 mSuType.setText(parbean.getTreatmentTypeName());
@@ -230,7 +256,7 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                 mTvDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (onClickItemListener!=null) {
+                        if (onClickItemListener != null) {
                             onClickItemListener.onClickDelete(i);
                         }
                     }

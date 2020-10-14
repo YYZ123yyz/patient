@@ -20,20 +20,129 @@ public class OrderMessage implements Serializable {
     private String imageUrl;
     private String isPatient;
 
+    //预约类型
+    private String statusType;
+    private String startTime;
+    private String cancelTime;
+    private String appointMentProject;
+    private String appointMentType;
 
-    public OrderMessage( String orderId,String singNo,
+    private String  endTime;
+    private String  patientType;
+    private String  opStatus;
+
+    //医生已接诊
+    private String receiveTime;
+    private String surplusTimes;
+
+    public String getReceiveTime() {
+        return receiveTime;
+    }
+
+    public void setReceiveTime(String receiveTime) {
+        this.receiveTime = receiveTime;
+    }
+
+    public String getSurplusTimes() {
+        return surplusTimes;
+    }
+
+    public void setSurplusTimes(String surplusTimes) {
+        this.surplusTimes = surplusTimes;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getPatientType() {
+        return patientType;
+    }
+
+    public void setPatientType(String patientType) {
+        this.patientType = patientType;
+    }
+
+    public String getOpStatus() {
+        return opStatus;
+    }
+
+    public void setOpStatus(String opStatus) {
+        this.opStatus = opStatus;
+    }
+
+    public String getStatusType() {
+        return statusType;
+    }
+
+    public void setStatusType(String statusType) {
+        this.statusType = statusType;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getCancelTime() {
+        return cancelTime;
+    }
+
+    public void setCancelTime(String cancelTime) {
+        this.cancelTime = cancelTime;
+    }
+
+    public String getAppointMentProject() {
+        return appointMentProject;
+    }
+
+    public void setAppointMentProject(String appointMentProject) {
+        this.appointMentProject = appointMentProject;
+    }
+
+    public String getAppointMentType() {
+        return appointMentType;
+    }
+
+    public void setAppointMentType(String appointMentType) {
+        this.appointMentType = appointMentType;
+    }
+
+    public OrderMessage(String orderId, String singNo,
                         String monitoringType, String coach, String signUpTime,
-                        String price,String messageType, String  orderType ) {
+                        String price, String messageType, String orderType) {
         this.orderId = orderId;
-        this.singNo=singNo;
+        this.singNo = singNo;
         this.monitoringType = monitoringType;
         this.coach = coach;
         this.signUpTime = signUpTime;
         this.price = price;
-        this.messageType=messageType;
+        this.messageType = messageType;
         this.orderType = orderType;
     }
 
+    public OrderMessage(String orderId,
+                        String messageType,
+                        String statusType,
+                        String startTime,
+                        String cancelTime,
+                        String appointMentProject,
+                        String appointMentType) {
+        this.orderId = orderId;
+        this.messageType = messageType;
+        this.statusType = statusType;
+        this.startTime = startTime;
+        this.cancelTime = cancelTime;
+        this.appointMentProject = appointMentProject;
+        this.appointMentType = appointMentType;
+    }
 
 
     public String getOrderId() {

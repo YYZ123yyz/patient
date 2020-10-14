@@ -37,7 +37,7 @@ public class OrderDetialMonitorAdapter extends RecyclerView.Adapter<OrderDetialM
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         OrderDetialBean.OrderDetailListBean orderDetailListBean = datas.get(position);
         holder.mTvItemName.setText(orderDetailListBean.getMainConfigDetailName());
-        holder.mTvItemValue.setText(orderDetailListBean.getTotlePrice()+"");
+        holder.mTvItemValue.setText(orderDetailListBean.getTotlePrice()+"元/次");
     }
 
     @Override

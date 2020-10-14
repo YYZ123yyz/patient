@@ -39,7 +39,7 @@ public class AppUrlConfig {
     /**
      * 线下患者端Api Test url
      */
-    static String SERVICE_PATIENT_API_URL="https://www.jiuyihtn.com:28081/";
+    static String SERVICE_PATIENT_API_URL="https://www.jiuyihtn.com:38081/";
 
     /**
      * 本地Api key
