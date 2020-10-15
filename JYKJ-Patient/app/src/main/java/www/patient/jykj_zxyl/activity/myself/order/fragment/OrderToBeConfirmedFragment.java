@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.allin.commlibrary.CollectionUtils;
 import com.allin.commonadapter.ViewHolder;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hyphenate.easeui.order.RefusedOrderActivity;
 import com.hyphenate.easeui.order.SignOrderDetialActivity;
@@ -21,6 +22,7 @@ import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,6 +46,7 @@ import www.patient.jykj_zxyl.base.base_view.LoadingLayoutManager;
 import www.patient.jykj_zxyl.base.base_view.SimpleDividerItemDecoration;
 import www.patient.jykj_zxyl.base.base_view.SlideRecyclerView;
 import www.patient.jykj_zxyl.base.http.ParameUtil;
+import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseFragment;
 
 
@@ -278,6 +281,26 @@ public class OrderToBeConfirmedFragment extends
 
             @Override
             public void onClickDelete(int pos) {
+
+                provideInteractOrderInfo =
+                        (ProvideInteractOrderInfo) mMultiItemEntitys.get(pos);
+                HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
+
+
+                hashMap.put("loginPatientPosition","108.93425^34.23053");
+                hashMap.put("requestClientType","1");
+                hashMap.put("operPatientCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                hashMap.put("operPatientName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                hashMap.put("orderCode",provideInteractOrderInfo.getOrderCode());
+                hashMap.put("flagOrderState",provideInteractOrderInfo.getFlagOrderState());
+
+                LogUtils.e("operPatientCode"+mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                LogUtils.e("operPatientName"+mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                LogUtils.e("orderCode"+provideInteractOrderInfo.getOrderCode());
+                LogUtils.e("flagOrderState"+provideInteractOrderInfo.getFlagOrderState());
+
+                String s = RetrofitUtil.encodeParam(hashMap);
+                mPresenter.deleteRecord(s);
 
             }
         });

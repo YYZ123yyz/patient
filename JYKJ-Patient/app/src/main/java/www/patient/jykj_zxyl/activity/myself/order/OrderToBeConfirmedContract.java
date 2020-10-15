@@ -48,5 +48,7 @@ public class OrderToBeConfirmedContract {
          */
         void sendGetUserListRequest(String userCodeList);
 
+
+        void deleteRecord(String userCodeList);
     }
 }

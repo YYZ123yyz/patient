@@ -260,7 +260,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         signUpTime = message.getStringAttribute("signUpTime", "");
         price = message.getStringAttribute("price", "");
         messageType = message.getStringAttribute("messageType", "");
-        singNO = message.getStringAttribute("singNo", "");
+        singNO = message.getStringAttribute("singNo", "");//对应orderno
         imageUrl = message.getStringAttribute("imageUrl", "");
         startTime = message.getStringAttribute("startTime", "");
         cancelTime = message.getStringAttribute("cancelTime", "");
@@ -500,6 +500,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                     String string = tag.toString();
                     int i = Integer.parseInt(string);
                     if (i == 1) {
+
                         String patientCode = mProvideViewSysUserPatientInfoAndRegion.getPatientCode();
                         String userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
                         String nickName = message.getStringAttribute("nickName", "");
@@ -507,7 +508,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                                 , nickName, orderId, singNO, patientCode, userName, "1",
                                 ParameUtil.loginDoctorPosition, (isSucess, msg) -> {
                                     if (isSucess) {
-                                        EventBus.getDefault().post(new OrderMessage(orderId,
+                                        EventBus.getDefault().post(new OrderMessage(singNO,
                                                 singNO, monitoringType, coach
                                                 , signUpTime, price, messageType, "1",singId));
                                     } else {
@@ -705,7 +706,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 case "card": {
 
                     Bundle bundle = new Bundle();
-                    bundle.putString("signCode", message.getStringAttribute("orderId",""));
+                    bundle.putString("signCode", message.getStringAttribute("singNo",""));
                     bundle.putString("operDoctorCode", message.getFrom());
                     bundle.putString("operDoctorName", nickName);
                     startActivity(SignOrderDetialActivity.class, bundle);
