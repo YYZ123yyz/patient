@@ -111,6 +111,7 @@ public class ZJXQActivity extends AppCompatActivity {
     private LinearLayout mYPJZLayout;                //音频就诊布局
     private LinearLayout mSPJZLayout;                //视频就诊布局
     private LinearLayout mQYJZLayout;                //签约就诊布局
+    private LinearLayout mLlRightMore;
     private TextView mSynopsis;                         //医生介绍
 
     private TextView mSchedulingInfo;                    //排版信息
@@ -184,7 +185,7 @@ public class ZJXQActivity extends AppCompatActivity {
         mYPJZLayout.setOnClickListener(new ButtonClick());
         mSPJZLayout.setOnClickListener(new ButtonClick());
         mQYJZLayout.setOnClickListener(new ButtonClick());
-
+        mLlRightMore.setOnClickListener(new ButtonClick());
         imgTextPrice = (TextView) this.findViewById(R.id.imgTextPrice);
         imgTextSumNum = (TextView) this.findViewById(R.id.imgTextSumNum);
         phonePriceStr = (TextView) this.findViewById(R.id.phonePriceStr);
@@ -559,6 +560,11 @@ public class ZJXQActivity extends AppCompatActivity {
                 case R.id.tv_bd:
                     startActivity(new Intent(mContext, ZJXQ_ZJBDActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend));
                     break;
+                case R.id.ll_right_more:
+                    startActivity(new Intent(mContext, DoctorDetialSettingActivity.class).putExtra("doctorCode",provideViewDoctorExpertRecommend.getDoctorCode()));
+
+                    break;
+                default:
 
             }
         }
