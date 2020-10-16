@@ -30,6 +30,7 @@ import www.patient.jykj_zxyl.myappointment.Contract.ReservationListContract;
 import www.patient.jykj_zxyl.myappointment.Presenter.ResevationListPresenter;
 import www.patient.jykj_zxyl.myappointment.activity.InspectionApplicationFormActivity;
 import www.patient.jykj_zxyl.myappointment.activity.MedicalRecordActivity;
+import www.patient.jykj_zxyl.myappointment.activity.MessageActivity;
 import www.patient.jykj_zxyl.myappointment.adapter.Fragment_CompletedAdapter;
 import www.patient.jykj_zxyl.myappointment.adapter.Fragment_VisitingAdapter;
 
@@ -133,7 +134,9 @@ public class FragmentCompleted  extends AbstractMvpBaseFragment<ReservationListC
         fragment_completedAdapter.setOnItemMessageClickListener(new Fragment_CompletedAdapter.OnItemMessageClickListener() {
             @Override
             public void onClick(int position) {
-                startActivity(new Intent(getActivity(), WDYS_JZJL_ZHLYActivity.class));
+                Bundle bundle = new Bundle();
+                bundle.putString("orderCode",myresetvation.get(position).getOrderCode());
+                startActivity(MessageActivity.class,bundle);
             }
         });
     }
