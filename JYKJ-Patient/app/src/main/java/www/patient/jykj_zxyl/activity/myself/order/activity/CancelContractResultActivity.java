@@ -67,6 +67,8 @@ public class CancelContractResultActivity extends BaseActivity {
     private String signNo;
     private  OrderDetialBean orderDetialBean;
     private List<OrderDetialBean.OrderDetailListBean> monitorTypeList;
+    private String signId;
+
     @Override
     protected void onBeforeSetContentLayout() {
         super.onBeforeSetContentLayout();
@@ -79,6 +81,7 @@ public class CancelContractResultActivity extends BaseActivity {
             orderId = extras.getString("orderId");
             dateTime = extras.getString("dateTime");
             signNo=extras.getString("signNo");
+            signId = extras.getString("signId");
         }
         monitorTypeList=new ArrayList<>();
     }
@@ -132,8 +135,8 @@ public class CancelContractResultActivity extends BaseActivity {
                 hashMap.put("loginDoctorPosition",ParameUtil.loginDoctorPosition);
                 hashMap.put("mainDoctorCode",mainDoctorCode);
                 hashMap.put("mainDoctorName",mainDoctorName);
-                hashMap.put("signCode",orderId);
-                hashMap.put("signNo",signNo);
+                hashMap.put("signCode",signId);
+                hashMap.put("signNo",orderDetialBean.getSignId());
                 hashMap.put("mainPatientCode",
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
                 hashMap.put("mainUserName"
@@ -178,14 +181,18 @@ public class CancelContractResultActivity extends BaseActivity {
      * @param code 订单Id
      */
     private void getOrderMsgByCode(String code){
+
+
+
         HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
-        hashMap.put("loginDoctorPosition",ParameUtil.loginDoctorPosition);
-        hashMap.put("signOrderCode",code);
-        hashMap.put("operDoctorCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        hashMap.put("operDoctorName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        hashMap.put("loginPatientPosition",ParameUtil.loginDoctorPosition);
+        hashMap.put("requestClientType", "1");
+        hashMap.put("orderCode",code);
+        hashMap.put("searchPatientCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        hashMap.put("searchPatientName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         String s = RetrofitUtil.encodeParam(hashMap);
 
-        ApiHelper.getPatientTestApi().searchSignPatientDoctorOrder(s)
+        ApiHelper.getPatientTestApi().searchSignPatientDoctorOrder2(s)
                 .compose(Transformer.switchSchedulers()).subscribe(new CommonDataObserver() {
             @Override
             protected void onSuccessResult(BaseBean baseBean) {

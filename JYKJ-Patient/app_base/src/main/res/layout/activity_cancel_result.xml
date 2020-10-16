@@ -19,11 +19,11 @@
             >
 
             <ImageView
+                android:id="@+id/iv_back_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:padding="5dp"
-                android:id="@+id/iv_back_left"
                 android:src="@mipmap/arrow_left">
 
 
@@ -77,13 +77,13 @@
 
 
     <LinearLayout
+        android:id="@+id/ll_start_cancel_contract_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@color/white"
-        android:id="@+id/ll_start_cancel_contract_root"
-        android:visibility="gone"
-        >
+        android:orientation="vertical"
+        android:visibility="gone">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -98,19 +98,19 @@
         </TextView>
 
         <TextView
+            android:id="@+id/tv_revoke_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="7dp"
             android:background="@drawable/bg_oval_frame_78a0e6_15"
             android:paddingStart="13.5dp"
             android:paddingTop="7dp"
             android:paddingEnd="13.5dp"
             android:paddingBottom="7dp"
             android:text="撤销申请"
-            android:id="@+id/tv_revoke_btn"
-            android:layout_marginBottom="7dp"
-            android:layout_marginTop="32dp"
-            android:layout_gravity="end"
-            android:layout_marginEnd="10dp"
             android:textColor="@color/color_799dfe"
             android:textSize="15sp">
 
@@ -120,79 +120,76 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_refund_money_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:id="@+id/rl_refund_money_root"
-        >
+        android:background="@color/white">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="11dp"
-            android:text="退款金额"
-            android:textColor="@color/color_000000"
-            android:textSize="15sp"
             android:layout_marginTop="13dp"
             android:layout_marginBottom="13dp"
-            >
+            android:text="退款金额"
+            android:textColor="@color/color_000000"
+            android:textSize="15sp">
 
 
         </TextView>
 
         <TextView
+            android:id="@+id/tv_refund_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="11dp"
-            android:textSize="15sp"
             android:text="99.0"
-            android:id="@+id/tv_refund_money"
             android:textColor="@color/color_ee0000"
-            >
+            android:textSize="15sp">
 
 
         </TextView>
 
     </RelativeLayout>
+
     <RelativeLayout
+        android:id="@+id/rl_refund_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
-        android:background="@color/white"
-        android:id="@+id/rl_refund_root"
-        >
+        android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_000000"
-            android:textSize="15sp"
-            android:text="退款路径"
             android:layout_marginStart="10dp"
             android:layout_marginTop="13dp"
             android:layout_marginBottom="13dp"
+            android:text="退款路径"
+            android:textColor="@color/color_000000"
+            android:textSize="15sp"
 
             >
 
 
         </TextView>
+
         <TextView
+            android:id="@+id/tv_refund_path"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
-            android:textColor="@color/color_666666"
-            android:textSize="15sp"
             android:text="原路返回"
-            android:id="@+id/tv_refund_path"
-            >
+            android:textColor="@color/color_666666"
+            android:textSize="15sp">
 
 
         </TextView>
     </RelativeLayout>
-
 
 
 </LinearLayout>

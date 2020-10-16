@@ -354,7 +354,7 @@ public class JWBSLRBSActivity extends AppCompatActivity {
 
     private void commitData() {
         HashMap<String, String> paramMap = new HashMap<>();
-        paramMap.put("loginPatientPosition","108.93425^34.23053");
+        paramMap.put("loginPatientPosition", "108.93425^34.23053");
         paramMap.put("requestClientType", "1");
         paramMap.put("imgCode", "");
         paramMap.put("operPatientCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
@@ -368,26 +368,6 @@ public class JWBSLRBSActivity extends AppCompatActivity {
         if (mPhotoInfos.size() > 1) {
             photoUrl.append("data:image/jpg;base64,");
             for (int i = 1; i < mPhotoInfos.size(); i++) {
-//                Luban.with(InquiryDataActivity.this).load(mPhotoInfos.get(i).getPhotoUrl()).ignoreBy(100)
-//                        .filter(path -> !(TextUtils.isEmpty(path) || path.toLowerCase().endsWith(".gif"))).setCompressListener(new OnCompressListener() {
-//                    @Override
-//                    public void onStart() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(File file) {
-//                        LogUtils.e("转换成功");
-//                        String s = imageToBase64(file.getPath());
-//                        photoUrl.append(s).append("^");
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//                });
-
                 if (mPhotoInfos.get(i) != null) {
                     String photo = mPhotoInfos.get(i).getPhoto();
                     if (i == mPhotoInfos.size() - 1) {
@@ -395,12 +375,8 @@ public class JWBSLRBSActivity extends AppCompatActivity {
                     } else {
                         photoUrl.append(photo).append("^");
                     }
-
                 }
-
-                LogUtils.e("图片path  44  " + photoUrl.toString());
             }
-
             paramMap.put("imgBase64Array", photoUrl.toString());
         } else {
             paramMap.put("imgBase64Array", "");
@@ -423,16 +399,11 @@ public class JWBSLRBSActivity extends AppCompatActivity {
 
                 int resCode = baseBean.getResCode();
                 if (resCode == 1) {
-//                        String resJsonData = baseBean.getResJsonData();
                     ToastUtils.showShort("提交成功");
                     finish();
                 } else {
                     ToastUtils.showShort("提交失败");
-                    LogUtils.e("错误信息xxxxxxxxxxxxxxxxxxxxxxxxxxx" + baseBean.getResMsg());
-
                 }
-
-
             }
 
             @Override

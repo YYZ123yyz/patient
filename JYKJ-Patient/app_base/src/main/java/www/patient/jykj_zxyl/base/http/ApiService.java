@@ -201,5 +201,9 @@ public interface ApiService {
     @POST("patientHealthRecordsControlle/operUpdPatientConditionDiseaseRecordAndImg")
     Observable<String> commitHis(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
 
+    //既往病史详情
+    @POST("/patientHealthRecordsControlle/searchPatientConditionDiseaseRecordResData_V200916")
+    Observable<String> getHisDet(@Query(value = "jsonDataInfo", encoded = true) String queryJson);
+
 }
 

@@ -11,7 +11,7 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
     private String actualPayment;
     private String doctorReceiveShow;
     private Integer flagColor;
-    private Integer flagTreatmentState;
+    private int flagTreatmentState;
     private Integer limitAudioShow;
     private Integer limitImgTextShow;
     private Integer limitPhoneShow;
@@ -43,6 +43,15 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
     private String signDuration;
     private String signDurationUnit;
     private String signCode;
+    private String detectRate;
+
+    public String getDetectRate() {
+        return detectRate;
+    }
+
+    public void setDetectRate(String detectRate) {
+        this.detectRate = detectRate;
+    }
 
     public String getSignCode() {
         return signCode;
@@ -261,11 +270,11 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
         this.flagColor = flagColor;
     }
 
-    public Integer getFlagTreatmentState() {
+    public int getFlagTreatmentState() {
         return flagTreatmentState;
     }
 
-    public void setFlagTreatmentState(Integer flagTreatmentState) {
+    public void setFlagTreatmentState(int flagTreatmentState) {
         this.flagTreatmentState = flagTreatmentState;
     }
 

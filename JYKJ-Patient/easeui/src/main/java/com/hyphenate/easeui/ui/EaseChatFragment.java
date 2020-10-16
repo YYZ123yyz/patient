@@ -1894,7 +1894,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 message.setAttribute("orderType", msg.getOrderType());
                 message.setAttribute("nickName", mProvideViewSysUserPatientInfoAndRegion.getUserName());
                 message.setAttribute("imageUrl", mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
-                message.setAttribute("signNo", msg.getSingNo());
+                message.setAttribute("singNo", msg.getSingNo());
                 message.setAttribute("isPatient", msg.getIsPatient());
                 break;
             case "appointment":

@@ -86,6 +86,16 @@ public class OrderDetialBean {
     private int version;
     private int videoLastCount;
     private int videoTotle;
+    private int coachValue;
+
+    public int getCoachValue() {
+        return coachValue;
+    }
+
+    public void setCoachValue(int coachValue) {
+        this.coachValue = coachValue;
+    }
+
     //扩展
     private  String refuseReasonClassCode;  //拒绝/解约原因分类code
     private  String refuseReasonClassName;  //拒绝/解约原因分类名称

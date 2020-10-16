@@ -111,6 +111,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
     private boolean isChoosedAgreeMent;
     private ProvideViewSysUserPatientInfoAndRegion mProvideViewSysUserPatientInfoAndRegion;
     private static final int SDK_PAY_FLAG = 3;
+    private String signId;
 
     @Override
     protected void onBeforeSetContentLayout() {
@@ -120,6 +121,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
             signCode = extras.getString("signCode");
+            signId = extras.getString("signId");
             operDoctorCode = extras.getString("operDoctorCode");
             operDoctorName = extras.getString("operDoctorName");
         }
@@ -226,14 +228,14 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         tvUpdateBtn.setOnClickListener(v -> mPresenter.sendOrderOperRequest(
                 orderDetialData.getMainDoctorCode(),
                 orderDetialData.getMainDoctorName(),
-                orderDetialData.getSignCode(), orderDetialData.getSignNo(),
+                orderDetialData.getSignCode(), signCode,
                 orderDetialData.getMainPatientCode(), orderDetialData.getMainUserName(),
                 "2", SignOrderDetialActivity.this));
 
         tvAgreeBtn.setOnClickListener(v -> mPresenter.sendOrderOperRequest(
                 orderDetialData.getMainDoctorCode(),
                 orderDetialData.getMainDoctorName(),
-                orderDetialData.getSignCode(), orderDetialData.getSignNo(),
+                orderDetialData.getSignCode(), signCode,
                 orderDetialData.getMainPatientCode(), orderDetialData.getMainUserName(),
                 "1", SignOrderDetialActivity.this));
 
@@ -264,6 +266,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
             if (orderDetialData != null) {
                 Bundle bundle = new Bundle();
                 bundle.putString("orderId", signCode);
+                bundle.putString("signId", signId);
                 bundle.putString("operDoctorCode", orderDetialData.getMainDoctorCode());
                 bundle.putString("operDoctorName", orderDetialData.getMainDoctorName());
                 startActivity(CancelContractActivity.class, bundle);
@@ -380,14 +383,17 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         coachTypeList.clear();
         monitorTypeList.clear();
         List<OrderDetialBean.OrderDetailListBean> orderDetailList = orderDetialData.getOrderDetailList();
-        for (OrderDetialBean.OrderDetailListBean orderDetailListBean : orderDetailList) {
-            String configDetailTypeCode = orderDetailListBean.getConfigDetailTypeCode();
-            if (configDetailTypeCode.equals(DATA_MONITOR_CODE)) {
-                monitorTypeList.add(orderDetailListBean);
-            } else if (configDetailTypeCode.equals(DATA_COATCH_CODE)) {
-                coachTypeList.add(orderDetailListBean);
+        if (orderDetailList != null) {
+            for (OrderDetialBean.OrderDetailListBean orderDetailListBean : orderDetailList) {
+                String configDetailTypeCode = orderDetailListBean.getConfigDetailTypeCode();
+                if (configDetailTypeCode.equals(DATA_MONITOR_CODE)) {
+                    monitorTypeList.add(orderDetailListBean);
+                } else if (configDetailTypeCode.equals(DATA_COATCH_CODE)) {
+                    coachTypeList.add(orderDetailListBean);
+                }
             }
         }
+
     }
 
 
@@ -574,25 +580,28 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         rlOrderDetialCancelRoot.setVisibility(View.GONE);
         llOrderDetialPaymentRoot.setVisibility(View.GONE);
         String signStatus = orderDetialData.getSignStatus();
-        switch (signStatus) {
-            case OrderStatusEnum
-                    .orderSubmitCode:
-                rlOrderDetialSignUpRoot.setVisibility(View.VISIBLE);
-                rlOrderDetialCancelRoot.setVisibility(View.GONE);
-                llOrderDetialPaymentRoot.setVisibility(View.GONE);
-                break;
-            case OrderStatusEnum.orderSignCompleteCode:
-                rlOrderDetialSignUpRoot.setVisibility(View.GONE);
-                rlOrderDetialCancelRoot.setVisibility(View.VISIBLE);
-                llOrderDetialPaymentRoot.setVisibility(View.GONE);
-                break;
-            case OrderStatusEnum.orderAgreeCode:
-                rlOrderDetialSignUpRoot.setVisibility(View.GONE);
-                rlOrderDetialCancelRoot.setVisibility(View.GONE);
-                llOrderDetialPaymentRoot.setVisibility(View.VISIBLE);
-                break;
-            default:
+        if (signStatus != null) {
+            switch (signStatus) {
+                case OrderStatusEnum
+                        .orderSubmitCode:
+                    rlOrderDetialSignUpRoot.setVisibility(View.VISIBLE);
+                    rlOrderDetialCancelRoot.setVisibility(View.GONE);
+                    llOrderDetialPaymentRoot.setVisibility(View.GONE);
+                    break;
+                case OrderStatusEnum.orderSignCompleteCode:
+                    rlOrderDetialSignUpRoot.setVisibility(View.GONE);
+                    rlOrderDetialCancelRoot.setVisibility(View.VISIBLE);
+                    llOrderDetialPaymentRoot.setVisibility(View.GONE);
+                    break;
+                case OrderStatusEnum.orderAgreeCode:
+                    rlOrderDetialSignUpRoot.setVisibility(View.GONE);
+                    rlOrderDetialCancelRoot.setVisibility(View.GONE);
+                    llOrderDetialPaymentRoot.setVisibility(View.VISIBLE);
+                    break;
+                default:
+            }
         }
+
 
     }
 

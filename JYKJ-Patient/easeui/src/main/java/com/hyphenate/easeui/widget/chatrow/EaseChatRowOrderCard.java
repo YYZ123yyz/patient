@@ -30,6 +30,8 @@ import com.hyphenate.easeui.widget.EaseImageView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.DecimalFormat;
+
 import www.patient.jykj_zxyl.base.base_bean.OrderMessage;
 import www.patient.jykj_zxyl.base.base_bean.ProvideViewSysUserPatientInfoAndRegion;
 import www.patient.jykj_zxyl.base.base_bean.UpdateOrderResultBean;
@@ -104,6 +106,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
     private RelativeLayout rl_immediately;
     private TextView mTvEnsureBtn;
     private String singId;
+    private String signNo_new;
 
     public EaseChatRowOrderCard(Context context, EMMessage message,
                                 int position, BaseAdapter adapter) {
@@ -253,14 +256,20 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         mProvideViewSysUserPatientInfoAndRegion
                 = GsonUtils.fromJson(userInfoSuLogin, ProvideViewSysUserPatientInfoAndRegion.class);
         // TODO: 2020-07-29 显示ui
-        orderId = message.getStringAttribute("orderId", "");
-        singId = message.getStringAttribute("singId", "");
+
+        orderId = message.getStringAttribute("orderId", ""); //返回
+        singId = message.getStringAttribute("signId", "");   //操作
         monitoringType = message.getStringAttribute("monitoringType", "");
         coach = message.getStringAttribute("coach", "");
         signUpTime = message.getStringAttribute("signUpTime", "");
         price = message.getStringAttribute("price", "");
+
         messageType = message.getStringAttribute("messageType", "");
-        singNO = message.getStringAttribute("singNo", "");//对应orderno
+        singNO = message.getStringAttribute("singNo", "");//详情orderno
+
+        LogUtils.e("接受消息   orderId  " + orderId);
+        LogUtils.e("接受消息   singId  " + singId);
+        LogUtils.e("接受消息   singNO  " + singNO);
         imageUrl = message.getStringAttribute("imageUrl", "");
         startTime = message.getStringAttribute("startTime", "");
         cancelTime = message.getStringAttribute("cancelTime", "");
@@ -280,6 +289,13 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         mTvMonitValue.setText(monitoringType);
         mTvCoachRateValue.setText(coach);
         mTvSignTimeValue.setText(signUpTime);
+        DecimalFormat df = new DecimalFormat("0.00");
+        if ( TextUtils.isEmpty(price)){
+            price = "0.00";
+        }else {
+            price = df.format(Double.parseDouble(price));
+        }
+
         mTvPriceValue.setText(String.format("¥%s", price));
         orderType = message.getStringAttribute("orderType", "");//1已同意 2 修改 3 拒绝（由患者操作发起时会携带此参数）
         if (messageType.equals("terminationOrder")) {
@@ -365,8 +381,9 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         } else if (direct == EMMessage.Direct.RECEIVE) {
             mTvEnsureBtn.setVisibility(View.GONE);
             ivStampIcon.setVisibility(View.GONE);
-            if (messageType.equals("terminationOrder")) {
+            if (messageType.equals("terminationOrder")) {//解约
                 rl_immediately.setVisibility(View.GONE);
+                rl_class.setVisibility(GONE);
                 switch (orderType) {
                     case "1":
                         ivStampIcon.setVisibility(View.VISIBLE);
@@ -400,9 +417,10 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 }
 
 
-            } else if (messageType.equals("card")) {
+            } else if (messageType.equals("card")) { //签约
                 mTvUpdateBtn.setVisibility(View.VISIBLE);
                 rlCancelContractOrderRoot.setVisibility(View.GONE);
+                rl_class.setVisibility(GONE);
                 rlSignOrderRoot.setVisibility(View.VISIBLE);
                 rl_immediately.setVisibility(View.GONE);
             }
@@ -505,12 +523,13 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                         String userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
                         String nickName = message.getStringAttribute("nickName", "");
                         OrderOperationManager.getInstance().sendOrderOperRequest(message.getFrom()
-                                , nickName, orderId, singNO, patientCode, userName, "1",
+                                , nickName, singId, singNO, patientCode, userName, "1",
                                 ParameUtil.loginDoctorPosition, (isSucess, msg) -> {
                                     if (isSucess) {
-                                        EventBus.getDefault().post(new OrderMessage(singNO,
+
+                                        EventBus.getDefault().post(new OrderMessage(orderId,
                                                 singNO, monitoringType, coach
-                                                , signUpTime, price, messageType, "1",singId));
+                                                , signUpTime, price, messageType, "1", singId));
                                     } else {
                                         ToastUtils.showToast(msg);
                                     }
@@ -530,7 +549,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                             String userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
                             String nickName = message.getStringAttribute("nickName", "");
                             OrderOperationManager.getInstance().sendOrderOperRequest(message.getFrom()
-                                    , nickName, orderId, singNO, patientCode, userName, "2",
+                                    , nickName, singId, singNO, patientCode, userName, "2",
                                     ParameUtil.loginDoctorPosition, (isSucess, msg) -> {
                                         if (isSucess) {
                                             if (StringUtils.isNotEmpty(msg)) {
@@ -538,13 +557,20 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                                                         = GsonUtils.fromJson(msg, UpdateOrderResultBean.class);
                                                 if (updateOrderResultBean != null) {
                                                     orderId = updateOrderResultBean.getSignCode();
+                                                    signNo_new = updateOrderResultBean.getSignNo();
                                                     message.setAttribute("orderId", orderId);
                                                 }
 
                                             }
-                                            EventBus.getDefault().post(new OrderMessage(orderId,
+
+                                            LogUtils.e("xxxxx orderId"+orderId);
+                                            LogUtils.e("xxxxx  singNO"+singNO);
+                                            LogUtils.e("xxxxx  signNo_new"+signNo_new);
+
+
+                                            EventBus.getDefault().post(new OrderMessage(signNo_new,
                                                     singNO, monitoringType, coach
-                                                    , signUpTime, price, messageType, "2",singId));
+                                                    , signUpTime, price, messageType, "2", signNo_new));
                                         } else {
                                             ToastUtils.showToast(msg);
 
@@ -569,7 +595,8 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                             if (messageType.equals("card")) {
                                 String nickName = message.getStringAttribute("nickName", "");
                                 Bundle bundle = new Bundle();
-                                bundle.putString("orderId", orderId);
+                                bundle.putString("orderId", singNO);
+                                bundle.putString("orderNo", singId);
                                 bundle.putString("operDoctorCode", message.getFrom());
                                 bundle.putString("operDoctorName", nickName);
                                 startActivity(RefusedOrderActivity.class, bundle);
@@ -577,7 +604,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                             } else if (messageType.equals("terminationOrder")) {
                                 EventBus.getDefault().post(new OrderMessage(orderId,
                                         singNO, monitoringType, coach
-                                        , signUpTime, price, messageType, "2",singId));
+                                        , signUpTime, price, messageType, "2", singId));
                             }
 
                         }
@@ -602,7 +629,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                                     if (isSucess) {
                                         OrderMessage event = new OrderMessage(orderId, singNO,
                                                 monitoringType, coach
-                                                , signUpTime, price, messageType, "1",singId);
+                                                , signUpTime, price, messageType, "1", singId);
                                         EventBus.getDefault().post(event);
                                     } else {
                                         ToastUtils.showToast(msg);
@@ -614,6 +641,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
 
 
             });
+
             mTvCancelContractRefuseBtn.setOnClickListener(v -> {
                 Object tag = mTvCancelContractAgreeBtn.getTag();
                 if (tag != null) {
@@ -622,9 +650,17 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                     if (i == 1) {
                         String nickName = message.getStringAttribute("nickName", "");
                         Bundle bundle = new Bundle();
-                        bundle.putString("orderId", orderId);
+                        bundle.putString("orderId", singNO);
+                        bundle.putString("orderNo", singId);
                         bundle.putString("operDoctorCode", message.getFrom());
                         bundle.putString("operDoctorName", nickName);
+
+                        bundle.putString("monitor", monitoringType);
+                        bundle.putString("num", coach);
+                        bundle.putString("time", signUpTime);
+                        bundle.putString("money", price);
+
+
                         startActivity(RefusedCancelContractActivity.class, bundle);
                     }
                 }
@@ -704,18 +740,31 @@ public class EaseChatRowOrderCard extends EaseChatRow {
             String nickName = message.getStringAttribute("nickName", "");
             switch (messageType) {
                 case "card": {
+                    if (orderType.equals("3")) {
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("operDoctorCode", message.getFrom());
+                        bundle1.putString("operDoctorName", nickName);
+                        bundle1.putString("orderId", singNO);
+                        bundle1.putString("type", "1");
+                        startActivity(CancelConfirmDeitalActivity.class, bundle1);
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("signCode", message.getStringAttribute("singNo",""));
-                    bundle.putString("operDoctorCode", message.getFrom());
-                    bundle.putString("operDoctorName", nickName);
-                    startActivity(SignOrderDetialActivity.class, bundle);
+
+                    } else {
+                        LogUtils.e("点击跳转  " + singNO);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("signCode", singNO);
+                        bundle.putString("operDoctorCode", message.getFrom());
+                        bundle.putString("operDoctorName", nickName);
+                        startActivity(SignOrderDetialActivity.class, bundle);
+                    }
+
                     break;
                 }
                 case "terminationOrder":
 
                     if (!orderType.equals("3")) {
                         Bundle bundle1 = new Bundle();
+                        bundle1.putString("type", "1");
                         bundle1.putString("operDoctorCode", message.getFrom());
                         bundle1.putString("operDoctorName", nickName);
                         bundle1.putString("orderId", orderId);

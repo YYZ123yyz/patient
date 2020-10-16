@@ -15,8 +15,11 @@ import com.google.gson.Gson;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.entity.ProvideViewSysUserPatientInfoAndRegion;
 import com.hyphenate.easeui.ui.ChatActivity;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
 import www.patient.jykj_zxyl.base.base_bean.OrderDetialBean;
 import www.patient.jykj_zxyl.base.base_bean.OrderMessage;
 import www.patient.jykj_zxyl.base.base_bean.UserInfoBaseBean;
@@ -27,6 +30,7 @@ import www.patient.jykj_zxyl.base.base_view.BaseToolBar;
 import www.patient.jykj_zxyl.base.base_view.LoadingLayoutManager;
 import www.patient.jykj_zxyl.base.enum_type.OrderStatusEnum;
 import www.patient.jykj_zxyl.base.http.ParameUtil;
+import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
 
 /**
@@ -54,12 +58,14 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
     private RelativeLayout mLLOperButtomRoot;
     private List<OrderDetialBean.OrderDetailListBean> monitorTypeList;
     private List<OrderDetialBean.OrderDetailListBean> coachTypeList;
-    private static final String DATA_MONITOR_CODE="10";//监测类型
-    private static final String DATA_COATCH_CODE="20";//辅导类型
+    private static final String DATA_MONITOR_CODE = "10";//监测类型
+    private static final String DATA_COATCH_CODE = "20";//辅导类型
     private OrderDetialBean orderDetialBean;
     private ProvideViewSysUserPatientInfoAndRegion mProvideViewSysUserPatientInfoAndRegion;
     private String operDoctorCode;
     private String operDoctorName;
+    private String mType = "";
+
     @Override
     protected void onBeforeSetContentLayout() {
         super.onBeforeSetContentLayout();
@@ -68,9 +74,12 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
             orderId = extras.getString("orderId");
-            operDoctorCode= extras.getString("operDoctorCode");
-            operDoctorName=extras.getString("operDoctorName");
+            operDoctorCode = extras.getString("operDoctorCode");
+            operDoctorName = extras.getString("operDoctorName");
+            mType = extras.getString("type");
         }
+
+
     }
 
     @Override
@@ -83,62 +92,74 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
         super.initView();
         mToolBar = findViewById(R.id.toolbar);
         mRlContentRoot = findViewById(R.id.rl_content_root);
-        mTvCancelContractDesc=findViewById(R.id.tv_cancel_contract_desc);
-        mTvSignStartTime=findViewById(R.id.tv_sign_start_time);
-        mTvMonitorTypeValue=findViewById(R.id.tv_monitor_type_value);
-        mTvCoatchRateValue=findViewById(R.id.tv_coatch_rate_value);
+        mTvCancelContractDesc = findViewById(R.id.tv_cancel_contract_desc);
+        mTvSignStartTime = findViewById(R.id.tv_sign_start_time);
+        mTvMonitorTypeValue = findViewById(R.id.tv_monitor_type_value);
+        mTvCoatchRateValue = findViewById(R.id.tv_coatch_rate_value);
         mTvSignTimeValue = findViewById(R.id.tv_sign_time_value);
-        mTvSignOrderPrice=findViewById(R.id.tv_sign_order_price);
-        mTvRefuseBtn=findViewById(R.id.tv_refuse_btn);
-        mTvAgreeBtn=findViewById(R.id.tv_agree_btn);
-        mLlContentRoot=findViewById(R.id.ll_content_root);
-        mLLOperButtomRoot=findViewById(R.id.ll_oper_buttom_root);
-        mTvCancelContractReason=findViewById(R.id.tv_cancel_contract_reason);
+        mTvSignOrderPrice = findViewById(R.id.tv_sign_order_price);
+        mTvRefuseBtn = findViewById(R.id.tv_refuse_btn);
+        mTvAgreeBtn = findViewById(R.id.tv_agree_btn);
+        mLlContentRoot = findViewById(R.id.ll_content_root);
+        mLLOperButtomRoot = findViewById(R.id.ll_oper_buttom_root);
+        mTvCancelContractReason = findViewById(R.id.tv_cancel_contract_reason);
         setToolBar();
-        initLoadingAndRetryManager();
+//        initLoadingAndRetryManager();
         addListener();
     }
 
     @Override
     protected void initData() {
         super.initData();
-        SharedPreferences_DataSave jykjdocter = new SharedPreferences_DataSave(this, "JYKJDOCTER");
-        String userInfoSuLogin = jykjdocter.getString("viewSysUserDoctorInfoAndHospital", "");
-        try {
-            mProvideViewSysUserPatientInfoAndRegion = new Gson().fromJson(userInfoSuLogin, ProvideViewSysUserPatientInfoAndRegion.class);
-        } catch (Exception e) {
+        if (mType!=null &&  mType.equals("1")) {
+            HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
+            hashMap.put("loginPatientPosition", ParameUtil.loginDoctorPosition);
+            hashMap.put("requestClientType", "1");
+            hashMap.put("orderCode", orderId);
+            hashMap.put("searchPatientCode", operDoctorCode);
+            hashMap.put("searchPatientName", operDoctorName);
+            String s = RetrofitUtil.encodeParam(hashMap);
+            mPresenter.getOrderDet(s);
+        } else {
+            SharedPreferences_DataSave jykjdocter = new SharedPreferences_DataSave(this, "JYKJDOCTER");
+            String userInfoSuLogin = jykjdocter.getString("viewSysUserDoctorInfoAndHospital", "");
+            try {
+                mProvideViewSysUserPatientInfoAndRegion = new Gson().fromJson(userInfoSuLogin, ProvideViewSysUserPatientInfoAndRegion.class);
+            } catch (Exception e) {
 
+            }
+            mPresenter.sendSearchOrderDetialRequest(orderId, operDoctorCode, operDoctorName);
         }
-        mPresenter.sendSearchOrderDetialRequest(orderId,operDoctorCode,operDoctorName);
+
     }
 
     /**
      * 添加监听
      */
-    private void addListener(){
+    private void addListener() {
         mTvRefuseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle=new Bundle();
-                bundle.putString("orderId",orderId);
-                bundle.putString("operDoctorCode",operDoctorCode);
-                bundle.putString("operDoctorName",operDoctorName);
-                startActivity(RefusedCancelContractActivity.class,bundle);
+                Bundle bundle = new Bundle();
+                bundle.putString("orderId", orderId);
+                bundle.putString("operDoctorCode", operDoctorCode);
+                bundle.putString("operDoctorName", operDoctorName);
+                startActivity(RefusedCancelContractActivity.class, bundle);
             }
         });
         mTvAgreeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (orderDetialBean!=null) {
+                if (orderDetialBean != null) {
                     mPresenter.sendCancelContractConConfirmRequest(
                             ParameUtil.loginDoctorPosition,
                             orderDetialBean.getMainDoctorCode()
-                            ,orderDetialBean.getMainDoctorName(),
+                            , orderDetialBean.getMainDoctorName(),
                             orderDetialBean.getSignCode()
-                            ,orderDetialBean.getSignNo()
-                            ,orderDetialBean.getMainPatientCode()
-                            ,orderDetialBean.getMainUserName(),
-                            "1","","","");
+                            , orderDetialBean.getSignNo()
+                            , orderDetialBean.getMainPatientCode()
+                            , orderDetialBean.getMainUserName(),
+                            "1", "", "", "");
                 }
 
             }
@@ -146,11 +167,16 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
         mLlContentRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle=new Bundle();
-                bundle.putString("signCode",orderId);
-                bundle.putString("operDoctorCode",operDoctorCode);
-                bundle.putString("operDoctorName",operDoctorName);
-                startActivity(SignOrderDetialActivity.class,bundle);
+                if (mType.equals("1")) {
+
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("signCode", orderId);
+                    bundle.putString("operDoctorCode", operDoctorCode);
+                    bundle.putString("operDoctorName", operDoctorName);
+                    startActivity(SignOrderDetialActivity.class, bundle);
+                }
+
             }
         });
     }
@@ -171,7 +197,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
         mLoadingLayoutManager = LoadingLayoutManager.wrap(mRlContentRoot);
         mLoadingLayoutManager.setRetryListener(v -> {
             mLoadingLayoutManager.showLoading();
-            mPresenter.sendSearchOrderDetialRequest(orderId,operDoctorCode,operDoctorName);
+            mPresenter.sendSearchOrderDetialRequest(orderId, operDoctorCode, operDoctorName);
         });
         mLoadingLayoutManager.showLoading();
 
@@ -180,8 +206,8 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
 
     @Override
     public void showLoading(int code) {
-        if (code==101) {
-            showLoading("",null);
+        if (code == 101) {
+            showLoading("", null);
         }
     }
 
@@ -192,26 +218,47 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
 
     /**
      * 设置订单数据
+     *
      * @param signOrderInfoBean 订单数据
      */
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
-    private void setOrderData(OrderDetialBean signOrderInfoBean){
+    private void setOrderData(OrderDetialBean signOrderInfoBean) {
         mTvCancelContractDesc.setText(signOrderInfoBean.getRefuseRemark());
-        mTvSignStartTime.setText(DateUtils.getStringTimeMinute(
+        mTvSignStartTime.setText(DateUtils.getLongYYYYMMDD(
                 signOrderInfoBean.getSignStartTime()));
         mTvSignTimeValue.setText(String.format("%d%s", signOrderInfoBean.getSignDuration()
                 , signOrderInfoBean.getSignDurationUnit()));
-        mTvMonitorTypeValue.setText(monitorTypeList.size()+"项");
-        mTvSignOrderPrice.setText(String.format("¥%s", signOrderInfoBean.getSignPrice()));
-        if (!CollectionUtils.isEmpty(coachTypeList)) {
-            OrderDetialBean.OrderDetailListBean orderDetailListBean = coachTypeList.get(0);
-            String rate=orderDetailListBean.getValue()+"次/"+orderDetailListBean.getRate()
-                    +orderDetailListBean.getRateUnitName();
-            mTvCoatchRateValue.setText(rate);
+        int coachValue = signOrderInfoBean.getCoachValue();
+        if (coachValue == 1) {
+            mTvMonitorTypeValue.setText("一项");
+        } else if (coachValue == 2) {
+            mTvMonitorTypeValue.setText("两项");
+        } else if (coachValue == 3) {
+            mTvMonitorTypeValue.setText("三项");
+        } else if (coachValue == 4) {
+            mTvMonitorTypeValue.setText("四项");
+        } else if (coachValue == 5) {
+            mTvMonitorTypeValue.setText("五项");
+        } else if (coachValue == 6) {
+            mTvMonitorTypeValue.setText("六项");
         }
+
+        String rate = signOrderInfoBean.getDetectRate() + "次/" + signOrderInfoBean.getDetectRateUnitName()
+                ;
+        mTvCoatchRateValue.setText(rate);
+
+
+//        mTvMonitorTypeValue.setText(monitorTypeList.size() + "项");
+        mTvSignOrderPrice.setText(String.format("¥%s", signOrderInfoBean.getSignPrice()));
+        /*if (!CollectionUtils.isEmpty(coachTypeList)) {
+            OrderDetialBean.OrderDetailListBean orderDetailListBean = coachTypeList.get(0);
+            String rate = orderDetailListBean.get + "次/" + orderDetailListBean.getRate()
+                    + orderDetailListBean.getRateUnitName();
+            mTvCoatchRateValue.setText(rate);
+        }*/
         if (signOrderInfoBean.getSignStatus().equals(OrderStatusEnum.orderDoctorCancelContractCode)) {
             mLLOperButtomRoot.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mLLOperButtomRoot.setVisibility(View.GONE);
         }
         mTvCancelContractReason.setText(signOrderInfoBean.getRefuseReasonClassName());
@@ -220,9 +267,9 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
     }
 
 
-
     /**
      * 处理订单详情数据
+     *
      * @param orderDetialData 订单详情
      */
     private void handleOrderListResult(OrderDetialBean orderDetialData) {
@@ -231,7 +278,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
             String configDetailTypeCode = orderDetailListBean.getConfigDetailTypeCode();
             if (configDetailTypeCode.equals(DATA_MONITOR_CODE)) {
                 monitorTypeList.add(orderDetailListBean);
-            }else if(configDetailTypeCode.equals(DATA_COATCH_CODE)){
+            } else if (configDetailTypeCode.equals(DATA_COATCH_CODE)) {
                 coachTypeList.add(orderDetailListBean);
             }
         }
@@ -251,16 +298,16 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
     @Override
     public void getSearchOrderDetialResult(OrderDetialBean orderDetialBean) {
         mLoadingLayoutManager.showContent();
-        this.orderDetialBean=orderDetialBean;
+        this.orderDetialBean = orderDetialBean;
         handleOrderListResult(orderDetialBean);
         setOrderData(orderDetialBean);
     }
 
     @Override
     public void getCancelContractConfirmResult(boolean isSucess, String msg) {
-        if(isSucess){
+        if (isSucess) {
             mPresenter.sendGetUserListRequest(orderDetialBean.getMainDoctorCode());
-        }else{
+        } else {
             ToastUtils.showToast(msg);
         }
 
@@ -283,28 +330,34 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
             intent.putExtra("operDoctorName", mProvideViewSysUserPatientInfoAndRegion.getUserName());
             terminationOrder.setImageUrl(mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
             terminationOrder.setIsPatient("1");
-            Bundle bundle=new Bundle();
-            bundle.putSerializable("orderMsg",terminationOrder);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("orderMsg", terminationOrder);
             intent.putExtras(bundle);
             startActivity(intent);
         }
     }
 
+    @Override
+    public void getDetSucess(OrderDetialBean orderDetialBean) {
+        setOrderData(orderDetialBean);
+    }
+
 
     /**
      * 获取订单信息
+     *
      * @param messageType 消息类型
-     * @param orderType 操作类型
+     * @param orderType   操作类型
      * @return orderMessage
      */
     private OrderMessage getOrderMessage(String messageType, String orderType) {
         @SuppressLint("DefaultLocale")
-        String  monitorRate= String.format("一次/%d%s", orderDetialBean.getDetectRate(),
+        String monitorRate = String.format("一次/%d%s", orderDetialBean.getDetectRate(),
                 orderDetialBean.getDetectRateUnitName());
-        return new OrderMessage(orderId,orderDetialBean.getSignNo(),
+        return new OrderMessage(orderId, orderDetialBean.getSignNo(),
                 monitorTypeList.size() + "项", monitorRate,
-                orderDetialBean.getSignDuration()+ orderDetialBean.getSignDurationUnit()
-                , orderDetialBean.getSignPrice() + "", messageType, orderType,orderDetialBean.getSignCode());
+                orderDetialBean.getSignDuration() + orderDetialBean.getSignDurationUnit()
+                , orderDetialBean.getSignPrice() + "", messageType, orderType, orderDetialBean.getSignCode());
 
     }
 }

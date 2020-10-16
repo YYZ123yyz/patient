@@ -57,6 +57,8 @@ public class CancelContractActivity extends AbstractMvpBaseActivity<CancelContra
     private static final String DATA_COATCH_CODE="20";//辅导类型
     private String operDoctorName;
     private String operDoctorCode;
+    private String signId;
+
     @Override
     protected void onBeforeSetContentLayout() {
         super.onBeforeSetContentLayout();
@@ -66,6 +68,7 @@ public class CancelContractActivity extends AbstractMvpBaseActivity<CancelContra
         mCancelContractBeans = new ArrayList<>();
         Bundle extras = this.getIntent().getExtras();
         if (extras!=null) {
+            signId = extras.getString("signId");
             orderId=extras.getString("orderId");
             doctorCode=extras.getString("doctorCode");
             operDoctorName = extras.getString("operDoctorName");

@@ -12,6 +12,7 @@ import www.patient.jykj_zxyl.base.base_bean.OrderDetialBean;
 import www.patient.jykj_zxyl.base.base_bean.PaymentBean;
 import www.patient.jykj_zxyl.base.base_bean.UserInfoBaseBean;
 import www.patient.jykj_zxyl.base.base_utils.GsonUtils;
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 import www.patient.jykj_zxyl.base.base_utils.StringUtils;
 import www.patient.jykj_zxyl.base.http.ApiHelper;
 import www.patient.jykj_zxyl.base.http.CommonDataObserver;
@@ -92,6 +93,7 @@ public class OrderDetialPresenter extends BasePresenterImpl<OrderDetialContract.
             @Override
             protected void onError(String s) {
                 super.onError(s);
+                LogUtils.e("失败原因"+s);
                 if (mView!=null) {
                     mView.showRetry();
                 }

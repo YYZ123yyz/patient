@@ -20,8 +20,8 @@ public class ProvideViewMyDoctorOrderAndTreatment implements java.io.Serializabl
 	private String patientName;//[冗余]患者姓名
 	private String doctorCode;//医生关联编码
 	private String doctorName;//[冗余]医生姓名
-	private Integer treatmentType;//就诊(治疗)类型.0:未知;1:图文就诊;2:音频就诊;3:视频就诊;4:签约服务;5:电话就诊;
-	private Integer paymentMode;//支付方式.Eg.0:未知;1:微信支付;2:支付宝支付;3:银联支付;
+	private int treatmentType;//就诊(治疗)类型.0:未知;1:图文就诊;2:音频就诊;3:视频就诊;4:签约服务;5:电话就诊;
+	private int paymentMode;//支付方式.Eg.0:未知;1:微信支付;2:支付宝支付;3:银联支付;
 
 	private Float serviceTotal;//服务总价(选择服务的总价格)
 	private Float priceDiscountCoupon;//平台优惠(优惠方式:优惠券)
@@ -32,7 +32,7 @@ public class ProvideViewMyDoctorOrderAndTreatment implements java.io.Serializabl
 	private String integralRecordHistoryCode;//使用的积分记录编码.外键:积分使用记录表(integralRecordHistoryCode)
 	private String orderDesc;//订单描述.Eg.音频就诊 128元/10分钟
 	
-	private Integer flagOrderState;//订单状态.0:未知;1:待付款;2:已付款;3:;4:;5:;10:已完成;11:交易关闭(未付款超时);
+	private int flagOrderState;//订单状态.0:未知;1:待付款;2:已付款;3:;4:;5:;10:已完成;11:交易关闭(未付款超时);
 	
 	
 	
@@ -169,15 +169,15 @@ public class ProvideViewMyDoctorOrderAndTreatment implements java.io.Serializabl
 		this.doctorName = doctorName;
 	}
 
-	public Integer getTreatmentType() {
+	public int getTreatmentType() {
 		return treatmentType;
 	}
 
-	public void setTreatmentType(Integer treatmentType) {
+	public void setTreatmentType(int treatmentType) {
 		this.treatmentType = treatmentType;
 	}
 
-	public Integer getPaymentMode() {
+	public int getPaymentMode() {
 		return paymentMode;
 	}
 
@@ -249,11 +249,11 @@ public class ProvideViewMyDoctorOrderAndTreatment implements java.io.Serializabl
 		this.orderDesc = orderDesc;
 	}
 
-	public Integer getFlagOrderState() {
+	public int getFlagOrderState() {
 		return flagOrderState;
 	}
 
-	public void setFlagOrderState(Integer flagOrderState) {
+	public void setFlagOrderState(int flagOrderState) {
 		this.flagOrderState = flagOrderState;
 	}
 
