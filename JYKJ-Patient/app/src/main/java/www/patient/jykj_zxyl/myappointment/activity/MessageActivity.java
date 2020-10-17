@@ -9,7 +9,9 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,6 +30,7 @@ import butterknife.OnClick;
 import entity.patientapp.Photo_Info;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.twjz.InquiryDataActivity;
+import www.patient.jykj_zxyl.adapter.MessageListAdapter;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.ImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
@@ -37,11 +40,13 @@ import www.patient.jykj_zxyl.myappointment.Presenter.MessagePrezenter;
 import www.patient.jykj_zxyl.myappointment.bean.ViewInteractPatientMessageBean;
 import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.BitmapUtil;
+import www.patient.jykj_zxyl.util.DateUtils;
 import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
 
 /**
  * 我的医生 == 》 就诊记录 ==》 诊后留言
  * ImageViewRecycleAdapter  适配器
+ * MessageListAdapter  医生回复列表适配器
  */
 public class MessageActivity extends AbstractMvpBaseActivity<MessageContract.View,
         MessagePrezenter> implements MessageContract.View {
@@ -77,6 +82,9 @@ public class MessageActivity extends AbstractMvpBaseActivity<MessageContract.Vie
     private JYKJApplication mApp;
     private ArrayList<String> updataArrList = new ArrayList<String>();
     private String orderCode;
+  private   List<ViewInteractPatientMessageBean.InteractPatientMessageActiveListBean> list=new ArrayList<>();
+    private MessageListAdapter messageListAdapter;
+    private LinearLayoutManager linearLayoutManager;
 
     @Override
     protected int setLayoutId() {
@@ -176,6 +184,9 @@ public class MessageActivity extends AbstractMvpBaseActivity<MessageContract.Vie
 
             }
         });
+        //医生回复列表
+        linearLayoutManager = new LinearLayoutManager(this);
+        messageRecy.setLayoutManager(linearLayoutManager);
     }
     @OnClick({R.id.tv_commit})
     public void onClick(View view){
@@ -194,7 +205,29 @@ public class MessageActivity extends AbstractMvpBaseActivity<MessageContract.Vie
     @Override
     public void getMessageSucess(ViewInteractPatientMessageBean viewInteractPatientMessageBeans) {
             if(viewInteractPatientMessageBeans!=null){
+                //类型
+                tvMsgType.setText(viewInteractPatientMessageBeans.getTreatmentTypeName());
+                //日期
+               /* String orderCode = viewInteractPatientMessageBeans.getOrderCode();
+                if(!TextUtils.isEmpty(orderCode)){
+                    DateUtils
+                }*/
+                String patientLinkPhone = viewInteractPatientMessageBeans.getPatientLinkPhone();
+                if(TextUtils.isEmpty(patientLinkPhone)){
+                    tvLinkPhone.setText("联系电话：");
+                }else{
+                    tvLinkPhone.setText("联系电话："+viewInteractPatientMessageBeans.getPatientLinkPhone());
 
+                }
+                //回复内容  content
+
+                //医生回复消息列表
+                List<ViewInteractPatientMessageBean.InteractPatientMessageActiveListBean> interactPatientMessageActiveList = viewInteractPatientMessageBeans.getInteractPatientMessageActiveList();
+                for (ViewInteractPatientMessageBean.InteractPatientMessageActiveListBean interactPatientMessageActiveListBean : interactPatientMessageActiveList) {
+                    list.add(interactPatientMessageActiveListBean);
+                }
+                messageListAdapter = new MessageListAdapter(list);
+                messageRecy.setAdapter(messageListAdapter);
             }
     }
 
