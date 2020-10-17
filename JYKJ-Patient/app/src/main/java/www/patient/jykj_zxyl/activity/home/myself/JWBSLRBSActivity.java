@@ -20,9 +20,12 @@ import android.view.View;
 import android.widget.*;
 
 import com.alibaba.fastjson.JSON;
+import com.allen.library.interceptor.Transformer;
+import com.allen.library.interfaces.ILoadingView;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -33,6 +36,7 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -56,6 +60,12 @@ import www.patient.jykj_zxyl.adapter.WZZXImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.ImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.base.base_bean.BaseBean;
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
+import www.patient.jykj_zxyl.base.http.ApiHelper;
+import www.patient.jykj_zxyl.base.http.CommonDataObserver;
+import www.patient.jykj_zxyl.base.http.ParameUtil;
+import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.util.*;
 
 /**
@@ -336,13 +346,82 @@ public class JWBSLRBSActivity extends AppCompatActivity {
                     startTime.show();
                     break;
                 case R.id.tv_szbs:
-                    savedata();
+                    commitData();
                     break;
             }
         }
     }
 
-    void savedata() {
+    private void commitData() {
+        HashMap<String, String> paramMap = new HashMap<>();
+        paramMap.put("loginPatientPosition", "108.93425^34.23053");
+        paramMap.put("requestClientType", "1");
+        paramMap.put("imgCode", "");
+        paramMap.put("operPatientCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        paramMap.put("operPatientName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        paramMap.put("recordId", mRecordId.length() > 0 ? mRecordId : "0");
+        paramMap.put("recordName", StrUtils.defaultStr(tv_activityHZZL_userSG.getText()));
+        paramMap.put("treatmentDate", StrUtils.defaultStr(tv_activityHZZL_userYW.getText()));
+        paramMap.put("recordContent", StrUtils.defaultStr(tv_activityHZZL_region.getText()));
+        paramMap.put("imgIdArray", "");
+        StringBuilder photoUrl = new StringBuilder();
+        if (mPhotoInfos.size() > 1) {
+            photoUrl.append("data:image/jpg;base64,");
+            for (int i = 1; i < mPhotoInfos.size(); i++) {
+                if (mPhotoInfos.get(i) != null) {
+                    String photo = mPhotoInfos.get(i).getPhoto();
+                    if (i == mPhotoInfos.size() - 1) {
+                        photoUrl.append(photo);
+                    } else {
+                        photoUrl.append(photo).append("^");
+                    }
+                }
+            }
+            paramMap.put("imgBase64Array", photoUrl.toString());
+        } else {
+            paramMap.put("imgBase64Array", "");
+        }
+        String s = RetrofitUtil.encodeParam(paramMap);
+        ApiHelper.getPatientTestApi().commitHis(s).compose(
+                Transformer.switchSchedulers(new ILoadingView() {
+                    @Override
+                    public void showLoadingView() {
+                        getProgressBar("数据提交", "正在提交，请稍后...");
+                    }
+
+                    @Override
+                    public void hideLoadingView() {
+                        cacerProgress();
+                    }
+                })).subscribe(new CommonDataObserver() {
+            @Override
+            protected void onSuccessResult(BaseBean baseBean) {
+
+                int resCode = baseBean.getResCode();
+                if (resCode == 1) {
+                    ToastUtils.showShort("提交成功");
+                    finish();
+                } else {
+                    ToastUtils.showShort("提交失败");
+                }
+            }
+
+            @Override
+            protected void onError(String s) {
+                super.onError(s);
+                ToastUtils.showShort(s);
+            }
+
+            @Override
+            protected String setTag() {
+                return "updata";
+            }
+        });
+
+
+    }
+
+    private void savedata() {
         getProgressBar("数据提交", "正在提交，请稍后...");
         SubPatientHistInfo subinfo = new SubPatientHistInfo();
         subinfo.setLoginPatientPosition(mApp.loginDoctorPosition);

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import java.util.List;
 import www.patient.jykj_zxyl.base.R;
 import www.patient.jykj_zxyl.base.base_bean.OrderDetialBean;
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 
 /**
  * Description:已完成订单适配器
@@ -39,7 +40,7 @@ public class OrderDetialCoatchAdapter extends RecyclerView.Adapter<OrderDetialCo
         String rate=orderDetailListBean.getValue()+"次/"+orderDetailListBean.getRate()
                 +orderDetailListBean.getRateUnitName();
         String mainConfigDetailCode = orderDetailListBean.getMainConfigDetailCode();
-        if (mainConfigDetailCode.equals("10")) {
+        if (mainConfigDetailCode.equals("1")) {
             holder.mTvItemValue.setText(String.format("%s元， %s", totlePrice, rate));
         }else{
             holder.mTvItemValue.setText(String.format("%s元， %s， %s", totlePrice, duration, rate));

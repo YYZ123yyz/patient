@@ -178,7 +178,7 @@ public class NewLivePlayerActivity extends ChatPopDialogActivity implements ITXL
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        doSend("离开直播间了");
+                        //doSend("离开直播间了");
                         NewLivePlayerActivity.this.finish();
                     }
                 });

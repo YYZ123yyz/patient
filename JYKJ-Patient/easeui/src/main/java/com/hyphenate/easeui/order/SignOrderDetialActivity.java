@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import com.alipay.sdk.app.PayTask;
 import com.allen.library.utils.ToastUtils;
 import com.allin.commlibrary.CollectionUtils;
@@ -37,6 +38,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import www.patient.jykj_zxyl.base.R;
 import www.patient.jykj_zxyl.base.base_adapter.OrderDetialCoatchAdapter;
 import www.patient.jykj_zxyl.base.base_adapter.OrderDetialMonitorAdapter;
@@ -46,6 +48,7 @@ import www.patient.jykj_zxyl.base.base_bean.PaymentBean;
 import www.patient.jykj_zxyl.base.base_bean.UserInfoBaseBean;
 import www.patient.jykj_zxyl.base.base_utils.ActivityStackManager;
 import www.patient.jykj_zxyl.base.base_utils.DateUtils;
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 import www.patient.jykj_zxyl.base.base_utils.SharedPreferences_DataSave;
 import www.patient.jykj_zxyl.base.base_view.BaseToolBar;
 import www.patient.jykj_zxyl.base.base_view.LoadingLayoutManager;
@@ -97,9 +100,9 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
     private List<OrderDetialBean.OrderDetailListBean> monitorTypeList;
     private List<OrderDetialBean.OrderDetailListBean> coachTypeList;
     private OrderDetialBean orderDetialData;
-    private static final String DATA_MONITOR_CODE="10";//监测类型
-    private static final String DATA_COATCH_CODE="20";//辅导类型
-    private int paymentType=1;//1微信 2支付宝
+    private static final String DATA_MONITOR_CODE = "10";//监测类型
+    private static final String DATA_COATCH_CODE = "20";//辅导类型
+    private int paymentType = 1;//1微信 2支付宝
     private String signCode;//订单Id
     private Handler mHandler;
     private OrderMessage orderCard = null;
@@ -108,6 +111,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
     private boolean isChoosedAgreeMent;
     private ProvideViewSysUserPatientInfoAndRegion mProvideViewSysUserPatientInfoAndRegion;
     private static final int SDK_PAY_FLAG = 3;
+    private String signId;
 
     @Override
     protected void onBeforeSetContentLayout() {
@@ -117,8 +121,9 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
             signCode = extras.getString("signCode");
-            operDoctorCode=extras.getString("operDoctorCode");
-            operDoctorName=extras.getString("operDoctorName");
+            signId = extras.getString("signId");
+            operDoctorCode = extras.getString("operDoctorCode");
+            operDoctorName = extras.getString("operDoctorName");
         }
     }
 
@@ -132,37 +137,37 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
     @Override
     protected void initView() {
         super.initView();
-        toolBar=findViewById(R.id.toolbar);
-        mRvMonitorList=findViewById(R.id.rv_monitor_list);
-        mRvCoatchList=findViewById(R.id.rv_coatch_list);
-        mTvPatientName=findViewById(R.id.tv_patient_name);
-        mTvPatientAge=findViewById(R.id.tv_patient_age);
-        mTvPatientGender=findViewById(R.id.tv_patient_gender);
-        mRvMonitorList=findViewById(R.id.rv_monitor_list);
-        mRvCoatchList=findViewById(R.id.rv_coatch_list);
-        mScrollView=findViewById(R.id.scrollView);
-        mLlMonitorType=findViewById(R.id.ll_monitor_type);
-        mLlCoatchType=findViewById(R.id.ll_coatch_type);
-        tvRefuseBtn=findViewById(R.id.tv_refuse_btn);
-        tvUpdateBtn=findViewById(R.id.tv_update_btn);
-        tvAgreeBtn=findViewById(R.id.tv_agree_btn);
-        rlOrderDetialSignUpRoot=findViewById(R.id.rl_order_detialsign_up_root);
-        rlOrderDetialCancelRoot=findViewById(R.id.rl_order_detial_cancel_root);
-        llOrderDetialPaymentRoot=findViewById(R.id.ll_order_detial_payment_root);
-        tvCancelContractBtn=findViewById(R.id.tv_cancel_contract_btn);
-        tvCancelBtn=findViewById(R.id.tv_cancel_btn);
-        mRlWeixinRoot=findViewById(R.id.rl_weixin_root);
-        mRlAlipayRoot=findViewById(R.id.rl_alipay_root);
-        mIvWeixinChoosed=findViewById(R.id.iv_weixin_choosed);
-        mAliPayChoosed=findViewById(R.id.iv_alipay_choosed);
-        tvConfirmPaymentBtn=findViewById(R.id.tv_confirm_payment_btn);
-        tvSignStartTimeValue=findViewById(R.id.tv_sign_start_time_value);
-        tvSignTimeValue=findViewById(R.id.tv_sign_time_value);
-        tvTotalPriceValue=findViewById(R.id.tv_total_price_value);
-        ivChooseAgreementBtn=findViewById(R.id.iv_choose_agreement_btn);
-        tvAgreementMsg=findViewById(R.id.tv_agreement_msg);
-        tvRateTimeValue=findViewById(R.id.tv_rate_time_value);
-        tvCancelDesc=findViewById(R.id.tv_cancel_desc);
+        toolBar = findViewById(R.id.toolbar);
+        mRvMonitorList = findViewById(R.id.rv_monitor_list);
+        mRvCoatchList = findViewById(R.id.rv_coatch_list);
+        mTvPatientName = findViewById(R.id.tv_patient_name);
+        mTvPatientAge = findViewById(R.id.tv_patient_age);
+        mTvPatientGender = findViewById(R.id.tv_patient_gender);
+        mRvMonitorList = findViewById(R.id.rv_monitor_list);
+        mRvCoatchList = findViewById(R.id.rv_coatch_list);
+        mScrollView = findViewById(R.id.scrollView);
+        mLlMonitorType = findViewById(R.id.ll_monitor_type);
+        mLlCoatchType = findViewById(R.id.ll_coatch_type);
+        tvRefuseBtn = findViewById(R.id.tv_refuse_btn);
+        tvUpdateBtn = findViewById(R.id.tv_update_btn);
+        tvAgreeBtn = findViewById(R.id.tv_agree_btn);
+        rlOrderDetialSignUpRoot = findViewById(R.id.rl_order_detialsign_up_root);
+        rlOrderDetialCancelRoot = findViewById(R.id.rl_order_detial_cancel_root);
+        llOrderDetialPaymentRoot = findViewById(R.id.ll_order_detial_payment_root);
+        tvCancelContractBtn = findViewById(R.id.tv_cancel_contract_btn);
+        tvCancelBtn = findViewById(R.id.tv_cancel_btn);
+        mRlWeixinRoot = findViewById(R.id.rl_weixin_root);
+        mRlAlipayRoot = findViewById(R.id.rl_alipay_root);
+        mIvWeixinChoosed = findViewById(R.id.iv_weixin_choosed);
+        mAliPayChoosed = findViewById(R.id.iv_alipay_choosed);
+        tvConfirmPaymentBtn = findViewById(R.id.tv_confirm_payment_btn);
+        tvSignStartTimeValue = findViewById(R.id.tv_sign_start_time_value);
+        tvSignTimeValue = findViewById(R.id.tv_sign_time_value);
+        tvTotalPriceValue = findViewById(R.id.tv_total_price_value);
+        ivChooseAgreementBtn = findViewById(R.id.iv_choose_agreement_btn);
+        tvAgreementMsg = findViewById(R.id.tv_agreement_msg);
+        tvRateTimeValue = findViewById(R.id.tv_rate_time_value);
+        tvCancelDesc = findViewById(R.id.tv_cancel_desc);
         SpannableString spannableString = new SpannableString("点击即代表您已同意《鹫一健康医生与患者签约协议》");
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#799DFF"));
         spannableString.setSpan(colorSpan, 9, spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -179,7 +184,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
      * 添加监听
      */
     @SuppressLint("HandlerLeak")
-    private void addListener(){
+    private void addListener() {
         mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -213,33 +218,33 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         };
 
         tvRefuseBtn.setOnClickListener(v -> {
-            Bundle bundle=new Bundle();
-            bundle.putString("orderId",signCode);
-            bundle.putString("operDoctorCode",operDoctorCode);
-            bundle.putString("operDoctorName",operDoctorName);
-            startActivity(RefusedOrderActivity.class,bundle);
+            Bundle bundle = new Bundle();
+            bundle.putString("orderId", signCode);
+            bundle.putString("operDoctorCode", operDoctorCode);
+            bundle.putString("operDoctorName", operDoctorName);
+            startActivity(RefusedOrderActivity.class, bundle);
         });
 
         tvUpdateBtn.setOnClickListener(v -> mPresenter.sendOrderOperRequest(
                 orderDetialData.getMainDoctorCode(),
                 orderDetialData.getMainDoctorName(),
-                orderDetialData.getSignCode(),orderDetialData.getSignNo(),
-                orderDetialData.getMainPatientCode(),orderDetialData.getMainUserName(),
-                "2",SignOrderDetialActivity.this));
+                orderDetialData.getSignCode(), signCode,
+                orderDetialData.getMainPatientCode(), orderDetialData.getMainUserName(),
+                "2", SignOrderDetialActivity.this));
 
         tvAgreeBtn.setOnClickListener(v -> mPresenter.sendOrderOperRequest(
                 orderDetialData.getMainDoctorCode(),
                 orderDetialData.getMainDoctorName(),
-                orderDetialData.getSignCode(),orderDetialData.getSignNo(),
-                orderDetialData.getMainPatientCode(),orderDetialData.getMainUserName(),
-                "1",SignOrderDetialActivity.this));
+                orderDetialData.getSignCode(), signCode,
+                orderDetialData.getMainPatientCode(), orderDetialData.getMainUserName(),
+                "1", SignOrderDetialActivity.this));
 
         mRlWeixinRoot.setOnClickListener(v -> {
-            paymentType=1;
+            paymentType = 1;
             setPaymentItemChoosed(paymentType);
         });
         mRlAlipayRoot.setOnClickListener(v -> {
-            paymentType=2;
+            paymentType = 2;
             setPaymentItemChoosed(paymentType);
         });
         tvConfirmPaymentBtn.setOnClickListener(new View.OnClickListener() {
@@ -248,8 +253,8 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
                 if (isChoosedAgreeMent) {
                     mPresenter.sendOperPatientOrderPayRequest(
                             orderDetialData.getSignCode(),
-                            paymentType+"",SignOrderDetialActivity.this);
-                }else{
+                            paymentType + "", SignOrderDetialActivity.this);
+                } else {
                     ToastUtils.showToast("支付前必须选中支付协议");
                 }
 
@@ -258,12 +263,13 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
 
 
         tvCancelContractBtn.setOnClickListener(v -> {
-            if (orderDetialData!=null) {
-                Bundle bundle=new Bundle();
-                bundle.putString("orderId",signCode);
-                bundle.putString("operDoctorCode",orderDetialData.getMainDoctorCode());
-                bundle.putString("operDoctorName",orderDetialData.getMainDoctorName());
-                startActivity(CancelContractActivity.class,bundle);
+            if (orderDetialData != null) {
+                Bundle bundle = new Bundle();
+                bundle.putString("orderId", signCode);
+                bundle.putString("signId", signId);
+                bundle.putString("operDoctorCode", orderDetialData.getMainDoctorCode());
+                bundle.putString("operDoctorName", orderDetialData.getMainDoctorName());
+                startActivity(CancelContractActivity.class, bundle);
             }
 
 
@@ -273,10 +279,10 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
             @Override
             public void onClick(View v) {
                 if (isChoosedAgreeMent) {
-                    isChoosedAgreeMent=false;
+                    isChoosedAgreeMent = false;
                     ivChooseAgreementBtn.setImageResource(R.mipmap.bg_agreement_normal);
-                }else{
-                    isChoosedAgreeMent=true;
+                } else {
+                    isChoosedAgreeMent = true;
                     ivChooseAgreementBtn.setImageResource(R.mipmap.bg_agreement_press);
                 }
             }
@@ -287,13 +293,14 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
 
     /**
      * 设置支付状态
+     *
      * @param type 1 微信支付 2支付宝支付
      */
-    private void setPaymentItemChoosed(int type){
-        if(type==1){
+    private void setPaymentItemChoosed(int type) {
+        if (type == 1) {
             mIvWeixinChoosed.setImageResource(R.mipmap.bg_choosed_press);
             mAliPayChoosed.setImageResource(R.mipmap.bg_choosed_normal);
-        }else if(type==2){
+        } else if (type == 2) {
             mIvWeixinChoosed.setImageResource(R.mipmap.bg_choosed_normal);
             mAliPayChoosed.setImageResource(R.mipmap.bg_choosed_press);
 
@@ -308,7 +315,8 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         mLoadingLayoutManager = LoadingLayoutManager.wrap(mScrollView);
         mLoadingLayoutManager.setRetryListener(v -> {
             mLoadingLayoutManager.showLoading();
-            mPresenter.sendSearchOrderDetialRequest(signCode,operDoctorCode,operDoctorName);
+            LogUtils.e("code   " + signCode);
+            mPresenter.sendSearchOrderDetialRequest(signCode, mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mProvideViewSysUserPatientInfoAndRegion.getUserName());
         });
         mLoadingLayoutManager.showLoading();
 
@@ -317,9 +325,9 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
     /**
      * 初始化监测类型RecyclerView
      */
-    private void initMonitorRecyclerView(){
-        mMonitorOrderDetialAdapter=new OrderDetialMonitorAdapter(monitorTypeList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this){
+    private void initMonitorRecyclerView() {
+        mMonitorOrderDetialAdapter = new OrderDetialMonitorAdapter(monitorTypeList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -333,9 +341,9 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
     /**
      * 初始化辅导类型Recyclerview
      */
-    private void initCoatchRecyclerView(){
-        mCoatchOrderDetialAdapter=new OrderDetialCoatchAdapter(coachTypeList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this){
+    private void initCoatchRecyclerView() {
+        mCoatchOrderDetialAdapter = new OrderDetialCoatchAdapter(coachTypeList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -345,8 +353,6 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         mRvCoatchList.setLayoutManager(layoutManager);
         mRvCoatchList.setAdapter(mCoatchOrderDetialAdapter);
     }
-
-
 
 
     @Override
@@ -364,25 +370,30 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter.sendSearchOrderDetialRequest(signCode,operDoctorCode,operDoctorName);
+        LogUtils.e("code  onResume " + signCode);
+        mPresenter.sendSearchOrderDetialRequest(signCode, operDoctorCode, operDoctorName);
     }
 
     /**
      * 处理订单详情数据
+     *
      * @param orderDetialData 订单详情
      */
     private void handleOrderListResult(OrderDetialBean orderDetialData) {
         coachTypeList.clear();
         monitorTypeList.clear();
         List<OrderDetialBean.OrderDetailListBean> orderDetailList = orderDetialData.getOrderDetailList();
-        for (OrderDetialBean.OrderDetailListBean orderDetailListBean : orderDetailList) {
-            String configDetailTypeCode = orderDetailListBean.getConfigDetailTypeCode();
-            if (configDetailTypeCode.equals(DATA_MONITOR_CODE)) {
-                monitorTypeList.add(orderDetailListBean);
-            }else if(configDetailTypeCode.equals(DATA_COATCH_CODE)){
-                coachTypeList.add(orderDetailListBean);
+        if (orderDetailList != null) {
+            for (OrderDetialBean.OrderDetailListBean orderDetailListBean : orderDetailList) {
+                String configDetailTypeCode = orderDetailListBean.getConfigDetailTypeCode();
+                if (configDetailTypeCode.equals(DATA_MONITOR_CODE)) {
+                    monitorTypeList.add(orderDetailListBean);
+                } else if (configDetailTypeCode.equals(DATA_COATCH_CODE)) {
+                    coachTypeList.add(orderDetailListBean);
+                }
             }
         }
+
     }
 
 
@@ -398,8 +409,8 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
 
     @Override
     public void showLoading(int code) {
-        if(code==101||code==102){
-            showLoading("",null);
+        if (code == 101 || code == 102) {
+            showLoading("", null);
         }
     }
 
@@ -411,19 +422,19 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
     @Override
     public void getSearchOrderDetialResult(OrderDetialBean orderDetialBean) {
         mLoadingLayoutManager.showContent();
-        this.orderDetialData=orderDetialBean;
+        this.orderDetialData = orderDetialBean;
         handleOrderListResult(orderDetialBean);
         setOrderDetialData(orderDetialBean);
 
         setOrderStatus(orderDetialData);
-        if(!CollectionUtils.isEmpty(monitorTypeList)){
+        if (!CollectionUtils.isEmpty(monitorTypeList)) {
             mLlMonitorType.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mLlMonitorType.setVisibility(View.GONE);
         }
         if (!CollectionUtils.isEmpty(coachTypeList)) {
             mLlCoatchType.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mLlCoatchType.setVisibility(View.GONE);
         }
         mMonitorOrderDetialAdapter.notifyDataSetChanged();
@@ -432,19 +443,20 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
 
     /**
      * 获取订单信息
+     *
      * @param messageType 消息类型
-     * @param orderType 操作类型
+     * @param orderType   操作类型
      * @return orderMessage
      */
     @SuppressLint("DefaultLocale")
     private OrderMessage getOrderMessage(String messageType, String orderType) {
 
-        String  monitorRate= String.format("一次/%d%s", orderDetialData.getDetectRate(),
+        String monitorRate = String.format("一次/%d%s", orderDetialData.getDetectRate(),
                 orderDetialData.getDetectRateUnitName());
-        OrderMessage orderMessage = new OrderMessage(orderDetialData.getSignCode(),orderDetialData.getSignNo(),
+        OrderMessage orderMessage = new OrderMessage(signCode, orderDetialData.getSignNo(),
                 String.format("%d项", monitorTypeList.size()), monitorRate,
                 String.format("%d个%s", orderDetialData.getSignDuration(), orderDetialData.getSignDurationUnit())
-                , orderDetialData.getSignPrice() + "", messageType, orderType);
+                , orderDetialData.getSignPrice() + "", messageType, orderType, orderDetialData.getSignCode());
         return orderMessage;
 
     }
@@ -463,7 +475,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
                 case "2":
                     orderCard = getOrderMessage("card", "2");
                     break;
-                    default:
+                default:
             }
 
 
@@ -471,7 +483,6 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
 
         }
     }
-
 
 
     @Override
@@ -497,6 +508,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
             if (ActivityStackManager.getInstance().exists(ChatActivity.class)) {
                 ActivityStackManager.getInstance().finish(ChatActivity.class);
             }
+
             Intent intent = new Intent();
             intent.setClass(this, ChatActivity.class);
             intent.putExtra("userCode", orderDetialData.getMainDoctorCode());
@@ -505,8 +517,9 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
             intent.putExtra("patientUrl", mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
             intent.putExtra("operDoctorName", mProvideViewSysUserPatientInfoAndRegion.getUserName());
             orderCard.setImageUrl(mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
-            Bundle bundle=new Bundle();
-            bundle.putSerializable("orderMsg",orderCard);
+            orderCard.setOrderId(signCode);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("orderMsg", orderCard);
             intent.putExtras(bundle);
             startActivity(intent);
         }
@@ -515,6 +528,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
 
     /**
      * 开始调起微信支付
+     *
      * @param paymentBean 支付信息
      */
     private void weichatPay(PaymentBean paymentBean) {
@@ -525,14 +539,14 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         PayReq request = new PayReq();
         request.appId = paymentBean.getAppId();
         request.partnerId = paymentBean.getPartnerid();
-        request.prepayId= paymentBean.getPrepayid();
+        request.prepayId = paymentBean.getPrepayid();
         request.packageValue = "Sign=WXPay";
-        request.nonceStr=paymentBean.getNonceStr();
-        request.timeStamp= paymentBean.getTimeStamp();
-        request.sign= paymentBean.getSign();
+        request.nonceStr = paymentBean.getNonceStr();
+        request.timeStamp = paymentBean.getTimeStamp();
+        request.sign = paymentBean.getSign();
         request.signType = "MD5";
         boolean result = msgApi.sendReq(request);
-        if(result){
+        if (result) {
             initData();
         }
 
@@ -540,9 +554,10 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
 
     /**
      * 发阿里支付请求
+     *
      * @param orderInfo 订单信息
      */
-    public void sendAliPay(final String orderInfo){
+    public void sendAliPay(final String orderInfo) {
         final Runnable payRunnable = () -> {
             PayTask alipay = new PayTask(SignOrderDetialActivity.this);
             Map<String, String> result = alipay.payV2(orderInfo, true);
@@ -557,41 +572,46 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
 
     /**
      * 设置订单状态
+     *
      * @param orderDetialData 订单详情
      */
-    private void setOrderStatus(OrderDetialBean orderDetialData){
+    private void setOrderStatus(OrderDetialBean orderDetialData) {
         rlOrderDetialSignUpRoot.setVisibility(View.GONE);
         rlOrderDetialCancelRoot.setVisibility(View.GONE);
         llOrderDetialPaymentRoot.setVisibility(View.GONE);
         String signStatus = orderDetialData.getSignStatus();
-        switch (signStatus){
-            case OrderStatusEnum
-                    .orderSubmitCode:
-                rlOrderDetialSignUpRoot.setVisibility(View.VISIBLE);
-                rlOrderDetialCancelRoot.setVisibility(View.GONE);
-                llOrderDetialPaymentRoot.setVisibility(View.GONE);
-                break;
-            case OrderStatusEnum.orderSignCompleteCode:
-                rlOrderDetialSignUpRoot.setVisibility(View.GONE);
-                rlOrderDetialCancelRoot.setVisibility(View.VISIBLE);
-                llOrderDetialPaymentRoot.setVisibility(View.GONE);
-                break;
-            case OrderStatusEnum.orderAgreeCode:
-                rlOrderDetialSignUpRoot.setVisibility(View.GONE);
-                rlOrderDetialCancelRoot.setVisibility(View.GONE);
-                llOrderDetialPaymentRoot.setVisibility(View.VISIBLE);
-                break;
+        if (signStatus != null) {
+            switch (signStatus) {
+                case OrderStatusEnum
+                        .orderSubmitCode:
+                    rlOrderDetialSignUpRoot.setVisibility(View.VISIBLE);
+                    rlOrderDetialCancelRoot.setVisibility(View.GONE);
+                    llOrderDetialPaymentRoot.setVisibility(View.GONE);
+                    break;
+                case OrderStatusEnum.orderSignCompleteCode:
+                    rlOrderDetialSignUpRoot.setVisibility(View.GONE);
+                    rlOrderDetialCancelRoot.setVisibility(View.VISIBLE);
+                    llOrderDetialPaymentRoot.setVisibility(View.GONE);
+                    break;
+                case OrderStatusEnum.orderAgreeCode:
+                    rlOrderDetialSignUpRoot.setVisibility(View.GONE);
+                    rlOrderDetialCancelRoot.setVisibility(View.GONE);
+                    llOrderDetialPaymentRoot.setVisibility(View.VISIBLE);
+                    break;
                 default:
+            }
         }
+
 
     }
 
     /**
      * 设置订单详情数据data
+     *
      * @param orderDetialData 订单详情
      */
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
-    private void setOrderDetialData(OrderDetialBean orderDetialData){
+    private void setOrderDetialData(OrderDetialBean orderDetialData) {
         mTvPatientName.setText(orderDetialData.getMainUserName());
         mTvPatientAge.setText(orderDetialData.getPatientAge());
         mTvPatientGender.setText(orderDetialData.getGenderName());
@@ -599,10 +619,10 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
                 orderDetialData.getSignStartTime()));
         tvSignTimeValue.setText(String.format("%d个月", orderDetialData.getSignDuration()));
         DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-        String format = decimalFormat.format(orderDetialData.getSignPrice());
+        String format = decimalFormat.format(Double.parseDouble(orderDetialData.getSignPrice()));
         tvTotalPriceValue.setText(String.format("¥%s", format));
-        mTvPatientAge.setText(orderDetialData.getAge()+"");
-        tvRateTimeValue.setText(orderDetialData.getDetectRate()+""+orderDetialData.getDetectRateUnitName());
+        mTvPatientAge.setText(orderDetialData.getAge() + "");
+        tvRateTimeValue.setText(orderDetialData.getDetectRate() + "" + orderDetialData.getDetectRateUnitName());
     }
 
     @Override
@@ -610,8 +630,6 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         mLoadingLayoutManager.showError();
 
     }
-
-
 
 
     @Override

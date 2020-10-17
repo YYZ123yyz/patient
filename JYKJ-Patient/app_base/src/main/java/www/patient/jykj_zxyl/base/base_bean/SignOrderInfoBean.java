@@ -62,7 +62,7 @@ public class SignOrderInfoBean  implements Serializable {
     private int signDuration;
     private String signDurationUnit;
     private long signEndTime;
-    private int signId;
+    private String signId;
     private String signNo;
     private double signPrice;
     private long signStartTime;
@@ -225,11 +225,11 @@ public class SignOrderInfoBean  implements Serializable {
         this.signEndTime = signEndTime;
     }
 
-    public int getSignId() {
+    public String getSignId() {
         return signId;
     }
 
-    public void setSignId(int signId) {
+    public void setSignId(String signId) {
         this.signId = signId;
     }
 

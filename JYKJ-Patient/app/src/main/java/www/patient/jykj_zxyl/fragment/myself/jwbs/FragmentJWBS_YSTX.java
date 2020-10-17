@@ -81,6 +81,7 @@ public class FragmentJWBS_YSTX extends Fragment {
     private int lastVisibleIndex = 0;
     private boolean mLoadDate = true;
     private RefreshLayout refreshLayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_jdda_jwbs_ystx, container, false);
@@ -98,14 +99,14 @@ public class FragmentJWBS_YSTX extends Fragment {
      * 初始化界面
      */
     private void initLayout(View view) {
-        refreshLayout =view.findViewById(R.id.refreshLayout);
+        refreshLayout = view.findViewById(R.id.refreshLayout);
         refreshLayout.setRefreshHeader(new ClassicsHeader(Objects.requireNonNull(this.getContext())));
         refreshLayout.setRefreshFooter(new ClassicsFooter(this.getContext()));
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 //refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
-                pageno=1;
+                pageno = 1;
                 setData();
             }
         });
@@ -113,9 +114,9 @@ public class FragmentJWBS_YSTX extends Fragment {
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
                 //refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
-                if(mProvidePatientConditionDiseaseRecords.size()<mRowNum){
+                if (mProvidePatientConditionDiseaseRecords.size() < mRowNum) {
                     refreshlayout.finishLoadMore();
-                }else{
+                } else {
                     pageno++;
                     setData();
                 }
@@ -252,7 +253,7 @@ public class FragmentJWBS_YSTX extends Fragment {
             try {
                 queryCond.setPageNum(String.valueOf(pageno));
                 String retnetstr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(queryCond), Constant.SERVICEURL + INetAddress.QUERY_PASTHIST_URL);
-                Log.e("TAG", "既往病史: "+retnetstr );
+                Log.e("TAG", "既往病史: " + retnetstr);
                 NetRetEntity retEntity = JSON.parseObject(retnetstr, NetRetEntity.class);
                 if (1 == retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length() > 3) {
                     retlist = JSON.parseArray(retEntity.getResJsonData(), JwbsYstxInfo.class);
@@ -266,10 +267,10 @@ public class FragmentJWBS_YSTX extends Fragment {
         @Override
         protected void onPostExecute(List<JwbsYstxInfo> providePatientConditionDiseaseRecords) {
             if (providePatientConditionDiseaseRecords.size() > 0) {
-                if (pageno==1) {
+                if (pageno == 1) {
                     mProvidePatientConditionDiseaseRecords.clear();
                     refreshLayout.finishRefresh();
-                }else{
+                } else {
                     refreshLayout.finishLoadMore();
                 }
 

@@ -11,7 +11,7 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
     private String actualPayment;
     private String doctorReceiveShow;
     private Integer flagColor;
-    private Integer flagTreatmentState;
+    private int flagTreatmentState;
     private Integer limitAudioShow;
     private Integer limitImgTextShow;
     private Integer limitPhoneShow;
@@ -42,7 +42,24 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
     private String detectRateUnitName;
     private String signDuration;
     private String signDurationUnit;
+    private String signCode;
+    private String detectRate;
 
+    public String getDetectRate() {
+        return detectRate;
+    }
+
+    public void setDetectRate(String detectRate) {
+        this.detectRate = detectRate;
+    }
+
+    public String getSignCode() {
+        return signCode;
+    }
+
+    public void setSignCode(String signCode) {
+        this.signCode = signCode;
+    }
 
     public String getMainDoctorCode() {
         return mainDoctorCode;
@@ -159,8 +176,8 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
 
     private String coachUnitCode;
     private String coachUnitName;
-    private Integer coachValue;
-    private Integer proCount;
+    private int coachValue;
+    private int proCount;
     private String timesCode;
     private String timesName;
     private String signNo;
@@ -181,19 +198,19 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
         this.coachUnitName = coachUnitName;
     }
 
-    public Integer getCoachValue() {
+    public int getCoachValue() {
         return coachValue;
     }
 
-    public void setCoachValue(Integer coachValue) {
+    public void setCoachValue(int coachValue) {
         this.coachValue = coachValue;
     }
 
-    public Integer getProCount() {
+    public int getProCount() {
         return proCount;
     }
 
-    public void setProCount(Integer proCount) {
+    public void setProCount(int proCount) {
         this.proCount = proCount;
     }
 
@@ -253,11 +270,11 @@ public class MyOrderProcess  extends MultiItemEntity implements Serializable {
         this.flagColor = flagColor;
     }
 
-    public Integer getFlagTreatmentState() {
+    public int getFlagTreatmentState() {
         return flagTreatmentState;
     }
 
-    public void setFlagTreatmentState(Integer flagTreatmentState) {
+    public void setFlagTreatmentState(int flagTreatmentState) {
         this.flagTreatmentState = flagTreatmentState;
     }
 

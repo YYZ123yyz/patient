@@ -26,6 +26,69 @@ public class UserInfoBaseBean {
     private String userLogoUrl;
     private String userName;
     private int userUseType;
+    private int signDuration;
+    private String signDurationUnit;
+    private double signPrice;
+    private String signCode;
+    private String signNo;
+    private int detectRate;
+    private String detectRateUnitCode;
+    private String detectRateUnitName;
+    public int getDetectRate() {
+        return detectRate;
+    }
+
+    public void setDetectRate(int detectRate) {
+        this.detectRate = detectRate;
+    }
+
+    public String getDetectRateUnitCode() {
+        return detectRateUnitCode;
+    }
+
+    public void setDetectRateUnitCode(String detectRateUnitCode) {
+        this.detectRateUnitCode = detectRateUnitCode;
+    }
+
+    public String getSignNo() {
+        return signNo;
+    }
+
+    public void setSignNo(String signNo) {
+        this.signNo = signNo;
+    }
+
+    public double getSignPrice() {
+        return signPrice;
+    }
+
+    public void setSignPrice(double signPrice) {
+        this.signPrice = signPrice;
+    }
+
+    public String getSignCode() {
+        return signCode;
+    }
+
+    public void setSignCode(String signCode) {
+        this.signCode = signCode;
+    }
+
+    public int getSignDuration() {
+        return signDuration;
+    }
+
+    public void setSignDuration(int signDuration) {
+        this.signDuration = signDuration;
+    }
+
+    public String getSignDurationUnit() {
+        return signDurationUnit;
+    }
+
+    public void setSignDurationUnit(String signDurationUnit) {
+        this.signDurationUnit = signDurationUnit;
+    }
 
     public int getGender() {
         return gender;
@@ -81,5 +144,13 @@ public class UserInfoBaseBean {
 
     public void setUserUseType(int userUseType) {
         this.userUseType = userUseType;
+    }
+
+    public String getDetectRateUnitName() {
+        return detectRateUnitName;
+    }
+
+    public void setDetectRateUnitName(String detectRateUnitName) {
+        this.detectRateUnitName = detectRateUnitName;
     }
 }

@@ -19,22 +19,27 @@ public class CancelConfirmDetialContract {
     public interface View extends BaseView {
         /**
          * 获取订单详情返回结果
+         *
          * @param orderDetialBean 订单详情返回实体类
          */
         void getSearchOrderDetialResult(OrderDetialBean orderDetialBean);
 
         /**
          * 获取解约确认返回结果
+         *
          * @param isSucess true or false
-         * @param msg 信息
+         * @param msg      信息
          */
         void getCancelContractConfirmResult(boolean isSucess, String msg);
 
         /**
          * 获取用户信息返回结果
+         *
          * @param userInfoBaseBean 用户信息
          */
         void getUserInfoResult(UserInfoBaseBean userInfoBaseBean);
+
+        void getDetSucess(OrderDetialBean orderDetialBean);
     }
 
     public interface Presenter extends BasePresenter<View> {
@@ -45,7 +50,8 @@ public class CancelConfirmDetialContract {
          */
         /**
          * 发送查询订单详情请求
-         * @param signOrderCode 订单code
+         *
+         * @param signOrderCode  订单code
          * @param operDoctorCode 医生ID、
          * @param operDoctorName 医生name
          */
@@ -62,10 +68,14 @@ public class CancelConfirmDetialContract {
                                                  String refuseReasonClassCode,
                                                  String refuseReasonClassName,
                                                  String refuseRemark);
+
         /**
          * 获取医生患者信息
+         *
          * @param userCodeList 医生或者患者Id列表
          */
         void sendGetUserListRequest(String userCodeList);
+
+        void getOrderDet(String params);
     }
 }

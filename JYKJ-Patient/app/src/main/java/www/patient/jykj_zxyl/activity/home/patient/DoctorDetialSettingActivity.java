@@ -144,6 +144,8 @@ public class DoctorDetialSettingActivity extends BaseActivity {
                         bundle.putString("doctorCode",doctorCode);
                         bundle.putString("operDoctorCode",signOrderInfoBean.getMainDoctorCode());
                         bundle.putString("operDoctorName",signOrderInfoBean.getMainDoctorName());
+                        bundle.putString("signId",signOrderInfoBean.getSignId());
+                        bundle.putString("orderId",signOrderInfoBean.getSignNo());
                         bundle.putSerializable("orderMsg",signOrderInfoBean);
                         startActivity(CancelContractActivity.class,bundle);
                     }else{

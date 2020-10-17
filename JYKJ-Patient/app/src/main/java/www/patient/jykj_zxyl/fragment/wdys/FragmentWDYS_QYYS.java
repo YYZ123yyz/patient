@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.ui.ChatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WZXXOrderActivity;
 import www.patient.jykj_zxyl.activity.home.patient.ZJXQActivity;
-import www.patient.jykj_zxyl.activity.hyhd.ChatActivity;
+
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeWDYSQYYSAdapter;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;

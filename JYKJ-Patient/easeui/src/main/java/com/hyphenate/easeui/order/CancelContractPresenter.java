@@ -195,10 +195,15 @@ public class CancelContractPresenter extends BasePresenterImpl<CancelContract.Vi
     public void sendSearchSignPatientDoctorOrderRequest(String signCode, String operDoctorCode,
                                                         String operDoctorName) {
         HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
-        hashMap.put("loginDoctorPosition",ParameUtil.loginDoctorPosition);
-        hashMap.put("signOrderCode",signCode);
-        hashMap.put("operDoctorCode",operDoctorCode);
-        hashMap.put("operDoctorName",operDoctorName);
+
+
+
+
+        hashMap.put("loginPatientPosition",ParameUtil.loginDoctorPosition);
+        hashMap.put("orderCode",signCode);
+        hashMap.put("requestClientType", "1");
+        hashMap.put("searchPatientCode",operDoctorCode);
+        hashMap.put("searchPatientName",operDoctorName);
         String s = RetrofitUtil.encodeParam(hashMap);
         ApiHelper.getApiService().searchSignPatientDoctorOrder2(s)
                 .compose(Transformer.switchSchedulers()).subscribe(new CommonDataObserver() {

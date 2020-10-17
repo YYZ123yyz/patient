@@ -111,6 +111,7 @@ public class ZJXQActivity extends AppCompatActivity {
     private LinearLayout mYPJZLayout;                //音频就诊布局
     private LinearLayout mSPJZLayout;                //视频就诊布局
     private LinearLayout mQYJZLayout;                //签约就诊布局
+    private LinearLayout mLlRightMore;
     private TextView mSynopsis;                         //医生介绍
 
     private TextView mSchedulingInfo;                    //排版信息
@@ -150,6 +151,8 @@ public class ZJXQActivity extends AppCompatActivity {
         tv_bd.setOnClickListener(new ButtonClick());
         tv_ybd = (TextView) this.findViewById(R.id.tv_ybd);
 
+        mLlRightMore = findViewById(R.id.ll_right_more);
+
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_pj);
         llBack = (LinearLayout) findViewById(R.id.ll_back);
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
@@ -184,7 +187,7 @@ public class ZJXQActivity extends AppCompatActivity {
         mYPJZLayout.setOnClickListener(new ButtonClick());
         mSPJZLayout.setOnClickListener(new ButtonClick());
         mQYJZLayout.setOnClickListener(new ButtonClick());
-
+        mLlRightMore.setOnClickListener(new ButtonClick());
         imgTextPrice = (TextView) this.findViewById(R.id.imgTextPrice);
         imgTextSumNum = (TextView) this.findViewById(R.id.imgTextSumNum);
         phonePriceStr = (TextView) this.findViewById(R.id.phonePriceStr);
@@ -509,7 +512,7 @@ public class ZJXQActivity extends AppCompatActivity {
                     }
 //                    //图文就诊
 //                    startActivity(new Intent(mContext, WZXXActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "1"));
-                    startActivity(new Intent(mContext, ReservationActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "1").putExtra("status","1").putExtra("userCode",provideViewDoctorExpertRecommend.getDoctorCode()).putExtra("userName",provideViewDoctorExpertRecommend.getUserName()));
+                    startActivity(new Intent(mContext, ReservationActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "1").putExtra("status", "1").putExtra("userCode", provideViewDoctorExpertRecommend.getDoctorCode()).putExtra("userName", provideViewDoctorExpertRecommend.getUserName()));
                     break;
                 //电话就诊
                 case R.id.dhjz_layout:
@@ -518,7 +521,7 @@ public class ZJXQActivity extends AppCompatActivity {
                         return;
                     }
 //                    startActivity(new Intent(mContext, WZXX_YSPBActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "5"));
-                    startActivity(new Intent(mContext, ReservationActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "5").putExtra("status","1").putExtra("userCode",provideViewDoctorExpertRecommend.getDoctorCode()).putExtra("userName",provideViewDoctorExpertRecommend.getUserName()));
+                    startActivity(new Intent(mContext, ReservationActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "5").putExtra("status", "1").putExtra("userCode", provideViewDoctorExpertRecommend.getDoctorCode()).putExtra("userName", provideViewDoctorExpertRecommend.getUserName()));
                     break;
 
                 case R.id.ypjz_layout:
@@ -527,7 +530,7 @@ public class ZJXQActivity extends AppCompatActivity {
                         return;
                     }
 //                    startActivity(new Intent(mContext, WZXX_YSPBActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "2"));
-                    startActivity(new Intent(mContext, ReservationActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "2").putExtra("status","1").putExtra("userCode",provideViewDoctorExpertRecommend.getDoctorCode()).putExtra("userName",provideViewDoctorExpertRecommend.getUserName()));
+                    startActivity(new Intent(mContext, ReservationActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "2").putExtra("status", "1").putExtra("userCode", provideViewDoctorExpertRecommend.getDoctorCode()).putExtra("userName", provideViewDoctorExpertRecommend.getUserName()));
 
                     break;
                 case R.id.spjz_layout:
@@ -536,7 +539,7 @@ public class ZJXQActivity extends AppCompatActivity {
                         return;
                     }
 //                    startActivity(new Intent(mContext, WZXX_YSPBActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "3"));
-                    startActivity(new Intent(mContext, ReservationActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "3").putExtra("status","1").putExtra("userCode",provideViewDoctorExpertRecommend.getDoctorCode()).putExtra("userName",provideViewDoctorExpertRecommend.getUserName()));
+                    startActivity(new Intent(mContext, ReservationActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "3").putExtra("status", "1").putExtra("userCode", provideViewDoctorExpertRecommend.getDoctorCode()).putExtra("userName", provideViewDoctorExpertRecommend.getUserName()));
 
                     break;
                 case R.id.qyjz_layout:
@@ -545,7 +548,7 @@ public class ZJXQActivity extends AppCompatActivity {
                         return;
                     }
 //                    startActivity(new Intent(mContext, WZXXActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "4"));
-                    startActivity(new Intent(mContext, ReservationActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "4").putExtra("status","1").putExtra("userCode",provideViewDoctorExpertRecommend.getDoctorCode()).putExtra("userName",provideViewDoctorExpertRecommend.getUserName()));
+                    startActivity(new Intent(mContext, ReservationActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend).putExtra("operaType", "4").putExtra("status", "1").putExtra("userCode", provideViewDoctorExpertRecommend.getDoctorCode()).putExtra("userName", provideViewDoctorExpertRecommend.getUserName()));
 
                     break;
                 case R.id.iv_dz:
@@ -559,6 +562,11 @@ public class ZJXQActivity extends AppCompatActivity {
                 case R.id.tv_bd:
                     startActivity(new Intent(mContext, ZJXQ_ZJBDActivity.class).putExtra("provideViewDoctorExpertRecommend", provideViewDoctorExpertRecommend));
                     break;
+                case R.id.ll_right_more:
+                    startActivity(new Intent(mContext, DoctorDetialSettingActivity.class).putExtra("doctorCode", provideViewDoctorExpertRecommend.getDoctorCode()));
+
+                    break;
+                default:
 
             }
         }

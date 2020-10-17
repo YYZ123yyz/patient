@@ -392,7 +392,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                     case MSG_TYPING_BEGIN: // Notify typing start
 
                         if (!turnOnTyping) return;
-                        if (inputAllNum >10){
+                        if (inputAllNum > 10) {
                             return;
                         }
                         // Only support single-chat type conversation.
@@ -1888,12 +1888,13 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 //增加自己的属性
                 message.setAttribute("coach", msg.getCoach());
                 message.setAttribute("signUpTime", msg.getSignUpTime());
-                message.setAttribute("singNo", msg.getSingNo());
+                message.setAttribute("signId", msg.getSignId());
                 message.setAttribute("price", msg.getPrice());
                 message.setAttribute("monitoringType", msg.getMonitoringType());
                 message.setAttribute("orderType", msg.getOrderType());
                 message.setAttribute("nickName", mProvideViewSysUserPatientInfoAndRegion.getUserName());
                 message.setAttribute("imageUrl", mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+                message.setAttribute("singNo", msg.getSingNo());
                 message.setAttribute("isPatient", msg.getIsPatient());
                 break;
             case "appointment":

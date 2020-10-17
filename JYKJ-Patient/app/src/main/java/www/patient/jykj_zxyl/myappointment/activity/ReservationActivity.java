@@ -133,6 +133,9 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
     private TextView appdialog_tv;
     private int treatmentType;
     private List<ReservePatientListBean.ItemTimesBean> itemTimes;
+    private String errMsg;
+    private TextView msg1;
+    private TextView msg2;
 
     @Override
     protected int setLayoutId() {
@@ -178,6 +181,8 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
         successfulDialog = new SuccessfulDialog(this);
         //预约失败dialog
         errorDialog = new ErrorDialog(this);
+
+
         //预约成功
         reservation_successDialog = new Reservation_SuccessDialog(this);
         //有操作的dialog
@@ -488,6 +493,7 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
     @Override
     public void getReservationCommitResultError(String msg) {
         handler.sendEmptyMessageDelayed(100, 1000);
+        errMsg = msg;
         successfulDialog.show();
 
     }
@@ -579,13 +585,30 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
                 } else {
                     successfulDialog.dismiss();
                     //errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    errorDialog.show();
-                    errorDialog.findViewById(R.id.lin_back).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            errorDialog.dismiss();
-                        }
-                    });
+                    if (TextUtils.isEmpty(errMsg)){
+                        errorDialog.show();
+                     /*   errorDialog.findViewById(R.id.lin_back).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                errorDialog.dismiss();
+                            }
+                        });*/
+                    }else {
+                        ErrorDialog  errorMsgDialog = new ErrorDialog(ReservationActivity.this,errMsg);
+                        errorMsgDialog.show();
+                       /* errorDialog.findViewById(R.id.lin_back).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                errorDialog.dismiss();
+                            }
+                        });*/
+                    }
+
+
+//                    errorDialog.setFiledMsg(errMsg);
+
+
+
                 }
             }
         }

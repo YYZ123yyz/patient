@@ -167,7 +167,7 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
 //           tv_kszx.setVisibility(View.GONE);
         }
 
-        if (provideViewMyDoctorOrderAndTreatment.getPaymentMode() != null) {
+
             //0:未知;1:微信支付;2:支付宝支付;3:银联支付;
             switch (provideViewMyDoctorOrderAndTreatment.getPaymentMode()) {
                 case 0:
@@ -186,7 +186,7 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
                     tv_payModel.setText("银联支付");
                     iv_payModel.setVisibility(View.GONE);
                     break;
-            }
+
         }
     }
 

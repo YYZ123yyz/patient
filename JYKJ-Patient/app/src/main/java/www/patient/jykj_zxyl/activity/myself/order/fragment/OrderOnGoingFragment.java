@@ -165,6 +165,7 @@ public class OrderOnGoingFragment extends
                 myOrderProcess = (MyOrderProcess) mMultiItemEntitys.get(pos);
                 Bundle bundle=new Bundle();
                 bundle.putString("orderId",myOrderProcess.getOrderCode());
+                bundle.putString("signId",myOrderProcess.getSignNo());
                 bundle.putString("operDoctorCode",myOrderProcess.getMainDoctorCode());
                 bundle.putString("operDoctorName",myOrderProcess.getMainDoctorName());
                 startActivity(CancelContractActivity.class,bundle,100);
@@ -188,6 +189,7 @@ public class OrderOnGoingFragment extends
                 bundle.putInt("orderState",myOrderProcess.getFlagTreatmentState());
                 bundle.putString("signNo",myOrderProcess.getSignNo());
                 bundle.putString("orderId",myOrderProcess.getOrderCode());
+                bundle.putString("signId",myOrderProcess.getSignCode());
                 startActivity(CancelContractResultActivity.class,bundle,100);
 
             }
@@ -201,8 +203,8 @@ public class OrderOnGoingFragment extends
                 LogUtils.e("xxxxxxxxxxxx1111");
                 if (treatmentType==4) {
                     LogUtils.e("xxxxxxxxxxxx2222222");
-                    if(myOrderProcess.getFlagTreatmentState()
-                            .toString().equals(OrderStatusEnum.orderDoctorCancelContractCode)){
+                    if(String.valueOf(myOrderProcess.getFlagTreatmentState())
+                           .equals(OrderStatusEnum.orderDoctorCancelContractCode)){
                         Bundle bundle=new Bundle();
                         bundle.putString("orderId",myOrderProcess.getOrderCode());
                         bundle.putString("operDoctorCode",myOrderProcess.getMainDoctorCode());
@@ -213,17 +215,23 @@ public class OrderOnGoingFragment extends
                         LogUtils.e("xxxxxxxxxxxx333333333");
                         Bundle bundle=new Bundle();
                         bundle.putString("signCode",myOrderProcess.getOrderCode());
+                        bundle.putString("signId",myOrderProcess.getSignNo());
                         bundle.putString("operDoctorCode",myOrderProcess.getMainDoctorCode());
                         bundle.putString("operDoctorName",myOrderProcess.getMainDoctorName());
                         startActivity(SignOrderDetialActivity.class,bundle,100);
                     }
 
                 }else{
-                    LogUtils.e("xxxxxxxxxxxx444444");
+                    /*LogUtils.e("xxxxxxxxxxxx444444");
                     ProvideInteractOrderInfo parorder = new ProvideInteractOrderInfo();
                     parorder.setOrderCode(myOrderProcess.getOrderCode());
                     startActivity(new Intent(mActivity, OrderMessage_OrderPayActivity.class)
-                            .putExtra("provideInteractOrderInfo", parorder));
+                            .putExtra("provideInteractOrderInfo", parorder));*/
+                    Bundle bundle = new Bundle();
+                    bundle.putString("signCode", myOrderProcess.getOrderCode());
+                    bundle.putString("operDoctorCode", myOrderProcess.getMainDoctorCode());
+                    bundle.putString("operDoctorName", myOrderProcess.getMainDoctorName());
+                    startActivity(SignOrderDetialActivity.class, bundle);
                 }
             }
 
@@ -375,7 +383,7 @@ public class OrderOnGoingFragment extends
                 myOrderProcess.getDetectRateUnitCode(), myOrderProcess.getDetectRateUnitName());
         OrderMessage orderMessage = new OrderMessage(myOrderProcess.getOrderCode(),myOrderProcess.getSignNo(),
                 myOrderProcess.getProCount() + "项",
-                coatch, myOrderProcess.getSignDuration()+"个月",myOrderProcess.getActualPayment() + "", messageType, orderType);
+                coatch, myOrderProcess.getSignDuration()+"个月",myOrderProcess.getActualPayment() + "", messageType, orderType,myOrderProcess.getSignCode()==null?"":myOrderProcess.getSignCode());
         return orderMessage;
 
     }

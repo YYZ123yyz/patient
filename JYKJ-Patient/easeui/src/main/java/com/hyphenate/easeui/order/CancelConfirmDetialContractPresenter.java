@@ -198,4 +198,62 @@ public class CancelConfirmDetialContractPresenter extends BasePresenterImpl<Canc
         });
 
     }
+
+    @Override
+    public void getOrderDet(String params) {
+        ApiHelper.getApiService().searchSignPatientDoctorOrder2(params).compose(
+                Transformer.switchSchedulers(new ILoadingView() {
+                    @Override
+                    public void showLoadingView() {
+                        if (mView!=null) {
+                            mView.showLoading(100);
+                        }
+                    }
+
+                    @Override
+                    public void hideLoadingView() {
+                        if (mView!=null) {
+                            mView.hideLoading();
+                        }
+                    }
+                })).subscribe(new CommonDataObserver() {
+            @Override
+            protected void onSuccessResult(BaseBean baseBean) {
+                if (mView != null) {
+                    int resCode = baseBean.getResCode();
+                    if (resCode == 1) {
+                        String resJsonData = baseBean.getResJsonData();
+                        if (StringUtils.isNotEmpty(resJsonData)) {
+                            OrderDetialBean orderDetialBean = GsonUtils.fromJson(resJsonData, OrderDetialBean.class);
+
+                            mView.getDetSucess(orderDetialBean);
+                        }
+                    }else if(resCode==0){
+                        if (baseBean.getResData().equals("2010098")) {
+                            mView.showEmpty();
+                        }
+                    }
+                }
+
+
+            }
+
+            @Override
+            protected void onError(String s) {
+                super.onError(s);
+                if (mView!=null) {
+                    mView.showRetry();
+                }
+            }
+
+            @Override
+            protected String setTag() {
+                return "getResureDet";
+            }
+        });
+
+
+
+
+    }
 }

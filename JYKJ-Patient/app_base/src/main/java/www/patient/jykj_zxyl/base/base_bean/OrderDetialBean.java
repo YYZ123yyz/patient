@@ -77,7 +77,7 @@ public class OrderDetialBean {
     private long signEndTime;
     private int signId;
     private String signNo;
-    private double signPrice;
+    private String signPrice;
     private long signStartTime;
     private String signStatus;
     private String signUnit;
@@ -86,6 +86,25 @@ public class OrderDetialBean {
     private int version;
     private int videoLastCount;
     private int videoTotle;
+    private int coachValue;
+    private String signOtherServiceCode;
+
+    public String getSignOtherServiceCode() {
+        return signOtherServiceCode;
+    }
+
+    public void setSignOtherServiceCode(String signOtherServiceCode) {
+        this.signOtherServiceCode = signOtherServiceCode;
+    }
+
+    public int getCoachValue() {
+        return coachValue;
+    }
+
+    public void setCoachValue(int coachValue) {
+        this.coachValue = coachValue;
+    }
+
     //扩展
     private  String refuseReasonClassCode;  //拒绝/解约原因分类code
     private  String refuseReasonClassName;  //拒绝/解约原因分类名称
@@ -284,11 +303,11 @@ public class OrderDetialBean {
         this.signNo = signNo;
     }
 
-    public double getSignPrice() {
+    public String getSignPrice() {
         return signPrice;
     }
 
-    public void setSignPrice(double signPrice) {
+    public void setSignPrice(String signPrice) {
         this.signPrice = signPrice;
     }
 

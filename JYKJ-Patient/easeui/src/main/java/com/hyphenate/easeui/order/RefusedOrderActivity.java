@@ -257,11 +257,11 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
         @SuppressLint("DefaultLocale")
         String monitorRate = String.format("%s次/%s",
                 userInfoBaseBean.getDetectRateUnitCode(), userInfoBaseBean.getDetectRateUnitName());
-        OrderMessage orderMessage = new OrderMessage(userInfoBaseBean.getSignCode()
+        OrderMessage orderMessage = new OrderMessage(orderId
                 , userInfoBaseBean.getSignNo(),
                 monitorTypeList.size() + "项", monitorRate,
                 userInfoBaseBean.getSignDuration() + userInfoBaseBean.getSignDurationUnit()
-                , userInfoBaseBean.getSignPrice() + "", messageType, orderType);
+                , userInfoBaseBean.getSignPrice() + "", messageType, orderType,userInfoBaseBean.getSignCode());
         return orderMessage;
 
     }

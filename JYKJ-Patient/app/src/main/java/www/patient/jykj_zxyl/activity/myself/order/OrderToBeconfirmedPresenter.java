@@ -6,6 +6,9 @@ import com.alibaba.fastjson.JSON;
 import com.allen.library.interceptor.Transformer;
 import com.allen.library.interfaces.ILoadingView;
 import com.allin.commlibrary.CollectionUtils;
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
+
 import java.util.HashMap;
 import java.util.List;
 import entity.mySelf.ProvideInteractOrderInfo;
@@ -117,6 +120,42 @@ public class OrderToBeconfirmedPresenter extends BasePresenterImpl<OrderToBeConf
                         if (!CollectionUtils.isEmpty(userInfoBaseBeans)) {
                             mView.getUserInfoResult(userInfoBaseBeans.get(0));
                         }
+
+                    }
+                }
+
+            }
+
+            @Override
+            protected void onError(String s) {
+                super.onError(s);
+            }
+
+            @Override
+            protected String setTag() {
+                return SEND_GET_USERINFO_REQUEST_TAg;
+            }
+        });
+    }
+
+
+
+    @Override
+    public void deleteRecord(String s) {
+
+        ApiHelper.getApiService().operDelPatientMsgInteractOrderInfo(s).
+                compose(Transformer.switchSchedulers()).subscribe(new CommonDataObserver() {
+            @Override
+            protected void onSuccessResult(BaseBean baseBean) {
+                if (mView!=null) {
+                    int resCode = baseBean.getResCode();
+                    if (resCode==1) {
+                        String resJsonData = baseBean.getResJsonData();
+                        mView.deleteSucess("删除成功");
+                  /*      List<UserInfoBaseBean> userInfoBaseBeans = GsonUtils.jsonToList(resJsonData, UserInfoBaseBean.class);
+                        if (!CollectionUtils.isEmpty(userInfoBaseBeans)) {
+                            mView.getUserInfoResult(userInfoBaseBeans.get(0));
+                        }*/
 
                     }
                 }
