@@ -90,8 +90,9 @@ public class OrderOnGoingAdapter extends MultiItemRecycleViewAdapter<MultiItemEn
                 mTvPriceValue.setText(String.format("¥%s", parbean.getActualPayment()));
 //                mTvOrderType.setText(parbean.getTreatmentTypeName());
                 mTvOrderTime.setText(DateUtils.getStringTimeSlash(parbean.getCreateDate()));
-                Integer coachValue = parbean.getProCount();
-                if (coachValue != null) {
+                int coachValue = parbean.getProCount();
+                mTvMonitorValue.setText(coachValue+"项");
+               /* if (coachValue != null) {
                     if (coachValue == 1) {
                         mTvMonitorValue.setText("一项");
                     } else if (coachValue == 2) {
@@ -105,11 +106,11 @@ public class OrderOnGoingAdapter extends MultiItemRecycleViewAdapter<MultiItemEn
                     } else if (coachValue == 6) {
                         mTvMonitorValue.setText("六项");
                     }
-                }
-                mTvCoachValue.setText(String.format("%s次/%s",
+                }*/
+                mTvCoachValue.setText(String.format("1次/%s%s",
                         parbean.getDetectRate(), parbean.getDetectRateUnitName()));
 //                mTvSignTimeValue.setText(parbean.getTimesName());
-                mTvSignTimeValue.setText(String.format("%s%s", parbean.getSignDuration(), parbean.getSignDurationUnit()));
+                mTvSignTimeValue.setText(String.format("%s个%s", parbean.getSignDuration(), parbean.getSignDurationUnit()));
                 // mTvPriceValue.setText(String.format("¥%s", parbean.getp));
                 mTvCancelContractBtn.setOnClickListener(v -> {
                     if (onClickItemListener != null) {

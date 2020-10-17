@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import www.patient.jykj_zxyl.base.base_bean.OrderDetialBean;
 import www.patient.jykj_zxyl.base.base_bean.PaymentBean;
+import www.patient.jykj_zxyl.base.base_bean.UpdateOrderResultBean;
 import www.patient.jykj_zxyl.base.base_bean.UserInfoBaseBean;
 import www.patient.jykj_zxyl.base.mvp.BasePresenter;
 import www.patient.jykj_zxyl.base.mvp.BaseView;
@@ -29,6 +30,9 @@ public class OrderDetialContract {
          * @param isSucess true or false
          */
         void getOrderOperResult(boolean isSucess, String type);
+
+
+        void UpdataSucess(UpdateOrderResultBean data);
 
         /**
          * 获取支付信息

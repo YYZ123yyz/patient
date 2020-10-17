@@ -229,7 +229,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
         mTvCancelContractDesc.setText(signOrderInfoBean.getRefuseRemark());
         mTvSignStartTime.setText(DateUtils.getLongYYYYMMDD(
                 signOrderInfoBean.getSignStartTime()));
-        mTvSignTimeValue.setText(String.format("%d%s", signOrderInfoBean.getSignDuration()
+        mTvSignTimeValue.setText(String.format("%d个%s", signOrderInfoBean.getSignDuration()
                 , signOrderInfoBean.getSignDurationUnit()));
 
         String signOtherServiceCode = signOrderInfoBean.getSignOtherServiceCode();
@@ -243,8 +243,8 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
         }else {
             coachValue =0;
         }
-
-        if (coachValue == 1) {
+        mTvMonitorTypeValue.setText(coachValue+"项");
+       /* if (coachValue == 1) {
             mTvMonitorTypeValue.setText("一项");
         } else if (coachValue == 2) {
             mTvMonitorTypeValue.setText("两项");
@@ -256,7 +256,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
             mTvMonitorTypeValue.setText("五项");
         } else if (coachValue == 6) {
             mTvMonitorTypeValue.setText("六项");
-        }
+        }*/
 
         String rate = signOrderInfoBean.getDetectRate() + "次/" + signOrderInfoBean.getDetectRateUnitName();
         mTvCoatchRateValue.setText(rate);
@@ -376,7 +376,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
      */
     private OrderMessage getOrderMessage(String messageType, String orderType) {
         @SuppressLint("DefaultLocale")
-        String monitorRate = String.format("一次/%d%s", orderDetialBean.getDetectRate(),
+        String monitorRate = String.format("1次/%s%s", orderDetialBean.getDetectRate(),
                 orderDetialBean.getDetectRateUnitName());
         return new OrderMessage(orderId, orderDetialBean.getSignNo(),
                 monitorTypeList.size() + "项", monitorRate,

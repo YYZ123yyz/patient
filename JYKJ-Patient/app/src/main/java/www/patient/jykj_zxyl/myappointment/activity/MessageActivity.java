@@ -242,6 +242,16 @@ public class MessageActivity extends AbstractMvpBaseActivity<MessageContract.Vie
     }
 
     @Override
+    public void getMessageCommitSucess(String msg) {
+
+    }
+
+    @Override
+    public void getMessageCommitError(String msg) {
+
+    }
+
+    @Override
     public void showLoading(int code) {
 
     }

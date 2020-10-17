@@ -280,12 +280,12 @@ public class CancelContractActivity extends AbstractMvpBaseActivity<CancelContra
     private OrderMessage getOrderMessage(String messageType, String orderType) {
 
         @SuppressLint("DefaultLocale")
-        String monitorRate = String.format("%s次/%s", mOrderDetialBean.getDetectRate(),
+        String monitorRate = String.format("1次/%s%s", mOrderDetialBean.getDetectRate(),
                 mOrderDetialBean.getDetectRateUnitName());
         OrderMessage orderMessage = new OrderMessage(orderId
                 , mOrderDetialBean.getSignNo(),
                 monitorTypeList.size() + "项", monitorRate,
-                mOrderDetialBean.getSignDuration() + mOrderDetialBean.getSignDurationUnit()
+                mOrderDetialBean.getSignDuration()+"个"+ mOrderDetialBean.getSignDurationUnit()
                 , mOrderDetialBean.getSignPrice() + "", messageType, orderType, mOrderDetialBean.getSignCode());
         return orderMessage;
 

@@ -52,7 +52,8 @@ import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseFragment;
 
 /**
  * Description:待确认订单列表
- *handleData
+ * handleData
+ *
  * @author: qiuxinhai
  * @date: 2020-07-30 11:42
  */
@@ -73,6 +74,7 @@ public class OrderToBeConfirmedFragment extends
      * 是否走刷新
      */
     private boolean isRefresh;
+    private UpdateOrderResultBean updateOrderResultBean;
 
     @Override
     protected int setLayoutId() {
@@ -176,7 +178,7 @@ public class OrderToBeConfirmedFragment extends
                 OrderOperationManager.getInstance().sendOrderOperRequest(
                         provideInteractOrderInfo.getMainDoctorCode(),
                         provideInteractOrderInfo.getMainDoctorName(),
-                        provideInteractOrderInfo.getOrderCode(), provideInteractOrderInfo.getSignCode(),
+                        provideInteractOrderInfo.getSignCode(), provideInteractOrderInfo.getOrderCode(),
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),
                         "1", ParameUtil.loginDoctorPosition
@@ -203,7 +205,7 @@ public class OrderToBeConfirmedFragment extends
                 OrderOperationManager.getInstance().sendOrderOperRequest(
                         provideInteractOrderInfo.getMainDoctorCode(),
                         provideInteractOrderInfo.getMainDoctorName(),
-                        provideInteractOrderInfo.getOrderCode(), provideInteractOrderInfo.getSignCode(),
+                        provideInteractOrderInfo.getSignCode(), provideInteractOrderInfo.getOrderCode(),
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),
                         mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),
                         "2", ParameUtil.loginDoctorPosition
@@ -213,8 +215,8 @@ public class OrderToBeConfirmedFragment extends
 
                                 if (isSucess) {
                                     if (StringUtils.isNotEmpty(msg)) {
-                                        UpdateOrderResultBean updateOrderResultBean
-                                                = GsonUtils.fromJson(msg, UpdateOrderResultBean.class);
+
+                                        updateOrderResultBean = GsonUtils.fromJson(msg, UpdateOrderResultBean.class);
                                         if (updateOrderResultBean != null) {
                                             provideInteractOrderInfo.setOrderCode(updateOrderResultBean.getSignCode());
                                             mPresenter.sendGetUserListRequest(provideInteractOrderInfo.getMainDoctorCode());
@@ -237,7 +239,7 @@ public class OrderToBeConfirmedFragment extends
                         (ProvideInteractOrderInfo) mMultiItemEntitys.get(position);
                 Bundle bundle = new Bundle();
                 bundle.putString("orderId", provideInteractOrderInfo.getOrderCode());
-                bundle.putString("orderNo",provideInteractOrderInfo.getSignCode());
+                bundle.putString("orderNo", provideInteractOrderInfo.getSignCode());
                 bundle.putString("operDoctorCode", provideInteractOrderInfo.getMainDoctorCode());
                 bundle.putString("operDoctorName", provideInteractOrderInfo.getMainDoctorName());
 
@@ -287,17 +289,17 @@ public class OrderToBeConfirmedFragment extends
                 HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
 
 
-                hashMap.put("loginPatientPosition","108.93425^34.23053");
-                hashMap.put("requestClientType","1");
-                hashMap.put("operPatientCode",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-                hashMap.put("operPatientName",mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-                hashMap.put("orderCode",provideInteractOrderInfo.getOrderCode());
-                hashMap.put("flagOrderState",provideInteractOrderInfo.getFlagOrderState());
+                hashMap.put("loginPatientPosition", "108.93425^34.23053");
+                hashMap.put("requestClientType", "1");
+                hashMap.put("operPatientCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                hashMap.put("operPatientName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                hashMap.put("orderCode", provideInteractOrderInfo.getOrderCode());
+                hashMap.put("flagOrderState", provideInteractOrderInfo.getFlagOrderState());
 
-                LogUtils.e("operPatientCode"+mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-                LogUtils.e("operPatientName"+mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-                LogUtils.e("orderCode"+provideInteractOrderInfo.getOrderCode());
-                LogUtils.e("flagOrderState"+provideInteractOrderInfo.getFlagOrderState());
+                LogUtils.e("operPatientCode" + mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+                LogUtils.e("operPatientName" + mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+                LogUtils.e("orderCode" + provideInteractOrderInfo.getOrderCode());
+                LogUtils.e("flagOrderState" + provideInteractOrderInfo.getFlagOrderState());
 
                 String s = RetrofitUtil.encodeParam(hashMap);
                 mPresenter.deleteRecord(s);
@@ -315,12 +317,14 @@ public class OrderToBeConfirmedFragment extends
      */
     private OrderMessage getOrderMessage(String messageType, String orderType,
                                          ProvideInteractOrderInfo provideInteractOrderInfo) {
+
+
         @SuppressLint("DefaultLocale")
-        String coatch =String.format("%s次/%s",
-                provideInteractOrderInfo.getDetectRateUnitCode(), provideInteractOrderInfo.getDetectRateUnitName());
-        OrderMessage orderMessage = new OrderMessage(provideInteractOrderInfo.getOrderCode(), provideInteractOrderInfo.getSignNo(),
+        String coatch = String.format("1次/%s%s",
+                provideInteractOrderInfo.getDetectRate(), provideInteractOrderInfo.getDetectRateUnitName());
+        OrderMessage orderMessage = new OrderMessage(operationType == 2 ? updateOrderResultBean.getSignNo() : provideInteractOrderInfo.getOrderCode(), provideInteractOrderInfo.getOrderCode(),
                 provideInteractOrderInfo.getProCount() + "项",
-                coatch, provideInteractOrderInfo.getSignDuration() + "个月", provideInteractOrderInfo.getActualPayment() + "", messageType, orderType,provideInteractOrderInfo.getSignCode());
+                coatch, provideInteractOrderInfo.getSignDuration() + "个月", provideInteractOrderInfo.getActualPayment() + "", messageType, orderType, operationType == 2 ? updateOrderResultBean.getSignCode() : provideInteractOrderInfo.getSignCode());
         return orderMessage;
 
     }
@@ -397,7 +401,7 @@ public class OrderToBeConfirmedFragment extends
     public void showEmpty() {
         if (pageIndex == 1) {
             mLoadingLayout.showEmpty();
-        }else {
+        } else {
             mRefreshLayout.finishRefreshWithNoMoreData();
         }
 
@@ -417,7 +421,7 @@ public class OrderToBeConfirmedFragment extends
         for (MultiItemEntity mMultiItemEntity : mMultiItemEntitys) {
             ProvideInteractOrderInfo provideInteractOrderInfo =
                     (ProvideInteractOrderInfo) mMultiItemEntity;
-            if (  provideInteractOrderInfo.getOrderType() == 1) { //ordertype ==1普通订单
+            if (provideInteractOrderInfo.getOrderType() == 1) { //ordertype ==1普通订单
 
                 provideInteractOrderInfo.setItemType(
                         CommonMutipleComplateOrderListItemType.MULTIPLE_CONTENT_ORDINARY_TYPE);
