@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.allin.commonadapter.ViewHolder;
 import com.allin.commonadapter.recyclerview.MultiItemRecycleViewAdapter;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import entity.mySelf.ProvideInteractOrderInfo;
@@ -146,10 +147,13 @@ public class OrderToBeConfirmedAdapter extends MultiItemRecycleViewAdapter<Multi
                 }*/
 
 
-                mTvCoachValue.setText(String.format("%s次/%s",
-                        parbean.getDetectRateUnitCode(), parbean.getDetectRateUnitName()));
-                mTvSignTimeValue.setText(String.format("%s%s", parbean.getSignDuration(), parbean.getSignDurationUnit()));
-                mTvPriceValue.setText(String.format("¥%s", parbean.getActualPayment()));
+                mTvCoachValue.setText(String.format("1次/%s%s",
+                        parbean.getDetectRate(), parbean.getDetectRateUnitName()));
+                mTvSignTimeValue.setText(String.format("%s个%s", parbean.getSignDuration(), parbean.getSignDurationUnit()));
+
+                DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+                String format = decimalFormat.format(parbean.getActualPayment());
+                mTvPriceValue.setText(String.format("¥%s", format));
                 mTvRefuseBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

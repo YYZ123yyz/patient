@@ -16,6 +16,7 @@ import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.entity.ProvideViewSysUserPatientInfoAndRegion;
 import com.hyphenate.easeui.ui.ChatActivity;
 
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +52,7 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
     private List<BaseReasonBean> baseReasonBeans;
     private BaseReasonBean baseReasonBean;
     //    private OrderDetialBean orderDetialBean;
-    private String orderId,orderNo;
+    private String orderId, orderNo;
     private List<OrderDetialBean.OrderDetailListBean> monitorTypeList;
     private List<OrderDetialBean.OrderDetailListBean> coachTypeList;
     private ProvideViewSysUserPatientInfoAndRegion mProvideViewSysUserPatientInfoAndRegion;
@@ -159,18 +160,14 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
                 if (baseReasonBean != null) {
 
 
-
-
-
-
                     String refusedReason = edRefusedReason.getText().toString();
 
 
                     mPresenter.sendRefusedOrderRequest(ParameUtil.loginDoctorPosition
                             , operDoctorCode,
                             operDoctorName,
-                            orderNo ,  //signCode
-                            orderId ,  //signNo
+                            orderNo,  //signCode
+                            orderId,  //signNo
                             mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),
                             mProvideViewSysUserPatientInfoAndRegion.getUserName(), "0",
                             baseReasonBean.getAttrCode() + "", baseReasonBean.getAttrName(), refusedReason);
@@ -192,7 +189,7 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
     @Override
     public void getRefusedOrderResult(boolean isSucess, String msg) {
         if (isSucess) {
-                mPresenter.sendGetUserListRequest(operDoctorCode);
+            mPresenter.sendGetUserListRequest(operDoctorCode);
         } else {
             ToastUtils.showToast(msg);
         }
@@ -215,11 +212,10 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
         stringStringHashMap.put("loginPatientPosition", "108.93425^34.23053");
         stringStringHashMap.put("requestClientType", "1");
         stringStringHashMap.put("searchPatientCode", mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
-        stringStringHashMap.put("searchPatientName",mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        stringStringHashMap.put("orderCode",orderId);
+        stringStringHashMap.put("searchPatientName", mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        stringStringHashMap.put("orderCode", orderId);
         String s = RetrofitUtil.encodeParam(stringStringHashMap);
         mPresenter.getOrderDet(s);
-
 
 
         this.finish();
@@ -235,7 +231,7 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
         intent.putExtra("patientUrl", mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
         intent.putExtra("operDoctorName", mProvideViewSysUserPatientInfoAndRegion.getUserName());
         Bundle bundle = new Bundle();
-        OrderMessage card = getOrderMessage("card", "3",userInfoBaseBean);
+        OrderMessage card = getOrderMessage("card", "3", userInfoBaseBean);
         if (card != null) {
             card.setImageUrl(mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
         }
@@ -254,14 +250,18 @@ public class RefusedOrderActivity extends AbstractMvpBaseActivity<RefusedOrderCo
      * @return orderMessage
      */
     private OrderMessage getOrderMessage(String messageType, String orderType, RefusedOrderBean userInfoBaseBean) {
+
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+        String price = decimalFormat.format(Double.parseDouble(String.valueOf(userInfoBaseBean.getSignPrice())));
+
         @SuppressLint("DefaultLocale")
-        String monitorRate = String.format("%s次/%s",
-                userInfoBaseBean.getDetectRateUnitCode(), userInfoBaseBean.getDetectRateUnitName());
+        String monitorRate = String.format("1次/%s%s",
+                userInfoBaseBean.getDetectRate(), userInfoBaseBean.getDetectRateUnitName());
         OrderMessage orderMessage = new OrderMessage(orderId
                 , userInfoBaseBean.getSignNo(),
-                monitorTypeList.size() + "项", monitorRate,
-                userInfoBaseBean.getSignDuration() + userInfoBaseBean.getSignDurationUnit()
-                , userInfoBaseBean.getSignPrice() + "", messageType, orderType,userInfoBaseBean.getSignCode());
+                userInfoBaseBean.getOrderDetailList().size() + "项", monitorRate,
+                userInfoBaseBean.getSignDuration() + "个" + userInfoBaseBean.getSignDurationUnit()
+                , price + "", messageType, orderType, userInfoBaseBean.getSignCode());
         return orderMessage;
 
     }

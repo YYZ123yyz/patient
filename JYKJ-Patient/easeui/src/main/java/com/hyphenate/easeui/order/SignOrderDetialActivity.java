@@ -45,6 +45,7 @@ import www.patient.jykj_zxyl.base.base_adapter.OrderDetialMonitorAdapter;
 import www.patient.jykj_zxyl.base.base_bean.OrderDetialBean;
 import www.patient.jykj_zxyl.base.base_bean.OrderMessage;
 import www.patient.jykj_zxyl.base.base_bean.PaymentBean;
+import www.patient.jykj_zxyl.base.base_bean.UpdateOrderResultBean;
 import www.patient.jykj_zxyl.base.base_bean.UserInfoBaseBean;
 import www.patient.jykj_zxyl.base.base_utils.ActivityStackManager;
 import www.patient.jykj_zxyl.base.base_utils.DateUtils;
@@ -220,6 +221,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         tvRefuseBtn.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putString("orderId", signCode);
+            bundle.putString("orderNo", orderDetialData.getSignCode());
             bundle.putString("operDoctorCode", operDoctorCode);
             bundle.putString("operDoctorName", operDoctorName);
             startActivity(RefusedOrderActivity.class, bundle);
@@ -449,14 +451,20 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
      * @return orderMessage
      */
     @SuppressLint("DefaultLocale")
-    private OrderMessage getOrderMessage(String messageType, String orderType) {
+    private OrderMessage getOrderMessage(String messageType, String orderType, String signNo_new, String orderId) {
+        String monitorRate = "";
+        if (orderDetialData.getDetectRate() == 0) {
+            monitorRate = "无";
+        } else {
+            monitorRate = String.format("1次/%s%s", orderDetialData.getDetectRate(),
+                    orderDetialData.getDetectRateUnitName());
+        }
 
-        String monitorRate = String.format("一次/%d%s", orderDetialData.getDetectRate(),
-                orderDetialData.getDetectRateUnitName());
-        OrderMessage orderMessage = new OrderMessage(signCode, orderDetialData.getSignNo(),
-                String.format("%d项", monitorTypeList.size()), monitorRate,
+
+        OrderMessage orderMessage = new OrderMessage(!TextUtils.isEmpty(signNo_new) ? signNo_new : signCode, signCode,
+                String.format("%d项", orderDetialData.getOrderDetailList().size()), monitorRate,
                 String.format("%d个%s", orderDetialData.getSignDuration(), orderDetialData.getSignDurationUnit())
-                , orderDetialData.getSignPrice() + "", messageType, orderType, orderDetialData.getSignCode());
+                , orderDetialData.getSignPrice() + "", messageType, orderType, !TextUtils.isEmpty(orderId) ? orderId : orderDetialData.getSignCode());
         return orderMessage;
 
     }
@@ -467,13 +475,13 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
 
             switch (type) {
                 case "0":
-                    orderCard = getOrderMessage("card", "3");
+                    orderCard = getOrderMessage("card", "3", "", "");
                     break;
                 case "1":
-                    orderCard = getOrderMessage("card", "1");
+                    orderCard = getOrderMessage("card", "1", "", "");
                     break;
                 case "2":
-                    orderCard = getOrderMessage("card", "2");
+                    orderCard = getOrderMessage("card", "2", "", "");
                     break;
                 default:
             }
@@ -482,6 +490,12 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
             mPresenter.sendGetUserListRequest(orderDetialData.getMainDoctorCode());
 
         }
+    }
+
+    @Override
+    public void UpdataSucess(UpdateOrderResultBean data) {
+        orderCard = getOrderMessage("card", "2", data.getSignNo(), data.getSignCode());
+        mPresenter.sendGetUserListRequest(orderDetialData.getMainDoctorCode());
     }
 
 
@@ -622,7 +636,15 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
         String format = decimalFormat.format(Double.parseDouble(orderDetialData.getSignPrice()));
         tvTotalPriceValue.setText(String.format("¥%s", format));
         mTvPatientAge.setText(orderDetialData.getAge() + "");
-        tvRateTimeValue.setText(orderDetialData.getDetectRate() + "" + orderDetialData.getDetectRateUnitName());
+        if (orderDetialData.getDetectRateUnitName() == null) {
+            List<OrderDetialBean.OrderDetailListBean> orderDetailList = orderDetialData.getOrderDetailList();
+            if (orderDetailList.size() != 0) {
+                tvRateTimeValue.setText(orderDetailList.get(0).getRate() + "" + orderDetailList.get(0).getRateUnitName());
+            }
+        } else {
+            tvRateTimeValue.setText(orderDetialData.getDetectRate() + "" + orderDetialData.getDetectRateUnitName());
+        }
+
     }
 
     @Override

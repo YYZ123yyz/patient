@@ -228,7 +228,7 @@ public class RefusedCancelContractActivity extends AbstractMvpBaseActivity<Refus
      */
     private OrderMessage getOrderMessage(String messageType, String orderType, UserInfoBaseBean userInfoBaseBean) {
         @SuppressLint("DefaultLocale")
-        String monitorRate = String.format("%s次/%s", userInfoBaseBean.getDetectRate(),
+        String monitorRate = String.format("1次/%s%s", userInfoBaseBean.getDetectRate(),
                 userInfoBaseBean.getDetectRateUnitName());
         OrderMessage orderMessage = new OrderMessage(orderId
                 , userInfoBaseBean.getSignNo(),

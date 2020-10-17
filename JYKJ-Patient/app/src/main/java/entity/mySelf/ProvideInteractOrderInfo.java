@@ -33,7 +33,7 @@ public class ProvideInteractOrderInfo extends
 	private Float priceDiscountCoupon;//平台优惠(优惠方式:优惠券)
 	private Float priceDiscountIntegral;//平台优惠(优惠方式:积分)
 	private Float orderTotal;//订单总价(优惠后的总价格)
-	private Float actualPayment;//实付款(实际支付的总价格)
+	private double actualPayment;//实付款(实际支付的总价格)
 	private String couponRecordHistoryCode;//使用的咨询优惠券记录编码
 	private String integralRecordHistoryCode;//使用的积分记录编码
 	private String orderDesc;//订单描述.Eg.音频就诊 128元/10分钟
@@ -55,10 +55,20 @@ public class ProvideInteractOrderInfo extends
 	private String signDurationUnit;
 	private String detectRateUnitCode;
 	private String detectRateUnitName;
+	private String detectRate;
 	private String signStatus;
 	private String mainDoctorName;
 	private String mainDoctorCode;
 	private String signCode;
+
+
+	public String getDetectRate() {
+		return detectRate;
+	}
+
+	public void setDetectRate(String detectRate) {
+		this.detectRate = detectRate;
+	}
 
 	public String getMainDoctorName() {
 		return mainDoctorName;
@@ -372,11 +382,11 @@ public class ProvideInteractOrderInfo extends
 		this.orderTotal = orderTotal;
 	}
 
-	public Float getActualPayment() {
+	public double getActualPayment() {
 		return actualPayment;
 	}
 
-	public void setActualPayment(Float actualPayment) {
+	public void setActualPayment(double actualPayment) {
 		this.actualPayment = actualPayment;
 	}
 

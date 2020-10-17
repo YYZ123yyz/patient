@@ -308,11 +308,11 @@ public class CancelContractResultActivity extends BaseActivity {
      */
     private OrderMessage getOrderMessage(String messageType, String orderType, OrderDetialBean orderDetialBean) {
         @SuppressLint("DefaultLocale")
-        String  monitorRate= String.format("一次/%d%s", orderDetialBean.getDetectRate(),
+        String  monitorRate= String.format("1次/%s%s", orderDetialBean.getDetectRate(),
                 orderDetialBean.getDetectRateUnitName());
         return new OrderMessage(orderId,orderDetialBean.getSignNo(),
                 monitorTypeList.size() + "项", monitorRate,
-                orderDetialBean.getSignDuration()+ orderDetialBean.getSignDurationUnit()
+                orderDetialBean.getSignDuration()+"个"+ orderDetialBean.getSignDurationUnit()
                 , orderDetialBean.getSignPrice() + "", messageType, orderType,orderDetialBean.getSignCode());
 
     }

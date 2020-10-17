@@ -161,7 +161,7 @@ public class OrderOnGoingFragment extends
         mRvList.addItemDecoration(decor);
         mOrderOnGoingAdapter.setOnClickItemListener(new OrderOnGoingAdapter.OnClickItemListener() {
             @Override
-            public void onClickCancelContract(int pos) {
+            public void onClickCancelContract(int pos) {  //解约按钮
                 myOrderProcess = (MyOrderProcess) mMultiItemEntitys.get(pos);
                 Bundle bundle=new Bundle();
                 bundle.putString("orderId",myOrderProcess.getOrderCode());
@@ -180,7 +180,7 @@ public class OrderOnGoingFragment extends
             }
 
             @Override
-            public void onClickCancelOnGoing(int pos) {
+            public void onClickCancelOnGoing(int pos) { //撤销解约
                 currentPos=pos;
                 myOrderProcess = (MyOrderProcess) mMultiItemEntitys.get(pos);
                 Bundle bundle=new Bundle();
@@ -379,7 +379,7 @@ public class OrderOnGoingFragment extends
      */
     private OrderMessage getOrderMessage(String messageType, String orderType,
                                          MyOrderProcess myOrderProcess) {
-        @SuppressLint("DefaultLocale") String coatch =String.format("%s次/%s",
+        @SuppressLint("DefaultLocale") String coatch =String.format("1次/%s%s",
                 myOrderProcess.getDetectRateUnitCode(), myOrderProcess.getDetectRateUnitName());
         OrderMessage orderMessage = new OrderMessage(myOrderProcess.getOrderCode(),myOrderProcess.getSignNo(),
                 myOrderProcess.getProCount() + "项",
