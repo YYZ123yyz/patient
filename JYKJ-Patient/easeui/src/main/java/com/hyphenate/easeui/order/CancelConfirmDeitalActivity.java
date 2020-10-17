@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,6 +17,7 @@ import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.entity.ProvideViewSysUserPatientInfoAndRegion;
 import com.hyphenate.easeui.ui.ChatActivity;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -111,7 +113,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
     @Override
     protected void initData() {
         super.initData();
-        if (mType!=null &&  mType.equals("1")) {
+        if (mType != null && mType.equals("1")) {
             HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
             hashMap.put("loginPatientPosition", ParameUtil.loginDoctorPosition);
             hashMap.put("requestClientType", "1");
@@ -223,12 +225,25 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
      */
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void setOrderData(OrderDetialBean signOrderInfoBean) {
+        int coachValue = 0;
         mTvCancelContractDesc.setText(signOrderInfoBean.getRefuseRemark());
         mTvSignStartTime.setText(DateUtils.getLongYYYYMMDD(
                 signOrderInfoBean.getSignStartTime()));
         mTvSignTimeValue.setText(String.format("%d%s", signOrderInfoBean.getSignDuration()
                 , signOrderInfoBean.getSignDurationUnit()));
-        int coachValue = signOrderInfoBean.getCoachValue();
+
+        String signOtherServiceCode = signOrderInfoBean.getSignOtherServiceCode();
+        if (signOtherServiceCode != null) {
+            if (signOtherServiceCode.contains(",")) {
+                String[] split = signOtherServiceCode.split(",");
+                coachValue =split.length;
+            } else {
+                coachValue =1;
+            }
+        }else {
+            coachValue =0;
+        }
+
         if (coachValue == 1) {
             mTvMonitorTypeValue.setText("一项");
         } else if (coachValue == 2) {
@@ -243,13 +258,22 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
             mTvMonitorTypeValue.setText("六项");
         }
 
-        String rate = signOrderInfoBean.getDetectRate() + "次/" + signOrderInfoBean.getDetectRateUnitName()
-                ;
+        String rate = signOrderInfoBean.getDetectRate() + "次/" + signOrderInfoBean.getDetectRateUnitName();
         mTvCoatchRateValue.setText(rate);
 
 
 //        mTvMonitorTypeValue.setText(monitorTypeList.size() + "项");
-        mTvSignOrderPrice.setText(String.format("¥%s", signOrderInfoBean.getSignPrice()));
+
+        String signPrice = signOrderInfoBean.getSignPrice();
+        DecimalFormat df = new DecimalFormat("0.00");
+        if (TextUtils.isEmpty(signPrice)) {
+            signPrice = "0.00";
+        } else {
+            signPrice = df.format(Double.parseDouble(signPrice));
+        }
+
+
+        mTvSignOrderPrice.setText(String.format("¥%s", signPrice));
         /*if (!CollectionUtils.isEmpty(coachTypeList)) {
             OrderDetialBean.OrderDetailListBean orderDetailListBean = coachTypeList.get(0);
             String rate = orderDetailListBean.get + "次/" + orderDetailListBean.getRate()

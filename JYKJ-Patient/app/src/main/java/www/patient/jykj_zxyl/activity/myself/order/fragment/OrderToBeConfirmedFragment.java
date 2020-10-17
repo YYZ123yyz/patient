@@ -387,6 +387,11 @@ public class OrderToBeConfirmedFragment extends
         startActivity(intent);
     }
 
+    @Override
+    public void deleteSucess(String msg) {
+        refreshLaodData();
+    }
+
 
     @Override
     public void showEmpty() {

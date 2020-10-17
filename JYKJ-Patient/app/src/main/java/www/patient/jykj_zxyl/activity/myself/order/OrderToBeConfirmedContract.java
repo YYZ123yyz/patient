@@ -30,6 +30,8 @@ public class OrderToBeConfirmedContract {
          * @param userInfoBaseBean 用户信息
          */
         void getUserInfoResult(UserInfoBaseBean userInfoBaseBean);
+
+        void deleteSucess(String msg);
     }
 
     public interface Presenter extends BasePresenter<View> {

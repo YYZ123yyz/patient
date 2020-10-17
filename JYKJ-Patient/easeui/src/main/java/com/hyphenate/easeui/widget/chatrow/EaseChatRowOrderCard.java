@@ -519,6 +519,12 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                     int i = Integer.parseInt(string);
                     if (i == 1) {
 
+                        LogUtils.e("接受消息  同意 orderId  " + orderId);
+                        LogUtils.e("接受消息  同意 singId  " + singId);
+                        LogUtils.e("接受消息  同意 singNO  " + singNO);
+
+
+
                         String patientCode = mProvideViewSysUserPatientInfoAndRegion.getPatientCode();
                         String userName = mProvideViewSysUserPatientInfoAndRegion.getUserName();
                         String nickName = message.getStringAttribute("nickName", "");
@@ -558,19 +564,20 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                                                 if (updateOrderResultBean != null) {
                                                     orderId = updateOrderResultBean.getSignCode();
                                                     signNo_new = updateOrderResultBean.getSignNo();
+                                                    singId = updateOrderResultBean.getSignNo();
                                                     message.setAttribute("orderId", orderId);
                                                 }
 
                                             }
 
-                                            LogUtils.e("xxxxx orderId"+orderId);
-                                            LogUtils.e("xxxxx  singNO"+singNO);
-                                            LogUtils.e("xxxxx  signNo_new"+signNo_new);
+                                            LogUtils.e("接受消息  修改 orderId"+orderId);
+                                            LogUtils.e("接受消息  修改  singNO"+singNO);
+                                            LogUtils.e("接受消息  修改  signNo_new"+signNo_new);
 
 
                                             EventBus.getDefault().post(new OrderMessage(signNo_new,
                                                     singNO, monitoringType, coach
-                                                    , signUpTime, price, messageType, "2", signNo_new));
+                                                    , signUpTime, price, messageType, "2", orderId));
                                         } else {
                                             ToastUtils.showToast(msg);
 

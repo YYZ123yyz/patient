@@ -619,7 +619,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
                 orderDetialData.getSignStartTime()));
         tvSignTimeValue.setText(String.format("%d个月", orderDetialData.getSignDuration()));
         DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-        String format = decimalFormat.format(orderDetialData.getSignPrice());
+        String format = decimalFormat.format(Double.parseDouble(orderDetialData.getSignPrice()));
         tvTotalPriceValue.setText(String.format("¥%s", format));
         mTvPatientAge.setText(orderDetialData.getAge() + "");
         tvRateTimeValue.setText(orderDetialData.getDetectRate() + "" + orderDetialData.getDetectRateUnitName());

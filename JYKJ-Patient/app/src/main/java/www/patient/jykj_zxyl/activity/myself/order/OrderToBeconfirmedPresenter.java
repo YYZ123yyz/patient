@@ -151,7 +151,7 @@ public class OrderToBeconfirmedPresenter extends BasePresenterImpl<OrderToBeConf
                     int resCode = baseBean.getResCode();
                     if (resCode==1) {
                         String resJsonData = baseBean.getResJsonData();
-                        ToastUtils.showShort("删除成功");
+                        mView.deleteSucess("删除成功");
                   /*      List<UserInfoBaseBean> userInfoBaseBeans = GsonUtils.jsonToList(resJsonData, UserInfoBaseBean.class);
                         if (!CollectionUtils.isEmpty(userInfoBaseBeans)) {
                             mView.getUserInfoResult(userInfoBaseBeans.get(0));
