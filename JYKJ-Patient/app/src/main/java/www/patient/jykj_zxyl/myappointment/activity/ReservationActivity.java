@@ -243,6 +243,7 @@ public class ReservationActivity extends AbstractMvpBaseActivity<ReservationCont
                else{
                     Intent intent = new Intent(ReservationActivity.this, MyAppointmentActivity.class);
                     startActivity(intent);
+                    finish();
                     reservation_successDialog.dismiss();
                 }
 

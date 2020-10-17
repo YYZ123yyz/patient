@@ -73,6 +73,12 @@ public class FragmentCompleted  extends AbstractMvpBaseFragment<ReservationListC
     @Override
     protected void initData() {
         super.initData();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         mPresenter.sendMyReservationListRequest(mApp.loginDoctorPosition,mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),"0","10","1");
     }
 

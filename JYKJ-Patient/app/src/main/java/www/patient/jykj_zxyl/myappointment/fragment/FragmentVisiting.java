@@ -57,7 +57,13 @@ public class FragmentVisiting extends AbstractMvpBaseFragment <ReservationListCo
     @Override
     protected void initData() {
         super.initData();
-         mPresenter.sendMyReservationListRequest(mApp.loginDoctorPosition,mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),"1","10","1");
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.sendMyReservationListRequest(mApp.loginDoctorPosition,mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),"1","10","1");
     }
 
     @Override

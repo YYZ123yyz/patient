@@ -50,6 +50,7 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeTJZJAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.myappointment.activity.MyAppointmentActivity;
 import www.patient.jykj_zxyl.pay.PayResult;
 import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.wxapi.WXPayEntryActivity;

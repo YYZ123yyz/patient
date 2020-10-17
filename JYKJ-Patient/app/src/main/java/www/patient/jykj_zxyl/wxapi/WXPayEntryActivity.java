@@ -26,6 +26,7 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.OrderMessage_OrderPayActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.myappointment.activity.MyAppointmentActivity;
 import www.patient.jykj_zxyl.util.LoadSharedPreferences;
 
 public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
@@ -132,7 +133,7 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
         {
             mApp.gPayCloseActivity.get(i).finish();
         }
-        startActivity(new Intent(WXPayEntryActivity.this,WDYSActivity.class));
+        startActivity(new Intent(WXPayEntryActivity.this, MyAppointmentActivity.class));
         finish();
     }
 

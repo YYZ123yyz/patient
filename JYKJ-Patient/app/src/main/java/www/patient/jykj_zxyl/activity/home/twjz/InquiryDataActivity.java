@@ -174,6 +174,8 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
     @Override
     protected void initView() {
         super.initView();
+        mApp = (JYKJApplication) getApplication();
+        mApp.gPayCloseActivity.add(this);
         initDir();
         mGridLayoutManager = new FullyGridLayoutManager(this, 3);
         mGridLayoutManager.setOrientation(LinearLayout.VERTICAL);
@@ -257,8 +259,6 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
     @Override
     protected void initData() {
         super.initData();
-        mApp = (JYKJApplication) getApplication();
-        mApp.gPayCloseActivity.add(this);
         orderCode = getIntent().getStringExtra("order");
        /* operPatientCode = getIntent().getStringExtra("operPatientCode");
         operPatientName = getIntent().getStringExtra("operPatientName");*/
@@ -715,90 +715,93 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
 
     @Override
     public void hasData(InquiryBean bean) {
-        isUpdata = true;
-        imgCode = bean.getImgCode();
-        patientName.setText(bean.getPatientName());
-        patientNum.setText(bean.getPatientLinkPhone());
+        if(bean!=null){
+            isUpdata = true;
+            imgCode = bean.getImgCode();
+            patientName.setText(bean.getPatientName());
+            patientNum.setText(bean.getPatientLinkPhone());
 
-        if (bean.getFlagOperState() == 0) { //可以修改
-            tvCommit.setVisibility(View.VISIBLE);
-        } else { //不可操作
-            patientName.setFocusable(false);
-            patientNum.setFocusable(false);
-            womenChoose.setClickable(false);
-            manChoose.setClickable(false);
-            birthday.setFocusable(false);
-            findTimeTv.setClickable(false);
-            hyperTv.setClickable(false);
-            familyTv.setClickable(false);
-            meainstruTv.setClickable(false);
-            meaType.setClickable(false);
-            highPressureNum.setFocusable(false);
-            lowPressureNum.setFocusable(false);
-            heartRateNum.setFocusable(false);
-            chiefComplaint.setFocusable(false);
-            historyNew.setFocusable(false);
-            historyPast.setFocusable(false);
-            historyAllergy.setFocusable(false);
-            mImageViewRecycleAdapter.setCanClick(false);
-            tvCommit.setVisibility(View.GONE);
-        }
-        if (bean.getGender() == 0) {
-            womenChoose.setChecked(true);
-        } else {
-            manChoose.setChecked(true);
-        }
-        measureInstrumentStr = bean.getMeasureInstrument();
-        birthday.setText(bean.getBirthday());
-        findTimeTv.setText(DateUtils.getLongYYYYMMDD(bean.getBloodPressureAbnormalDate()));
-        hyperTv.setText(bean.getFlagHtnHistory() == 0 ? "否" : "是");
-        familyTv.setText(bean.getFlagFamilyHtn() == 0 ? "否" : "是");
-        highPressureNum.setText(String.valueOf(bean.getHighPressureNum()));
-        lowPressureNum.setText(String.valueOf(bean.getLowPressureNum()));
-        heartRateNum.setText(String.valueOf(bean.getHeartRateNum()));
-        meainstruTv.setText(bean.getMeasureInstrumentName());
-        chiefComplaint.setText(bean.getChiefComplaint());
-        historyNew.setText(bean.getHistoryNew());
-        historyPast.setText(bean.getHistoryPast());
-        historyAllergy.setText(bean.getHistoryAllergy());
-        meaType.setText(bean.getMeasureModeName());
-        measureMode = bean.getMeasureMode();
-        String interrogationImgArray = bean.getInterrogationImgArray();
+            if (bean.getFlagOperState() == 0) { //可以修改
+                tvCommit.setVisibility(View.VISIBLE);
+            } else { //不可操作
+                patientName.setFocusable(false);
+                patientNum.setFocusable(false);
+                womenChoose.setClickable(false);
+                manChoose.setClickable(false);
+                birthday.setFocusable(false);
+                findTimeTv.setClickable(false);
+                hyperTv.setClickable(false);
+                familyTv.setClickable(false);
+                meainstruTv.setClickable(false);
+                meaType.setClickable(false);
+                highPressureNum.setFocusable(false);
+                lowPressureNum.setFocusable(false);
+                heartRateNum.setFocusable(false);
+                chiefComplaint.setFocusable(false);
+                historyNew.setFocusable(false);
+                historyPast.setFocusable(false);
+                historyAllergy.setFocusable(false);
+                mImageViewRecycleAdapter.setCanClick(false);
+                tvCommit.setVisibility(View.GONE);
+            }
+            if (bean.getGender() == 0) {
+                womenChoose.setChecked(true);
+            } else {
+                manChoose.setChecked(true);
+            }
+            measureInstrumentStr = bean.getMeasureInstrument();
+            birthday.setText(bean.getBirthday());
+            findTimeTv.setText(DateUtils.getLongYYYYMMDD(bean.getBloodPressureAbnormalDate()));
+            hyperTv.setText(bean.getFlagHtnHistory() == 0 ? "否" : "是");
+            familyTv.setText(bean.getFlagFamilyHtn() == 0 ? "否" : "是");
+            highPressureNum.setText(String.valueOf(bean.getHighPressureNum()));
+            lowPressureNum.setText(String.valueOf(bean.getLowPressureNum()));
+            heartRateNum.setText(String.valueOf(bean.getHeartRateNum()));
+            meainstruTv.setText(bean.getMeasureInstrumentName());
+            chiefComplaint.setText(bean.getChiefComplaint());
+            historyNew.setText(bean.getHistoryNew());
+            historyPast.setText(bean.getHistoryPast());
+            historyAllergy.setText(bean.getHistoryAllergy());
+            meaType.setText(bean.getMeasureModeName());
+            measureMode = bean.getMeasureMode();
+            String interrogationImgArray = bean.getInterrogationImgArray();
 
 //        if (mPhotoInfos.size() != 0) {
 //            mPhotoInfos.clear();
 //        }
-        String interrogationImgIdArray = bean.getInterrogationImgIdArray();
-        if (!TextUtils.isEmpty(interrogationImgIdArray)) {
-            if (interrogationImgIdArray.contains(",")) {
-                imageArrList.addAll(Arrays.asList(interrogationImgIdArray.split(",")));
+            String interrogationImgIdArray = bean.getInterrogationImgIdArray();
+            if (!TextUtils.isEmpty(interrogationImgIdArray)) {
+                if (interrogationImgIdArray.contains(",")) {
+                    imageArrList.addAll(Arrays.asList(interrogationImgIdArray.split(",")));
+                } else {
+                    imageArrList.add(interrogationImgIdArray);
+                }
+            }
+
+
+            if (interrogationImgArray.contains(",")) {
+                String[] split = interrogationImgArray.split(",");
+
+                for (int i = 0; i < split.length; i++) {
+                    Photo_Info photo_info = new Photo_Info();
+                    photo_info.setPhotoUrl(split[i]);
+                    photo_info.setPhotoID(imageArrList.get(i));
+                    mPhotoInfos.add(photo_info);
+                }
             } else {
-                imageArrList.add(interrogationImgIdArray);
-            }
-        }
+                if (imageArrList.size() > 0) {
+                    Photo_Info photo_info = new Photo_Info();
+                    photo_info.setPhotoUrl(interrogationImgArray);
+                    photo_info.setPhotoID(imageArrList.get(0));
+                    mPhotoInfos.add(photo_info);
+                }
 
-
-        if (interrogationImgArray.contains(",")) {
-            String[] split = interrogationImgArray.split(",");
-
-            for (int i = 0; i < split.length; i++) {
-                Photo_Info photo_info = new Photo_Info();
-                photo_info.setPhotoUrl(split[i]);
-                photo_info.setPhotoID(imageArrList.get(i));
-                mPhotoInfos.add(photo_info);
             }
-        } else {
-            if (imageArrList.size() > 0) {
-                Photo_Info photo_info = new Photo_Info();
-                photo_info.setPhotoUrl(interrogationImgArray);
-                photo_info.setPhotoID(imageArrList.get(0));
-                mPhotoInfos.add(photo_info);
-            }
+            mImageViewRecycleAdapter.setDate(mPhotoInfos);
+            mImageViewRecycleAdapter.notifyDataSetChanged();
+
 
         }
-        mImageViewRecycleAdapter.setDate(mPhotoInfos);
-        mImageViewRecycleAdapter.notifyDataSetChanged();
-
 
     }
 

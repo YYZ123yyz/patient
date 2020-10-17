@@ -34,6 +34,7 @@ import www.patient.jykj_zxyl.myappointment.Contract.ReservationContract;
 import www.patient.jykj_zxyl.myappointment.Presenter.ResevationPresenter;
 import www.patient.jykj_zxyl.myappointment.dialog.CancelContractDialog;
 import www.patient.jykj_zxyl.util.ActivityUtil;
+import www.patient.jykj_zxyl.util.DateUtils;
 
 /*
 * 取消预约
@@ -65,6 +66,7 @@ public class CancelAppointmentActivity extends AbstractMvpBaseActivity<Reservati
     private String endTime;
     private String aClass;
     private String type;
+    private String deviceTime;
 
     @Override
     protected void onBeforeSetContentLayout() {
@@ -83,6 +85,7 @@ public class CancelAppointmentActivity extends AbstractMvpBaseActivity<Reservati
     @Override
     protected void initView() {
         super.initView();
+        deviceTime = DateUtils.getDeviceTime();
         ActivityUtil.setStatusBarMain(mActivity);
         Bundle extras = this.getIntent().getExtras();
         if (extras!=null) {
@@ -112,10 +115,13 @@ public class CancelAppointmentActivity extends AbstractMvpBaseActivity<Reservati
     @Override
     protected void initData() {
         super.initData();
-        mPresenter.sendSearchSignPatientDoctorOrderRequest(reserveCode,doctorCode,doctorName);
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+    //    mPresenter.sendSearchSignPatientDoctorOrderRequest(reserveCode,doctorCode,doctorName);
+    }
 
     private void addListener() {
         llBack.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +158,7 @@ public class CancelAppointmentActivity extends AbstractMvpBaseActivity<Reservati
                 }
                         mPresenter.sendReservationCancelRequest(reserveCode,
                                 mCancelContractBean.getAttrCode()+"",mCancelContractBean.getAttrName(),ed,CancelAppointmentActivity.this);
+                finish();
             }
         });
 
@@ -256,7 +263,7 @@ public class CancelAppointmentActivity extends AbstractMvpBaseActivity<Reservati
      */
     private OrderMessage getOrderMessage(String messageType, String orderType) {
 
-        OrderMessage orderMessage=  new OrderMessage(signCode,messageType,orderType,appointment,endTime,aClass,type);
+        OrderMessage orderMessage=  new OrderMessage(signCode,messageType,orderType,appointment,deviceTime,aClass,type);
 
         return orderMessage;
 

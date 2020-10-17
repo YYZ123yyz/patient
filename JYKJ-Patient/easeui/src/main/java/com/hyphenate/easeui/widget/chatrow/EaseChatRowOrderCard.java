@@ -437,6 +437,8 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 mTvCoachRateValue.setText(cancelTime);
                 mTvSignTimeValue.setText(appointMentProject);
                 tv_class_vlaue.setText(appointMentType);
+                mTvOperReceivedMsg.setVisibility(View.VISIBLE);
+                mTvOperReceivedMsg.setText("医生已取消预约");
             }
             //病历
             else if (messageType.equals("medicalRecord")) {
@@ -454,13 +456,19 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 mTvMonitValue.setText(userName);
                 //预约结束时间
                 mTvCoachRateValue.setText(endTime);
+                nickName = message.getStringAttribute("nickName", "");
                 mTvSignTimeValue.setText(nickName);
                 tv_patient_class_vlaue.setText(patientType);
             }
             //医生已接诊
             else if (messageType.equals("receiveTreatment")) {
+                rl_one.setVisibility(VISIBLE);
+                rl_two.setVisibility(VISIBLE);
+                rl_three.setVisibility(VISIBLE);
                 rlSignOrderRoot.setVisibility(View.GONE);
                 rl_immediately.setVisibility(View.GONE);
+                rl_class.setVisibility(GONE);
+                mTvPriceValue.setVisibility(GONE);
                 mTvOperReceivedMsg.setVisibility(View.VISIBLE);
                 mTvOperReceivedMsg.setText("医生已接诊");
                 //图文
@@ -474,6 +482,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                     mTvMonitValue.setText(receiveTime);
                     //预约结束时间
                     mTvCoachRateValue.setText(endTime);
+                    nickName = message.getStringAttribute("nickName", "");
                     mTvSignTimeValue.setText(nickName);
                     tv_patient_class_vlaue.setText(surplusTimes);
                 } else {
@@ -485,6 +494,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                     //赋值
                     mTvMonitValue.setText(receiveTime);
                     //接诊医生
+                    nickName = message.getStringAttribute("nickName", "");
                     mTvCoachRateValue.setText(nickName);
                     mTvSignTimeValue.setText(surplusTimes);
                 }

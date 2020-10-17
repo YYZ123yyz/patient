@@ -230,6 +230,16 @@ public class MessageActivity extends AbstractMvpBaseActivity<MessageContract.Vie
                 messageRecy.setAdapter(messageListAdapter);
             }
     }
+    //提交成功
+    @Override
+    public void getMessageCommitSucess(String msg) {
+
+    }
+    //提交失败
+    @Override
+    public void getMessageCommitError(String msg) {
+
+    }
 
     @Override
     public void showLoading(int code) {
