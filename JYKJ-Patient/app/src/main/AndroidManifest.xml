@@ -374,7 +374,15 @@
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 首页=》》 我的医生 == 》更多 -->
         <activity
             android:name=".activity.home.patient.WDYSActivity"
-            android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 取消预约 -->
+            android:windowSoftInputMode="stateHidden|stateUnchanged" >
+
+        <intent-filter>
+            <action android:name="android.intent.action.Mydoc" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+        </activity>
+        <!-- 取消预约 -->
         <activity
             android:name=".myappointment.activity.CancelAppointmentActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 首页=》》 我的医生 == 》就诊记录列表 -->

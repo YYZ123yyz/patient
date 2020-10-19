@@ -36,6 +36,7 @@ import www.patient.jykj_zxyl.base.base_bean.OrderMessage;
 import www.patient.jykj_zxyl.base.base_bean.ProvideViewSysUserPatientInfoAndRegion;
 import www.patient.jykj_zxyl.base.base_bean.UpdateOrderResultBean;
 import www.patient.jykj_zxyl.base.base_manager.OrderOperationManager;
+import www.patient.jykj_zxyl.base.base_utils.DateUtils;
 import www.patient.jykj_zxyl.base.base_utils.GsonUtils;
 import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 import www.patient.jykj_zxyl.base.base_utils.SharedPreferences_DataSave;
@@ -279,6 +280,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
         endTime = message.getStringAttribute("endTime", "");
         //病历签约类型
         patientType = message.getStringAttribute("patientType", "");
+
         //病历操作状态
         opStatus = message.getStringAttribute("opStatus", "");
         //病历
@@ -371,6 +373,9 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 tv_monitor_type.setText("预约时间");
                 tv_coach_rate.setText("取消时间");
                 tv_sign_time.setText("预约项目");
+                if (startTime.contains("/")){
+                   startTime = startTime.replace("/", "-");
+                }
                 mTvMonitValue.setText(startTime);
                 mTvCoachRateValue.setText(cancelTime);
                 mTvSignTimeValue.setText(appointMentProject);

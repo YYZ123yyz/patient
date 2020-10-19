@@ -77,6 +77,7 @@ import www.patient.jykj_zxyl.myappointment.bean.InquiryBean;
 import www.patient.jykj_zxyl.presenter.InquiryPresenter;
 import www.patient.jykj_zxyl.presenter.MedicalRecordPresenter;
 import www.patient.jykj_zxyl.util.BitmapUtil;
+import www.patient.jykj_zxyl.util.DateTimeUtils;
 import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
 
 import www.patient.jykj_zxyl.util.Util;
@@ -713,6 +714,11 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
         patientName.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
         patientNum.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
 //            birthday.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getAddress());
+        if (mApp.mProvideViewSysUserPatientInfoAndRegion.getBirthday() !=null){
+            String s = DateUtils.fomrDateSeflFormat(mApp.mProvideViewSysUserPatientInfoAndRegion.getBirthday(), "yyyy-MM-dd");
+            birthday.setText(String.valueOf(www.patient.jykj_zxyl.util.DateUtils.getAgeFromBirthTime(s)));
+        }
+
         switch (mApp.mProvideViewSysUserPatientInfoAndRegion.getGender()) {
             case 0:
             case 1:
@@ -818,6 +824,9 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
 
             patientName.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
             patientNum.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
+
+            String s = DateUtils.fomrDateSeflFormat(mApp.mProvideViewSysUserPatientInfoAndRegion.getBirthday(), "yyyy-MM-dd");
+            birthday.setText(www.patient.jykj_zxyl.util.DateUtils.getAgeFromBirthTime(s ));
 //            birthday.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getAddress());
             switch (mApp.mProvideViewSysUserPatientInfoAndRegion.getGender()) {
                 case 0:

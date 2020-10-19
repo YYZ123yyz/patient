@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -124,9 +125,27 @@ public class FragmentMySelf extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        LogUtils.e("onHiddenChanged "+mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+
+        try {
+            int avatarResId = Integer.parseInt(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
+            Glide.with(mContext).load(avatarResId).into(iv_fragmentMyself_userHeadImage);
+        } catch (Exception e) {
+            //use default avatar
+            Glide.with(mContext).load(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl())
+                    .apply(RequestOptions.placeholderOf(com.hyphenate.easeui.R.mipmap.docter_heard)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(iv_fragmentMyself_userHeadImage);
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         try {
+            LogUtils.e("onResume"+mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
             int avatarResId = Integer.parseInt(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserLogoUrl());
             Glide.with(mContext).load(avatarResId).into(iv_fragmentMyself_userHeadImage);
         } catch (Exception e) {

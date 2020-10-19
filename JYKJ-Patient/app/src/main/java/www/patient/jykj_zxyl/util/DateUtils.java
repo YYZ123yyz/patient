@@ -243,7 +243,7 @@ public class DateUtils {
     public static String getDeviceTime() {
         String date = "";
         try {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             date = df.format(new Date());
         } catch (Exception e) {
             e.printStackTrace();

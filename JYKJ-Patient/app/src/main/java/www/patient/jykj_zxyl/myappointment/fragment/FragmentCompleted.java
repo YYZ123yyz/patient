@@ -37,7 +37,7 @@ import www.patient.jykj_zxyl.myappointment.adapter.Fragment_VisitingAdapter;
 /**
  * 已完成列表
  */
-public class FragmentCompleted  extends AbstractMvpBaseFragment<ReservationListContract.View,
+public class FragmentCompleted extends AbstractMvpBaseFragment<ReservationListContract.View,
         ResevationListPresenter> implements ReservationListContract.View {
     Unbinder unbinder;
     private Context mContext;
@@ -79,12 +79,15 @@ public class FragmentCompleted  extends AbstractMvpBaseFragment<ReservationListC
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.sendMyReservationListRequest(mApp.loginDoctorPosition,mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),"0","10","1");
+        mPresenter.sendMyReservationListRequest(mApp.loginDoctorPosition, mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), "0", "10", "1");
     }
 
     @Override
     public void getMyReservationListResult(List<MyReservationListBean> myReservationListBeans) {
-        if(myReservationListBeans!=null){
+        if (myReservationListBeans != null) {
+            if (myresetvation != null && myresetvation.size() != 0) {
+                myresetvation.clear();
+            }
             myresetvation.addAll(myReservationListBeans);
             fragment_completedAdapter = new Fragment_CompletedAdapter(myresetvation, getContext());
             rvNo.setAdapter(fragment_completedAdapter);
@@ -115,7 +118,7 @@ public class FragmentCompleted  extends AbstractMvpBaseFragment<ReservationListC
             public void onClick(int position) {
                 String reserveCode = myresetvation.get(position).getReserveCode();
                 Intent intent = new Intent(getContext(), WDYS_JZJL_CFQActivity.class);
-                intent.putExtra("orderCode",reserveCode);
+                intent.putExtra("orderCode", reserveCode);
                 startActivity(intent);
             }
 
@@ -141,9 +144,9 @@ public class FragmentCompleted  extends AbstractMvpBaseFragment<ReservationListC
             @Override
             public void onClick(int position) {
                 Bundle bundle = new Bundle();
-                bundle.putString("orderCode",myresetvation.get(position).getOrderCode());
-                bundle.putString("treatmentType",myresetvation.get(position).getTreatmentType()+"");
-                startActivity(MessageActivity.class,bundle);
+                bundle.putString("orderCode", myresetvation.get(position).getOrderCode());
+                bundle.putString("treatmentType", myresetvation.get(position).getTreatmentType() + "");
+                startActivity(MessageActivity.class, bundle);
             }
         });
     }
