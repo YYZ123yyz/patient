@@ -59,7 +59,7 @@ public class InquiryPresenter extends BasePresenterImpl<InquiryContract.View> im
                             mView.hasData(orderDetialBean);
                         }
                     }else {
-//                        mView.getDataFailure(baseBean.getResMsg());
+                        mView.hasNoData();
                     }
                 }
 

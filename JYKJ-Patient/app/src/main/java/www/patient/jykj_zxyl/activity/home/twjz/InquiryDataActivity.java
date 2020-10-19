@@ -136,8 +136,8 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
     private ImageViewRecycleAdapter mImageViewRecycleAdapter;
     private File mTempFile;
     private String orderCode;
-  /*  private String operPatientCode;
-    private String operPatientName;*/
+    /*  private String operPatientCode;
+      private String operPatientName;*/
     private ProvideInteractPatientInterrogationParment mProvideInteractPatientInterrogationParment = new ProvideInteractPatientInterrogationParment();
     private boolean isUpdata = false;
     private String treatmentType;
@@ -549,7 +549,7 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
 
     private void demoSubmitData(String s) {
 
-        OkHttpClient  client = new OkHttpClient.Builder()
+        OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(40, TimeUnit.SECONDS)
                 .writeTimeout(40, TimeUnit.SECONDS)
                 .readTimeout(40, TimeUnit.SECONDS)
@@ -710,19 +710,31 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
     @Override
     public void hasNoData() {
         isUpdata = false;
-
+        patientName.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+        patientNum.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
+//            birthday.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getAddress());
+        switch (mApp.mProvideViewSysUserPatientInfoAndRegion.getGender()) {
+            case 0:
+            case 1:
+                manChoose.setChecked(true);
+                break;
+            case 2:
+                womenChoose.setChecked(true);
+                break;
+        }
     }
 
     @Override
     public void hasData(InquiryBean bean) {
-        if(bean!=null){
+        if (bean != null) {
             isUpdata = true;
             imgCode = bean.getImgCode();
-            patientName.setText(bean.getPatientName());
-            patientNum.setText(bean.getPatientLinkPhone());
+            patientName.setText(TextUtils.isEmpty(bean.getPatientName()) ? mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName() : bean.getPatientName());
+            patientNum.setText(TextUtils.isEmpty(bean.getPatientLinkPhone()) ?mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone(): bean.getPatientLinkPhone());
 
             if (bean.getFlagOperState() == 0) { //可以修改
                 tvCommit.setVisibility(View.VISIBLE);
+
             } else { //不可操作
                 patientName.setFocusable(false);
                 patientNum.setFocusable(false);
@@ -802,7 +814,21 @@ public class InquiryDataActivity extends AbstractMvpBaseActivity<InquiryContract
 
 
         }
+        else {
 
+            patientName.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
+            patientNum.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone());
+//            birthday.setText(mApp.mProvideViewSysUserPatientInfoAndRegion.getAddress());
+            switch (mApp.mProvideViewSysUserPatientInfoAndRegion.getGender()) {
+                case 0:
+                case 1:
+                    manChoose.setChecked(true);
+                    break;
+                case 2:
+                    womenChoose.setChecked(true);
+                    break;
+            }
+        }
     }
 
     @Override

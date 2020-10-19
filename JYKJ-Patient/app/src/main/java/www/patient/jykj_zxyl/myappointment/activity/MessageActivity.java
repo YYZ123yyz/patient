@@ -3,6 +3,8 @@ package www.patient.jykj_zxyl.myappointment.activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,7 +22,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +40,7 @@ import www.patient.jykj_zxyl.adapter.MessageListAdapter;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.ImageViewRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
 import www.patient.jykj_zxyl.myappointment.Contract.MessageContract;
 import www.patient.jykj_zxyl.myappointment.Presenter.MessagePrezenter;
@@ -42,7 +49,7 @@ import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.BitmapUtil;
 import www.patient.jykj_zxyl.util.DateUtils;
 import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
-import www.patient.jykj_zxyl.util.ToastUtils;
+
 
 /**
  * 我的医生 == 》 就诊记录 ==》 诊后留言
@@ -125,7 +132,7 @@ public class MessageActivity extends AbstractMvpBaseActivity<MessageContract.Vie
             public void onClick(final int position) {
 
                 if ("ADDPHOTO".equals(mPhotoInfos.get(position).getPhotoID())) {
-                    if (mPhotoInfos.size() >= 4) {
+                    if (mPhotoInfos.size() >= 6) {
                         Toast.makeText(MessageActivity.this, "照片不超过五张", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -205,10 +212,32 @@ public class MessageActivity extends AbstractMvpBaseActivity<MessageContract.Vie
     private void commitData() {
         String s = content.getText().toString();
         if (TextUtils.isEmpty(s)) {
-            ToastUtils.showToast("请输入留言内容");
+            ToastUtils.showShort("请输入留言内容");
             return;
         }
-        mPresenter.getMessageCommitRequest(mApp.loginDoctorPosition, "1", mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode(), mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName(), "0", "", orderCode, treatmentType, mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone(), content.getText().toString(), "", "");
+        StringBuilder photoUrl = new StringBuilder();
+        if (mPhotoInfos.size() > 1) {
+            photoUrl.append("data:image/jpg;base64,");
+            for (int i = 1; i < mPhotoInfos.size(); i++) {
+
+
+                if (mPhotoInfos.get(i) != null) {
+                    String photo = mPhotoInfos.get(i).getPhoto();
+                    if (i == mPhotoInfos.size() - 1) {
+                        photoUrl.append(photo);
+                    } else {
+                        photoUrl.append(photo).append("^");
+                    }
+
+                }
+
+                LogUtils.e("图片path  44  " + photoUrl.toString());
+            }
+
+
+        }
+
+        mPresenter.getMessageCommitRequest(mApp.loginDoctorPosition, "1", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), "0", "", orderCode, treatmentType, mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone(), content.getText().toString(), "", photoUrl.toString());
     }
         //诊后留言详情
     @Override
@@ -239,13 +268,14 @@ public class MessageActivity extends AbstractMvpBaseActivity<MessageContract.Vie
     //提交成功
     @Override
     public void getMessageCommitSucess(String msg) {
-        ToastUtils.showToast(msg);
+        ToastUtils.showShort(msg);
+        finish();
     }
 
     //提交失败
     @Override
     public void getMessageCommitError(String msg) {
-        ToastUtils.showToast(msg);
+        ToastUtils.showShort(msg);
     }
 
 
@@ -269,5 +299,66 @@ public class MessageActivity extends AbstractMvpBaseActivity<MessageContract.Vie
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onActivityResult(
+            int requestCode,  // 请求码 自定义
+            int resultCode,  // 结果码 成功 -1 == OK
+            Intent data) { // 数据 ? 可以没有
+        try {
+
+            // 如果是直接从相册获取
+            if (requestCode == Constant.SELECT_PIC_FROM_ALBUM
+                    && resultCode == RESULT_OK
+                    && data != null) {
+
+                final Uri uri = data.getData();//返回相册图片的Uri
+                String path = uri.getPath();
+                String encodedPath = uri.getEncodedPath();
+
+                BitmapUtil.startPhotoZoom(MessageActivity.this, uri, 450);
+//                setPicToView(data);
+            }
+
+            // 处理拍照返回
+            if (requestCode == Constant.SELECT_PIC_BY_TACK_PHOTO
+                    && resultCode == RESULT_OK) {// 拍照成功 RESULT_OK= -1
+                // 剪裁图片
+                BitmapUtil.startPhotoZoom(MessageActivity.this, Uri.fromFile(mTempFile), 450);
+//                setPicToView(data);
+            }
+            // 接收剪裁回来的结果
+            if (requestCode == Constant.REQUEST_PHOTO_CUT
+                    && resultCode == RESULT_OK) {// 剪裁加工成功
+                //让剪裁结果显示到图片框
+                setPicToView(data);
+            }
+        } catch (Exception e) {
+            Log.i("yi", "yichahahaha");
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    public void setPicToView(Intent data) {
+        Bitmap photo;
+        try {
+            Uri u = data.getData();
+            if (u != null) {
+                photo = BitmapFactory.decodeStream(getContentResolver().openInputStream(data.getData()));//将imageUri对象的图片加载到内存
+            } else {
+                photo = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "test.jpg"))));//将imageUri对象的图片加载到内存
+            }
+
+            Photo_Info photo_info = new Photo_Info();
+            photo_info.setPhoto(BitmapUtil.bitmaptoString(photo));
+            mPhotoInfos.add(photo_info);
+            mImageViewRecycleAdapter.setDate(mPhotoInfos);
+            mImageViewRecycleAdapter.notifyDataSetChanged();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

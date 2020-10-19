@@ -25,7 +25,7 @@ public class ProvideViewSysUserPatientInfoAndRegion implements java.io.Serializa
 	private String userLogoUrl;//用户头像
 	private String idNumber;//身份证号
 	private String nativePlace;//籍贯
-	private Integer gender;//性别.0:未知;1:男;2:女;
+	private int gender;//性别.0:未知;1:男;2:女;
 	private Date birthday;//生日
 	private String country;//用户所在国家
 	private String province;//用户所在省份
@@ -316,11 +316,11 @@ public class ProvideViewSysUserPatientInfoAndRegion implements java.io.Serializa
 		this.nativePlace = nativePlace;
 	}
 
-	public Integer getGender() {
+	public int getGender() {
 		return gender;
 	}
 
-	public void setGender(Integer gender) {
+	public void setGender(int gender) {
 		this.gender = gender;
 	}
 
