@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-
+import com.github.promeg.pinyinhelper.Pinyin;
 import com.hyphenate.easeui.utils.ActivityUtil;
 import com.hyphenate.util.HanziToPinyin;
 
@@ -25,6 +25,7 @@ import butterknife.OnClick;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.patient.TJZJActivity;
 import www.patient.jykj_zxyl.base.base_bean.AllDepartmentBean;
+import www.patient.jykj_zxyl.base.base_utils.LetterComparatorUtil;
 import www.patient.jykj_zxyl.base.base_view.WaveSideBar;
 import www.patient.jykj_zxyl.base.http.RetrofitUtil;
 import www.patient.jykj_zxyl.base.mvp.AbstractMvpBaseActivity;
@@ -48,6 +49,7 @@ public class AllDepartmentsActivity extends AbstractMvpBaseActivity<AllDepartmen
     @BindView(R.id.hot_dep)
     RecyclerView hotDepRecycleview;
     private List<AllDepartmentBean.HospitalDepartmentListBean> hospitalDepartmentList;
+    private LetterComparatorUtil pinyinComparator;
 
     @Override
     protected int setLayoutId() {
@@ -76,6 +78,7 @@ public class AllDepartmentsActivity extends AbstractMvpBaseActivity<AllDepartmen
     protected void initData() {
         super.initData();
         hospitalDepartmentList = new ArrayList<>();
+        pinyinComparator = new LetterComparatorUtil();
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("loginPatientPosition", "108.93425^34.23053");
         paramMap.put("requestClientType", "1");
@@ -100,11 +103,11 @@ public class AllDepartmentsActivity extends AbstractMvpBaseActivity<AllDepartmen
     @Override
     public void getAlldetmentsSucess(List<AllDepartmentBean.HospitalDepartmentListBean> departments) {
         for (int i = 0; i < departments.size(); i++) {
-        /*    String firstLetter = (Pinyin.toPinyin(departments.get(i).getDepartmentName().charAt(0))).substring(0, 1);
-            departments.get(i).setIndex(firstLetter);*/
+            String firstLetter = (Pinyin.toPinyin(departments.get(i).getDepartmentName().charAt(0))).substring(0, 1);
+            departments.get(i).setIndex(firstLetter);
 
         }
-     //   Collections.sort(departments, pinyinComparator);
+        Collections.sort(departments, pinyinComparator);
         hospitalDepartmentList = departments;
         AllDepartmentAdapter allDepartmentAdapter = new AllDepartmentAdapter(R.layout.item_all_departments, hospitalDepartmentList);
         allDepartmentAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
