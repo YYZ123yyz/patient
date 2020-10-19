@@ -461,9 +461,16 @@
         <activity
             android:name=".activity.patient_home.KSWYSActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
+        <!--订单详情-->
         <activity
             android:name=".activity.home.OrderMessage_OrderPayActivity"
-            android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 我的识别码 == 》 分享 -->
+            android:windowSoftInputMode="stateHidden|stateUnchanged">
+            <intent-filter>
+                <action android:name="android.intent.action.Med" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity> <!-- 我的识别码 == 》 分享 -->
         <activity
             android:name=".FXActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 身份证拍照页面 -->

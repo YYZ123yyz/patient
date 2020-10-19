@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.ToastUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import www.patient.jykj_zxyl.R;
@@ -34,6 +36,7 @@ public class FragmentVisiting extends AbstractMvpBaseFragment <ReservationListCo
     private RecyclerView rvNo;
     private String reserveStatus;
     private String reserveCode;
+    private List<MyReservationListBean> list;
 
 
     @Override
@@ -44,6 +47,7 @@ public class FragmentVisiting extends AbstractMvpBaseFragment <ReservationListCo
     @Override
     protected void initView(View view) {
         super.initView(view);
+        list = new ArrayList<>();
         mApp = (JYKJApplication) getActivity().getApplication();
         rvNo = view.findViewById(R.id.rv_no);
         //创建默认的线性LayoutManager
@@ -63,13 +67,15 @@ public class FragmentVisiting extends AbstractMvpBaseFragment <ReservationListCo
     @Override
     public void onResume() {
         super.onResume();
+        list.clear();
         mPresenter.sendMyReservationListRequest(mApp.loginDoctorPosition,mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),"1","10","1");
     }
 
     @Override
     public void getMyReservationListResult(List<MyReservationListBean> myReservationListBeans) {
            if(myReservationListBeans!=null){
-               fragment_visitingAdapter = new Fragment_VisitingAdapter(myReservationListBeans, getContext());
+               list.addAll(myReservationListBeans);
+               fragment_visitingAdapter = new Fragment_VisitingAdapter(list, getContext());
                rvNo.setAdapter(fragment_visitingAdapter);
 
                for (MyReservationListBean myReservationListBean : myReservationListBeans) {
@@ -107,7 +113,7 @@ public class FragmentVisiting extends AbstractMvpBaseFragment <ReservationListCo
                                //订单编号
                                bundle.putString("SignCode",myReservationListBeans.get(position).getReserveCode());
                                long reserveConfigStart = myReservationListBeans.get(position).getReserveConfigStart();
-                               String s = DateUtils.stampToDate(reserveConfigStart);
+                               String s = DateUtils.getStringTimeOfSSS(reserveConfigStart);
                                //预约时间
                                bundle.putString("Appointment",s);
                                //结束时间
@@ -149,7 +155,7 @@ public class FragmentVisiting extends AbstractMvpBaseFragment <ReservationListCo
                    @Override
                    public void onClick(int position) {
                        if (myReservationListBeans.get(position).getIsGenerateMedicalRecord() ==1){
-                           String reserveCode = myReservationListBeans.get(position).getReserveCode();
+                           String reserveCode = myReservationListBeans.get(position).getOrderCode();
                            Intent intent = new Intent(getContext(), MedicalRecordActivity.class);
                            intent.putExtra("reserveCode",reserveCode);
                            startActivity(intent);

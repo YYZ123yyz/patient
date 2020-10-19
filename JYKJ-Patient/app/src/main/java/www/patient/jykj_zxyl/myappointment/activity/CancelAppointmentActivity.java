@@ -94,9 +94,9 @@ public class CancelAppointmentActivity extends AbstractMvpBaseActivity<Reservati
             doctorCode = extras.getString("doctorCode");
             doctorUrl = extras.getString("doctorUrl");
             signCode = extras.getString("SignCode");
-//        //预约时间
+            //预约时间
             appointment = extras.getString("Appointment");
-//        //结束时间
+            //结束时间
             endTime = extras.getString("endTime");
             //预约项目
             aClass = extras.getString("class");
