@@ -142,6 +142,7 @@ public class FragmentCompleted  extends AbstractMvpBaseFragment<ReservationListC
             public void onClick(int position) {
                 Bundle bundle = new Bundle();
                 bundle.putString("orderCode",myresetvation.get(position).getOrderCode());
+                bundle.putString("treatmentType",myresetvation.get(position).getTreatmentType()+"");
                 startActivity(MessageActivity.class,bundle);
             }
         });

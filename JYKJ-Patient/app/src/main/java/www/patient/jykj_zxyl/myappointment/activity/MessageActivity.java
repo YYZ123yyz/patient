@@ -42,6 +42,7 @@ import www.patient.jykj_zxyl.util.ActivityUtil;
 import www.patient.jykj_zxyl.util.BitmapUtil;
 import www.patient.jykj_zxyl.util.DateUtils;
 import www.patient.jykj_zxyl.util.FullyGridLayoutManager;
+import www.patient.jykj_zxyl.util.ToastUtils;
 
 /**
  * 我的医生 == 》 就诊记录 ==》 诊后留言
@@ -82,9 +83,10 @@ public class MessageActivity extends AbstractMvpBaseActivity<MessageContract.Vie
     private JYKJApplication mApp;
     private ArrayList<String> updataArrList = new ArrayList<String>();
     private String orderCode;
-  private   List<ViewInteractPatientMessageBean.InteractPatientMessageActiveListBean> list=new ArrayList<>();
+    private List<ViewInteractPatientMessageBean.InteractPatientMessageActiveListBean> list = new ArrayList<>();
     private MessageListAdapter messageListAdapter;
     private LinearLayoutManager linearLayoutManager;
+    private String treatmentType;
 
     @Override
     protected int setLayoutId() {
@@ -94,16 +96,17 @@ public class MessageActivity extends AbstractMvpBaseActivity<MessageContract.Vie
     @Override
     protected void initData() {
         super.initData();
-      mPresenter.getMessageRequest(mApp.loginDoctorPosition,"1",mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),orderCode);
+        mPresenter.getMessageRequest(mApp.loginDoctorPosition, "1", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), orderCode);
     }
 
     @Override
     protected void initView() {
         super.initView();
         ActivityUtil.setStatusBarMain(this);
-        Bundle bundle=getIntent().getExtras();
-        if(bundle!=null){
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
             orderCode = bundle.getString("orderCode");
+            treatmentType = bundle.getString("treatmentType");
         }
         initDir();
         mApp = (JYKJApplication) this.getApplication();
@@ -188,68 +191,63 @@ public class MessageActivity extends AbstractMvpBaseActivity<MessageContract.Vie
         linearLayoutManager = new LinearLayoutManager(this);
         messageRecy.setLayoutManager(linearLayoutManager);
     }
+
     @OnClick({R.id.tv_commit})
-    public void onClick(View view){
-           switch (view.getId()){
-               case R.id.tv_commit:
-                   commitData();
-                   break;
-           }
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_commit:
+                commitData();
+                break;
+        }
     }
 
     //提交或者修改
     private void commitData() {
-
+        String s = content.getText().toString();
+        if (TextUtils.isEmpty(s)) {
+            ToastUtils.showToast("请输入留言内容");
+            return;
+        }
+        mPresenter.getMessageCommitRequest(mApp.loginDoctorPosition, "1", mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientCode(), mApp.mProvideViewSysUserPatientInfoAndRegion.getOperPatientName(), "0", "", orderCode, treatmentType, mApp.mProvideViewSysUserPatientInfoAndRegion.getLinkPhone(), content.getText().toString(), "", "");
     }
-
+        //诊后留言详情
     @Override
     public void getMessageSucess(ViewInteractPatientMessageBean viewInteractPatientMessageBeans) {
-            if(viewInteractPatientMessageBeans!=null){
-                //类型
-                tvMsgType.setText(viewInteractPatientMessageBeans.getTreatmentTypeName());
-                //日期
-               /* String orderCode = viewInteractPatientMessageBeans.getOrderCode();
-                if(!TextUtils.isEmpty(orderCode)){
-                    DateUtils
-                }*/
-                String patientLinkPhone = viewInteractPatientMessageBeans.getPatientLinkPhone();
-                if(TextUtils.isEmpty(patientLinkPhone)){
-                    tvLinkPhone.setText("联系电话：");
-                }else{
-                    tvLinkPhone.setText("联系电话："+viewInteractPatientMessageBeans.getPatientLinkPhone());
+        if (viewInteractPatientMessageBeans != null) {
+            //类型
+            tvMsgType.setText(viewInteractPatientMessageBeans.getTreatmentTypeName());
 
-                }
-                //回复内容  content
+            String patientLinkPhone = viewInteractPatientMessageBeans.getPatientLinkPhone();
+            if (TextUtils.isEmpty(patientLinkPhone)) {
+                tvLinkPhone.setText("联系电话：");
+            } else {
+                tvLinkPhone.setText("联系电话：" + viewInteractPatientMessageBeans.getPatientLinkPhone());
 
-                //医生回复消息列表
-                List<ViewInteractPatientMessageBean.InteractPatientMessageActiveListBean> interactPatientMessageActiveList = viewInteractPatientMessageBeans.getInteractPatientMessageActiveList();
-                for (ViewInteractPatientMessageBean.InteractPatientMessageActiveListBean interactPatientMessageActiveListBean : interactPatientMessageActiveList) {
-                    list.add(interactPatientMessageActiveListBean);
-                }
-                messageListAdapter = new MessageListAdapter(list);
-                messageRecy.setAdapter(messageListAdapter);
             }
+            //回复内容  content
+
+            //医生回复消息列表
+            List<ViewInteractPatientMessageBean.InteractPatientMessageActiveListBean> interactPatientMessageActiveList = viewInteractPatientMessageBeans.getInteractPatientMessageActiveList();
+            for (ViewInteractPatientMessageBean.InteractPatientMessageActiveListBean interactPatientMessageActiveListBean : interactPatientMessageActiveList) {
+                list.add(interactPatientMessageActiveListBean);
+            }
+            messageListAdapter = new MessageListAdapter(list);
+            messageRecy.setAdapter(messageListAdapter);
+        }
     }
+
     //提交成功
     @Override
     public void getMessageCommitSucess(String msg) {
-
+        ToastUtils.showToast(msg);
     }
+
     //提交失败
     @Override
     public void getMessageCommitError(String msg) {
-
+        ToastUtils.showToast(msg);
     }
 
-    @Override
-    public void getMessageCommitSucess(String msg) {
-
-    }
-
-    @Override
-    public void getMessageCommitError(String msg) {
-
-    }
 
     @Override
     public void showLoading(int code) {
