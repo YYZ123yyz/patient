@@ -133,7 +133,7 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
         {
             mApp.gPayCloseActivity.get(i).finish();
         }
-        startActivity(new Intent(WXPayEntryActivity.this, MyAppointmentActivity.class));
+        startActivity(new Intent(WXPayEntryActivity.this, WDYSActivity.class));
         finish();
     }
 

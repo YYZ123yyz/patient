@@ -169,17 +169,20 @@ public class ResevationPresenter extends BasePresenterImpl<ReservationContract.V
                     if(resCode==1){
                         String resJsonData = baseBean.getResJsonData();
                         ReservePatientCommitBean reservePatientCommitBean = GsonUtils.fromJson(resJsonData, ReservePatientCommitBean.class);
-                        String status = reservePatientCommitBean.getStatus();
-                        if (StringUtils.isNotEmpty(status)) {
-                            if (status.equals("1")) {
-                                mView.getReservationCommitConfimResult(reservePatientCommitBean.getConfim(),reservePatientCommitBean.getMessage());
-                            }else if(status.equals("2")){
-                                mView.getReservationCommitIdCardCheckResult(reservePatientCommitBean.getMessage());
+                        if (reservePatientCommitBean.getStatus() !=null){
+                            String status = reservePatientCommitBean.getStatus();
+                            if (StringUtils.isNotEmpty(status)) {
+                                if (status.equals("1")) {
+                                    mView.getReservationCommitConfimResult(reservePatientCommitBean.getConfim(),reservePatientCommitBean.getMessage());
+                                }else if(status.equals("2")){
+                                    mView.getReservationCommitIdCardCheckResult(reservePatientCommitBean.getMessage());
+                                }
+                                else if(status.equals("3")){
+                                    mView.getReservationunpaidResultError(reservePatientCommitBean);
+                                }
                             }
-                            else if(status.equals("3")){
-                            mView.getReservationunpaidResultError(reservePatientCommitBean);
-                            }
-                        }else{
+                        }
+                        else{
                             mView.getReservationCommitResult(reservePatientCommitBean);
                         }
 

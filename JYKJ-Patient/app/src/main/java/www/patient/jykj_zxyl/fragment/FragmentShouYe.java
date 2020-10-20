@@ -113,6 +113,7 @@ import www.patient.jykj_zxyl.myappointment.activity.MedicalRecordActivity;
 import www.patient.jykj_zxyl.myappointment.activity.MyAppointmentActivity;
 import www.patient.jykj_zxyl.myappointment.activity.UniversalWebActivity;
 import www.patient.jykj_zxyl.myappointment.adapter.HotDepAdapter;
+import www.patient.jykj_zxyl.myappointment.dialog.MessageOnlineDialog;
 import www.patient.jykj_zxyl.util.StrUtils;
 import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.R;
@@ -262,6 +263,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
     private TextView my_medicalrecord;
     private List imgs;
     private RecyclerView hotDepRecycleview;
+    private MessageOnlineDialog messageOnlineDialog;
 
 
     @SuppressLint("ResourceAsColor")
@@ -783,7 +785,7 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         });
 
         imgs = new ArrayList<>();
-
+        messageOnlineDialog = new MessageOnlineDialog(mContext);
         imgs.add(getStringFromDrawableRes(getContext(), R.mipmap.live_image));
         imgs.add(getStringFromDrawableRes(getContext(), R.mipmap.tu));
         imgs.add(getStringFromDrawableRes(getContext(), R.mipmap.live_image));
@@ -847,7 +849,18 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
                 clickState = 1;
             }
         });
-
+        view.findViewById(R.id.more_infomation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                messageOnlineDialog.show();
+            }
+        });
+        view.findViewById(R.id.lin_information).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                messageOnlineDialog.show();
+            }
+        });
         mBloodEntry = view.findViewById(R.id.tv_blood_entry);
         llBloodRecord = view.findViewById(R.id.ll_blood_record);
 

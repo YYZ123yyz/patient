@@ -15,6 +15,7 @@ import www.patient.jykj_zxyl.base.base_bean.OrderDetialBean;
 import www.patient.jykj_zxyl.base.base_bean.SignOrderInfoBean;
 import www.patient.jykj_zxyl.base.base_bean.UserInfoBaseBean;
 import www.patient.jykj_zxyl.base.base_utils.GsonUtils;
+import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 import www.patient.jykj_zxyl.base.base_utils.StringUtils;
 import www.patient.jykj_zxyl.base.http.ApiHelper;
 import www.patient.jykj_zxyl.base.http.CommonDataObserver;
@@ -224,8 +225,9 @@ public class CancelConfirmDetialContractPresenter extends BasePresenterImpl<Canc
                     if (resCode == 1) {
                         String resJsonData = baseBean.getResJsonData();
                         if (StringUtils.isNotEmpty(resJsonData)) {
+                            LogUtils.e("拒绝解约详情 xxx  "+resJsonData);
                             OrderDetialBean orderDetialBean = GsonUtils.fromJson(resJsonData, OrderDetialBean.class);
-
+                            LogUtils.e("拒绝解约详情  "+orderDetialBean.toString());
                             mView.getDetSucess(orderDetialBean);
                         }
                     }else if(resCode==0){

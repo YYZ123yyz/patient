@@ -10,13 +10,14 @@
 
 
     </include>
+
     <RelativeLayout
+        android:id="@+id/rl_content_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/item_title"
-        android:layout_marginBottom="54dp"
-        android:id="@+id/rl_content_root"
-        >
+        android:layout_marginBottom="54dp">
+
         <LinearLayout
             android:id="@+id/ll_top_root"
             android:layout_width="match_parent"
@@ -46,13 +47,13 @@
                 </TextView>
 
                 <TextView
+                    android:id="@+id/tv_cancel_contract_reason"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
                     android:text="解约原因"
-                    android:id="@+id/tv_cancel_contract_reason"
                     android:textColor="@color/color_999999"
                     android:textSize="14sp">
 
@@ -94,6 +95,7 @@
 
 
             <TextView
+                android:id="@+id/tv_cancel_contract_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="23.5dp"
@@ -106,22 +108,116 @@
                 android:paddingEnd="16dp"
                 android:paddingBottom="18dp"
                 android:text="sdfs"
-                android:id="@+id/tv_cancel_contract_desc"
                 android:textColor="@color/color_333333"
                 android:textSize="14sp">
 
 
             </TextView>
 
+
+            <LinearLayout
+                android:id="@+id/lin_refuse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="14dp"
+                    android:background="@color/color_f6f6f6" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_refuse_contract"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:text="拒绝原因"
+                        android:textColor="@color/color_000000"
+                        android:textSize="15sp"
+
+                        >
+
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/tv_cancel_refuse_reason"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:text="拒绝原因"
+                        android:textColor="@color/color_999999"
+                        android:textSize="14sp">
+
+
+                    </TextView>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/rl_refuse_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/tv_refuse_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="17dp"
+                        android:layout_marginBottom="17dp"
+
+                        android:text="拒绝描述"
+                        android:textColor="@color/color_000000"
+                        android:textSize="15sp"
+
+                        >
+
+
+                    </TextView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_refuse_contract_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="23.5dp"
+                    android:layout_marginEnd="23.5dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/bg_round_ececec_8"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingTop="18dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="18dp"
+                    android:text="sdfs"
+                    android:textColor="@color/color_333333"
+                    android:textSize="14sp">
+
+
+                </TextView>
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_content_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_top_root"
             android:layout_marginTop="14.5dp"
             android:background="@color/white"
-            android:id="@+id/ll_content_root"
             android:orientation="vertical">
 
             <TextView
@@ -167,13 +263,13 @@
                     </TextView>
 
                     <TextView
+                        android:id="@+id/tv_sign_start_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="18dp"
                         android:text="2020/05/10 8:00"
-                        android:id="@+id/tv_sign_start_time"
                         android:textColor="@color/color_999999"
                         android:textSize="15sp">
 
@@ -209,11 +305,11 @@
                     </TextView>
 
                     <TextView
+                        android:id="@+id/tv_monitor_type_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:text="三项"
-                        android:id="@+id/tv_monitor_type_value"
                         android:textColor="@color/color_999999">
 
 
@@ -281,6 +377,7 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/tv_sign_order_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -288,7 +385,6 @@
                     android:layout_marginEnd="18dp"
                     android:layout_marginBottom="10dp"
                     android:text="99.00"
-                    android:id="@+id/tv_sign_order_price"
                     android:textColor="@color/color_F14646"
                     android:textSize="14sp">
 
@@ -296,12 +392,12 @@
                 </TextView>
             </LinearLayout>
         </LinearLayout>
+
         <RelativeLayout
+            android:id="@+id/ll_oper_buttom_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/ll_oper_buttom_root"
-           >
+            android:layout_alignParentBottom="true">
 
             <TextView
                 android:id="@+id/tv_refuse_btn"
@@ -341,8 +437,6 @@
         </RelativeLayout>
 
     </RelativeLayout>
-
-
 
 
 </RelativeLayout>

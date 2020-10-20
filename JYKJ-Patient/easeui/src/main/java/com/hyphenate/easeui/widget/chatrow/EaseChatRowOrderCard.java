@@ -3,12 +3,9 @@ package com.hyphenate.easeui.widget.chatrow;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -17,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.allen.library.utils.ToastUtils;
-import com.google.gson.Gson;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.order.AncelAppActivity;
@@ -25,7 +21,6 @@ import com.hyphenate.easeui.order.CancelConfirmDeitalActivity;
 import com.hyphenate.easeui.order.RefusedCancelContractActivity;
 import com.hyphenate.easeui.order.RefusedOrderActivity;
 import com.hyphenate.easeui.order.SignOrderDetialActivity;
-import com.hyphenate.easeui.ui.WZXXActivity;
 import com.hyphenate.easeui.widget.EaseImageView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,7 +31,6 @@ import www.patient.jykj_zxyl.base.base_bean.OrderMessage;
 import www.patient.jykj_zxyl.base.base_bean.ProvideViewSysUserPatientInfoAndRegion;
 import www.patient.jykj_zxyl.base.base_bean.UpdateOrderResultBean;
 import www.patient.jykj_zxyl.base.base_manager.OrderOperationManager;
-import www.patient.jykj_zxyl.base.base_utils.DateUtils;
 import www.patient.jykj_zxyl.base.base_utils.GsonUtils;
 import www.patient.jykj_zxyl.base.base_utils.LogUtils;
 import www.patient.jykj_zxyl.base.base_utils.SharedPreferences_DataSave;
@@ -373,8 +367,8 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 tv_monitor_type.setText("预约时间");
                 tv_coach_rate.setText("取消时间");
                 tv_sign_time.setText("预约项目");
-                if (startTime.contains("/")){
-                   startTime = startTime.replace("/", "-");
+                if (startTime.contains("/")) {
+                    startTime = startTime.replace("/", "-");
                 }
                 mTvMonitValue.setText(startTime);
                 mTvCoachRateValue.setText(cancelTime);
@@ -775,7 +769,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                         bundle1.putString("operDoctorCode", message.getFrom());
                         bundle1.putString("operDoctorName", nickName);
                         bundle1.putString("orderId", singNO);
-                        bundle1.putString("type", "1");
+                        bundle1.putString("type", "10");
                         startActivity(CancelConfirmDeitalActivity.class, bundle1);
 
 
@@ -791,15 +785,53 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                     break;
                 }
                 case "terminationOrder":
+                    LogUtils.e("解约订单   " + orderType);
 
-                    if (!orderType.equals("3")) {
+                    if (message.direct() == EMMessage.Direct.RECEIVE) {  //4:接收的医生拒绝解约 5:接收医生发的解约订单
                         Bundle bundle1 = new Bundle();
-                        bundle1.putString("type", "1");
+                        bundle1.putString("operDoctorCode", message.getFrom());
+                        bundle1.putString("operDoctorName", nickName);
+                        bundle1.putString("orderId", orderId);
+                        switch (orderType) {
+                            case "1":  //接收同意
+                                bundle1.putString("type", "6");
+                                break;
+                            case "2"://接收拒绝
+                                bundle1.putString("type", "4");
+                                break;
+                            case "3": //接收撤销
+
+                                break;
+                            default: //接收的医生发过来的解约
+                                bundle1.putString("type", "5");
+                                break;
+                        }
+                        startActivity(CancelConfirmDeitalActivity.class, bundle1);
+
+                    } else {  //自己发送的解约卡片
+
+                        Bundle bundle1 = new Bundle();
+                        switch (orderType) {
+                            case "1":  //接收同意
+                                bundle1.putString("type", "7");
+                                break;
+                            case "2"://接收拒绝
+                                bundle1.putString("type", "8");
+                                break;
+                            case "3": //接收撤销
+
+                                break;
+                            default:
+                                bundle1.putString("type", "1");
+                                break;
+                        }
+
                         bundle1.putString("operDoctorCode", message.getFrom());
                         bundle1.putString("operDoctorName", nickName);
                         bundle1.putString("orderId", orderId);
                         startActivity(CancelConfirmDeitalActivity.class, bundle1);
                     }
+
 
                     break;
                 case "appointment": {
@@ -817,9 +849,18 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 }
                 //医生接诊详情
                 case "receiveTreatment":{
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("orderId", orderId);
-                 //   startActivity(OrderMessage_OrderPayActivity.class);
+                    if(orderType.equals("1")){
+                        Intent intent = new Intent();
+                        intent.putExtra("orderId", orderId);
+                        intent.setAction("android.intent.action.ordermeaage");
+                        mContext.startActivity(intent);
+                    }else if(orderType.equals("2")){
+                        Bundle bundle = new Bundle();
+                        bundle.putString("signCode", singNO);
+                        bundle.putString("operDoctorCode", message.getFrom());
+                        bundle.putString("operDoctorName", nickName);
+                        startActivity(SignOrderDetialActivity.class, bundle);
+                    }
 
                 }
                 default:
