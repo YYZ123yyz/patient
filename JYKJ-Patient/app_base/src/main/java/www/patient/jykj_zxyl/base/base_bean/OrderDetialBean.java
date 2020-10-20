@@ -96,6 +96,24 @@ public class OrderDetialBean {
     private String rejectReasonClassNameD;
     private String relieveReasonClassNameD;
     private String relieveRemarkD;
+    private String rejectReasonClassName;
+    private String rejectRemark;
+
+    public String getRejectReasonClassName() {
+        return rejectReasonClassName;
+    }
+
+    public void setRejectReasonClassName(String rejectReasonClassName) {
+        this.rejectReasonClassName = rejectReasonClassName;
+    }
+
+    public String getRejectRemark() {
+        return rejectRemark;
+    }
+
+    public void setRejectRemark(String rejectRemark) {
+        this.rejectRemark = rejectRemark;
+    }
 
     public String getRelieveReasonClassNameD() {
         return relieveReasonClassNameD;

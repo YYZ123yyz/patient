@@ -635,12 +635,17 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
                 orderDetialData.getSignStartTime()));
         tvSignTimeValue.setText(String.format("%d个月", orderDetialData.getSignDuration()));
         DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-        String format = decimalFormat.format(Double.parseDouble(orderDetialData.getSignPrice()));
-        tvTotalPriceValue.setText(String.format("¥%s", format));
+        if (orderDetialData.getSignPrice() !=null){
+            String format = decimalFormat.format(Double.parseDouble(orderDetialData.getSignPrice()));
+            tvTotalPriceValue.setText(String.format("¥%s", format));
+        }else {
+            tvTotalPriceValue.setText("");
+        }
+
         mTvPatientAge.setText(orderDetialData.getAge() + "");
         if (orderDetialData.getDetectRateUnitName() == null) {
             List<OrderDetialBean.OrderDetailListBean> orderDetailList = orderDetialData.getOrderDetailList();
-            if (orderDetailList.size() != 0) {
+            if (orderDetailList !=null&&orderDetailList.size() != 0) {
                 tvRateTimeValue.setText(orderDetailList.get(0).getRate() + "" + orderDetailList.get(0).getRateUnitName());
             }
         } else {

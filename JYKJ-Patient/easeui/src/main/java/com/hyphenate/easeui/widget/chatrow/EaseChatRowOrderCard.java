@@ -775,7 +775,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                         bundle1.putString("operDoctorCode", message.getFrom());
                         bundle1.putString("operDoctorName", nickName);
                         bundle1.putString("orderId", singNO);
-                        bundle1.putString("type", "1");
+                        bundle1.putString("type", "10");
                         startActivity(CancelConfirmDeitalActivity.class, bundle1);
 
 
