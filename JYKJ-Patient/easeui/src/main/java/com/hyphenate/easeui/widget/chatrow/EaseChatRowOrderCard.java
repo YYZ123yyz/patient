@@ -367,8 +367,8 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 tv_monitor_type.setText("预约时间");
                 tv_coach_rate.setText("取消时间");
                 tv_sign_time.setText("预约项目");
-                if (startTime.contains("/")){
-                   startTime = startTime.replace("/", "-");
+                if (startTime.contains("/")) {
+                    startTime = startTime.replace("/", "-");
                 }
                 mTvMonitValue.setText(startTime);
                 mTvCoachRateValue.setText(cancelTime);
@@ -785,15 +785,53 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                     break;
                 }
                 case "terminationOrder":
+                    LogUtils.e("解约订单   " + orderType);
 
-                    if (!orderType.equals("3")) {
+                    if (message.direct() == EMMessage.Direct.RECEIVE) {  //4:接收的医生拒绝解约 5:接收医生发的解约订单
                         Bundle bundle1 = new Bundle();
-                        bundle1.putString("type", "1");
+                        bundle1.putString("operDoctorCode", message.getFrom());
+                        bundle1.putString("operDoctorName", nickName);
+                        bundle1.putString("orderId", orderId);
+                        switch (orderType) {
+                            case "1":  //接收同意
+                                bundle1.putString("type", "6");
+                                break;
+                            case "2"://接收拒绝
+                                bundle1.putString("type", "4");
+                                break;
+                            case "3": //接收撤销
+
+                                break;
+                            default: //接收的医生发过来的解约
+                                bundle1.putString("type", "5");
+                                break;
+                        }
+                        startActivity(CancelConfirmDeitalActivity.class, bundle1);
+
+                    } else {  //自己发送的解约卡片
+
+                        Bundle bundle1 = new Bundle();
+                        switch (orderType) {
+                            case "1":  //接收同意
+                                bundle1.putString("type", "7");
+                                break;
+                            case "2"://接收拒绝
+                                bundle1.putString("type", "8");
+                                break;
+                            case "3": //接收撤销
+
+                                break;
+                            default:
+                                bundle1.putString("type", "1");
+                                break;
+                        }
+
                         bundle1.putString("operDoctorCode", message.getFrom());
                         bundle1.putString("operDoctorName", nickName);
                         bundle1.putString("orderId", orderId);
                         startActivity(CancelConfirmDeitalActivity.class, bundle1);
                     }
+
 
                     break;
                 case "appointment": {

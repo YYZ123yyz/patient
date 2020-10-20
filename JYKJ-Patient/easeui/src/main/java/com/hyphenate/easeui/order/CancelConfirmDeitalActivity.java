@@ -67,6 +67,9 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
     private String operDoctorCode;
     private String operDoctorName;
     private String mType = "";
+    private LinearLayout refuseLin;
+    private TextView refuseReason;
+    private TextView refuseDes;
 
     @Override
     protected void onBeforeSetContentLayout() {
@@ -105,6 +108,9 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
         mLlContentRoot = findViewById(R.id.ll_content_root);
         mLLOperButtomRoot = findViewById(R.id.ll_oper_buttom_root);
         mTvCancelContractReason = findViewById(R.id.tv_cancel_contract_reason);
+        refuseLin = findViewById(R.id.lin_refuse);
+        refuseReason = findViewById(R.id.tv_cancel_refuse_reason);
+        refuseDes = findViewById(R.id.tv_refuse_contract_desc);
         setToolBar();
 //        initLoadingAndRetryManager();
         addListener();
@@ -113,7 +119,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
     @Override
     protected void initData() {
         super.initData();
-        if (mType != null && mType.equals("1")) {
+        if (mType.equals("1") || mType.equals("4") || mType.equals("5") ||mType.equals("6") ||mType.equals("7")  ||mType.equals("8")) {
             HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
             hashMap.put("loginPatientPosition", ParameUtil.loginDoctorPosition);
             hashMap.put("requestClientType", "1");
@@ -169,7 +175,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
         mLlContentRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mType.equals("1")) {
+                if (mType.equals("1") || mType.equals("4") || mType.equals("5") ||mType.equals("6") ||mType.equals("7")  ||mType.equals("8")) {
                     Bundle bundle = new Bundle();
                     bundle.putString("signCode", orderId);
                     bundle.putString("operDoctorCode", operDoctorCode);
@@ -229,8 +235,49 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
      */
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void setOrderData(OrderDetialBean signOrderInfoBean) {
+        String refuseReasonName = "";
+        String refuseRemark = "";
+        if (mType.equals("4")) { //患者发送,医生拒绝
+            refuseLin.setVisibility(View.VISIBLE);
+            refuseReasonName = signOrderInfoBean.getRelieveReasonClassName();
+            refuseRemark = signOrderInfoBean.getRelieveRemark();
+        } else if (mType.equals("5")) {  //接收的医生发过来的解约
+            refuseLin.setVisibility(View.GONE);
+            refuseReasonName = signOrderInfoBean.getRelieveReasonClassNameD();
+            refuseRemark = signOrderInfoBean.getRelieveRemarkD();
+
+        } else if (mType.equals("6")) { //医生同意解约
+            refuseLin.setVisibility(View.GONE);
+            refuseReasonName = signOrderInfoBean.getRelieveReasonClassName();
+            refuseRemark = signOrderInfoBean.getRelieveRemark();
+
+        }else if (mType.equals("7")) { //医生发送,患者同意
+            refuseLin.setVisibility(View.GONE);
+            refuseReasonName = signOrderInfoBean.getRelieveReasonClassNameD();
+            refuseRemark = signOrderInfoBean.getRelieveRemarkD();
+
+        } else if (mType.equals("8")) { //医生发送,患者拒绝
+            refuseLin.setVisibility(View.VISIBLE);
+            refuseReasonName = signOrderInfoBean.getRelieveReasonClassNameD();
+            refuseRemark = signOrderInfoBean.getRelieveRemarkD();
+
+        }
+        else { //mType.equals("1") //患者发送解约
+            refuseLin.setVisibility(View.GONE);
+            refuseReasonName = signOrderInfoBean.getRelieveReasonClassName();
+            refuseRemark = signOrderInfoBean.getRelieveRemark();
+        }
+        //解约原因
+        mTvCancelContractReason.setText(refuseReasonName);
+        //解约描述
+        mTvCancelContractDesc.setText(refuseRemark);
+        //拒绝原因
+        refuseReason.setText(signOrderInfoBean.getRejectReasonClassNameJ());
+        //拒绝描述
+        refuseDes.setText(signOrderInfoBean.getRejectRemarkJ());
+
         int coachValue = 0;
-        mTvCancelContractDesc.setText(signOrderInfoBean.getRefuseRemark());
+
         mTvSignStartTime.setText(DateUtils.getLongYYYYMMDD(
                 signOrderInfoBean.getSignStartTime()));
         mTvSignTimeValue.setText(String.format("%d个%s", signOrderInfoBean.getSignDuration()
@@ -240,14 +287,14 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
         if (signOtherServiceCode != null) {
             if (signOtherServiceCode.contains(",")) {
                 String[] split = signOtherServiceCode.split(",");
-                coachValue =split.length;
+                coachValue = split.length;
             } else {
-                coachValue =1;
+                coachValue = 1;
             }
-        }else {
-            coachValue =0;
+        } else {
+            coachValue = 0;
         }
-        mTvMonitorTypeValue.setText(coachValue+"项");
+        mTvMonitorTypeValue.setText(coachValue + "项");
        /* if (coachValue == 1) {
             mTvMonitorTypeValue.setText("一项");
         } else if (coachValue == 2) {
@@ -289,8 +336,10 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
         } else {
             mLLOperButtomRoot.setVisibility(View.GONE);
         }
-        mTvCancelContractReason.setText(signOrderInfoBean.getRefuseReasonClassName());
 
+        if (mType.equals("7")  ||mType.equals("8")  ||mType.equals("4")){
+            mLLOperButtomRoot.setVisibility(View.GONE);
+        }
 
     }
 

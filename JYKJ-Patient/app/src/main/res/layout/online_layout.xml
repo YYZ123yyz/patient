@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="240dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/iv_online"
+        android:padding="4dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/del"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/iv_online_del"
+            android:layout_alignParentRight="true"
+
+            />
+
+        <View
+            android:id="@+id/middle"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true"
+            />
+
+
+        <TextView
+            android:id="@+id/tv_online"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新功能即将上线"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/middle"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/tv_look"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="敬请期待"
+            android:textSize="20sp"
+            android:textColor="@color/gray_normal"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tv_online"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/sure"
+            android:layout_width="140dp"
+            android:layout_height="30dp"
+            android:text="确定"
+            android:textSize="15sp"
+            android:background="@drawable/background_onlie_sure"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_below="@+id/tv_look"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
+
+</LinearLayout>
