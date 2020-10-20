@@ -1342,7 +1342,7 @@ public class DemoHelper {
 
                     getModel().setContactSynced(true);
 
-                    Constant.patientUrl=easeUser.getAvatar();
+                    //Constant.patientUrl=easeUser.getAvatar();
                     Log.e(TAG, "onMessageReceived: "+Constant.patientUrl );
                     Log.e(TAG, "onMessageReceived: "+easeUser.getNickname());
                     // 通知listeners联系人同步完毕
