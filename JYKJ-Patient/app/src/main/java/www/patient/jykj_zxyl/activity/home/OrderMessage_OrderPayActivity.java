@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,8 +40,10 @@ import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.home.patient.WDYSActivity;
 import www.patient.jykj_zxyl.activity.home.patient.WZXXOrderActivity;
 import www.patient.jykj_zxyl.adapter.patient.fragmentShouYe.FragmentHomeTJZJAdapter;
+import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
 import www.patient.jykj_zxyl.pay.PayResult;
+import www.patient.jykj_zxyl.util.DateUtils;
 import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.util.widget.AuthorityDialog;
 import www.patient.jykj_zxyl.wxapi.WXPayEntryActivity;
@@ -98,6 +101,8 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
     private String pay_appid;
     private String pay_productid;
     private static final int SDK_PAY_FLAG = 3;
+    private String orderId;
+    private String orderCode;
 
     /**
      * 展示数据
@@ -107,19 +112,19 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
     private void showDate(ProvideViewMyDoctorOrderAndTreatment provideViewMyDoctorOrderAndTreatment) {
         tv_ddlx.setText(provideViewMyDoctorOrderAndTreatment.getTreatmentTypeName());
         tv_zfzt.setText(provideViewMyDoctorOrderAndTreatment.getFlagOrderStateName());
-        tv_zxys.setText(provideViewMyDoctorOrderAndTreatment.getDoctorName());
-        tv_xzr.setText(provideViewMyDoctorOrderAndTreatment.getPatientName());
-        tv_zxdh.setText(provideViewMyDoctorOrderAndTreatment.getTreatmentLinkPhone());
-        if (provideViewMyDoctorOrderAndTreatment.getOrderDate() != null)
-            tv_ddrq.setText(Util.dateToStr(provideViewMyDoctorOrderAndTreatment.getOrderDate()));
+        tv_zxys.setText(provideViewMyDoctorOrderAndTreatment.getMainDoctorName());
+        tv_xzr.setText(provideViewMyDoctorOrderAndTreatment.getMainUserName());
+        tv_zxdh.setText(provideViewMyDoctorOrderAndTreatment.getPatientPhone());
+        if (provideViewMyDoctorOrderAndTreatment.getCreateDate() != 0)
+            tv_ddrq.setText(DateUtils.getStringTimeOfSSS(provideViewMyDoctorOrderAndTreatment.getCreateDate()));
 
-        tv_fwjzsj.setText(provideViewMyDoctorOrderAndTreatment.getServiceStopDate());
-        if (provideViewMyDoctorOrderAndTreatment.getServiceTotal() == null)
+        tv_fwjzsj.setText(DateUtils.getStringTimeOfSSS(provideViewMyDoctorOrderAndTreatment.getReserveTime()));
+        if (provideViewMyDoctorOrderAndTreatment.getServiceTotal() == 0)
             tv_fwzj.setText("0.0元");
         else
             tv_fwzj.setText(provideViewMyDoctorOrderAndTreatment.getServiceTotal() + "元");
         tv_ddms1.setText(provideViewMyDoctorOrderAndTreatment.getOrderDesc());
-        if (provideViewMyDoctorOrderAndTreatment.getActualPayment() == null)
+        if (provideViewMyDoctorOrderAndTreatment.getActualPayment() == 0)
             tv_sfk.setText("0.0元");
         else
             tv_sfk.setText(provideViewMyDoctorOrderAndTreatment.getActualPayment() + "元");
@@ -128,30 +133,30 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
             case 1:
                 tv_jzsj.setVisibility(View.VISIBLE);
                 tv_serviceName.setText("服务开始时间");
-                tv_fwkssj.setText(provideViewMyDoctorOrderAndTreatment.getServiceStartDate());
+                tv_fwkssj.setText(DateUtils.getStringTimeOfSSS(provideViewMyDoctorOrderAndTreatment.getReserveTime()));
                 break;
             case 2:
                 tv_jzsj.setVisibility(View.GONE);
                 tv_serviceName.setText("预约服务时间");
-                if (provideViewMyDoctorOrderAndTreatment.getTreatmentDate() != null)
-                    tv_fwkssj.setText(Util.dateToStr(provideViewMyDoctorOrderAndTreatment.getTreatmentDate()));
+                if (provideViewMyDoctorOrderAndTreatment.getReserveTime() != 0)
+                    tv_fwkssj.setText(DateUtils.getStringTimeOfSSS(provideViewMyDoctorOrderAndTreatment.getReserveTime()));
                 break;
             case 3:
                 tv_jzsj.setVisibility(View.GONE);
                 tv_serviceName.setText("预约服务时间");
-                if (provideViewMyDoctorOrderAndTreatment.getTreatmentDate() != null)
-                    tv_fwkssj.setText(Util.dateToStr(provideViewMyDoctorOrderAndTreatment.getTreatmentDate()));
+                if (provideViewMyDoctorOrderAndTreatment.getReserveTime() != 0)
+                    tv_fwkssj.setText(DateUtils.getStringTimeOfSSS(provideViewMyDoctorOrderAndTreatment.getReserveTime()));
                 break;
             case 4:
                 tv_jzsj.setVisibility(View.VISIBLE);
                 tv_serviceName.setText("服务开始时间");
-                tv_fwkssj.setText(provideViewMyDoctorOrderAndTreatment.getServiceStartDate());
+                tv_fwkssj.setText(DateUtils.getStringTimeOfSSS(provideViewMyDoctorOrderAndTreatment.getReserveTime()));
                 break;
             case 5:
                 tv_jzsj.setVisibility(View.GONE);
                 tv_serviceName.setText("预约服务时间");
-                if (provideViewMyDoctorOrderAndTreatment.getTreatmentDate() != null)
-                    tv_fwkssj.setText(Util.dateToStr(provideViewMyDoctorOrderAndTreatment.getTreatmentDate()));
+                if (provideViewMyDoctorOrderAndTreatment.getReserveTime() != 0)
+                    tv_fwkssj.setText(DateUtils.getStringTimeOfSSS(provideViewMyDoctorOrderAndTreatment.getReserveTime()));
                 break;
         }
 
@@ -235,7 +240,11 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
         provideViewMyDoctorOrderAndTreatmentParment.setRequestClientType("1");
         provideViewMyDoctorOrderAndTreatmentParment.setOperPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideViewMyDoctorOrderAndTreatmentParment.setOperPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        provideViewMyDoctorOrderAndTreatmentParment.setOrderCode(provideInteractOrderInfo.getOrderCode());
+        if(!TextUtils.isEmpty(orderCode)){
+            provideViewMyDoctorOrderAndTreatmentParment.setOrderCode(orderCode);
+        }else{
+            provideViewMyDoctorOrderAndTreatmentParment.setOrderCode(orderId);
+        }
         provideViewMyDoctorOrderAndTreatmentParment.setFlagPayType(payModel + "");
         new Thread() {
             public void run() {
@@ -352,6 +361,12 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
         mApp = (JYKJApplication) getApplication();
         mApp.gPayCloseActivity.add(mActivity);
         provideInteractOrderInfo = (ProvideInteractOrderInfo) getIntent().getSerializableExtra("provideInteractOrderInfo");
+        if(provideInteractOrderInfo!=null){
+            orderCode = provideInteractOrderInfo.getOrderCode();
+        }
+        Intent intent = getIntent();
+        orderId = intent.getStringExtra("orderId");
+
 //        provideViewDoctorExpertRecommend = (ProvideViewDoctorExpertRecommend) getIntent().getSerializableExtra("provideViewDoctorExpertRecommend");
 //        provideDoctorSetSchedulingInfoGroupDate= (ProvideDoctorSetSchedulingInfoGroupDate) getIntent().getSerializableExtra("provideDoctorSetSchedulingInfoGroupDate");
 //        mOrderNum = getIntent().getStringExtra("orderID");
@@ -381,12 +396,17 @@ public class OrderMessage_OrderPayActivity extends AppCompatActivity {
         provideViewMyDoctorOrderAndTreat.setRequestClientType("1");
         provideViewMyDoctorOrderAndTreat.setSearchPatientCode(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         provideViewMyDoctorOrderAndTreat.setSearchPatientName(mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
-        provideViewMyDoctorOrderAndTreat.setOrderCode(provideInteractOrderInfo.getOrderCode());
+        if(!TextUtils.isEmpty(orderCode)){
+            provideViewMyDoctorOrderAndTreat.setOrderCode(orderCode);
+        }else{
+            provideViewMyDoctorOrderAndTreat.setOrderCode(orderId);
+        }
         new Thread() {
             public void run() {
                 try {
                     String string = new Gson().toJson(provideViewMyDoctorOrderAndTreat);
-                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, www.patient.jykj_zxyl.application.Constant.SERVICEURL + "msgDataControlle/searchPatientMsgInteractOrderInfoDetail");
+                    mNetRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + string, Constant.SERVICEURL + "msgDataControlle/searchPatientMsgInteractOrderInfoDetail");
+                    Log.e("TAG", "run: "+ mNetRetStr);
                 } catch (Exception e) {
                     NetRetEntity retEntity = new NetRetEntity();
                     retEntity.setResCode(0);
