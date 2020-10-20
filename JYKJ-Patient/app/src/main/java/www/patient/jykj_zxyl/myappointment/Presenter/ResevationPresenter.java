@@ -149,7 +149,7 @@ public class ResevationPresenter extends BasePresenterImpl<ReservationContract.V
                     @Override
                     public void showLoadingView() {
                         if (mView != null) {
-                            mView.showLoading(100);
+                            mView.showLoading(300);
                         }
                     }
 

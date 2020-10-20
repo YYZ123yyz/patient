@@ -170,7 +170,11 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
             @Override
             public void onClick(View v) {
                 if (mType.equals("1")) {
-
+                    Bundle bundle = new Bundle();
+                    bundle.putString("signCode", orderId);
+                    bundle.putString("operDoctorCode", operDoctorCode);
+                    bundle.putString("operDoctorName", operDoctorName);
+                    startActivity(SignOrderDetialActivity.class, bundle);
                 } else {
                     Bundle bundle = new Bundle();
                     bundle.putString("signCode", orderId);

@@ -70,6 +70,8 @@ import entity.HomeDataBean;
 import entity.OperUpdPatientConditionTakingMedicineStateParement;
 import entity.ProvideMsgPushReminder;
 import entity.ProvidePatientBindingMyDoctorInfo;
+import entity.mySelf.UserResultInfo;
+import entity.mySelf.conditions.QueryUserCond;
 import entity.shouye.OperScanQrCodeInside;
 import entity.shouye.ProvidePatientConditionBloodPressureRecord;
 import entity.shouye.ProvidePatientConditionTakingRecord;
@@ -111,6 +113,7 @@ import www.patient.jykj_zxyl.myappointment.activity.MedicalRecordActivity;
 import www.patient.jykj_zxyl.myappointment.activity.MyAppointmentActivity;
 import www.patient.jykj_zxyl.myappointment.activity.UniversalWebActivity;
 import www.patient.jykj_zxyl.myappointment.adapter.HotDepAdapter;
+import www.patient.jykj_zxyl.util.StrUtils;
 import www.patient.jykj_zxyl.util.Util;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.activity.MainActivity;
@@ -306,10 +309,45 @@ public class FragmentShouYe extends Fragment implements View.OnClickListener {
         }.start();
     }
 
+   /* @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            LogUtils.e("fragment on hidden ");
+            getUserIv();
+        }
+    }*/
+
+    private void getUserIv() {
+        QueryUserCond quecond = new QueryUserCond();
+        quecond.setUserCodeList(mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
+        try {
+            String mNetLoginRetStr = HttpNetService.urlConnectionService("jsonDataInfo=" + new Gson().toJson(quecond), Constant.SERVICEURL + "patientDoctorCommonDataController/getUserInfoList");
+            NetRetEntity retEntity = JSON.parseObject(mNetLoginRetStr, NetRetEntity.class);
+            if (1 == retEntity.getResCode() && StrUtils.defaultStr(retEntity.getResJsonData()).length() > 3) {
+                List<UserResultInfo> retlist = JSON.parseArray(retEntity.getResJsonData(), UserResultInfo.class);
+                UserResultInfo onebean = retlist.get(0);
+                mApp.mProvideViewSysUserPatientInfoAndRegion.setUserLogoUrl(onebean.getUserLogoUrl());
+                mApp.mProvideViewSysUserPatientInfoAndRegion.setQrCode(onebean.getQrCode());
+                NetRetEntity retentone = new NetRetEntity();
+                retentone.setResCode(1);
+                retentone.setResJsonData(new Gson().toJson(mApp.mProvideViewSysUserPatientInfoAndRegion));
+                mNetLoginRetStr = new Gson().toJson(retentone);
+            }
+        } catch (Exception e) {
+            NetRetEntity retEntity = new NetRetEntity();
+            retEntity.setResCode(0);
+            retEntity.setResMsg("网络连接异常，请联系管理员：" + e.getMessage());
+
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         getBanner(1);
+        getUserIv();
 //        getProgressBar("请稍候","正在加载数据。。。");
         //获取最近一次血压数据
         if (null != mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus() && 1 == mApp.mProvideViewSysUserPatientInfoAndRegion.getFlagPatientStatus()) {

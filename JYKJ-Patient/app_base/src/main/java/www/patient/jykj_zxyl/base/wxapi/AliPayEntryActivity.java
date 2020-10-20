@@ -37,6 +37,7 @@ public class AliPayEntryActivity extends AppCompatActivity implements IWXAPIEven
     public String categoryKey;
     public String paramAppid = "";
     public String paramProductid = "";
+    private String mType = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +49,9 @@ public class AliPayEntryActivity extends AppCompatActivity implements IWXAPIEven
         textView = findViewById(R.id.textView);
         Intent intent = getIntent();
         paramAppid = intent.getStringExtra("pay_appid");
-        paramAppid = (null==paramAppid || paramAppid.length()==0)?"wx4ccb2ac1c5491336":paramAppid;
+        paramAppid = (null == paramAppid || paramAppid.length() == 0) ? "wx4ccb2ac1c5491336" : paramAppid;
         paramProductid = intent.getStringExtra("pay_productid");
+        mType = intent.getStringExtra("type");
         if (intent.hasExtra(PAY_STATE)) {
             code = intent.getIntExtra(PAY_STATE, 0);
         }
@@ -64,7 +66,7 @@ public class AliPayEntryActivity extends AppCompatActivity implements IWXAPIEven
 
         if (code == 0) {
             //iwxapi = WXAPIFactory.createWXAPI(this,paramAppid);
-            iwxapi = WXAPIFactory.createWXAPI(this,paramAppid);
+            iwxapi = WXAPIFactory.createWXAPI(this, paramAppid);
             iwxapi.registerApp(paramAppid);
             Intent parintent = getIntent();
             iwxapi.handleIntent(parintent, this);
@@ -119,12 +121,17 @@ public class AliPayEntryActivity extends AppCompatActivity implements IWXAPIEven
     }
 
     public void showMessage() {
-        Toast.makeText(AliPayEntryActivity.this,"支付成功",Toast.LENGTH_SHORT).show();
+        Toast.makeText(AliPayEntryActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
 //        ProvideInteractOrderInfo provideInteractOrderInfo = new ProvideInteractOrderInfo();
 //        provideInteractOrderInfo.setOrderCode(mApp.gPayOrderCode);
 
-       // startActivity(new Intent(AliPayEntryActivity.this,WDYSActivity.class));
-
+        // startActivity(new Intent(AliPayEntryActivity.this,WDYSActivity.class));
+        if (mType.equals("sign")) {
+            mListen.paySucess();
+            Intent intent = new Intent();
+            intent.setAction("android.intent.action.Mydoc");
+            startActivity(intent);
+        }
         finish();
     }
 
@@ -145,7 +152,7 @@ public class AliPayEntryActivity extends AppCompatActivity implements IWXAPIEven
     }
 
     public void editPaymentOK(String productId) {
-       // LoadSharedPreferences.getSharedPreferences(getApplicationContext()).edit().putBoolean(productId, true).apply();
+        // LoadSharedPreferences.getSharedPreferences(getApplicationContext()).edit().putBoolean(productId, true).apply();
     }
 
     private TextView textViewTitle;
@@ -192,5 +199,15 @@ public class AliPayEntryActivity extends AppCompatActivity implements IWXAPIEven
                 });
             }
         }
+    }
+
+    private  static onAliPaySucess mListen;
+
+    public static void setOnAliPaySucess(onAliPaySucess listen) {
+        mListen = listen;
+    }
+
+    public interface onAliPaySucess {
+        void paySucess();
     }
 }

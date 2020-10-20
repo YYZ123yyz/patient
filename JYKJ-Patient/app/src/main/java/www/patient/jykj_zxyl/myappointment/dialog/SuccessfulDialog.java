@@ -49,6 +49,19 @@ public class SuccessfulDialog extends Dialog {
         this.setContentView(R.layout.success_layout);
         successfulDialog = SuccessfulDialog.this;
         img = findViewById(R.id.img);
+      /*  RotateAnimation rotate  = new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        LinearInterpolator lin = new LinearInterpolator();
+        rotate.setInterpolator(lin);
+        rotate.setDuration(2000);//设置动画持续周期
+        rotate.setRepeatCount(-1);//设置重复次数
+        rotate.setFillAfter(true);//动画执行完后是否停留在执行完的状态
+        rotate.setStartOffset(10);//执行前的等待时间
+        img.setAnimation(rotate);*/
+    }
+
+    @Override
+    public void show() {
+        super.show();
         RotateAnimation rotate  = new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         LinearInterpolator lin = new LinearInterpolator();
         rotate.setInterpolator(lin);
@@ -58,5 +71,4 @@ public class SuccessfulDialog extends Dialog {
         rotate.setStartOffset(10);//执行前的等待时间
         img.setAnimation(rotate);
     }
-
 }

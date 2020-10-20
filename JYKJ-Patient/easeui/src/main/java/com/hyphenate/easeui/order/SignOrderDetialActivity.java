@@ -65,7 +65,7 @@ import www.patient.jykj_zxyl.base.wxapi.PayResult;
  * @date: 2020-07-28 18:21
  */
 public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetialContract.View,
-        OrderDetialPresenter> implements OrderDetialContract.View {
+        OrderDetialPresenter> implements OrderDetialContract.View , AliPayEntryActivity.onAliPaySucess {
     private TextView mTvPatientName;//患者姓名
     private TextView mTvPatientAge;//患者年龄
     private TextView mTvPatientGender;//患者性别
@@ -213,6 +213,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
 //                        showAlert(WXEntryActivity.this, getString(R.string.pay_failed) + payResult);
                         intent.putExtra(AliPayEntryActivity.PAY_STATE, AliPayEntryActivity.FAILURE);
                     }
+                    intent.putExtra("type", "sign");
                     startActivity(intent);
                 }
             }
@@ -361,6 +362,7 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
     protected void initData() {
         SharedPreferences_DataSave jykjdocter = new SharedPreferences_DataSave(this, "JYKJDOCTER");
         String userInfoSuLogin = jykjdocter.getString("viewSysUserDoctorInfoAndHospital", "");
+        AliPayEntryActivity.setOnAliPaySucess(this);
         try {
             mProvideViewSysUserPatientInfoAndRegion = new Gson().fromJson(userInfoSuLogin, ProvideViewSysUserPatientInfoAndRegion.class);
         } catch (Exception e) {
@@ -663,5 +665,10 @@ public class SignOrderDetialActivity extends AbstractMvpBaseActivity<OrderDetial
     protected void onDestroy() {
         super.onDestroy();
 
+    }
+
+    @Override
+    public void paySucess() {
+        finish();
     }
 }
