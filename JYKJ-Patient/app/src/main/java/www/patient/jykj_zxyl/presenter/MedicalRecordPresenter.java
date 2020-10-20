@@ -54,7 +54,6 @@ public class MedicalRecordPresenter extends BasePresenterImpl<MedicalRecordContr
                     if (resCode == 1) {
                         String resJsonData = baseBean.getResJsonData();
                         if (StringUtils.isNotEmpty(resJsonData)) {
-                            LogUtils.e("病历接口数据"+resJsonData);
                             MedicalRecordBean orderDetialBean = GsonUtils.fromJson(resJsonData, MedicalRecordBean.class);
                             mView.getMedicalRecordSucess(orderDetialBean);
                         }

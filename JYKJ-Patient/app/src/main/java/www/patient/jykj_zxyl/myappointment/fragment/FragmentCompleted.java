@@ -79,7 +79,8 @@ public class FragmentCompleted extends AbstractMvpBaseFragment<ReservationListCo
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.sendMyReservationListRequest(mApp.loginDoctorPosition, mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(), mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(), "0", "10", "1");
+        myresetvation.clear();
+        mPresenter.sendMyReservationListRequest(mApp.loginDoctorPosition,mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode(),mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName(),"0","10","1");
     }
 
     @Override
@@ -118,7 +119,7 @@ public class FragmentCompleted extends AbstractMvpBaseFragment<ReservationListCo
             public void onClick(int position) {
                 String reserveCode = myresetvation.get(position).getReserveCode();
                 Intent intent = new Intent(getContext(), WDYS_JZJL_CFQActivity.class);
-                intent.putExtra("orderCode", reserveCode);
+                intent.putExtra("orderCode",reserveCode);
                 startActivity(intent);
             }
 

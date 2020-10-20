@@ -474,7 +474,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 mTvSignTimeValue.setText(nickName);
                 tv_patient_class_vlaue.setText(patientType);
             }
-            //医生已接诊
+            //医生接诊
             else if (messageType.equals("receiveTreatment")) {
                 rl_one.setVisibility(VISIBLE);
                 rl_two.setVisibility(VISIBLE);
@@ -852,6 +852,13 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                     intent.putExtra("reserveCode", orderId);
                     mContext.startActivity(intent);
                     break;
+                }
+                //医生接诊详情
+                case "receiveTreatment":{
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("orderId", orderId);
+                 //   startActivity(OrderMessage_OrderPayActivity.class);
+
                 }
                 default:
             }

@@ -207,7 +207,7 @@ public class MedicalRecordActivity extends AbstractMvpBaseActivity<MedicalRecord
     @NotNull
     private HashMap<String, Object> getParamsHashMap() {
         HashMap<String, Object> paramMap = new HashMap<>();
-        paramMap.put("loginPatientPosition", "108.93425^34.23053");
+        paramMap.put("loginPatientPosition", mApp.loginDoctorPosition);
         paramMap.put("requestClientType", "1");
         paramMap.put("operPatientCode", mApp.mProvideViewSysUserPatientInfoAndRegion.getPatientCode());
         paramMap.put("operPatientName", mApp.mProvideViewSysUserPatientInfoAndRegion.getUserName());
