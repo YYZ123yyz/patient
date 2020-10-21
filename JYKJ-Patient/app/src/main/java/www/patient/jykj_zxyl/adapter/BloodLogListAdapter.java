@@ -122,7 +122,7 @@ public class BloodLogListAdapter extends RecyclerView.Adapter<BloodLogListAdapte
             tvDayNum = view.findViewById(R.id.tv_day_num);
             tvMorningNum = view.findViewById(R.id.tv_morning_num);
             tvNightNum = view.findViewById(R.id.tv_night_num);
-            tvGroupTime = view.findViewById(R.id.tv_group_time);
+          //  tvGroupTime = view.findViewById(R.id.tv_group_time);
             tvDayType = view.findViewById(R.id.tv_day_type);
             tvMorningType = view.findViewById(R.id.tv_morning_type);
             tvNightType = view.findViewById(R.id.tv_night_type);

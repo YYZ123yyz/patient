@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="血压监控"
+                android:text="脉搏监控"
                 android:textColor="@color/writeColor"
                 android:textSize="10pt" />
         </RelativeLayout>
@@ -45,23 +45,6 @@
             android:background="@color/groabColor"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tv_update_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/shape_bg_blood_date"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="3dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="3dp"
-                    android:text="数据更新：2019年11月11日 20:30"
-                    android:textColor="@color/writeColor" />
-            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,7 +52,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <LinearLayout
+               <!-- <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -105,20 +88,13 @@
                     android:layout_marginBottom="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_width="1dp"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent" />-->
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="低压"
-                        android:textColor="@color/writeColor" />
 
                     <TextView
                         android:id="@+id/tv_low_num"
@@ -135,7 +111,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="5dp"
-                        android:text="mmhg"
+                        android:text="次/分钟"
                         android:textColor="@color/writeColor" />
                 </LinearLayout>
 
@@ -189,16 +165,25 @@
                     android:layout_gravity="center_vertical"
                     android:src="@mipmap/icon_blood_recode" />
 
-                <TextView
-                    android:id="@+id/tv_type_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:drawablePadding="5dp"
-                    android:gravity="center_vertical"
-                    android:text="正常高压"
-                    android:textColor="@color/writeColor"
-                    android:textSize="15sp" />
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/dp_40"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_update_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/shape_bg_blood_date"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="3dp"
+                        android:paddingRight="15dp"
+                        android:paddingBottom="3dp"
+                        android:text="数据更新：2019年11月11日 20:30"
+                        android:textColor="@color/writeColor" />
+                </RelativeLayout>
+
 
             </LinearLayout>
         </LinearLayout>
@@ -229,7 +214,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:text="血压录入" />
+                    android:text="脉搏录入" />
 
 
             </LinearLayout>
@@ -265,10 +250,10 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/dp50"
+                    android:layout_height="35dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@mipmap/blood_jilu" />
+                    android:src="@mipmap/mb_jl" />
 
                 <TextView
                     android:layout_width="wrap_content"

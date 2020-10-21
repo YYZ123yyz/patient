@@ -31,7 +31,8 @@ import www.patient.jykj_zxyl.application.JYKJApplication;
 
 
 /**
- * 血压记录
+ * 血压异常记录
+ *  血压异常记录适配器     BooldLogAdapter
  */
 public class BloodLogAcitivity extends AppCompatActivity {
     private RecyclerView mRcyclerview;
@@ -74,7 +75,7 @@ public class BloodLogAcitivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         mRcyclerview.setLayoutManager(manager);
-        mAdapter = new BloodLogListAdapter(pressureGroupsList, this);
+       /* mAdapter = new BloodLogListAdapter(pressureGroupsList, this);
         mRcyclerview.setAdapter(mAdapter);
 
         mRcyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -116,7 +117,7 @@ public class BloodLogAcitivity extends AppCompatActivity {
                     llDetails.setVisibility(View.GONE);
                 }
             }
-        });
+        });*/
 
         llBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,14 +199,14 @@ public class BloodLogAcitivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                    case 1:
+                  /*  case 1:
                         mAdapter.setDate(pressureGroupsList);
                         mAdapter.notifyDataSetChanged();
                         break;
                     case 2:
                         bloodLogListDetailAdapter.setDate(recordList);
                         bloodLogListDetailAdapter.notifyDataSetChanged();
-                        break;
+                        break;*/
                 }
             }
         };

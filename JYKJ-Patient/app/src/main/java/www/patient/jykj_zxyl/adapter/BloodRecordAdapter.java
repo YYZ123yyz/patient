@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -14,6 +15,9 @@ import entity.patientInfo.BloodRecodeListData;
 import www.patient.jykj_zxyl.R;
 import www.patient.jykj_zxyl.util.DateUtils;
 
+/**
+ * 历史血压记录适配器
+ */
 public class BloodRecordAdapter extends RecyclerView.Adapter<BloodRecordAdapter.ViewHolder>{
 
     private List<BloodRecodeListData> mData;
@@ -38,10 +42,10 @@ public class BloodRecordAdapter extends RecyclerView.Adapter<BloodRecordAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        BloodRecodeListData data = mData.get(position);
-        holder.tvRecordDate.setText(DateUtils.stampToDate(data.getRecordDate()));
-        holder.tvRecordNum.setText(data.getHighPressureNum()+"/"+data.getLowPressureNum()+"mmHg");
-        holder.tvRateNum.setText(data.getHeartRateNum()+"次/分钟");
+//        BloodRecodeListData data = mData.get(position);
+//        holder.tvRecordDate.setText(DateUtils.stampToDate(data.getRecordDate()));
+//        holder.tvRecordNum.setText(data.getHighPressureNum()+"/"+data.getLowPressureNum()+"mmHg");
+//        holder.tvRateNum.setText(data.getHeartRateNum()+"次/分钟");
     }
 
     @Override
@@ -50,15 +54,18 @@ public class BloodRecordAdapter extends RecyclerView.Adapter<BloodRecordAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView tvRecordDate;
-        private TextView tvRecordNum;
-        private TextView tvRateNum;
+        private ImageView item_img,img_position;
+        private TextView item_tv_date;
+        private TextView item_tv_time;
+        private TextView item_tv_data;
 
         public ViewHolder(View view){
             super(view);
-            tvRecordDate = view.findViewById(R.id.tv_recode_date);
-            tvRecordNum = view.findViewById(R.id.tv_record_num);
-            tvRateNum = view.findViewById(R.id.tv_rate_num);
+            item_img = view.findViewById(R.id.item_img);
+            item_tv_date = view.findViewById(R.id.item_tv_date);
+            item_tv_time = view.findViewById(R.id.item_tv_time);
+            item_tv_data = view.findViewById(R.id.item_tv_data);
+            img_position = view.findViewById(R.id.img_position);
 
         }
     }

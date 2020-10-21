@@ -1,4 +1,4 @@
-package www.patient.jykj_zxyl.adapter;
+package www.patient.jykj_zxyl.activity.pulsemonitoring.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,12 +11,13 @@ import android.widget.TextView;
 
 import java.util.List;
 
-
 import entity.patientInfo.ProvidePatientConditionBloodPressureRecord;
 import www.patient.jykj_zxyl.R;
-import www.patient.jykj_zxyl.util.Util;
 
-public class BloodLogListDetailAdapter extends RecyclerView.Adapter<BloodLogListDetailAdapter.ViewHolder> {
+/**
+ * 脉搏异常记录
+ */
+public class AbnormalPulseAdapter extends RecyclerView.Adapter<AbnormalPulseAdapter.ViewHolder> {
 
     public List<ProvidePatientConditionBloodPressureRecord> datas;
 
@@ -24,7 +25,7 @@ public class BloodLogListDetailAdapter extends RecyclerView.Adapter<BloodLogList
     private Context mContext;
 
 
-    public BloodLogListDetailAdapter(List<ProvidePatientConditionBloodPressureRecord> list, Context context) {
+    public AbnormalPulseAdapter(List<ProvidePatientConditionBloodPressureRecord> list, Context context) {
         mContext = context;
         datas = list;
     }
@@ -38,7 +39,7 @@ public class BloodLogListDetailAdapter extends RecyclerView.Adapter<BloodLogList
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_blood_log_list_detail, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_abnormalpulse_detail, parent, false);
         ViewHolder vh = new ViewHolder(view);
         return vh;
     }

@@ -31,6 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import entity.HealthListBean;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.activity.home.BloodMonitorActivity;
 import www.patient.jykj_zxyl.activity.home.patient.BloodEntryActivity;
 import www.patient.jykj_zxyl.activity.myself.MedicationSettingsActivity;
 import www.patient.jykj_zxyl.activity.myself.order.RefundApplyContract;
@@ -83,8 +84,9 @@ public class HealthActivity extends AbstractMvpBaseActivity<HealthView, HelathPr
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (position) {
-                    case 0:
-                        startActivity(new Intent(HealthActivity.this, BloodEntryActivity.class));
+                    case 0:  //血压录入
+//                        startActivity(new Intent(HealthActivity.this, BloodEntryActivity.class));
+                        startActivity(new Intent(HealthActivity.this, BloodMonitorActivity.class));
                         break;
                     case 1:
                         startActivity(new Intent(HealthActivity.this, MedicationSettingsActivity.class));

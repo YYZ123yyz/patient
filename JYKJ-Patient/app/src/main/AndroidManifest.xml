@@ -44,7 +44,10 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".myappointment.activity.MessageActivity"></activity>
+        <activity android:name=".activity.pulsemonitoring.activity.PulseInputActivity"></activity>
+        <activity android:name=".activity.pulsemonitoring.activity.AbnormalPulseActivity" />
+        <activity android:name=".activity.pulsemonitoring.activity.PulseMonitoringActivity" />
+        <activity android:name=".myappointment.activity.MessageActivity" />
         <activity android:name=".myappointment.activity.HealthActivity" />
         <activity android:name=".myappointment.activity.VerifiedActivity" />
         <activity android:name=".myappointment.activity.AllDepartmentsActivity" />
@@ -374,15 +377,13 @@
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 首页=》》 我的医生 == 》更多 -->
         <activity
             android:name=".activity.home.patient.WDYSActivity"
-            android:windowSoftInputMode="stateHidden|stateUnchanged" >
+            android:windowSoftInputMode="stateHidden|stateUnchanged">
+            <intent-filter>
+                <action android:name="android.intent.action.Mydoc" />
 
-        <intent-filter>
-            <action android:name="android.intent.action.Mydoc" />
-
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
-        </activity>
-        <!-- 取消预约 -->
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity> <!-- 取消预约 -->
         <activity
             android:name=".myappointment.activity.CancelAppointmentActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 首页=》》 我的医生 == 》就诊记录列表 -->
@@ -468,8 +469,7 @@
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 快速问医生 -->
         <activity
             android:name=".activity.patient_home.KSWYSActivity"
-            android:windowSoftInputMode="stateHidden|stateUnchanged" />
-        <!--订单详情-->
+            android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 订单详情 -->
         <activity
             android:name=".activity.home.OrderMessage_OrderPayActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged">
@@ -478,8 +478,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
-        <!-- 我的识别码 == 》 分享 -->
+        </activity> <!-- 我的识别码 == 》 分享 -->
         <activity
             android:name=".FXActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged" /> <!-- 身份证拍照页面 -->

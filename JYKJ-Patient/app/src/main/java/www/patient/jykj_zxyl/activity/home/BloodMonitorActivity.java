@@ -105,7 +105,7 @@ public class BloodMonitorActivity extends AppCompatActivity implements View.OnCl
         tvUpdateTime = findViewById(R.id.tv_update_time);
         highPressureNum = findViewById(R.id.tv_high_num);
         lowPressureNum =findViewById(R.id.tv_low_num);
-        rateNum =findViewById(R.id.tv_rate_num);
+       // rateNum =findViewById(R.id.tv_rate_num);
         typeName = findViewById(R.id.tv_type_name);
         ivBloodType = findViewById(R.id.iv_blood_type);
         layoutManager = new LinearLayoutManager(this);
@@ -132,7 +132,7 @@ public class BloodMonitorActivity extends AppCompatActivity implements View.OnCl
                         tvUpdateTime.setText("数据更新："+ DateUtils.stampToDate(patientData.getRecordDate()));
                         highPressureNum.setText(patientData.getHighPressureNum()+"");
                         lowPressureNum.setText(patientData.getLowPressureNum()+"");
-                        rateNum.setText(patientData.getHeartRateNum()+"");
+                    //    rateNum.setText(patientData.getHeartRateNum()+"");
                         typeName.setText(patientData.getBloodTypeSecondName());
                         int secondType = patientData.getBloodTypeSecond();
                         switch (secondType){

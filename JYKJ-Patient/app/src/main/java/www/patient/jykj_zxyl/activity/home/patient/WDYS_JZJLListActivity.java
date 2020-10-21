@@ -33,12 +33,14 @@ import entity.wdzs.ProvideInteractClinicRecordWriteState;
 import netService.HttpNetService;
 import netService.entity.NetRetEntity;
 import www.patient.jykj_zxyl.R;
+import www.patient.jykj_zxyl.activity.home.BloodMonitorActivity;
 import www.patient.jykj_zxyl.activity.home.twjz.TWJZ_JZJLActivity;
 import www.patient.jykj_zxyl.activity.home.wdzs.ProvideViewInteractOrderTreatmentAndPatientInterrogation;
 import www.patient.jykj_zxyl.adapter.JYZLecycleAdapter;
 import www.patient.jykj_zxyl.adapter.TWDYS_JZLBRecycleAdapter;
 import www.patient.jykj_zxyl.application.Constant;
 import www.patient.jykj_zxyl.application.JYKJApplication;
+import www.patient.jykj_zxyl.myappointment.activity.MedicalRecordActivity;
 import www.patient.jykj_zxyl.util.ActivityUtil;
 
 /**
@@ -160,7 +162,10 @@ public class WDYS_JZJLListActivity extends AppCompatActivity {
         mTWDYS_JZLBRecycleAdapter.setOnItemClickListener(new TWDYS_JZLBRecycleAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
-                startActivity(new Intent(mContext, WDYS_JZJLActivity.class).putExtra("provideInteractOrderInfo", mProvideInteractOrderInfos.get(position)));
+              /*  startActivity(new Intent(mContext, WDYS_JZJLActivity.class).putExtra("provideInteractOrderInfo", mProvideInteractOrderInfos.get(position)));*/
+                Intent intent = new Intent(WDYS_JZJLListActivity.this, MedicalRecordActivity.class);
+                intent.putExtra("reserveCode",mProvideInteractOrderInfos.get(position).getOrderCode());
+                startActivity(intent);
             }
 
             @Override
