@@ -53,9 +53,11 @@ public class HealthActivity extends AbstractMvpBaseActivity<HealthView, HelathPr
     private Handler mHandler;
     private ImageView ivBack;
     private RecyclerView healthRv;
-    private String[] types={"血压","服药"};
-    private int[] ivSrc ={R.mipmap.iv_pre,R.mipmap.iv_med};
-    private String[] unit ={"mmhg","小时"};
+    private String[] types = {"血压", "服药", "脉搏", "血糖", "血脂", "尿糖", "心电图", "肾功能", "睡眠", "体温", "体重"};
+    private int[] ivSrc = {R.mipmap.iv_pre, R.mipmap.iv_med, R.mipmap.iv_pulse, R.mipmap.iv_bloodsuger, R.mipmap.iv_lipids,
+            R.mipmap.iv_unire, R.mipmap.iv_ecg, R.mipmap.iv_kidney, R.mipmap.iv_sleep, R.mipmap.iv_temper, R.mipmap.iv_weight};
+    private String[] unit = {"mmhg", "小时", "小时", "mmol/L", "", "", "", "", "小时", "℃", "kg"};
+
     @Override
     protected void initData() {
         super.initData();

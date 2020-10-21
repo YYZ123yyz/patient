@@ -119,7 +119,7 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
     @Override
     protected void initData() {
         super.initData();
-        if (mType.equals("1") || mType.equals("4") || mType.equals("5") ||mType.equals("6") ||mType.equals("7")  ||mType.equals("8")) {
+        if (mType.equals("1") || mType.equals("4") || mType.equals("5") ||mType.equals("6") ||mType.equals("7")  ||mType.equals("8") || mType.equals("10")) {
             HashMap<String, Object> hashMap = ParameUtil.buildBaseParam();
             hashMap.put("loginPatientPosition", ParameUtil.loginDoctorPosition);
             hashMap.put("requestClientType", "1");
@@ -260,6 +260,12 @@ public class CancelConfirmDeitalActivity extends AbstractMvpBaseActivity<CancelC
             refuseLin.setVisibility(View.VISIBLE);
             refuseReasonName = signOrderInfoBean.getRelieveReasonClassNameD();
             refuseRemark = signOrderInfoBean.getRelieveRemarkD();
+
+        }else if (mType.equals("10")){ //签约拒绝
+            refuseLin.setVisibility(View.GONE);
+
+            refuseReasonName = signOrderInfoBean.getRejectReasonClassName();
+            refuseRemark = signOrderInfoBean.getRejectRemark();
 
         }
         else { //mType.equals("1") //患者发送解约

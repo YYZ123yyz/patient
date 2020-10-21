@@ -420,6 +420,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                 mTvUpdateBtn.setVisibility(View.VISIBLE);
                 rlCancelContractOrderRoot.setVisibility(View.GONE);
                 rl_class.setVisibility(GONE);
+                tv_class_vlaue.setVisibility(GONE);
                 rlSignOrderRoot.setVisibility(View.VISIBLE);
                 rl_immediately.setVisibility(View.GONE);
                 rl_one.setVisibility(VISIBLE);
@@ -769,7 +770,7 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                         bundle1.putString("operDoctorCode", message.getFrom());
                         bundle1.putString("operDoctorName", nickName);
                         bundle1.putString("orderId", singNO);
-                        bundle1.putString("type", "1");
+                        bundle1.putString("type", "10");
                         startActivity(CancelConfirmDeitalActivity.class, bundle1);
 
 
@@ -806,6 +807,9 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                                 bundle1.putString("type", "5");
                                 break;
                         }
+                        if (orderType.equals("3")){
+                            return;
+                        }
                         startActivity(CancelConfirmDeitalActivity.class, bundle1);
 
                     } else {  //自己发送的解约卡片
@@ -825,7 +829,9 @@ public class EaseChatRowOrderCard extends EaseChatRow {
                                 bundle1.putString("type", "1");
                                 break;
                         }
-
+                        if (orderType.equals("3")){
+                            return;
+                        }
                         bundle1.putString("operDoctorCode", message.getFrom());
                         bundle1.putString("operDoctorName", nickName);
                         bundle1.putString("orderId", orderId);

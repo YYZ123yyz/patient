@@ -228,10 +228,11 @@ public class OrderOnGoingFragment extends
                     startActivity(new Intent(mActivity, OrderMessage_OrderPayActivity.class)
                             .putExtra("provideInteractOrderInfo", parorder));*/
                     Bundle bundle = new Bundle();
-                    bundle.putString("signCode", myOrderProcess.getOrderCode());
+                    bundle.putString("orderId", myOrderProcess.getOrderCode());
+               /*     bundle.putString("signId",myOrderProcess.getSignNo());
                     bundle.putString("operDoctorCode", myOrderProcess.getMainDoctorCode());
-                    bundle.putString("operDoctorName", myOrderProcess.getMainDoctorName());
-                    startActivity(SignOrderDetialActivity.class, bundle);
+                    bundle.putString("operDoctorName", myOrderProcess.getMainDoctorName());*/
+                    startActivity(OrderMessage_OrderPayActivity.class, bundle);
                 }
             }
 
